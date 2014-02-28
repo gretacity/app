@@ -3,17 +3,15 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.hello-world"
+        id        = "com.gretacity.app"
         version   = "1.0.0">
 
-    <name>Hello World</name>
+    <name>GretaCITY</name>
 
-    <description>
-        Hello World sample application that responds to the deviceready event.
-    </description>
+    <description>La città diventa intelligente...</description>
 
-    <author href="http://phonegap.com" email="support@phonegap.com">
-        PhoneGap Team
+    <author href="http://www.gretacity.com" email="info@gretacity.com">
+        GretaCITY Team
     </author>
 
     <!--
