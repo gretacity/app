@@ -17,21 +17,17 @@ function UserLogin( event ) {
     if (username != '' && password != '') {
         
         $.ajax({
+            url: 'http://www.gretacty.com/Service/index.php?s=app-user-login',
+            crossDomain: true,
             type: 'POST',
-            url: './app-user-login.html',
-            data: {u: username, p: password},
-            dataType: "html",
+            data: form.serialize(),
             success: function(data) {
                 if (data == '1') {                    
+                    alert('Login OK');
                     window.localStorage.setItem('username', username);
-                    $.mobile.changePage('#home',{
-                        transation: 'flow',
-                        reloadPage: true
-                    });
+                    $.mobile.changePage("#home", {transition: "sildeup"});
                 } else {
-                    
                     alert('Login Not OK');
-                    
                     $.mobile.changePage('#user-login');
                     // navigator.notification.alert('Error Login', function() {}, 'Error Login');
                 }
