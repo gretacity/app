@@ -22,11 +22,13 @@
             </div>
             <div role="main" class="ui-content">
                 <p>FORM LOGIN</p>
+                <form id="LoginForm">
                 <label for="text-basic"><small>Username:</small></label>
-                <input name="text-basic" id="text-basic" value="" type="text" placeholder="Username...">
+                <input name="username" id="username" value="" type="text" placeholder="Username...">
                 <label for="password"><small>Password:</small></label>
                 <input name="password" id="password" value="" autocomplete="off" type="password" placeholder="Password...">
-                <p><a href="#home" data-role="button" data-icon="check" data-iconpos="left">Accedi</a></p>
+                <p><input id="LoginBtn" type="submit" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" /></p>
+                </form>
                 <br/>
                 <p>REGISTRATI</p>
                 <p><small>Non hai ancora un account?</small></p>
@@ -348,5 +350,6 @@
 
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/functions.js"></script>
     </body>
 </html>

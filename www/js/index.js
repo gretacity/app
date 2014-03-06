@@ -47,3 +47,8 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
+
+
+$(function(){
+    $( '#LoginBtn' ).bind( 'tap', UserLogin );
+});
