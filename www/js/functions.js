@@ -19,20 +19,30 @@ function UserLogin( event ) {
         $.ajax({
             type: 'POST',
             url: './app-user-login.html',
-            data: { username : username, password : password },
+            data: {u: username, p: password},
             dataType: "html",
             success: function(data) {
-                if (data == '1') {
+                if (data == '1') {                    
                     window.localStorage.setItem('username', username);
                     $.mobile.changePage('index.html#home');
                 } else {
-                    navigator.notification.alert('Error Login', function() {}, 'Error Login');
+                    
+                    alert('Login Not OK');
+                    
+                    $.mobile.changePage('index.html#user-login');
+                    // navigator.notification.alert('Error Login', function() {}, 'Error Login');
                 }
             },
             error: function() {
                 alert('Error occured');
             }
         });
+    
+    } else {
+        
+        alert('UserLogin Error...');
+        // navigator.notification.alert('Error Login', function() {}, 'Error Login');
+
     }
 }
 
