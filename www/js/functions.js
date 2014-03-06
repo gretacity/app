@@ -24,12 +24,15 @@ function UserLogin( event ) {
             success: function(data) {
                 if (data == '1') {                    
                     window.localStorage.setItem('username', username);
-                    $.mobile.changePage('index.html#home');
+                    $.mobile.changePage('#home',{
+                        transation: 'flow',
+                        reloadPage: true
+                    });
                 } else {
                     
                     alert('Login Not OK');
                     
-                    $.mobile.changePage('index.html#user-login');
+                    $.mobile.changePage('#user-login');
                     // navigator.notification.alert('Error Login', function() {}, 'Error Login');
                 }
             },
