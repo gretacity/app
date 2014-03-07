@@ -205,9 +205,19 @@
             </div>
             <div role="main" class="ui-content">			
                 <p>SEGNALA</p>
+
                 <label for="textarea"><small>Commento:</small></label>
-                <textarea cols="40" rows="16" name="textarea" id="textarea"></textarea>
-                <p><a href="#home"  data-role="button" data-icon="action" data-iconpos="left"">Invia Segnalazione</a></p>
+                <textarea cols="40" rows="6" name="textarea" id="textarea" style="height:auto"></textarea>
+                
+                <div class="ui-nodisc-icon">
+                    <a href="#popup-qr-segnala-location" data-rel="popup" data-transition="pop" class="ui-shadow ui-btn ui-corner-all ui-icon-location ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
+                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-camera ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
+                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-grid ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
+                    <a href="#popup-qr-segnala-star" data-rel="popup" data-transition="pop" class="ui-shadow ui-btn ui-corner-all ui-icon-star ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
+                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-gear ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
+                </div>
+                
+                <p><a href="#home" data-role="button" data-icon="action" data-iconpos="left"">Invia Segnalazione</a></p>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
@@ -218,7 +228,27 @@
                     </ul>
                 </div>
             </div>		
+            <div data-role="popup" id="popup-qr-segnala-location">
+                <div style="margin:1em">
+                    Latitudine e Lingitudine
+                </div>
+            </div>
+            <div data-role="popup" id="popup-qr-segnala-star">
+                <div style="margin:1em">
+                    <form>
+                        <fieldset data-role="controlgroup">
+                            <input name="checkbox-v-2a" id="checkbox-v-2a" type="checkbox">
+                            <label for="checkbox-v-2a">One</label>
+                            <input name="checkbox-v-2b" id="checkbox-v-2b" type="checkbox">
+                            <label for="checkbox-v-2b">Two</label>
+                            <input name="checkbox-v-2c" id="checkbox-v-2c" type="checkbox">
+                            <label for="checkbox-v-2c">Three</label>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
         </div>
+
 
 
         <!-- QR Info -->

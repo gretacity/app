@@ -74,10 +74,10 @@ function AppLoad_JSON ( event ) {
             window.localStorage.setItem( 'USER_DATA', JSON.stringify(data) );
             
             // DISPLAY COUNT            
-            $('#segnalazioni-count').text(data.segnalazioni_count);
-            $('#notizie-count').text(data.notizie_count);
-            $('#commenti-count').text(data.commenti_count);
-            $('#qui-vicino-count').text(data.qui_vicino_count);
+            $('#segnalazioni-count').text(data.segnalazione.count);
+            $('#notizie-count').text(data.notizia.count);
+            $('#commenti-count').text(data.commento.count);
+            $('#qui-vicino-count').text(data.qui_vicino.count);
             
             
         },
@@ -105,17 +105,22 @@ function AppLoad_SEGNALAZIONI ( event ) {
      */
     var UserData = JSON.parse(window.localStorage.getItem( 'USER_DATA' ));
     
-    var obj = UserData.segnalazione;
+    var obj = UserData.segnalazione.item;
     
-    var list = $( '#segnalazioni-list' );
+    var list = $( '#segnalazioni-list ul' );
 
-    var str = '<ul data-role="listview" data-inset="false">';
+    var str = '';
     
     $.each( obj, function( key, value ) {
         
         // alert( key + ": " + value.data );
-        str += '<li data-role="list-divider">'+value.data+'</li>';
-
+        
+        str = '';
+        str += '<li data-role = "list-divider">'+value.data+'</li>';
+        
+        list.append( str ); 
+        
+        str = '';
         str += '<li>'; 
         str += '<a href="">';
         str += '    <h2>'+value.utente+'</h2>';
@@ -124,14 +129,12 @@ function AppLoad_SEGNALAZIONI ( event ) {
         str += '    <p class="ui-li-aside"><strong>'+value.orario+'</strong></p>';
         str += '</a>'; 
         str += '</li>';
+        
+        list.append( str ); 
     
     }); 
     
-    str += '</ul>';
-    
-    alert(str);
-    
-    list.html( str );
+    list.listview('refresh');
 
 }
 
