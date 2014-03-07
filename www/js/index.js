@@ -50,5 +50,15 @@ var app = {
 
 
 $(function(){
+    
     $( '#LoginForm' ).bind( 'submit', UserLogin );
+    
+    // $( document ).bind( "pagebeforeload", AppLoadJSON );
+    
+    // $( '#home' ).bind( 'pagebeforeload', AppLoadJSON );
+    
+    $( '#home' ).on( 'pageinit', AppLoad_JSON );
+    
+    $( '#segnalazioni' ).on( 'pageinit', AppLoad_SEGNALAZIONI );
+
 });

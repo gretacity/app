@@ -68,10 +68,10 @@
             <div role="main" class="ui-content">
                 <img style="width:100%; max-width:2048px; margin:0 auto; display:block;" alt="New York" src="./img/newyork.jpg" />
                 <div class="" style="margin:1em;">
-                    <p><a href="#segnalazioni" data-role="button" data-icon="bullets" data-iconpos="left">Segnalazioni<span class="ui-li-count">12</span></a></p>
-                    <p><a href="#notizie" data-role="button" data-icon="bars" data-iconpos="left">Notizie<span class="ui-li-count ui-corner-all">10</span></a></p>
-                    <p><a href="#commenti" data-role="button" data-icon="comment" data-iconpos="left">Commenti<span class="ui-li-count ui-corner-all">10</span></a></p>
-                    <p><a href="#qui-vicino" data-role="button" data-icon="location" data-iconpos="left">QUI Vicino<span class="ui-li-count ui-corner-all">10</span></a></p>
+                    <p><a href="#segnalazioni" data-role="button" data-icon="bullets" data-iconpos="left">Segnalazioni<span id="segnalazioni-count" class="ui-li-count"></span></a></p>
+                    <p><a href="#notizie" data-role="button" data-icon="bars" data-iconpos="left">Notizie<span id="notizie-count" class="ui-li-count"></span></a></p>
+                    <p><a href="#commenti" data-role="button" data-icon="comment" data-iconpos="left">Commenti<span id="commenti-count" class="ui-li-count "></span></a></p>
+                    <p><a href="#qui-vicino" data-role="button" data-icon="location" data-iconpos="left">QUI Vicino<span id="qui-vicino-count" class="ui-li-count"></span></a></p>
                 </div>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -94,86 +94,9 @@
                 <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                
             </div>
             <div role="main" class="">
-                <ul data-role="listview" data-inset="false">
-                    <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Stephen Weber</h2>
-                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                            <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="index.html">
-                            <h2>jQuery Team</h2>
-                            <p><strong>Boston Conference Planning</strong></p>
-                            <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-                            <p class="ui-li-aside"><strong>9:18</strong>AM</p>
-                        </a>
-                    </li>
-                    <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Avery Walker</h2>
-                            <p><strong>Re: Dinner Tonight</strong></p>
-                            <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-                            <p class="ui-li-aside"><strong>4:48</strong>PM</p>
-                        </a>
-                    </li>
-                    <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Stephen Weber</h2>
-                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                            <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="index.html">
-                            <h2>jQuery Team</h2>
-                            <p><strong>Boston Conference Planning</strong></p>
-                            <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-                            <p class="ui-li-aside"><strong>9:18</strong>AM</p>
-                        </a>
-                    </li>
-                    <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Avery Walker</h2>
-                            <p><strong>Re: Dinner Tonight</strong></p>
-                            <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-                            <p class="ui-li-aside"><strong>4:48</strong>PM</p>
-                        </a>
-                    </li>
-                    <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Stephen Weber</h2>
-                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                            <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="index.html">
-                            <h2>jQuery Team</h2>
-                            <p><strong>Boston Conference Planning</strong></p>
-                            <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-                            <p class="ui-li-aside"><strong>9:18</strong>AM</p>
-                        </a>
-                    </li>
-                    <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Avery Walker</h2>
-                            <p><strong>Re: Dinner Tonight</strong></p>
-                            <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-                            <p class="ui-li-aside"><strong>4:48</strong>PM</p>
-                        </a>
-                    </li>                    
-                </ul>
+                <div id="segnalazioni-list">
+                    <ul data-role="listview" data-inset="false"></ul>
+                </div>
                 <a href="#" class="ui-btn ui-mini ui-icon-recycle ui-btn-icon-left ui-shadow-icon">Carica Altri...</a>              
             </div>
             <div data-role="footer"></div>
@@ -188,34 +111,19 @@
                 <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                                
             </div>
             <div role="main" class="">
-                <ul data-role="listview" data-inset="false">
-                    <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Stephen Weber</h2>
-                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                            <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="index.html">
-                            <h2>jQuery Team</h2>
-                            <p><strong>Boston Conference Planning</strong></p>
-                            <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-                            <p class="ui-li-aside"><strong>9:18</strong>AM</p>
-                        </a>
-                    </li>
-                    <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Avery Walker</h2>
-                            <p><strong>Re: Dinner Tonight</strong></p>
-                            <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-                            <p class="ui-li-aside"><strong>4:48</strong>PM</p>
-                        </a>
-                    </li>
-                </ul>
+                <div id="notizie-list">
+                    <ul data-role="listview" data-inset="false">
+                        <li data-role="list-divider">Friday, October 8, 2010</li>
+                        <li>
+                            <a href="index.html">
+                                <h2>Stephen Weber</h2>
+                                <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                                <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+                                <p class="ui-li-aside"><strong>6:24</strong>PM</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>            
         </div>
 
