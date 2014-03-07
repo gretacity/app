@@ -289,7 +289,7 @@
         </div>
 
 
-        <!-- Segnala -->
+        <!-- QR Segnala -->
         <div data-role="page" id="qr-segnala">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
@@ -298,13 +298,69 @@
             <div role="main" class="ui-content">			
                 <p>SEGNALA</p>
                 <label for="textarea"><small>Commento:</small></label>
-                <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+                <textarea cols="40" rows="16" name="textarea" id="textarea"></textarea>
                 <p><a href="#home"  data-role="button" data-icon="action" data-iconpos="left"">Invia Segnalazione</a></p>
             </div>
-            <div data-role="footer" data-position="fixed"></div>		
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qr-info" data-icon="tag"><small>Info</small></a></li>
+                        <li><a href="#qr-segnala" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
+                        <li><a href="#qr-follow" data-icon="heart"><small>Follow QR</small></a></li>
+                    </ul>
+                </div>
+            </div>		
         </div>
 
 
+        <!-- QR Info -->
+        <div data-role="page" id="qr-info">
+            <div data-role="header" data-position="fixed">
+                <h1>GretaCITY</h1>
+                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div role="main" class="ui-content">			
+                <p>OTTIENI INFO</p>
+                <label for="textarea"><small>Commento:</small></label>
+                <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+                <p><a href="#home"  data-role="button" data-icon="action" data-iconpos="left"">Invia Segnalazione</a></p>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qr-info" data-icon="tag" class="ui-btn-active"><small>Info</small></a></li>
+                        <li><a href="#qr-segnala" data-icon="camera"><small>Segnala</small></a></li>
+                        <li><a href="#qr-follow" data-icon="heart"><small>Follow QR</small></a></li>
+                    </ul>
+                </div>
+            </div>		
+        </div>
+
+        
+        <!-- QR Follow -->
+        <div data-role="page" id="qr-follow">
+            <div data-role="header" data-position="fixed">
+                <h1>GretaCITY</h1>
+                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div role="main" class="ui-content">			
+                <p>FOLLOW QR</p>
+                <label for="textarea"><small>Commento:</small></label>
+                <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+                <p><a href="#home"  data-role="button" data-icon="action" data-iconpos="left"">Invia Segnalazione</a></p>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qr-info" data-icon="tag"><small>Info</small></a></li>
+                        <li><a href="#qr-segnala" data-icon="camera"><small>Segnala</small></a></li>
+                        <li><a href="#qr-follow" data-icon="heart" class="ui-btn-active"><small>Follow QR</small></a></li>
+                    </ul>
+                </div>
+            </div>		
+        </div>
+        
+        
         <!-- Profilo -->
         <div data-role="page" id="profilo">
             <div data-role="header" data-position="fixed">
@@ -344,6 +400,9 @@
             <div data-role="header" data-position="fixed">
                 <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <h1>GretaCITY</h1>
+            </div>
+            <div role="main" class="ui-content">
+                <p><a href="#home" data-role="button" data-icon="home" data-iconpos="left">Home</a></p>
             </div>
             <div data-role="footer" data-position="fixed"></div>
         </div>

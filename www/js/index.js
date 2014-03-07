@@ -50,5 +50,5 @@ var app = {
 
 
 $(function(){
-    $( '#LoginBtn' ).bind( 'tap', UserLogin );
+    $( '#LoginForm' ).bind( 'submit', UserLogin );
 });

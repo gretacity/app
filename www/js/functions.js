@@ -16,25 +16,39 @@ function UserLogin( event ) {
    
     if (username != '' && password != '') {
         
-        $.ajax({
-            url: 'http://www.gretacty.com/Service/index.php?s=app-user-login',
-            crossDomain: true,
-            type: 'POST',
+        /**
+         * 
+         */    
+        var request = $.ajax({
+            type: "POST",
+            url: "http://www.gretacity.com/Service/index.php?s=app-user-login",
             data: form.serialize(),
-            success: function(data) {
-                if (data == '1') {                    
-                    alert('Login OK');
-                    window.localStorage.setItem('username', username);
-                    $.mobile.changePage("#home", {transition: "sildeup"});
-                } else {
-                    alert('Login Not OK');
-                    $.mobile.changePage('#user-login');
-                    // navigator.notification.alert('Error Login', function() {}, 'Error Login');
-                }
-            },
-            error: function() {
-                alert('Error occured');
-            }
+            dataType: "json"
+         });
+         
+         /**
+          * 
+          */
+         request.done(function (data) {
+            
+            var status = $.trim(data.status);
+            // alert(status);
+           
+            if (status == 'success') {  
+                // window.localStorage.setItem('username', username);
+                $.mobile.changePage('index.html#user-registration');
+            } else {
+                $.mobile.changePage('index.html#user-login');
+                // navigator.notification.alert('Error Login', function() {}, 'Error Login');
+            } 
+        });
+        
+        /**
+         * 
+         */
+        request.fail(function (data) {
+            var status = $.trim(data.status);
+            alert('Error...'+status);
         });
     
     } else {
