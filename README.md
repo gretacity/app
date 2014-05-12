@@ -1,4 +1,4 @@
 app
 ===
 
-Con GretaCITY la città diventa smart..
+Con GretaCITY la città diventa smart...
