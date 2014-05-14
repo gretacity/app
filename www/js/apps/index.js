@@ -10,6 +10,7 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         
         $('#loginButton').on('click', app.login);
+        $('#registerButton').on('click', app.register);
     },
     // deviceready Event Handler
     //
@@ -20,13 +21,14 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        /*
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
         
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-        
+        */
         console.log('Received Event: ' + id);
     },
     
@@ -46,7 +48,7 @@ var app = {
         $('#username').addClass('ui-disabled');
         $('#password').addClass('ui-disabled');
         $('#loginButton').addClass('ui-disabled');
-        $('#registerButton').addClass('ui-disabled');
+        $('#registerPageButton').addClass('ui-disabled');
         auth.login({username: username, password: password}, function(data) {
             // Successfully loggedin, move forward
             $.mobile.changePage('index.html#home');
@@ -55,9 +57,13 @@ var app = {
                 $('#username').removeClass('ui-disabled');
                 $('#password').removeClass('ui-disabled');
                 $('#loginButton').removeClass('ui-disabled');
-                $('#registerButton').removeClass('ui-disabled');
+                $('#registerPageButton').removeClass('ui-disabled');
             }, 'Login');
         });
+    },
+    
+    register: function() {
+        helper.alert('TODO', null, 'Registrazione');
     }
 };
 

@@ -19,38 +19,43 @@
             <div role="main" class="ui-content">
                 <h2>Login</h2>
                 <form id="loginForm">
-                    <label for="username"><small>Username</small></label>
+                    <label for="username">Username</label>
                     <input type="text" name="username" id="username" placeholder="Username" />
-                    <label for="password"><small>Password</small></label>
+                    <label for="password">Password</label>
                     <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
                     <input id="loginButton" type="button" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" />
                 </form>
-                <p><small>Non hai ancora un account?</small></p>
-                <p><a id="registerButton" href="#registrationPage" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
+                <p>Non hai ancora un account?</p>
+                <p><a id="registerPageButton" href="#registrationPage" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
             </div>
         </div>
         <!-- /loginPage -->
 
-        <!-- User Registration-->
+        <!-- registrationPage -->
         <div data-role="page" id="registrationPage">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div role="main" class="ui-content">
-                <p>FORM REGISTRAZIONE</p>
-                <label for="text-basic"><small>Cognome:</small></label>
-                <input name="text-basic" id="text-basic" value="" type="text" placeholder="Cognome...">
-                <label for="text-basic"><small>Nome:</small></label>
-                <input name="text-basic" id="text-basic" value="" type="text" placeholder="Nome...">
-                <label for="text-basic"><small>Telefono:</small></label>
-                <input name="tel" id="tel" value="" type="tel" placeholder="Telefono...">
-                <label for="text-basic"><small>Email:</small></label>
-                <input name="text-basic" id="text-basic" value="" type="text" placeholder="Email...">
-                <p><a href="#user-login" data-role="button" data-icon="check" data-iconpos="left">Registrati</a></p>
-                <p style="text-align: justify"><small>Ti sara' notificata la password di accesso via sms e tramite e-mail ai contatti inseriti.<br/>Per info visita il nostro sito www.gretacity.com oppure consulta le NOTE LEGALI.</small></p>
+                <h2>Registrazione</h2>
+                <label for="text-basic">Cognome</label>
+                <input name="text-basic" id="text-basic" value="" type="text" placeholder="Cognome">
+                <label for="text-basic">Nome</label>
+                <input name="text-basic" id="text-basic" value="" type="text" placeholder="Nome">
+                <label for="text-basic">Telefono</label>
+                <input name="tel" id="tel" value="" type="tel" placeholder="Telefono">
+                <label for="text-basic">Email</label>
+                <input name="text-basic" id="text-basic" value="" type="text" placeholder="Email">
+                <p><a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left">Registrati</a></p>
+                <p style="text-align:justify">
+                    <small>Ti sara' notificata la password di accesso via sms e tramite e-mail ai contatti inseriti.<br/>
+                        Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system')">www.gretacity.com</a> 
+                        oppure consulta le <a href="#" onclick="window.open('http://www.gretacity.com', '_system')">NOTE LEGALI</a>.</small>
+                </p>
             </div>            
         </div>
+        <!-- /registrationPage -->
 
         <!-- Home -->
         <div data-role="page" id="home">
