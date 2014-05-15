@@ -65,6 +65,23 @@ var helper = {
     
     toArray: function(list) {
         return Array.prototype.slice.call(list || [], 0);
+    },
+    
+    
+    
+    isEmailValid: function(email) {
+        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,6})?$/;
+        return emailReg.test(email);
+    },
+    isPhoneNumberValid: function(number) {
+        for(var i in number) {
+            if(number[i] < '0' || number[i] > '9') {
+                return false;
+            }    
+        }
+        if(number.length < 6) return false;
+        return true;
     }
+    
 
 }

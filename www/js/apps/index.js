@@ -9,8 +9,12 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         
-        $('#loginButton').on('click', app.login);
-        $('#registerButton').on('click', app.register);
+        var loginPage = $('#loginPage');
+        $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
+        $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
+        $('#loginButton', loginPage).on('click', app.login);
+        var registerPage = $('#registrationPage');
+        $('#registerButton', registerPage).on('click', app.register);
     },
     // deviceready Event Handler
     //
@@ -49,10 +53,12 @@ var app = {
         $('#password').addClass('ui-disabled');
         $('#loginButton').addClass('ui-disabled');
         $('#registerPageButton').addClass('ui-disabled');
+        $.mobile.loading('show');
         auth.login({username: username, password: password}, function(data) {
             // Successfully loggedin, move forward
             $.mobile.changePage('index.html#home');
         }, function(e) {
+            $.mobile.loading('hide');
             helper.alert('Login non valido', function() {
                 $('#username').removeClass('ui-disabled');
                 $('#password').removeClass('ui-disabled');
@@ -63,21 +69,56 @@ var app = {
     },
     
     register: function() {
-        helper.alert('TODO', null, 'Registrazione');
+        var params = {lastname: '', firstname: '', phone: '', email: ''};
+        // Validation
+        var hasErrors = false;
+        var requiredFields = ['lastname', 'firstname', 'phone', 'email'];
+        for(var i in requiredFields) {
+            var fieldId = requiredFields[i];
+            var fieldVal = $('#' + fieldId).val().trim();
+            if(fieldVal == '') {
+                $('label[for="' + fieldId + '"]').addClass('fielderror');
+                hasErrors = true;
+            } else {
+                $('label[for="' + fieldId + '"]').removeClass('fielderror');
+                eval('params.'+fieldId+'="'+fieldVal+'"');
+            }
+        }
+        if(hasErrors) {
+            helper.alert('Alcuni campi non sono stati compilati', null, 'Registrazione');
+            return;
+        }
+        // Specific validation for phone number
+        if(!helper.isPhoneNumberValid(params.phone)) {
+            $('label[for="phone"]').addClass('fielderror');
+            helper.alert('Inserisci un numero di telefono valido', function() {
+                $('#phone').focus();
+            }, 'Registrazione');
+            return;
+        }
+        // Specific validation for email
+        if(!helper.isEmailValid(params.email)) {
+            $('label[for="email"]').addClass('fielderror');
+            helper.alert('Inserisci un indirizzo email valido', function() {
+                $('#email').focus();
+            }, 'Registrazione');
+            return;
+        }
+        // Registration
+        services.registerUser(params, function() {
+            // success callback
+        }, function(e) {
+            // error callback
+            helper.alert(e, null, 'Registrazione');
+        });
     }
 };
 
 /*
 $(function(){
-    
     $( '#LoginForm' ).bind( 'submit', UserLogin );
-    
     // $( document ).bind( "pagebeforeload", AppLoadJSON );
-    
     // $( '#home' ).bind( 'pagebeforeload', AppLoadJSON );
-    
     $( '#home' ).on( 'pageinit', AppLoad_JSON );
-    
     $( '#segnalazioni' ).on( 'pageinit', AppLoad_SEGNALAZIONI );
-
 });*/

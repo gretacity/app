@@ -26,15 +26,8 @@ var config = {
     
     URL_BASE: 'http://www.gretacity.com/test',
     URL_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
-    URL_DATA_ROADSIGN: '/web/index.php?p=segnaletica_stradale&s=export&s_t=ss_segnale&mode=module',
-    URL_DATA_FILMS: '/web/index.php?p=segnaletica_stradale&s=export&s_t=ss_pellicola&mode=module',
-    URL_DATA_SHAPES: '/web/index.php?p=segnaletica_stradale&s=export&s_t=ss_forma&mode=module',
-    URL_DATA_SIZES: '/web/index.php?p=segnaletica_stradale&s=export&s_t=ss_dimensione&mode=module',
-    URL_DATA_SUPPORTS: '/web/index.php?p=segnaletica_stradale&s=export&s_t=ss_supporto&mode=module',
-    URL_SYNC_CITYASSET: '/web/index.php?mode=module&p=beni&t=censimenti&s=bn_censimento_edit_web&s_t=new_bene',
-    URL_SYNC_ROADSIGN: '/web/index.php?mode=module&p=segnaletica_stradale&t=censimenti&s=ss_censimento_edit_web&s_t=new',
     
-    GOOGLE_MAPS_API_KEY: "AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ",
+    GOOGLE_MAPS_API_KEY: "",
     GOOGLE_MAPS_SENSOR: "true",
     GOOGLE_MAPS_ZOOM: 19,
     GOOGLE_MAPS_TYPE_ID: 'google.maps.MapTypeId.SATELLITE',
@@ -120,7 +113,7 @@ if(config.EMULATE_ON_BROWSER) {
 
 
 if(config.RUNNING_MODE == config.MODE_DEBUG) {
-    config.QR_CODE_TEST = '1000000065';
+    //config.QR_CODE_TEST = '1000000065';
     config.LOGIN_DEFAULT_USERNAME = 'marcellinara';
     config.LOGIN_DEFAULT_PASSWORD = 'marcellinara';
 }

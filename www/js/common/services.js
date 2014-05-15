@@ -14,56 +14,15 @@ var services = {
     
     
     
-    /*
-    secureRequest: function(params, successCallback, errorCallback) {
-        
-        if((typeof(params.authToken) == "undefined") || (params.authToken == "")) {
-            params.authToken = auth.authToken;
-        }
-        
-        $.ajax(params)
-            .done(function(data) {
-                    if(successCallback) successCallback(data);
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                //alert('done ko ' + jqXHR.status + " " + errorThrown);return;
-                if(jqXHR.status == services.CODE_UNAUTHORIZED) {
-                    // A login is requested
-                    var loginPage = $('#loginPage');
-                    if(loginPage.length == 0) {
-                        $('body,html').append('<div data-role="page" id="loginPage"></div>');
-                        loginPage = $('#loginPage');
-                        page.injector.injectPage('#loginPage', 'login');
-                    }
-                    $.mobile.changePage('#loginPage');
-                }
-                
-                if(failCallback) failCallback(jqXHR.status);
-            });
-        
-        
-    },*/
-    
+    registerUser: function(params, successCallback, failCallack) {
+        // TODO
+        var data = 'lastname='+params.lastname+'&firstname='+params.firstname+'&phone='+params.phone+'email='+params.email;
+        failCallack('Not implemented');
+    },
     
     downloadDataFromServer: function(key, successCallback, failCallback) {
 
-        var url = '';
-        switch(key) {
-            case data.DATA_FILMS:       // Pellicole
-                url = config.URL_BASE + config.URL_DATA_FILMS;
-                break;
-            case data.DATA_ROADSIGN:    // Segnali
-                url = config.URL_BASE + config.URL_DATA_ROADSIGN;
-                break;
-            case data.DATA_SHAPES:      // Forme
-                url = config.URL_BASE + config.URL_DATA_SHAPES;
-                break;
-            case data.DATA_SIZES:       // Formato
-                url = config.URL_BASE + config.URL_DATA_SIZES;
-                break;
-            case data.DATA_SUPPORTS:// Supporti
-                url = config.URL_BASE + config.URL_DATA_SUPPORTS;
-                break;
-        }
+        /*
 
         // Set session id
         url += '&session_id=' + auth.getSessionId();
@@ -85,83 +44,9 @@ var services = {
 /*console.log(jqXHR);
 console.log(textStatus);
 console.log(loginRequired);
-return;*/
+return;* /
             if(failCallback) failCallback(key, loginRequired, textStatus, jqXHR.status);
-        });
-    },
-    
-    
-    uploadEntity: function(itemId, successCallback, failCallback) {
-        
-        // Get item from database
-        data.fetch({id: itemId}, function(result1) {
-            
-            if(result1.rows.length == 0) {
-                if(failCallback) failCallback("Impossibile trovare l'elemento con ID " + itemId);
-                return;
-            }
-            
-            // Successfully retrieved item
-            var handler = null;
-            var url = null;
-            switch(result1.rows.item(0).entity_type) {
-                case CensusTypes.cityAsset:
-                    handler = data.cityAsset;
-                    url = config.URL_BASE + config.URL_SYNC_CITYASSET;
-                    break;
-                case CensusTypes.roadSign:
-                    handler = data.roadSign;
-                    url = config.URL_BASE + config.URL_SYNC_ROADSIGN;
-                    break;
-                default:
-                    failCallback('Entity type not allowed');
-                    return;
-            }
-            url += '&session_id=' + auth.getSessionId();
-            if(typeof(device) != 'undefined') url += '&uuid=' + device.uuid;
-
-            var item = handler.deserialize(result1.rows.item(0));
-            
-            // Retrieve related pictures
-            data.fetchPictures(itemId, function(result2) {
-                
-                // Successfully retrieved pictures
-                var len = result2.rows.length;
-                for(var i = 0; i < len; i++) {
-                    var key = result2.rows.item(i).picture_key;
-                    var base64encoded = result2.rows.item(i).data;
-                    item.pictures[key] = base64encoded;
-                }
-                
-                var preparedItem = handler.mapForService(item);
-//console.log(preparedItem);
-                // Call sync web method on server
-                $.ajax({
-                    type : "POST",
-                    async: false,
-                    url : url,
-                    timeout: 2000,
-                    /*data : {
-                        obj : preparedItem,
-                    },*/
-                    data: "obj=" + encodeURIComponent(JSON.stringify(preparedItem)),
-                    dataType: "text",
-                    crossDomain: true,
-                }).done(function(result) {
-//console.log(result);return;
-                    if(successCallback) successCallback(itemId, result);
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log(jqXHR);
-//console.log(textStatus);return;
-                    console.error(textStatus);
-                    // Login required
-                    var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
-                    if(failCallback) failCallback(itemId, loginRequired, textStatus, jqXHR.status);
-                });
-                
-            });
-        });
+        });*/
     }
-    
     
 }
