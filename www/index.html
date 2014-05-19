@@ -22,7 +22,7 @@
             }
             #photoList li {
                 float:left;
-                padding:5px;
+                padding-left:5px;
             }
             .report-imagelist-missing {
                 background: url('img/camera-icon.png') center no-repeat;
@@ -75,7 +75,7 @@
                 <input type="email" id="email" placeholder="Email">
                 <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left">Registrati</a>
                 <p style="text-align:justify">
-                    <small>Ti sara' notificata la password di accesso via sms e tramite e-mail ai contatti inseriti.<br/>
+                    <small>Ti sara' notificata la password di accesso tramite e-mail ai contatti inseriti.<br/>
                         Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_blank', 'location=yes')">www.gretacity.com</a> 
                         oppure consulta le <a href="#" onclick="window.open('http://www.gretacity.com', '_blank', 'location=yes')">NOTE LEGALI</a>.</small>
                 </p>
@@ -87,24 +87,35 @@
         <div data-role="page" id="homePage">
             <div data-role="header" data-position="fixed" data-fullscreen="true">
                 <h1>GretaCITY</h1>
-                <a href="#info" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>			
-                <a href="#profilo" class="ui-btn ui-shadow ui-  btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-gear">profilo</a>			
+                <a href="#infoPage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>			
+                <a href="#profilePage" class="ui-btn ui-shadow ui-  btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-gear">profilo</a>			
             </div>
             <div data-role="main" class="ui-content">
-                <img style="width:100%; max-width:2048px; margin:0 auto; display:block;" alt="New York" src="./img/newyork.jpg" />
+                <img style="width:90%;max-width:2048px;margin:30px auto; display:block;" src="./img/splash.png" />
                 <div class="" style="margin:1em;">
-                    <p><a href="#segnalazioni" data-role="button" data-icon="bullets" data-iconpos="left">Segnalazioni<span id="segnalazioni-count" class="ui-li-count"></span></a></p>
-                    <p><a href="#notizie" data-role="button" data-icon="bars" data-iconpos="left">Notizie<span id="notizie-count" class="ui-li-count"></span></a></p>
-                    <p><a href="#commenti" data-role="button" data-icon="comment" data-iconpos="left">Commenti<span id="commenti-count" class="ui-li-count "></span></a></p>
-                    <p><a href="#qui-vicino" data-role="button" data-icon="location" data-iconpos="left">QUI Vicino<span id="qui-vicino-count" class="ui-li-count"></span></a></p>
+                    <p>
+                        <a href="#reportingListPage" data-role="button" data-icon="bullets" data-iconpos="left">
+                            Segnalazioni<span id="reportingCount" class="ui-li-count"></span>
+                        </a>
+                    </p>
+                    <p>
+                        <a href="#newsPage" data-role="button" data-icon="bars" data-iconpos="left">
+                            Notizie<span id="newsCount" class="ui-li-count"></span>
+                        </a>
+                    </p>
+                    <p>
+                        <a href="#commentsPage" data-role="button" data-icon="comment" data-iconpos="left">
+                            Commenti<span id="commentsCount" class="ui-li-count "></span>
+                        </a>
+                    </p>                    
                 </div>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#qr-info" data-icon="tag"><small>Info</small></a></li>
-                        <li><a href="#reportingPage" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
-                        <li><a href="#qr-follow" data-icon="heart"><small>Follow QR</small></a></li>
+                        <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
+                        <li><a href="#closeToMePage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -112,14 +123,59 @@
         <!-- /homePage -->
         
         
+        <!-- infoPage -->
+        <div data-role="page" id="infoPage">
+            <div data-role="header" data-position="fixed">
+                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <h1>GretaCITY</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p><a href="#home" data-role="button" data-icon="home" data-iconpos="left">Home</a></p>
+            </div>
+            <div data-role="footer" data-position="fixed"></div>
+        </div>
+        <!-- /infoPage -->
 
-        <!-- Segnalazioni -->
-        <!--
-        <div data-role="page" id="segnalazioni">
+        <!-- profilePage -->
+        <div data-role="page" id="profilePage">
+            <div data-role="header" data-position="fixed">
+                <h1>GretaCITY</h1>
+                <a href="#user-login" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
+                <a href="#homePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <fieldset data-role="controlgroup">
+                    <legend><small>Le tue preferenze:</small></legend>
+                    <input name="checkbox-1a" id="checkbox-1a" checked="" type="checkbox">
+                    <label for="checkbox-1a">Cheetos</label>
+                    <input name="checkbox-2a" id="checkbox-2a" type="checkbox">
+                    <label for="checkbox-2a">Doritos</label>
+                    <input name="checkbox-3a" id="checkbox-3a" type="checkbox">
+                    <label for="checkbox-3a">Fritos</label>
+                    <input name="checkbox-4a" id="checkbox-4a" type="checkbox">
+                    <label for="checkbox-4a">Sun Chips</label>
+                </fieldset>
+                <br/>
+                <p><a href="#user-login" data-role="button" data-icon="check" data-iconpos="left">Salva</a></p>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#user-profilo" data-icon="gear" class="ui-btn-active"><small>Profilo</small></a></li>
+                        <li><a href="#user-location" data-icon="location"><small>Comune</small></a></li>
+                        <li><a href="#user" data-icon="heart"><small>Follow QR</small></a></li>
+                    </ul>
+                </div>
+            </div>  		
+        </div>
+        <!-- /profilePage -->
+        
+        <!-- reportingListPage -->
+        <div data-role="page" id="reportingListPage">
             <div data-role="header" data-position="fixed">
                 <h1>Segnalazioni</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                
+                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>
             </div>
             <div data-role="main" class="">
                 <div id="segnalazioni-list">
@@ -129,15 +185,17 @@
             </div>
             <div data-role="footer"></div>
         </div>
-        -->
-
-        <!-- Notizie -->
-        <!--
-        <div data-role="page" id="notizie">
+        <!-- /reportingListPage -->
+        
+        
+        <!-- newsPage -->
+        <div data-role="page" id="newsPage">
             <div data-role="header" data-position="fixed">
                 <h1>Notizie</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                                
+                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <!--
+                <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>
+                -->
             </div>
             <div data-role="main" class="">
                 <div id="notizie-list">
@@ -155,15 +213,15 @@
                 </div>
             </div>            
         </div>
-        -->
+        <!-- /newsPage -->
         
-        <!-- Commenti -->
-        <!--
-        <div data-role="page" id="commenti">
+        
+        <!-- commentsPage -->
+        <div data-role="page" id="commentsPage">
             <div data-role="header" data-position="fixed">
                 <h1>Commenti</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                                
+                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <!--<a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>-->                          
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" data-inset="true">
@@ -196,15 +254,14 @@
                 </ul>
             </div>
         </div>
-        -->
-
-        <!-- Qui Vicino -->
-        <!--
-        <div data-role="page" id="qui-vicino">
+        <!-- /commentsPage -->
+        
+        <!-- closeToMePage -->
+        <div data-role="page" id="closeToMePage">
             <div data-role="header" data-position="fixed">
                 <h1>QUI vicino</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                
+                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <!--<a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>-->
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
@@ -219,14 +276,14 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#qr-info" data-icon="tag"><small>Info</small></a></li>
-                        <li><a href="#qr-segnala" data-icon="alert" class="ui-btn-active"><small>Segnala</small></a></li>
-                        <li><a href="#qr-follow" data-icon="heart"><small>Follow QR</small></a></li>
+                        <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
+                        <li><a href="#closeToMePage" data-icon="location"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
             </div>                
         </div>
-        -->
+        <!-- /closeToMePage -->
         
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">
@@ -335,9 +392,9 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#qr-info" data-icon="tag">Info</a></li>
-                        <li><a href="#qr-segnala" data-icon="camera" class="ui-btn-active">Segnala</a></li>
-                        <li><a href="#qr-follow" data-icon="heart">Follow QR</a></li>
+                        <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info</small></a></li>
+                        <li><a href="#reportingPage" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
+                        <li><a href="#closeToMePage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -371,7 +428,7 @@
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
-                <textarea placeholder="Descrizione del problema"></textarea>
+                <textarea autofocus placeholder="Descrizione del problema"></textarea>
                 <div data-role="controlgroup" data-type="horizontal" align="right">
                     <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
                     <a href="#" id="confirmDescriptionButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
@@ -386,7 +443,7 @@
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
-                <input type="text" id="city" placeholder="Comune" />
+                <input autofocus type="text" id="city" placeholder="Comune" />
                 <textarea id="route" placeholder="Indirizzo"></textarea>
                 <div data-role="controlgroup" data-type="horizontal" align="right">
                     <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
@@ -398,7 +455,7 @@
         
         <!-- reportingPhotoPage -->
         <div data-role="page" id="reportingPhotoPage">
-            <div data-role="main">
+            <div data-role="main" style="text-align:center">
                 <a href="#" data-rel="back" data-reverse="true">
                     <img src="" />
                 </a>
@@ -410,12 +467,11 @@
         <!-- /reportingPhotoPage -->
         
         
-        <!-- QR Info -->
-        <!--
-        <div data-role="page" id="qr-info">
+        <!-- qrCodeInfoPage -->
+        <div data-role="page" id="qrCodeInfoPage">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
-                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">			
                 <p>OTTIENI INFO</p>
@@ -426,14 +482,14 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#qr-info" data-icon="tag" class="ui-btn-active"><small>Info</small></a></li>
-                        <li><a href="#qr-segnala" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#qr-follow" data-icon="heart"><small>Follow QR</small></a></li>
+                        <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
+                        <li><a href="#closeToMePage" data-icon="location" class="ui-btn-active"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
             </div>		
         </div>
-        -->
+        <!-- /qrCodeInfoPage -->
         
         <!-- QR Follow -->
         <!--
@@ -457,55 +513,6 @@
                     </ul>
                 </div>
             </div>		
-        </div>
-        -->
-        
-        <!-- Profilo -->
-        <!--
-        <div data-role="page" id="profilo">
-            <div data-role="header" data-position="fixed">
-                <h1>GretaCITY</h1>
-                <a href="#user-login" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>				
-                <a href="#home" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <fieldset data-role="controlgroup">
-                    <legend><small>Le tue preferenze:</small></legend>
-                    <input name="checkbox-1a" id="checkbox-1a" checked="" type="checkbox">
-                    <label for="checkbox-1a">Cheetos</label>
-                    <input name="checkbox-2a" id="checkbox-2a" type="checkbox">
-                    <label for="checkbox-2a">Doritos</label>
-                    <input name="checkbox-3a" id="checkbox-3a" type="checkbox">
-                    <label for="checkbox-3a">Fritos</label>
-                    <input name="checkbox-4a" id="checkbox-4a" type="checkbox">
-                    <label for="checkbox-4a">Sun Chips</label>
-                </fieldset>
-                <br/>
-                <p><a href="#user-login" data-role="button" data-icon="check" data-iconpos="left">Salva</a></p>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#user-profilo" data-icon="gear" class="ui-btn-active"><small>Profilo</small></a></li>
-                        <li><a href="#user-location" data-icon="location"><small>Comune</small></a></li>
-                        <li><a href="#user" data-icon="heart"><small>Follow QR</small></a></li>
-                    </ul>
-                </div>
-            </div>  		
-        </div>
-        -->
-
-        <!-- Info -->
-        <!--
-        <div data-role="page" id="info">
-            <div data-role="header" data-position="fixed">
-                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <h1>GretaCITY</h1>
-            </div>
-            <div data-role="main" class="ui-content">
-                <p><a href="#home" data-role="button" data-icon="home" data-iconpos="left">Home</a></p>
-            </div>
-            <div data-role="footer" data-position="fixed"></div>
         </div>
         -->
         

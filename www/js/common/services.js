@@ -20,33 +20,44 @@ var services = {
         failCallack('Not implemented');
     },
     
-    downloadDataFromServer: function(key, successCallback, failCallback) {
-
-        /*
-
-        // Set session id
-        url += '&session_id=' + auth.getSessionId();
-        if(typeof(device) != 'undefined') url += '&uuid=' + device.uuid;
-        
-        $.ajax({
-            type : "GET",
-            async: true,
-            url : url,
-            //timeout: 2000,
-            //data: params,
-            dataType: "json",
-            crossDomain: true,
-        }).done(function(result) {
-            if(successCallback) successCallback(key, result);
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            // Login required
-            var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
-/*console.log(jqXHR);
-console.log(textStatus);
-console.log(loginRequired);
-return;* /
-            if(failCallback) failCallback(key, loginRequired, textStatus, jqXHR.status);
-        });*/
-    }
     
+    getSummaryData: function(successCallback, failCallback) {
+        // TODO
+        var result = {
+            reportinCount: 5,
+            newsCount: 24,
+            commentsCount: 18
+        };
+        successCallback(result);
+    },
+    
+    getReportingList: function(params, successCallback, failCallback) {
+        // TODO
+        var result = [
+            //{}
+        ];
+        successCallback(result);
+    },
+    
+    getFeedPosts: function(params, successCallback, failCallback) {
+        // TODO
+        var result = [
+            //{}
+        ];
+        successCallback(result);
+    },
+    
+    getCloseToMeInfo: function(params, successCallback, failCallback) {
+        // TODO
+        var result = [
+            //{}
+        ];
+        successCallback(result);
+    },
+    
+    sendReporting: function(reporting, successCallback, failCallback) {
+        // TODO
+        //$.ajax('');
+        failCallback('Not yet implemented');
+    }    
 }

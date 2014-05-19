@@ -55,7 +55,7 @@ var config = {
     getUseWifiOnly: function() {
         var useWifi = window.localStorage.getItem(config.USE_WIFI_ONLY_KEY);
         if(typeof(useWifi) == 'string') useWifi = JSON.parse(useWifi);
-        return (useWifi == null) ? true : useWifi;
+        return (useWifi == null) ? false : useWifi;
     },
     setUseWifiOnly: function(wifiOnly) {
         window.localStorage.setItem(config.USE_WIFI_ONLY_KEY, wifiOnly);

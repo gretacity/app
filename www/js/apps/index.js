@@ -8,6 +8,8 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('online', this.onOnline, false);
+        document.addEventListener('offline', this.onOffline, false);
         
         var loginPage = $('#loginPage');
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
@@ -15,6 +17,8 @@ var app = {
         $('#loginButton', loginPage).on('click', app.login);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', app.register);
+        var homePage = $('#homePage');
+        homePage.on('pageinit', app.initHome);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', app.tryToGetAddress);
         $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
@@ -25,6 +29,12 @@ var app = {
         $('#photoList li a', reportingPage).on('click', app.viewPhoto);
         $('#reportingPhotoPage #removePhotoButton').on('click', app.removePhoto);
         $('#sendReportingButton', reportingPage).on('click', app.sendReporting);
+    },
+    onOnline: function() {
+        $('#loginPage #loginButton').removeClass('ui-disabled');
+    },
+    onOffline: function() {
+        $('#loginPage #loginButton').addClass('ui-disabled');
     },
     // deviceready Event Handler
     //
@@ -57,6 +67,10 @@ var app = {
         if(password == '') {
             $('#password').focus();
             helper.alert('Inserisci la password', null, 'Login');
+            return;
+        }
+        if(!helper.isOnline()) {
+            helper.alert('Nessuna connessione', null, 'Accesso a GretaCITY');
             return;
         }
         $('#username').addClass('ui-disabled');
@@ -125,6 +139,25 @@ var app = {
     
     
     
+    
+    
+    initHome: function() {
+        services.getSummaryData(function(result) {
+            // Success
+            $('#reportingCount').html(result.reportinCount);
+            $('#newsCount').html(result.newsCount);
+            $('#commentsCount').html(result.commentsCount);
+        }, function(e) {
+            // Error occurred
+            // che famo?
+        });
+        
+    },
+    
+    
+    
+    
+    
     tryToGetAddress: function() {
         geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
     },
@@ -136,7 +169,7 @@ console.log(result);
                 var cityEl =  $('#locationInfo span.city');
                 // Don't override data
                 if((routeEl.html() != '') || (cityEl.html() != '')) return;
-                routeEl.html(result.route + " " + result.streetNumber);
+                routeEl.html(result.road + " " + result.streetNumber);
                 cityEl.html(result.city);
             });
         });
@@ -198,6 +231,8 @@ console.log(result);
         var imgEl = $('img[data-acquired="1"]', this);
         if(imgEl.length == 0) return;
         $('#reportingPhotoPage img').attr('src', imgEl.attr('src')).attr('data-pos', imgEl.attr('data-pos'));
+        var width = $('#reportingPhotoPage').width();
+        $('#reportingPhotoPage img').css({'max-width' : width, 'height' : 'auto'});
         $.mobile.changePage('#reportingPhotoPage', {transition: 'pop'});
     },
     removePhoto: function() {
@@ -209,8 +244,37 @@ console.log(result);
     },
     
     sendReporting: function() {
-        //
-        helper.alert('spè');
+        // Validate report
+        var page = $('#reportingPage');
+        /*var description = $('#description', reportingPage).html().trim();
+        var route = $('#locationInfo span.route', reportingPage).html().trim();
+        var city = $('#locationInfo span.city', reportingPage).html().trim();
+        var hasPhoto = ($('#photoList li a img[data-acquired="1"]', reportingPage).length > 0);*/
+        var reporting = {
+            description:  $('#description', reportingPage).html().trim(),
+            route: $('#locationInfo span.route', reportingPage).html().trim(),
+            city: $('#locationInfo span.city', reportingPage).html().trim(),
+            photos: []
+        };
+        $('#photoList li a img[data-acquired="1"]', reportingPage).each(function() {
+            reporting.photos.push($(this).attr('src'));
+        });
+        
+        var errors = [];
+        if(reporting.description == '') errors.push('- inserisci la descrizione');
+        if((reporting.route == '') || (reporting.city == '')) errors.push('- specifica l\'indirizzo');
+        if(reporting.photos.length == 0) errors.push('- scatta almeno una foto');
+        if(errors.length > 0) {
+            helper.alert(errors.join('\n', null, 'Invia segnalazione'));
+            return;
+        }
+        
+        services.sendReporting(reporting, function() {
+            // Successfully sent
+        }, function(e) {
+            // An error occurred
+            helper.alert(e, null, 'Invia segnalazione');
+        });
     }
 };
 
