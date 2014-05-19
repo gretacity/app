@@ -75,5 +75,34 @@ var geoLocation = {
     },
 
     
+    reverseGeocoding: function(params, successCallback) {
+//params.lat = 38.827707; params.lng = 16.628456; // Via Caprera 144
+//params.lat = 38.827512; params.lng = 16.627475; // Via Niccoloso da Recco 6
+        var latLng = new google.maps.LatLng(params.lat, params.lng);
+        var geocoder = new google.maps.Geocoder();
+        var reqParams = {
+            latLng: latLng,
+            language: 'it'
+        };
+        geocoder.geocode(reqParams, function(results, status) {
+            if(status == google.maps.GeocoderStatus.OK) {
+                var firstResult = results[0];
+                var retVal = {
+                    city: '',
+                    route: '',
+                    streetNumber: '',
+                };
+console.log(firstResult);
+                for(var i=0, len=firstResult.address_components.length; i<len; i++) {
+                    var ac = firstResult.address_components[i];
+                    if(ac.types.indexOf("administrative_area_level_3") >= 0) retVal.city = ac.long_name;
+                    if((ac.types.indexOf("route") >= 0) && (ac.long_name.toLowerCase() != 'unnamed road')) retVal.route = ac.long_name;
+                    if(ac.types.indexOf("street_number") >= 0) retVal.streetNumber = ac.long_name;
+                }
+                successCallback(retVal);
+            }
+        });
+        // https://maps.googleapis.com/maps/api/geocode/json?language=it&latlng=38.858364,16.549469&sensor=false&location_type=ROOFTOP&result_type=street_address&key=AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ
+    }
     
 }

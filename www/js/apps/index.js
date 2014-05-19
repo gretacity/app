@@ -15,6 +15,16 @@ var app = {
         $('#loginButton', loginPage).on('click', app.login);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', app.register);
+        var reportingPage = $('#reportingPage');
+        reportingPage.on('pageinit', app.tryToGetAddress);
+        $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
+        $('#reportingDescriptionPage #confirmDescriptionButton').on('click', app.confirmReportingDescription);
+        $('#editLocationButton', reportingPage).on('click', app.editReportingLocation);
+        $('#reportingLocationPage #confirmLocationButton').on('click', app.confirmReportingLocation);
+        $('#acquirePhotoButton', reportingPage).on('click', app.acquirePhoto);
+        $('#photoList li a', reportingPage).on('click', app.viewPhoto);
+        $('#reportingPhotoPage #removePhotoButton').on('click', app.removePhoto);
+        $('#sendReportingButton', reportingPage).on('click', app.sendReporting);
     },
     // deviceready Event Handler
     //
@@ -56,7 +66,7 @@ var app = {
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(data) {
             // Successfully loggedin, move forward
-            $.mobile.changePage('index.html#home');
+            $.mobile.changePage('index.html#homePage');
         }, function(e) {
             $.mobile.loading('hide');
             helper.alert('Login non valido', function() {
@@ -111,6 +121,96 @@ var app = {
             // error callback
             helper.alert(e, null, 'Registrazione');
         });
+    },
+    
+    
+    
+    tryToGetAddress: function() {
+        geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
+    },
+    mapsScriptLoaded: function() {
+        geoLocation.acquireGeoCoordinates(function(pos) {
+            geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
+console.log(result);
+                var routeEl = $('#locationInfo span.route');
+                var cityEl =  $('#locationInfo span.city');
+                // Don't override data
+                if((routeEl.html() != '') || (cityEl.html() != '')) return;
+                routeEl.html(result.route + " " + result.streetNumber);
+                cityEl.html(result.city);
+            });
+        });
+    },
+    
+    
+    editReportingDescription: function() {
+        $('#reportingDescriptionPage textarea').val(
+            $('#reportingPage #description').html()
+        );
+        $.mobile.changePage('#reportingDescriptionPage', {transition: 'slide'});
+    },
+    
+    confirmReportingDescription: function() {
+        $('#reportingPage #description').html(
+            $('#reportingDescriptionPage textarea').val()
+        );
+        $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
+    },
+    
+    editReportingLocation: function() {
+        $('#reportingLocationPage input#city').val(
+            $('#reportingPage #locationInfo span.city').html()
+        );
+        $('#reportingLocationPage textarea#route').val(
+            $('#reportingPage #locationInfo span.route').html()
+        );
+        $.mobile.changePage('#reportingLocationPage', {transition: 'slide'});
+    },
+    confirmReportingLocation: function() {
+        $('#reportingPage #locationInfo span.city').html(
+            $('#reportingLocationPage input#city').val()
+        );
+        $('#reportingPage #locationInfo span.route').html(
+            $('#reportingLocationPage textarea#route').val()
+        );
+        $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
+    },
+    
+    
+    
+    
+    acquirePhoto: function() {
+        if($('#photoList li a img[data-acquired="0"]').first().length == 0) {
+            helper.alert('Hai raggiunto il limite massimo', null, 'Scatta foto');
+            return;
+        }
+        camera.getPicture(function(imageData) {
+            var imgEl = $('#photoList li a img[data-acquired="0"]').first();
+            if(imgEl.length == 1) {
+                imgEl.attr('src', 'data:image/jpeg;base64,' + imageData).attr('data-acquired', '1');
+                imgEl.removeClass('report-imagelist-missing').addClass('report-imagelist-done');
+            }
+        }, function(e) {
+            helper.alert(e, null, 'Impossibile scattare la foto');
+        });
+    },
+    viewPhoto: function() {
+        var imgEl = $('img[data-acquired="1"]', this);
+        if(imgEl.length == 0) return;
+        $('#reportingPhotoPage img').attr('src', imgEl.attr('src')).attr('data-pos', imgEl.attr('data-pos'));
+        $.mobile.changePage('#reportingPhotoPage', {transition: 'pop'});
+    },
+    removePhoto: function() {
+        var imgEl = $('#reportingPhotoPage img');
+        imgEl.attr('src', '');
+        var pos = imgEl.attr('data-pos');
+        $('#reportingPage #photoList li a img[data-pos='+pos+']').attr('src', '').removeClass('report-imagelist-done').addClass('report-imagelist-missing').attr('data-acquired', '0');
+        $.mobile.changePage('#reportingPage', {transition: 'pop', reverse: true});
+    },
+    
+    sendReporting: function() {
+        //
+        helper.alert('spè');
     }
 };
 

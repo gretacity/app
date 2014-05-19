@@ -27,7 +27,7 @@ var config = {
     URL_BASE: 'http://www.gretacity.com/test',
     URL_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     
-    GOOGLE_MAPS_API_KEY: "",
+    GOOGLE_MAPS_API_KEY: "AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ",
     GOOGLE_MAPS_SENSOR: "true",
     GOOGLE_MAPS_ZOOM: 19,
     GOOGLE_MAPS_TYPE_ID: 'google.maps.MapTypeId.SATELLITE',

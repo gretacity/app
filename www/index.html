@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>GretaCITY</title>
+        <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-
+        <title>GretaCITY</title>
         <!--
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         -->
@@ -12,6 +13,24 @@
         <style>
             .fielderror {
                 color: #FF0000;
+            }
+            
+            #photoList {
+                list-style-type:none;
+                margin:0 auto;
+                padding:0;
+            }
+            #photoList li {
+                float:left;
+                padding:5px;
+            }
+            .report-imagelist-missing {
+                background: url('img/camera-icon.png') center no-repeat;
+                width: 90px;
+                height: 90px;
+            }
+            .report-imagelist-done {
+                width: 90px;
             }
         </style>
     </head>
@@ -23,7 +42,7 @@
                 <h1>GretaCITY</h1>
                 <a href="#info" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="main" class="ui-content">
                 <h2>Login</h2>
                 <form id="loginForm">
                     <label for="username">Username</label>
@@ -44,7 +63,7 @@
                 <h1>GretaCITY</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="main" class="ui-content">
                 <h2>Registrazione</h2>
                 <label for="lastname">Cognome</label>
                 <input type="text" id="lastname" placeholder="Cognome">
@@ -63,25 +82,15 @@
             </div>            
         </div>
         <!-- /registrationPage -->
-
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <!-- Home -->
-        <div data-role="page" id="home">
+        <!-- homePage -->
+        <div data-role="page" id="homePage">
             <div data-role="header" data-position="fixed" data-fullscreen="true">
                 <h1>GretaCITY</h1>
                 <a href="#info" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>			
                 <a href="#profilo" class="ui-btn ui-shadow ui-  btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-gear">profilo</a>			
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="main" class="ui-content">
                 <img style="width:100%; max-width:2048px; margin:0 auto; display:block;" alt="New York" src="./img/newyork.jpg" />
                 <div class="" style="margin:1em;">
                     <p><a href="#segnalazioni" data-role="button" data-icon="bullets" data-iconpos="left">Segnalazioni<span id="segnalazioni-count" class="ui-li-count"></span></a></p>
@@ -94,22 +103,25 @@
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#qr-info" data-icon="tag"><small>Info</small></a></li>
-                        <li><a href="#qr-segnala" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
+                        <li><a href="#reportingPage" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
                         <li><a href="#qr-follow" data-icon="heart"><small>Follow QR</small></a></li>
                     </ul>
                 </div>
             </div>
         </div>
-
+        <!-- /homePage -->
+        
+        
 
         <!-- Segnalazioni -->
+        <!--
         <div data-role="page" id="segnalazioni">
             <div data-role="header" data-position="fixed">
                 <h1>Segnalazioni</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                
             </div>
-            <div role="main" class="">
+            <div data-role="main" class="">
                 <div id="segnalazioni-list">
                     <ul data-role="listview" data-inset="false"></ul>
                 </div>
@@ -117,16 +129,17 @@
             </div>
             <div data-role="footer"></div>
         </div>
-
+        -->
 
         <!-- Notizie -->
+        <!--
         <div data-role="page" id="notizie">
             <div data-role="header" data-position="fixed">
                 <h1>Notizie</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                                
             </div>
-            <div role="main" class="">
+            <div data-role="main" class="">
                 <div id="notizie-list">
                     <ul data-role="listview" data-inset="false">
                         <li data-role="list-divider">Friday, October 8, 2010</li>
@@ -142,16 +155,17 @@
                 </div>
             </div>            
         </div>
-
-
+        -->
+        
         <!-- Commenti -->
+        <!--
         <div data-role="page" id="commenti">
             <div data-role="header" data-position="fixed">
                 <h1>Commenti</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                                
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="main" class="ui-content">
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
                     <li>
@@ -182,16 +196,17 @@
                 </ul>
             </div>
         </div>
-
+        -->
 
         <!-- Qui Vicino -->
+        <!--
         <div data-role="page" id="qui-vicino">
             <div data-role="header" data-position="fixed">
                 <h1>QUI vicino</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>                
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="main" class="ui-content">
                 <ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
                     <li><a href="#">Apple</a></li>
                     <li><a href="#">Banana</a></li>
@@ -211,20 +226,93 @@
                 </div>
             </div>                
         </div>
-
-
-        <!-- QR Segnala -->
-        <div data-role="page" id="qr-segnala">
+        -->
+        
+        <!-- reportingPage -->
+        <div data-role="page" id="reportingPage">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
-                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
-            <div role="main" class="ui-content">			
-                <p>SEGNALA</p>
-
-                <label for="textarea"><small>Commento:</small></label>
-                <textarea cols="40" rows="6" name="textarea" id="textarea" style="height:auto"></textarea>
+            <div data-role="main" class="ui-content">
                 
+                <h2>Segnala</h2>
+                
+                <select>
+                    <option>Dissesto stradale</option>
+                    <option>Problemi idrici</option>
+                    <option>Rifiuti e pulizia</option>
+                    <option>Segnaletica stradale</option>
+                    <option>Altro</option>
+                </select>
+                
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">
+                        <div>
+                            <img src="js/jquery.mobile-1.4.2/images/icons-png/edit-black.png" />
+                            Descrivi il problema
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" id="editDesciptionButton">
+                            <label id="description"></label>
+                        </a>
+                    </li>
+                </ul>
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">
+                        <div>
+                            <img src="js/jquery.mobile-1.4.2/images/icons-png/location-black.png" />
+                            Specifica il luogo
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" id="editLocationButton">
+                            <label id="locationInfo">
+                                <span class="route"></span>
+                                <span class="city"></span>
+                            </label>
+                        </a>
+                    </li>
+                </ul>
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">
+                        <div>
+                            <img src="js/jquery.mobile-1.4.2/images/icons-png/camera-black.png" />
+                            Aggiungi una foto
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" id="acquirePhotoButton">
+                            <label>
+                                Scatta
+                            </label>
+                        </a>
+                    </li>
+                    <li>
+                        <div align="center" style="text-align:center;">
+                            <ul id="photoList">
+                                <li>
+                                    <a href="#">
+                                        <img src="" class="report-imagelist-missing" data-pos="0" data-acquired="0" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="" class="report-imagelist-missing" data-pos="1" data-acquired="0" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="" class="report-imagelist-missing" data-pos="2" data-acquired="0" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                
+                <!--
                 <div class="ui-nodisc-icon">
                     <a href="#popup-qr-segnala-location" data-rel="popup" data-transition="pop" class="ui-shadow ui-btn ui-corner-all ui-icon-location ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
                     <a class="ui-shadow ui-btn ui-corner-all ui-icon-camera ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
@@ -232,18 +320,28 @@
                     <a href="#popup-qr-segnala-star" data-rel="popup" data-transition="pop" class="ui-shadow ui-btn ui-corner-all ui-icon-star ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
                     <a class="ui-shadow ui-btn ui-corner-all ui-icon-gear ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
                 </div>
-                
-                <p><a href="#home" data-role="button" data-icon="action" data-iconpos="left">Invia Segnalazione</a></p>
+                -->
+                <!--
+                <div>
+                    <label>Scatta una foto</label>
+                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-camera ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
+                </div>
+                <div>
+                    <img src="img/camera-icon.png" />
+                </div>
+                -->
+                <p><a href="#" id="sendReportingButton" data-role="button" data-icon="action" data-iconpos="left">Invia segnalazione</a></p>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#qr-info" data-icon="tag"><small>Info</small></a></li>
-                        <li><a href="#qr-segnala" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
-                        <li><a href="#qr-follow" data-icon="heart"><small>Follow QR</small></a></li>
+                        <li><a href="#qr-info" data-icon="tag">Info</a></li>
+                        <li><a href="#qr-segnala" data-icon="camera" class="ui-btn-active">Segnala</a></li>
+                        <li><a href="#qr-follow" data-icon="heart">Follow QR</a></li>
                     </ul>
                 </div>
-            </div>		
+            </div>
+            <!--
             <div data-role="popup" id="popup-qr-segnala-location">
                 <div style="margin:1em">
                     Latitudine e Lingitudine
@@ -263,17 +361,63 @@
                     </form>
                 </div>
             </div>
+            -->
         </div>
-
-
-
+        <!-- /reportingPage -->
+        
+        <!-- reportingDescriptionPage -->
+        <div data-role="page" id="reportingDescriptionPage">
+            <div data-role="header" data-position="fixed">
+                <h1>GretaCITY</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <textarea placeholder="Descrizione del problema"></textarea>
+                <div data-role="controlgroup" data-type="horizontal" align="right">
+                    <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
+                    <a href="#" id="confirmDescriptionButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
+                </div>
+            </div>
+        </div>
+        <!-- /reportingDescriptionPage -->
+        
+        <!-- reportingLocationPage -->
+        <div data-role="page" id="reportingLocationPage">
+            <div data-role="header" data-position="fixed">
+                <h1>GretaCITY</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <input type="text" id="city" placeholder="Comune" />
+                <textarea id="route" placeholder="Indirizzo"></textarea>
+                <div data-role="controlgroup" data-type="horizontal" align="right">
+                    <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
+                    <a href="#" id="confirmLocationButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
+                </div>
+            </div>
+        </div>
+        <!-- /reportingLocationPage -->
+        
+        <!-- reportingPhotoPage -->
+        <div data-role="page" id="reportingPhotoPage">
+            <div data-role="main">
+                <a href="#" data-rel="back" data-reverse="true">
+                    <img src="" />
+                </a>
+            </div>
+            <div data-role="footer" data-position="fixed" align="center">
+                <a href="#" id="removePhotoButton" class="ui-btn ui-btn-icon-left ui-icon-delete" style="text-align:left;width:85%">Rimuovi</a>
+            </div>
+        </div>
+        <!-- /reportingPhotoPage -->
+        
+        
         <!-- QR Info -->
+        <!--
         <div data-role="page" id="qr-info">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
                 <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
-            <div role="main" class="ui-content">			
+            <div data-role="main" class="ui-content">			
                 <p>OTTIENI INFO</p>
                 <label for="textarea"><small>Commento:</small></label>
                 <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
@@ -289,15 +433,16 @@
                 </div>
             </div>		
         </div>
-
+        -->
         
         <!-- QR Follow -->
+        <!--
         <div data-role="page" id="qr-follow">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
                 <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
-            <div role="main" class="ui-content">			
+            <div data-role="main" class="ui-content">			
                 <p>FOLLOW QR</p>
                 <label for="textarea"><small>Commento:</small></label>
                 <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
@@ -313,16 +458,17 @@
                 </div>
             </div>		
         </div>
-        
+        -->
         
         <!-- Profilo -->
+        <!--
         <div data-role="page" id="profilo">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
                 <a href="#user-login" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>				
                 <a href="#home" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="main" class="ui-content">
                 <fieldset data-role="controlgroup">
                     <legend><small>Le tue preferenze:</small></legend>
                     <input name="checkbox-1a" id="checkbox-1a" checked="" type="checkbox">
@@ -347,26 +493,30 @@
                 </div>
             </div>  		
         </div>
-
+        -->
 
         <!-- Info -->
+        <!--
         <div data-role="page" id="info">
             <div data-role="header" data-position="fixed">
                 <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <h1>GretaCITY</h1>
             </div>
-            <div role="main" class="ui-content">
+            <div data-role="main" class="ui-content">
                 <p><a href="#home" data-role="button" data-icon="home" data-iconpos="left">Home</a></p>
             </div>
             <div data-role="footer" data-position="fixed"></div>
         </div>
-
+        -->
+        
         <script src="js/jquery-2.1.0.min.js"></script>
         <script src="js/jquery.mobile-1.4.2/jquery.mobile-1.4.2.js"></script>
         <script src="phonegap.js"></script>
         <script src="js/common/config.js"></script>
         <script src="js/common/helper.js"></script>
         <script src="js/common/auth.js"></script>
+        <script src="js/common/geoLocation.js"></script>
+        <script src="js/common/camera.js"></script>
         <script src="js/common/services.js"></script>
         <script src="js/apps/index.js"></script>
         <!--
