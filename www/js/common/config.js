@@ -2,6 +2,9 @@ var config = {
     
     EMULATE_ON_BROWSER: true,
     
+    APP_NAME: "gretacity",
+    API_V: "1.0",
+    
     DB_FILENAME: "censiq",          // Database file name
     DB_SCHEMA: "1.0",               // Version of database schema
     DB_NAME: "CensiQ",              // Display name of the database

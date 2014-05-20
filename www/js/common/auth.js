@@ -32,7 +32,7 @@ var auth = {
         */
         return true;
     },
-    
+        
     ////////////////////////////////////////////////////////////
     // params {username: "", password : ""}
     login: function(params, successCallback, failCallback) {
@@ -44,10 +44,9 @@ var auth = {
         
         var loginUrl = config.URL_BASE + config.URL_LOGIN;
         
-        var data = 'username=' + params.username + '&password=' + params.password;
-        if(typeof(device) != 'undefined') data += '&uuid=' + device.uuid;
+        var data = 'username=' + params.username + '&password=' + params.password +
+                   '&' + services.getRequestCommonParameters();
         
-        //alert($.support.cors);
         $.ajax({
 			type : "GET",
             cache: false,

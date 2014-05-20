@@ -13,6 +13,14 @@ var services = {
     CODE_SERVICE_UNAVAILABLE: 503, 
     
     
+    getRequestCommonParameters: function() {
+        var updatedUrl = 'app=' + config.APP_NAME + '&api=' + config.API_V;
+        if(typeof(device) != 'undefined') updatedUrl += '&uuid=' + device.uuid;
+        if(typeof(app) != 'undefined') updatedUrl += '&lang=' + app.language;
+        return updatedUrl;
+    },
+
+    
     
     registerUser: function(params, successCallback, failCallack) {
         // TODO
@@ -31,10 +39,46 @@ var services = {
         successCallback(result);
     },
     
+    
+    getInfoFromQrCode: function(code, successCallback, failCallback) {
+        // TODO
+        var result = {
+            id: 1,
+            name: 'Basilica dell\'Immacolata',
+            following: true,
+            text: 'Una delle chiese più importanti di Catanzaro. ' +
+                  'È situata nel centro storico della città, precisamente su corso Mazzini. ' +
+                  'La posa della prima pietra avvenne il primo agosto 1759. ' +
+                  'Nel corso della sua storia svolse il ruolo di principale cattedrale della città in due periodi diversi: ' +
+                  'dal 1783 al 1833, in seguito ad un disastroso terremoto che distrusse il duomo, e nel 1943, ' +
+                  'quando fu distrutto dai bombardamenti della seconda guerra mondiale.',
+            comments: [
+                {id: 1001, text: 'L\'ho visitata diverse volte, è molto bella'},
+                {id: 3418, text: 'Una delle cose da vedere assolutamente a Catanzaro'}
+            ]
+        };
+        successCallback(result);
+    },
+    
+    followQrCode: function(follow) {
+        // TODO
+    },
+    
+    leaveCommentOnQrCode: function(params, successCallback, failCallback) {
+        // TODO
+        //params.text
+        successCallback();
+    },
+    
+    
     getReportingList: function(params, successCallback, failCallback) {
         // TODO
         var result = [
-            //{}
+            {data: '01/05/2014', 'orario': '10:30', utente: 'user1', oggetto: 'segnalazione 1', commento: 'questo è un commento 1'},
+            {data: '01/05/2014', 'orario': '10:40', utente: 'user1', oggetto: 'segnalazione 2', commento: 'questo è un commento 2'},
+            {data: '01/05/2014', 'orario': '10:50', utente: 'user1', oggetto: 'segnalazione 3', commento: 'questo è un commento 3'},
+            {data: '01/05/2014', 'orario': '11:30', utente: 'user1', oggetto: 'segnalazione 4', commento: 'questo è un commento 4'},
+            {data: '01/05/2014', 'orario': '12:30', utente: 'user1', oggetto: 'segnalazione 5', commento: 'questo è un commento 5'}
         ];
         successCallback(result);
     },

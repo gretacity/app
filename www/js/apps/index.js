@@ -1,4 +1,5 @@
 var app = {
+    language : '',
     initialize: function() {
         this.bindEvents();
     },
@@ -11,6 +12,8 @@ var app = {
         document.addEventListener('online', this.onOnline, false);
         document.addEventListener('offline', this.onOffline, false);
         
+        if(config.EMULATE_ON_BROWSER) app.onDeviceReady();
+        
         var loginPage = $('#loginPage');
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
@@ -19,6 +22,11 @@ var app = {
         $('#registerButton', registerPage).on('click', app.register);
         var homePage = $('#homePage');
         homePage.on('pageinit', app.initHome);
+        var infoPage = $('#qrCodeInfoPage');
+        $('#getInfoButton', infoPage).on('click', app.getInfoFromQrCode);
+        var reportingListPage = $('#reportingListPage');
+        reportingListPage.on('pageinit', app.initReportingList);
+        $('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', app.tryToGetAddress);
         $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
@@ -42,6 +50,14 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        if(typeof(navigator.language) == 'string') {
+            app.language = navigator.language;
+        } else {
+            navigator.globalization.getPreferredLanguage(
+                function (language) {app.language = language.value},
+                function () {}
+            );
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -152,6 +168,99 @@ var app = {
             // che famo?
         });
         
+    },
+    
+    
+    
+    
+    getInfoFromQrCode: function() {
+        barcodeReader.acquireQrCode(function(code) {
+            //successCallback
+            services.getInfoFromQrCode(code, function(result) {
+                //successCallback
+                if(result == null) {
+                    helper.alert('Non ci sono informazioni disponibili', null, 'Ottieni info');
+                    return;
+                }
+                // Format result
+                var html = '<h3>' + result.name + '</h3><p>' + result.text + '</p>';
+                html += '<input type="checkbox" onchange="app.followQrCode()" id="following" ' + (result.following ? ' checked' : '') + '/> <label for="following">segui</label>';
+                html += '<h4>Commenti</h4>';
+                if(result.comments.length == 0) {
+                    html += '<p>Non ci sono commenti</p>';
+                } else {
+                    html += '<ul id="commentList">';
+                    for(var i in result.comments) {
+                        var c = result.comments[i];
+                        html += '<li><p>' + c.text + 
+                                '</p><small>27/02/2104, user1</small>'
+                                '</li>';
+                    }
+                    html += '</ul>';
+                }
+                html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
+                $('#qrCodeInfoPage #infoText').html(html);
+                $('#qrCodeInfoPage #infoText #following').checkboxradio();
+            }, function(e) {
+                // errorCallback
+                helper.alert('Impossibile recuperare informazioni', null, 'Ottieni info');
+            });
+        }, function(e) {
+            // errorCallback
+            helper.alert('Impossibile leggere il codice', null, 'Ottieni info');
+        });
+    },
+    
+    followQrCode: function() {
+        var follow = $('#qrCodeInfoPage #infoText #following').is(':checked');
+        services.followQrCode(follow);
+    },
+    
+    leaveCommentOnQrCode: function() {
+        var text = $('#qrCodeInfoPage #comment').val().trim();
+        if(text == '') return;
+        services.leaveCommentOnQrCode({text: text}, function() {
+            // success
+            $('#qrCodeInfoPage #commentList').append('<li><p>' + text + '</p><small>Adesso, tu</small></li>');
+            $('#qrCodeInfoPage #comment').val('');
+        }, function(e) {
+            // error
+            helper.alert('Impossibile inviare il commento', null, 'Lascia il commento');
+        });
+    },
+    
+    
+    
+    
+    
+    initReportingList: function() {
+        app.loadReportingItems();
+    },
+    
+    
+    loadReportingItems: function() {
+        $.mobile.loading('show');
+        services.getReportingList({}, function(result) {
+            // Success
+            var list = $('#reportingListPage #reportingList');
+            var html = '';
+            for(var i in result) {
+                var row = result[i];
+                html += '<li data-role="list-divider">' + row.data + '</li>';
+                html += '<li><a href="">';
+                html +=  '<h2>' + row.utente + '</h2>';
+                html +=  '<p><strong>' + row.oggetto + '</strong></p>';
+                html +=  '<p>' + row.commento + '</p>';
+                html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
+                html +=  '</a></li>';    
+            } 
+            list.append(html); 
+            list.listview('refresh');
+            $.mobile.loading('hide');
+        }, function(e) {
+            $.mobile.loading('hide');
+            helper.alert("Si sono verificati errori", null, "Segnalazioni");
+        });
     },
     
     

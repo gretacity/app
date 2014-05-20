@@ -177,11 +177,9 @@
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>
             </div>
-            <div data-role="main" class="">
-                <div id="segnalazioni-list">
-                    <ul data-role="listview" data-inset="false"></ul>
-                </div>
-                <a href="#" class="ui-btn ui-mini ui-icon-recycle ui-btn-icon-left ui-shadow-icon">Carica Altri...</a>              
+            <div data-role="main" class="ui-content">
+                <ul id="reportingList" data-role="listview" data-inset="false"></ul>
+                <a href="#" id="loadMoreReportingItemsButton" class="ui-btn ui-mini ui-icon-recycle ui-btn-icon-left ui-shadow-icon">Carica altri...</a>
             </div>
             <div data-role="footer"></div>
         </div>
@@ -368,25 +366,6 @@
                         </div>
                     </li>
                 </ul>
-                
-                <!--
-                <div class="ui-nodisc-icon">
-                    <a href="#popup-qr-segnala-location" data-rel="popup" data-transition="pop" class="ui-shadow ui-btn ui-corner-all ui-icon-location ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
-                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-camera ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
-                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-grid ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
-                    <a href="#popup-qr-segnala-star" data-rel="popup" data-transition="pop" class="ui-shadow ui-btn ui-corner-all ui-icon-star ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
-                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-gear ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
-                </div>
-                -->
-                <!--
-                <div>
-                    <label>Scatta una foto</label>
-                    <a class="ui-shadow ui-btn ui-corner-all ui-icon-camera ui-btn-b ui-btn-icon-notext ui-btn-inline">Button</a>
-                </div>
-                <div>
-                    <img src="img/camera-icon.png" />
-                </div>
-                -->
                 <p><a href="#" id="sendReportingButton" data-role="button" data-icon="action" data-iconpos="left">Invia segnalazione</a></p>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -398,27 +377,6 @@
                     </ul>
                 </div>
             </div>
-            <!--
-            <div data-role="popup" id="popup-qr-segnala-location">
-                <div style="margin:1em">
-                    Latitudine e Lingitudine
-                </div>
-            </div>
-            <div data-role="popup" id="popup-qr-segnala-star">
-                <div style="margin:1em">
-                    <form>
-                        <fieldset data-role="controlgroup">
-                            <input name="checkbox-v-2a" id="checkbox-v-2a" type="checkbox">
-                            <label for="checkbox-v-2a">One</label>
-                            <input name="checkbox-v-2b" id="checkbox-v-2b" type="checkbox">
-                            <label for="checkbox-v-2b">Two</label>
-                            <input name="checkbox-v-2c" id="checkbox-v-2c" type="checkbox">
-                            <label for="checkbox-v-2c">Three</label>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /reportingPage -->
         
@@ -474,17 +432,23 @@
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">			
-                <p>OTTIENI INFO</p>
+                <h2>Ottieni info</h2>
+                <a href="#" id="getInfoButton" class="ui-btn ui-btn-icon-left ui-icon-tag">Info</a>
+                <p id="infoText">
+                    Inquadra il QR code e clicca sopra per ottenere informazioni
+                </p>
+                <!--
                 <label for="textarea"><small>Commento:</small></label>
                 <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
                 <p><a href="#home"  data-role="button" data-icon="action" data-iconpos="left">Invia Segnalazione</a></p>
+                -->
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
+                        <li><a href="#qrCodeInfoPage" data-icon="tag" class="ui-btn-active"><small>Info QR code</small></a></li>
                         <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#closeToMePage" data-icon="location" class="ui-btn-active"><small>QUI vicino</small></a></li>
+                        <li><a href="#closeToMePage" data-icon="location"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
             </div>		
@@ -524,6 +488,7 @@
         <script src="js/common/auth.js"></script>
         <script src="js/common/geoLocation.js"></script>
         <script src="js/common/camera.js"></script>
+        <script src="js/common/barcodeReader.js"></script>
         <script src="js/common/services.js"></script>
         <script src="js/apps/index.js"></script>
         <!--
