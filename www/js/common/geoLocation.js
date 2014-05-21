@@ -84,6 +84,7 @@ var geoLocation = {
     
     
     _googleReverseGeocoding: function(params, successCallback) {
+        if(google == null) return;
         var latLng = new google.maps.LatLng(params.lat, params.lng);
         var geocoder = new google.maps.Geocoder();
         var reqParams = {

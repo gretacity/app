@@ -2,6 +2,7 @@ var app = {
     language : '',
     initialize: function() {
         this.bindEvents();
+        geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
     },
     // Bind Event Listeners
     //
@@ -32,7 +33,9 @@ var app = {
         $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
         $('#reportingDescriptionPage #confirmDescriptionButton').on('click', app.confirmReportingDescription);
         $('#editLocationButton', reportingPage).on('click', app.editReportingLocation);
-        $('#reportingLocationPage #confirmLocationButton').on('click', app.confirmReportingLocation);
+        var reportingLocationPage = $('#reportingLocationPage');
+        reportingLocationPage.on('pageshow', app.mapsSetup);
+        $('#confirmLocationButton', reportingLocationPage).on('click', app.confirmReportingLocation);
         $('#acquirePhotoButton', reportingPage).on('click', app.acquirePhoto);
         $('#photoList li a', reportingPage).on('click', app.viewPhoto);
         $('#reportingPhotoPage #removePhotoButton').on('click', app.removePhoto);
@@ -61,14 +64,12 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        /*
-        var parentElement = document.getElementById(id);
+        /*var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
         
         listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-        */
+        receivedElement.setAttribute('style', 'display:block;');*/
         console.log('Received Event: ' + id);
     },
     
@@ -199,6 +200,7 @@ var app = {
                     html += '</ul>';
                 }
                 html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
+                html += '<div style="height:150px;"></div>';
                 $('#qrCodeInfoPage #infoText').html(html);
                 $('#qrCodeInfoPage #infoText #following').checkboxradio();
             }, function(e) {
@@ -265,24 +267,72 @@ var app = {
     
     
     
-    
-    
     tryToGetAddress: function() {
-        geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
-    },
-    mapsScriptLoaded: function() {
+        // Adjust width of the map canvas
+        //geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
         geoLocation.acquireGeoCoordinates(function(pos) {
+            app.latLng.lat = pos.coords.latitude;
+            app.latLng.lng = pos.coords.longitude;
             geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
 console.log(result);
                 var routeEl = $('#locationInfo span.route');
                 var cityEl =  $('#locationInfo span.city');
+                var provEl =  $('#locationInfo span.prov');
                 // Don't override data
-                if((routeEl.html() != '') || (cityEl.html() != '')) return;
+                if((routeEl.html() != '') || (cityEl.html() != '') || (provEl.html() != '')) return;
                 routeEl.html(result.road + " " + result.streetNumber);
                 cityEl.html(result.city);
+                provEl.html(result.prov);
             });
+        }, function(e) {
+            helper.alert(e, null, "Localizzazione GPS");
         });
     },
+    mapsScriptLoaded: function() {
+    },
+    
+    // Default lat lng is set to Rome
+    latLng: {lat: 41.900046, lng: 12.477215},
+    map: null,
+    marker: null,
+    mapsSetup: function() {
+        if(typeof(google) == 'undefined') return;
+        if(app.map != null) google.maps.event.clearListeners(app.map);
+        var options = {
+            zoom: config.GOOGLE_MAPS_ZOOM,
+            center: new google.maps.LatLng(app.latLng.lat, app.latLng.lng),
+            mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID)
+        };
+        app.map = new google.maps.Map(document.getElementById('map'), options);
+        app.mapsSetMarker();
+    },
+    mapsSetMarker: function() {
+        if(app.map == null) return;
+//console.log("Setting map position to " + app.latLng.lat + " " + app.latLng.lng);
+        var markerPoint = new google.maps.LatLng(app.latLng.lat, app.latLng.lng);
+        app.marker = new google.maps.Marker({
+            position: markerPoint,
+            map: app.map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            title: 'Luogo della segnalazione'
+        });
+        app.map.panTo(markerPoint);
+        app.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
+        google.maps.event.addListener(
+            app.marker, 
+            'dragend', 
+            function() {
+                app.latLng.lat = app.marker.getPosition().lat();
+                app.latLng.lng = app.marker.getPosition().lng();
+        });
+        var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
+        infowindow.open(app.map, app.marker);
+    },
+    
+    
+    
+    
     
     
     editReportingDescription: function() {
@@ -303,6 +353,9 @@ console.log(result);
         $('#reportingLocationPage input#city').val(
             $('#reportingPage #locationInfo span.city').html()
         );
+        $('#reportingLocationPage input#prov').val(
+            $('#reportingPage #locationInfo span.prov').html()
+        );
         $('#reportingLocationPage textarea#route').val(
             $('#reportingPage #locationInfo span.route').html()
         );
@@ -311,6 +364,9 @@ console.log(result);
     confirmReportingLocation: function() {
         $('#reportingPage #locationInfo span.city').html(
             $('#reportingLocationPage input#city').val()
+        );
+        $('#reportingPage #locationInfo span.prov').html(
+            $('#reportingLocationPage input#prov').val()
         );
         $('#reportingPage #locationInfo span.route').html(
             $('#reportingLocationPage textarea#route').val()

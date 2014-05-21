@@ -326,6 +326,7 @@
                             <label id="locationInfo">
                                 <span class="route"></span>
                                 <span class="city"></span>
+                                <span class="prov"></span>
                             </label>
                         </a>
                     </li>
@@ -401,8 +402,10 @@
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
-                <input autofocus type="text" id="city" placeholder="Comune" />
+                <input autofocus type="text" id="prov" placeholder="Prov" maxlength="2" />
+                <input type="text" id="city" placeholder="Comune" />
                 <textarea id="route" placeholder="Indirizzo"></textarea>
+                <div id="map" style="width:100%;height:300px"></div>
                 <div data-role="controlgroup" data-type="horizontal" align="right">
                     <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
                     <a href="#" id="confirmLocationButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
