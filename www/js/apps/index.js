@@ -29,7 +29,7 @@ var app = {
         reportingListPage.on('pageinit', app.initReportingList);
         $('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
         var reportingPage = $('#reportingPage');
-        reportingPage.on('pageinit', app.tryToGetAddress);
+        reportingPage.on('pageinit', app.initRepotingPage);
         $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
         $('#reportingDescriptionPage #confirmDescriptionButton').on('click', app.confirmReportingDescription);
         $('#editLocationButton', reportingPage).on('click', app.editReportingLocation);
@@ -184,13 +184,15 @@ var app = {
                     return;
                 }
                 // Format result
-                var html = '<h3>' + result.name + '</h3><p>' + result.text + '</p>';
+                var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
+                           '<h3>' + result.name + '</h3><p style="text-align:left;">' + result.text + '</p></div>';
                 html += '<input type="checkbox" onchange="app.followQrCode()" id="following" ' + (result.following ? ' checked' : '') + '/> <label for="following">segui</label>';
-                html += '<h4>Commenti</h4>';
+                //html += '<h4>Commenti</h4>';
                 if(result.comments.length == 0) {
-                    html += '<p>Non ci sono commenti</p>';
+                    html += '<p style="text-align:left;">Non ci sono commenti</p>';
                 } else {
-                    html += '<ul id="commentList">';
+                    html += '<ul id="commentList" style="text-align:left;" data-inset="true">';
+                    html += '<li data-role="list-divider">Commenti</li>';
                     for(var i in result.comments) {
                         var c = result.comments[i];
                         html += '<li><p>' + c.text + 
@@ -201,8 +203,9 @@ var app = {
                 }
                 html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
                 html += '<div style="height:150px;"></div>';
-                $('#qrCodeInfoPage #infoText').html(html);
-                $('#qrCodeInfoPage #infoText #following').checkboxradio();
+                $('#qrCodeInfoPage #infoResult').html(html);
+                $('#qrCodeInfoPage #infoResult #following').checkboxradio();
+                $('#qrCodeInfoPage #infoResult #commentList').listview();
             }, function(e) {
                 // errorCallback
                 helper.alert('Impossibile recuperare informazioni', null, 'Ottieni info');
@@ -223,7 +226,8 @@ var app = {
         if(text == '') return;
         services.leaveCommentOnQrCode({text: text}, function() {
             // success
-            $('#qrCodeInfoPage #commentList').append('<li><p>' + text + '</p><small>Adesso, tu</small></li>');
+            $('#qrCodeInfoPage #infoResult #commentList').append('<li><p>' + text + '</p><small>adesso, tu</small></li>');
+            $('#qrCodeInfoPage #infoResult #commentList').listview('refresh');
             $('#qrCodeInfoPage #comment').val('');
         }, function(e) {
             // error
@@ -267,9 +271,17 @@ var app = {
     
     
     
-    tryToGetAddress: function() {
-        // Adjust width of the map canvas
-        //geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
+    
+    initRepotingPage: function() {
+        services.getReportingCategories(function(result) {
+            var html = '<option value="0" selected>seleziona</option>';
+            for(var i in result) {
+                var row = result[i];
+                html += '<option value="'+row.id+'">'+row.descrizione+'</option>';
+            }
+            $('#reportingPage #reportingCategory').html(html);
+            $('#reportingPage #reportingCategory').selectmenu('refresh');
+        });
         geoLocation.acquireGeoCoordinates(function(pos) {
             app.latLng.lat = pos.coords.latitude;
             app.latLng.lng = pos.coords.longitude;
@@ -416,18 +428,25 @@ console.log(result);
         var city = $('#locationInfo span.city', reportingPage).html().trim();
         var hasPhoto = ($('#photoList li a img[data-acquired="1"]', reportingPage).length > 0);*/
         var reporting = {
-            description:  $('#description', reportingPage).html().trim(),
-            route: $('#locationInfo span.route', reportingPage).html().trim(),
+            latLng: app.latLng,
+            categoryId: $('#reportingCategory', reportingPage).val(),
+            road: $('#locationInfo span.route', reportingPage).html().trim(),
             city: $('#locationInfo span.city', reportingPage).html().trim(),
+            prov: $('#locationInfo span.prov', reportingPage).html().trim(),
+            description:  $('#description', reportingPage).html().trim(),
             photos: []
         };
         $('#photoList li a img[data-acquired="1"]', reportingPage).each(function() {
             reporting.photos.push($(this).attr('src'));
         });
         
+        console.log(reporting);
+        
         var errors = [];
+        if(reporting.categoryId == '0') errors.push('- seleziona la categoria');
+        if(reporting.prov == '') errors.push('- specifica la provincia');
+        if((reporting.road == '') || (reporting.comune == '')) errors.push('- specifica l\'indirizzo');
         if(reporting.description == '') errors.push('- inserisci la descrizione');
-        if((reporting.route == '') || (reporting.city == '')) errors.push('- specifica l\'indirizzo');
         if(reporting.photos.length == 0) errors.push('- scatta almeno una foto');
         if(errors.length > 0) {
             helper.alert(errors.join('\n', null, 'Invia segnalazione'));
@@ -436,6 +455,9 @@ console.log(result);
         
         services.sendReporting(reporting, function() {
             // Successfully sent
+            helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
+                $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
+            }, 'Invia segnalazione');
         }, function(e) {
             // An error occurred
             helper.alert(e, null, 'Invia segnalazione');

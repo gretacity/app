@@ -14,10 +14,10 @@ var services = {
     
     
     getRequestCommonParameters: function() {
-        var updatedUrl = 'app=' + config.APP_NAME + '&api=' + config.API_V;
-        if(typeof(device) != 'undefined') updatedUrl += '&uuid=' + device.uuid;
-        if(typeof(app) != 'undefined') updatedUrl += '&lang=' + app.language;
-        return updatedUrl;
+        var commonParams = 'app=' + config.APP_NAME + '&api=' + config.API_V;
+        if(typeof(device) != 'undefined') commonParams += '&uuid=' + device.uuid;
+        if(typeof(app) != 'undefined') commonParams += '&lang=' + app.language;
+        return commonParams;
     },
 
     
@@ -99,9 +99,44 @@ var services = {
         successCallback(result);
     },
     
+    
+    getReportingCategories: function(successCallbak, errorCallback) {
+        var url = config.URL_REPORTING_CATEGORY_LIST + '&' + services.getRequestCommonParameters();
+        $.getJSON(url, function(data) {
+//console.log(data);
+            successCallbak(data);
+        });
+    },
+    
     sendReporting: function(reporting, successCallback, failCallback) {
-        // TODO
-        //$.ajax('');
-        failCallback('Not yet implemented');
-    }    
+        var url = config.URL_REPORTING_SEND + '&' + services.getRequestCommonParameters();
+        var obj = {
+            segnalazione: {
+                lat: reporting.latLng.lat,
+                lon: reporting.latLng.lng,
+                id_categoria: reporting.categoryId,
+                indirizzo: reporting.road,
+                comune: reporting.city,
+                prov: reporting.prov,
+                descrizione: reporting.description,
+            }
+        };
+        if(reporting.photos.length > 0) {
+            //obj.pictures = [];
+            //obj.pictures.push(...);
+        }
+        $.ajax(url, {
+            type: 'POST',
+            async: false,
+            url: url, 
+            data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
+            dataType: 'text',
+        }).done(function(result) {
+//console.log('SUCCESS', result);
+            successCallback();
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('FAIL', textStatus);
+            failCallback(textStatus);
+        });
+    }
 }

@@ -9,8 +9,18 @@
         <!--
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         -->
+        <!--
         <link rel="stylesheet" href="js/jquery.mobile-1.4.2/jquery.mobile-1.4.2.min.css" />
+        -->
+        <link rel="stylesheet" href="js/jquery.mobile-1.4.2/jquery.mobile.structure-1.4.2.min.css" />
+        <link rel="stylesheet" href="css/themes/gretacity.min.css" />
+        <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <style>
+            .ui-li-count-cust {
+                min-width: 2em;
+                background:#FF920A;
+                color:#FFF
+            }
             .fielderror {
                 color: #FF0000;
             }
@@ -19,13 +29,18 @@
                 list-style-type:none;
                 margin:0 auto;
                 padding:0;
+                display: block;
+                /*border:solid 2px #F00;*/
             }
             #photoList li {
                 float:left;
                 padding-left:5px;
             }
+            /*#photoList li a {
+                display: block !important;
+            }*/
             .report-imagelist-missing {
-                background: url('img/camera-icon.png') center no-repeat;
+                /*background: url('img/camera-icon.png') center no-repeat;*/
                 width: 90px;
                 height: 90px;
             }
@@ -91,23 +106,23 @@
                 <a href="#profilePage" class="ui-btn ui-shadow ui-  btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-gear">profilo</a>			
             </div>
             <div data-role="main" class="ui-content">
-                <img style="width:90%;max-width:2048px;margin:30px auto; display:block;" src="./img/splash.png" />
-                <div class="" style="margin:1em;">
+                <img style="width:90%;max-width:2048px;margin:30px auto;padding-top:2em;display:block;" _src="./img/splash.png" src="./img/logo-2.png" />
+                <div class="ui-content">
                     <p>
-                        <a href="#reportingListPage" data-role="button" data-icon="bullets" data-iconpos="left">
-                            Segnalazioni<span id="reportingCount" class="ui-li-count"></span>
+                        <a href="#newsPage" data-role="button" data-icon="bars" data-iconpos="left" __style="background:#71CEEF;">
+                            Notizie<span id="newsCount" class="ui-li-count ui-li-count-cust"></span>
                         </a>
                     </p>
                     <p>
-                        <a href="#newsPage" data-role="button" data-icon="bars" data-iconpos="left">
-                            Notizie<span id="newsCount" class="ui-li-count"></span>
+                        <a href="#reportingListPage" data-role="button" data-icon="bullets" data-iconpos="left">
+                            Segnalazioni<span id="reportingCount" class="ui-li-count ui-li-count-cust"></span>
                         </a>
                     </p>
                     <p>
                         <a href="#commentsPage" data-role="button" data-icon="comment" data-iconpos="left">
-                            Commenti<span id="commentsCount" class="ui-li-count "></span>
+                            Commenti<span id="commentsCount" class="ui-li-count ui-li-count-cust"></span>
                         </a>
-                    </p>                    
+                    </p>
                 </div>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -136,6 +151,7 @@
         </div>
         <!-- /infoPage -->
 
+        
         <!-- profilePage -->
         <div data-role="page" id="profilePage">
             <div data-role="header" data-position="fixed">
@@ -293,13 +309,13 @@
                 
                 <h2>Segnala</h2>
                 
-                <select>
+                <select id="reportingCategory"><!--
                     <option>Dissesto stradale</option>
                     <option>Problemi idrici</option>
                     <option>Rifiuti e pulizia</option>
                     <option>Segnaletica stradale</option>
                     <option>Altro</option>
-                </select>
+                --></select>
                 
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">
@@ -429,22 +445,20 @@
         
         
         <!-- qrCodeInfoPage -->
-        <div data-role="page" id="qrCodeInfoPage">
+        <div data-role="page" id="qrCodeInfoPage" style="background:url('img/bg-qrcode.png')">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
-            <div data-role="main" class="ui-content">			
+            <div data-role="main" class="ui-content">
                 <h2>Ottieni info</h2>
                 <a href="#" id="getInfoButton" class="ui-btn ui-btn-icon-left ui-icon-tag">Info</a>
-                <p id="infoText">
-                    Inquadra il QR code e clicca sopra per ottenere informazioni
-                </p>
-                <!--
-                <label for="textarea"><small>Commento:</small></label>
-                <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
-                <p><a href="#home"  data-role="button" data-icon="action" data-iconpos="left">Invia Segnalazione</a></p>
-                -->
+                <div id="infoResult" style="text-align:center;">
+                    <p id="infoText" style="text-align:left;">
+                        Inquadra il QR code e clicca sopra per ottenere informazioni
+                    </p>
+                    <img src="img/qrcode.jpg" style="margin: 0 auto;" />
+                </div>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">

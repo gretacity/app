@@ -30,6 +30,9 @@ var config = {
     URL_BASE: 'http://www.gretacity.com/test',
     URL_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     
+    URL_REPORTING_CATEGORY_LIST: 'http://www.gretacity.com/test/web/index.php?mode=module&a=categories&p=app_services',
+    URL_REPORTING_SEND: 'http://www.gretacity.com/test/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
+    
     GOOGLE_MAPS_API_KEY: "AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ",
     GOOGLE_MAPS_SENSOR: "true",
     GOOGLE_MAPS_ZOOM: 19,
