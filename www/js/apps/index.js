@@ -26,7 +26,7 @@ var app = {
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', app.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
-        reportingListPage.on('pageinit', app.initReportingList);
+        reportingListPage.on('pagebeforeshow', app.loadReportingItems);
         $('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', app.initReportingPage);
@@ -254,11 +254,6 @@ var app = {
     
     
     
-    initReportingList: function() {
-        app.loadReportingItems();
-    },
-    
-    
     loadReportingItems: function() {
         $.mobile.loading('show');
         services.getReportingList({}, function(result) {
@@ -307,9 +302,13 @@ var app = {
             list.append(html); 
             list.listview('refresh');
             $.mobile.loading('hide');
-        }, function(e) {
-            $.mobile.loading('hide');
-            helper.alert("Si sono verificati errori", null, "Segnalazioni");
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+            } else {
+                $.mobile.loading('hide');
+                helper.alert("Si sono verificati errori", null, "Segnalazioni");
+            }
         });
     },
     
