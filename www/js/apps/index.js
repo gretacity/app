@@ -79,8 +79,9 @@ var app = {
         var username = usernameEl.val().trim();
         if(username == '') {
             $('label[for="username"]', page).addClass('fielderror');
-            usernameEl.focus();
-            helper.alert('Inserisci il nome utente', null, 'Login');
+            helper.alert('Inserisci il nome utente', function() {
+                usernameEl.focus();
+            }, 'Login');
             return;
         } else {
             $('label[for="username"]', page).removeClass('fielderror');
@@ -89,8 +90,9 @@ var app = {
         var password = passwordEl.val().trim();
         if(password == '') {
             $('label[for="password"]', page).addClass('fielderror');
-            passwordEl.focus();
-            helper.alert('Inserisci la password', null, 'Login');
+            helper.alert('Inserisci la password', function() {
+                passwordEl.focus();
+            }, 'Login');
             return;
         } else {
             $('label[for="password"]', page).removeClass('fielderror');
