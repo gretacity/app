@@ -67,7 +67,7 @@
                     <input id="loginButton" type="button" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" />
                 </form>
                 <p>Non hai ancora un account?</p>
-                <p><a id="registerPageButton" href="#registrationPage" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
+                <p><a id="registerPageButton" href="#registrationPage" data-transition="slide" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
             </div>
         </div>
         <!-- /loginPage -->
@@ -84,8 +84,10 @@
                 <input type="text" id="lastname" placeholder="Cognome">
                 <label for="firstname">Nome</label>
                 <input type="text" id="firstname" placeholder="Nome">
+                <!--
                 <label for="phone">Telefono</label>
                 <input type="tel" id="phone" placeholder="Telefono">
+                -->
                 <label for="email">Email</label>
                 <input type="email" id="email" placeholder="Email">
                 <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left">Registrati</a>
@@ -309,13 +311,7 @@
                 
                 <h2>Segnala</h2>
                 
-                <select id="reportingCategory"><!--
-                    <option>Dissesto stradale</option>
-                    <option>Problemi idrici</option>
-                    <option>Rifiuti e pulizia</option>
-                    <option>Segnaletica stradale</option>
-                    <option>Altro</option>
-                --></select>
+                <select id="reportingCategory"></select>
                 
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">

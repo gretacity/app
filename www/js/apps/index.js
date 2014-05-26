@@ -29,7 +29,7 @@ var app = {
         reportingListPage.on('pageinit', app.initReportingList);
         $('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
         var reportingPage = $('#reportingPage');
-        reportingPage.on('pageinit', app.initRepotingPage);
+        reportingPage.on('pageinit', app.initReportingPage);
         $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
         $('#reportingDescriptionPage #confirmDescriptionButton').on('click', app.confirmReportingDescription);
         $('#editLocationButton', reportingPage).on('click', app.editReportingLocation);
@@ -74,17 +74,26 @@ var app = {
     },
     
     login: function() {
-        var username = $('#username').val();
+        var page = $('#loginPage');
+        var usernameEl = $('#username', page);
+        var username = usernameEl.val().trim();
         if(username == '') {
-            $('#username').focus();
+            $('label[for="username"]', page).addClass('fielderror');
+            usernameEl.focus();
             helper.alert('Inserisci il nome utente', null, 'Login');
             return;
+        } else {
+            $('label[for="username"]', page).removeClass('fielderror');
         }
-        var password = $('#password').val();
+        var passwordEl = $('#password', page);
+        var password = passwordEl.val().trim();
         if(password == '') {
-            $('#password').focus();
+            $('label[for="password"]', page).addClass('fielderror');
+            passwordEl.focus();
             helper.alert('Inserisci la password', null, 'Login');
             return;
+        } else {
+            $('label[for="password"]', page).removeClass('fielderror');
         }
         if(!helper.isOnline()) {
             helper.alert('Nessuna connessione', null, 'Accesso a GretaCITY');
@@ -113,7 +122,9 @@ var app = {
         var params = {lastname: '', firstname: '', phone: '', email: ''};
         // Validation
         var hasErrors = false;
-        var requiredFields = ['lastname', 'firstname', 'phone', 'email'];
+        var requiredFields = ['lastname', 'firstname', 
+                              //'phone', 
+                              'email'];
         for(var i in requiredFields) {
             var fieldId = requiredFields[i];
             var fieldVal = $('#' + fieldId).val().trim();
@@ -129,14 +140,14 @@ var app = {
             helper.alert('Alcuni campi non sono stati compilati', null, 'Registrazione');
             return;
         }
-        // Specific validation for phone number
+        /*// Specific validation for phone number
         if(!helper.isPhoneNumberValid(params.phone)) {
             $('label[for="phone"]').addClass('fielderror');
             helper.alert('Inserisci un numero di telefono valido', function() {
                 $('#phone').focus();
             }, 'Registrazione');
             return;
-        }
+        }*/
         // Specific validation for email
         if(!helper.isEmailValid(params.email)) {
             $('label[for="email"]').addClass('fielderror');
@@ -147,7 +158,10 @@ var app = {
         }
         // Registration
         services.registerUser(params, function() {
-            // success callback
+            helper.alert('La registrazione è stata completata con successo.\n' +
+                         'A breve riceverai nella tua casella di posta la password per accedere al sistema', function() {
+                $.mobile.changePage('index.html', {transition: 'slide', reverse: true});
+            }, 'Registrazione');
         }, function(e) {
             // error callback
             helper.alert(e, null, 'Registrazione');
@@ -252,13 +266,42 @@ var app = {
             var html = '';
             for(var i in result) {
                 var row = result[i];
-                html += '<li data-role="list-divider">' + row.data + '</li>';
+                /*[{
+                    "id":"95",
+                    "descrizione_problema":"asdadasdsa",
+                    "descrizione_chiusura":"",
+                    "foto":"http:\/\/www.gretacity.com\/test\/Data\/Upload\/Segnalazioni\/thumbs\/600_800_95.jpg",
+                    "stato":"0",
+                    "r_qr_code_id":"0",
+                    "r_qr_categoria_id":"2",
+                    "data_inserimento":"2014-05-23 05:05:32",
+                    "data_lavorazione":"0000-00-00 00:00:00",
+                    "data_chiusura":"0000-00-00 00:00:00",
+                    "mittente_id":"38",
+                    "latitudine":"38.858364","longitudine":"16.549469",
+                    "foto_chiusura":"",
+                    "data_accettazione":"0000-00-00 00:00:00",
+                    "data_fine_lavorazione":"0000-00-00 00:00:00",
+                    "note_notifica":"",
+                    "note_chiusura":"",
+                    "id_ente":"0",
+                    "nome_categoria":"Beni"
+                }]*/
+                html += '<li data-role="list-divider">' + row.inserimento + '</li>';
                 html += '<li><a href="">';
-                html +=  '<h2>' + row.utente + '</h2>';
-                html +=  '<p><strong>' + row.oggetto + '</strong></p>';
-                html +=  '<p>' + row.commento + '</p>';
-                html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
-                html +=  '</a></li>';    
+                html +=  '<h2>' + row.nome_categoria + '</h2>';
+                html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
+                //html +=  '<p>' + row.commento + '</p>';
+                //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
+                var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
+                if(insertDate != null) {
+                    html += 'inserito il ' + insertDate.toDMYHMS();
+                }
+                var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
+                var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
+                var completionDate = Date.parseFromYMDHMS(row.data_fine_lavorazione);
+                var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
+                html +=  '</a></li>';
             } 
             list.append(html); 
             list.listview('refresh');
@@ -272,7 +315,7 @@ var app = {
     
     
     
-    initRepotingPage: function() {
+    initReportingPage: function() {
         services.getReportingCategories(function(result) {
             var html = '<option value="0" selected>seleziona</option>';
             for(var i in result) {
@@ -281,7 +324,20 @@ var app = {
             }
             $('#reportingPage #reportingCategory').html(html);
             $('#reportingPage #reportingCategory').selectmenu('refresh');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+            } else {
+                helper.alert(e, null, 'Invia segnalazione');
+            }
         });
+        var html2 = '';
+        for(var i = 0; i < config.REPORTING_MAX_PHOTOS; i++) {
+            html2 += '<li><a href="#">' +
+                        '<img src="" class="report-imagelist-missing" data-pos="0" data-acquired="0" />' +
+                    '</a></li>';
+        }
+        $('#reportingPage #photoList').html(html2);
         geoLocation.acquireGeoCoordinates(function(pos) {
             app.latLng.lat = pos.coords.latitude;
             app.latLng.lng = pos.coords.longitude;
@@ -296,7 +352,9 @@ console.log(result);
                 cityEl.html(result.city);
                 provEl.html(result.prov);
             });
+            $('#sendReportingButton').removeClass('ui-disabled');
         }, function(e) {
+            $('#sendReportingButton').addClass('ui-disabled');
             helper.alert(e, null, "Localizzazione GPS");
         });
     },
@@ -437,7 +495,10 @@ console.log(result);
             photos: []
         };
         $('#photoList li a img[data-acquired="1"]', reportingPage).each(function() {
-            reporting.photos.push($(this).attr('src'));
+            // remove 
+            var src = $(this).attr('src');
+            var pos = src.indexOf('base64,');
+            reporting.photos.push(src.substr(pos+7));
         });
         
         console.log(reporting);
@@ -455,6 +516,9 @@ console.log(result);
         
         services.sendReporting(reporting, function() {
             // Successfully sent
+            reporting = null;
+            $('#description', page).html('');
+            $('#photoList', page).html('');
             helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
                 $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
             }, 'Invia segnalazione');

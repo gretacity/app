@@ -5,14 +5,14 @@ var config = {
     APP_NAME: "gretacity",
     API_V: "1.0",
     
-    DB_FILENAME: "censiq",          // Database file name
+    DB_FILENAME: "gretacity",       // Database file name
     DB_SCHEMA: "1.0",               // Version of database schema
-    DB_NAME: "CensiQ",              // Display name of the database
+    DB_NAME: "gretacity",           // Display name of the database
     DB_SIZE: 1024 * 1024 * 50,      // Size in bytes: 1024 * 1024 * 1 equal to 1MB
     
     
     //USER_KEY: 'userdata',
-    SESSION_ID_KEY: 'censiq_sessionid',
+    SESSION_ID_KEY: 'gretacity_sessionid',
     
     
     MODE_DEBUG: 'D',
@@ -27,11 +27,17 @@ var config = {
     LOGIN_DEFAULT_PASSWORD: '',
     
     
-    URL_BASE: 'http://www.gretacity.com/test',
-    URL_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
+    REPORTING_MAX_PHOTOS: 1,
     
-    URL_REPORTING_CATEGORY_LIST: 'http://www.gretacity.com/test/web/index.php?mode=module&a=categories&p=app_services',
-    URL_REPORTING_SEND: 'http://www.gretacity.com/test/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
+    
+    URL_BASE: 'http://www.gretacity.com/test',
+    
+    URL_USER_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
+    URL_USER_REGISTER: '/web/index.php?mode=module&p=login&s=add_user',
+    
+    URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
+    URL_REPORTING_SEND: '/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
+    URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',
     
     GOOGLE_MAPS_API_KEY: "AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ",
     GOOGLE_MAPS_SENSOR: "true",
@@ -53,11 +59,7 @@ var config = {
     CAMERA_ALLOW_EDIT: false,
     
     
-    //ROADSIGN_BASE_PATH_ICONS: 'img/Segnali/',
-    ROADSIGN_BASE_PATH_ICONS: 'RoadsignIcons/',
-    
-    
-    USE_WIFI_ONLY_KEY: 'censinq_usewifi',
+    USE_WIFI_ONLY_KEY: 'gretacity_usewifi',
     getUseWifiOnly: function() {
         var useWifi = window.localStorage.getItem(config.USE_WIFI_ONLY_KEY);
         if(typeof(useWifi) == 'string') useWifi = JSON.parse(useWifi);
@@ -69,7 +71,7 @@ var config = {
     
     
     
-    SERVER_DATA_LAST_UPDATE_KEY: 'censiq_serverdatalastupdate',
+    SERVER_DATA_LAST_UPDATE_KEY: 'gretacity_serverdatalastupdate',
     getServerDataLastUpdate: function() {
         var lastUpdate = window.localStorage.getItem(config.SERVER_DATA_LAST_UPDATE_KEY);
         if(typeof(lastUpdate) == 'string') {
@@ -82,7 +84,7 @@ var config = {
     },
     
 
-    FIRST_UPDATE_NOTIFICATION_KEY: 'censiq_firstupdatenotification',
+    FIRST_UPDATE_NOTIFICATION_KEY: 'gretacity_firstupdatenotification',
     getFirstUpdateNotification: function() {
         return (window.localStorage.getItem(config.FIRST_UPDATE_NOTIFICATION_KEY) || false);
     },
@@ -91,7 +93,7 @@ var config = {
     },
     
     
-    NATIVE_BASE_URL_KEY: 'censiq_nativebaseurl',
+    NATIVE_BASE_URL_KEY: 'gretacity_nativebaseurl',
     getNativeBaseURL: function() {
         return (window.localStorage.getItem(config.NATIVE_BASE_URL_KEY) || '');
     },
@@ -120,8 +122,8 @@ if(config.EMULATE_ON_BROWSER) {
 
 if(config.RUNNING_MODE == config.MODE_DEBUG) {
     //config.QR_CODE_TEST = '1000000065';
-    config.LOGIN_DEFAULT_USERNAME = 'marcellinara';
-    config.LOGIN_DEFAULT_PASSWORD = 'marcellinara';
+    //config.LOGIN_DEFAULT_USERNAME = 'marcellinara';
+    //config.LOGIN_DEFAULT_PASSWORD = 'marcellinara';
 }
 
 
@@ -178,6 +180,7 @@ Date.prototype.toDMYHMS = function() {
     return this.toDMY() + " " + hh + ":" + mm + ":" + ss;
 }
 Date.parseFromYMDHMS = function(dateText) {
+    if(dateText == '0000-00-00 00:00:00') return null;
     var parts = dateText.split(' ');
     var dateParts = parts[0].split('-');
     var timeParts = parts[1].split(':');

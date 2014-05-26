@@ -13,19 +13,32 @@ var services = {
     CODE_SERVICE_UNAVAILABLE: 503, 
     
     
-    getRequestCommonParameters: function() {
+    getRequestCommonParameters: function(excludeSessionId) {
         var commonParams = 'app=' + config.APP_NAME + '&api=' + config.API_V;
+        if(!(excludeSessionId || false)) {
+            var sessionId = auth.getSessionId();
+            if((sessionId || '') != '') commonParams += '&session_id=' + sessionId;
+        }
         if(typeof(device) != 'undefined') commonParams += '&uuid=' + device.uuid;
+        if(typeof(device) == 'undefined' && config.EMULATE_ON_BROWSER) commonParams += '&uuid=browser_emulation';
         if(typeof(app) != 'undefined') commonParams += '&lang=' + app.language;
         return commonParams;
     },
 
     
     
-    registerUser: function(params, successCallback, failCallack) {
-        // TODO
-        var data = 'lastname='+params.lastname+'&firstname='+params.firstname+'&phone='+params.phone+'email='+params.email;
-        failCallack('Not implemented');
+    registerUser: function(params, successCallback, failCallback) {
+        var url = config.URL_BASE + config.URL_USER_REGISTER;
+        var data = 'cognome='+encodeURIComponent(params.lastname)+'&nome='+encodeURIComponent(params.firstname)+
+                   '&email='+encodeURIComponent(params.email) + '&' + services.getRequestCommonParameters(true);
+        $.ajax(url, {
+            type: 'POST',
+            data: data
+        }).done(function(result) {
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            failCallback(jqXHR.responseText);
+        });
     },
     
     
@@ -70,19 +83,6 @@ var services = {
         successCallback();
     },
     
-    
-    getReportingList: function(params, successCallback, failCallback) {
-        // TODO
-        var result = [
-            {data: '01/05/2014', 'orario': '10:30', utente: 'user1', oggetto: 'segnalazione 1', commento: 'questo è un commento 1'},
-            {data: '01/05/2014', 'orario': '10:40', utente: 'user1', oggetto: 'segnalazione 2', commento: 'questo è un commento 2'},
-            {data: '01/05/2014', 'orario': '10:50', utente: 'user1', oggetto: 'segnalazione 3', commento: 'questo è un commento 3'},
-            {data: '01/05/2014', 'orario': '11:30', utente: 'user1', oggetto: 'segnalazione 4', commento: 'questo è un commento 4'},
-            {data: '01/05/2014', 'orario': '12:30', utente: 'user1', oggetto: 'segnalazione 5', commento: 'questo è un commento 5'}
-        ];
-        successCallback(result);
-    },
-    
     getFeedPosts: function(params, successCallback, failCallback) {
         // TODO
         var result = [
@@ -100,18 +100,29 @@ var services = {
     },
     
     
-    getReportingCategories: function(successCallbak, errorCallback) {
-        var url = config.URL_REPORTING_CATEGORY_LIST + '&' + services.getRequestCommonParameters();
-        $.getJSON(url, function(data) {
-//console.log(data);
-            successCallbak(data);
+    
+    
+    //////////////////////////////////////////////////////
+    // REPORTING RELATED FUNCTIONS
+    
+    getReportingCategories: function(successCallbak, failCallback) {
+        var url = config.URL_BASE + config.URL_REPORTING_CATEGORY_LIST + '&' + services.getRequestCommonParameters();
+        $.ajax(url, {
+            type: 'GET',
+            dataType: 'json'
+        }).done(function(result) {
+            successCallbak(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
+            failCallback(textStatus, loginRequired);
         });
     },
     
     sendReporting: function(reporting, successCallback, failCallback) {
-        var url = config.URL_REPORTING_SEND + '&' + services.getRequestCommonParameters();
+        var url = config.URL_BASE + config.URL_REPORTING_SEND + '&' + services.getRequestCommonParameters();
         var obj = {
             segnalazione: {
+                r_qr_code_id: '',
                 lat: reporting.latLng.lat,
                 lon: reporting.latLng.lng,
                 id_categoria: reporting.categoryId,
@@ -122,8 +133,10 @@ var services = {
             }
         };
         if(reporting.photos.length > 0) {
-            //obj.pictures = [];
-            //obj.pictures.push(...);
+            obj.pictures = [];
+            for(var i in reporting.photos) {
+                obj.pictures.push(reporting.photos[i]);
+            }
         }
         $.ajax(url, {
             type: 'POST',
@@ -132,11 +145,25 @@ var services = {
             data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
             dataType: 'text',
         }).done(function(result) {
-//console.log('SUCCESS', result);
             successCallback();
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('FAIL', textStatus);
-            failCallback(textStatus);
+            var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
+            failCallback(textStatus, loginRequired);
+        });
+    },
+    
+    getReportingList: function(params, successCallback, failCallback) {
+        var url = config.URL_BASE + config.URL_REPORTING_LIST;
+        var data = services.getRequestCommonParameters();
+        $.ajax(url, {
+            type: 'get',
+            data:data,
+            dataType: 'json'
+        }).done(function(result) {
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
+            failCallback(textStatus, loginRequired);
         });
     }
 }
