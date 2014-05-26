@@ -33,13 +33,12 @@ var app = {
         $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
         $('#reportingDescriptionPage #confirmDescriptionButton').on('click', app.confirmReportingDescription);
         $('#editLocationButton', reportingPage).on('click', app.editReportingLocation);
+        $('#acquirePhotoButton', reportingPage).on('click', app.acquireReportingPhoto);
+        $('#reportingPhotoPage #removePhotoButton').on('click', app.removeReportingPhoto);
+        $('#sendReportingButton', reportingPage).on('click', app.sendReporting);
         var reportingLocationPage = $('#reportingLocationPage');
         reportingLocationPage.on('pageshow', app.mapsSetup);
         $('#confirmLocationButton', reportingLocationPage).on('click', app.confirmReportingLocation);
-        $('#acquirePhotoButton', reportingPage).on('click', app.acquirePhoto);
-        $('#photoList li a', reportingPage).on('click', app.viewPhoto);
-        $('#reportingPhotoPage #removePhotoButton').on('click', app.removePhoto);
-        $('#sendReportingButton', reportingPage).on('click', app.sendReporting);
     },
     onOnline: function() {
         $('#loginPage #loginButton').removeClass('ui-disabled');
@@ -289,15 +288,15 @@ var app = {
                     "id_ente":"0",
                     "nome_categoria":"Beni"
                 }]*/
-                html += '<li data-role="list-divider">' + row.inserimento + '</li>';
+                html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
                 html += '<li><a href="">';
-                html +=  '<h2>' + row.nome_categoria + '</h2>';
+                //html +=  '<h2>' + row.nome_categoria + '</h2>';
                 html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
                 //html +=  '<p>' + row.commento + '</p>';
                 //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
                 var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
                 if(insertDate != null) {
-                    html += 'inserito il ' + insertDate.toDMYHMS();
+                    html += '<small>inserito il ' + insertDate.toDMYHMS() + '</small>';
                 }
                 var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
                 var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
@@ -335,7 +334,7 @@ var app = {
         });
         var html2 = '';
         for(var i = 0; i < config.REPORTING_MAX_PHOTOS; i++) {
-            html2 += '<li><a href="#">' +
+            html2 += '<li><a href="#" onclick="app.viewReportingPhoto()">' +
                         '<img src="" class="report-imagelist-missing" data-pos="0" data-acquired="0" />' +
                     '</a></li>';
         }
@@ -356,6 +355,10 @@ console.log(result);
             });
             $('#sendReportingButton').removeClass('ui-disabled');
         }, function(e) {
+            // If the device is unable to retrieve current geo coordinates,
+            // set the default position to Rome and the map zoom to 
+            app.latLng = {lat: 41.900046, lng: 12.477215};
+            app.mapZoom = 5;
             $('#sendReportingButton').addClass('ui-disabled');
             helper.alert(e, null, "Localizzazione GPS");
         });
@@ -365,13 +368,14 @@ console.log(result);
     
     // Default lat lng is set to Rome
     latLng: {lat: 41.900046, lng: 12.477215},
+    mapZoom: config.GOOGLE_MAPS_ZOOM,
     map: null,
     marker: null,
     mapsSetup: function() {
         if(typeof(google) == 'undefined') return;
         if(app.map != null) google.maps.event.clearListeners(app.map);
         var options = {
-            zoom: config.GOOGLE_MAPS_ZOOM,
+            zoom: app.mapZoom,
             center: new google.maps.LatLng(app.latLng.lat, app.latLng.lng),
             mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID)
         };
@@ -449,7 +453,7 @@ console.log(result);
     
     
     
-    acquirePhoto: function() {
+    acquireReportingPhoto: function() {
         if($('#photoList li a img[data-acquired="0"]').first().length == 0) {
             helper.alert('Hai raggiunto il limite massimo', null, 'Scatta foto');
             return;
@@ -464,15 +468,15 @@ console.log(result);
             helper.alert(e, null, 'Impossibile scattare la foto');
         });
     },
-    viewPhoto: function() {
-        var imgEl = $('img[data-acquired="1"]', this);
+    viewReportingPhoto: function() {
+        var imgEl = $('#reportingPage #photoList li a img[data-acquired="1"]');
         if(imgEl.length == 0) return;
         $('#reportingPhotoPage img').attr('src', imgEl.attr('src')).attr('data-pos', imgEl.attr('data-pos'));
         var width = $('#reportingPhotoPage').width();
         $('#reportingPhotoPage img').css({'max-width' : width, 'height' : 'auto'});
         $.mobile.changePage('#reportingPhotoPage', {transition: 'pop'});
     },
-    removePhoto: function() {
+    removeReportingPhoto: function() {
         var imgEl = $('#reportingPhotoPage img');
         imgEl.attr('src', '');
         var pos = imgEl.attr('data-pos');
