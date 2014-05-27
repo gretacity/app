@@ -26,6 +26,10 @@ var services = {
     },
 
     
+    isLoginRequired: function(httpCode) {
+        return ((httpCode == services.CODE_UNAUTHORIZED) || (httpCode == services.CODE_FORBIDDEN));
+    },
+    
     
     registerUser: function(params, successCallback, failCallback) {
         var url = config.URL_BASE + config.URL_USER_REGISTER;
@@ -113,8 +117,8 @@ var services = {
         }).done(function(result) {
             successCallbak(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
-            failCallback(textStatus, loginRequired);
+            //var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
     
@@ -147,8 +151,8 @@ var services = {
         }).done(function(result) {
             successCallback();
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
-            failCallback(textStatus, loginRequired);
+            //var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
     
@@ -162,8 +166,8 @@ var services = {
         }).done(function(result) {
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
-            failCallback(textStatus, loginRequired);
+            //var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     }
 }

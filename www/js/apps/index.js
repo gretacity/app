@@ -27,7 +27,8 @@ var app = {
         $('#getInfoButton', infoPage).on('click', app.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
         reportingListPage.on('pagebeforeshow', app.loadReportingItems);
-        $('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
+        $('#refreshReportingListButton', reportingListPage).on('click', app.loadReportingItems);
+        //$('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', app.initReportingPage);
         reportingPage.on('pagebeforeshow', app.showReportingPage);
@@ -291,6 +292,7 @@ var app = {
                 html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
                 //html +=  '<p>' + row.commento + '</p>';
                 //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
+                //if(row.foto != '') html += '<div><img src="' + row.foto + '" style="width:100%" /></div>';
                 var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
                 if(insertDate != null) html += '<small>inserita il ' + insertDate.toDMYHMS() + '</small>';
                 var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
@@ -307,12 +309,13 @@ var app = {
             list.html(html);
             list.listview('refresh');
             $.mobile.loading('hide');
+            $.mobile.silentScroll();
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
             } else {
                 $.mobile.loading('hide');
-                helper.alert("Si sono verificati errori", null, "Segnalazioni");
+                helper.alert("Si sono verificati errori durante il caricamento", null, "Segnalazioni");
             }
         });
     },
