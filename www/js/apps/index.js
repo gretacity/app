@@ -292,7 +292,7 @@ var app = {
                 html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
                 //html +=  '<p>' + row.commento + '</p>';
                 //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
-                //if(row.foto != '') html += '<div><img src="' + row.foto + '" style="width:100%" /></div>';
+                if(row.foto != '') html += '<div><img src="' + row.foto + '" style="width:100%" /></div>';
                 var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
                 if(insertDate != null) html += '<small>inserita il ' + insertDate.toDMYHMS() + '</small>';
                 var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
