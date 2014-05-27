@@ -303,8 +303,8 @@ var app = {
                 if(closingDate != null) html += '<small>chiusa il ' + completionDate.toDMY() + '</small>';
                 if(row.descrizione_chiusura != '') html += '<br />' + row.descrizione_chiusura;
                 html +=  '<!--/a--></li>';
-            } 
-            list.append(html); 
+            }
+            list.html(html);
             list.listview('refresh');
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
