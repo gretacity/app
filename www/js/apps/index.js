@@ -283,20 +283,22 @@ var app = {
                     "nome_categoria":"Beni"
                 }]*/
                 html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
-                html += '<li><a href="">';
+                html += '<li><!--a href=""-->';
                 //html +=  '<h2>' + row.nome_categoria + '</h2>';
                 html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
                 //html +=  '<p>' + row.commento + '</p>';
                 //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
                 var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
-                if(insertDate != null) {
-                    html += '<small>inserito il ' + insertDate.toDMYHMS() + '</small>';
-                }
+                if(insertDate != null) html += '<small>inserita il ' + insertDate.toDMYHMS() + '</small>';
                 var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
+                if(acceptanceDate != null) html += '<small>accettata il ' + acceptanceDate.toDMY() + '</small>';
                 var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
+                if(processingDate != null) html += '<small>in lavorazione dal ' + processingDate.toDMY() + '</small>';
                 var completionDate = Date.parseFromYMDHMS(row.data_fine_lavorazione);
+                if(completionDate != null) html += '<small>completata il ' + completionDate.toDMY() + '</small>';
                 var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
-                html +=  '</a></li>';
+                if(closingDate != null) html += '<small>chiusa il ' + completionDate.toDMY() + '</small>';
+                html +=  '<!--/a--></li>';
             } 
             list.append(html); 
             list.listview('refresh');
