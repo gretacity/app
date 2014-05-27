@@ -334,6 +334,7 @@
                         <div>
                             <img src="js/jquery.mobile-1.4.2/images/icons-png/location-black.png" />
                             Specifica il luogo
+                            <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
                         </div>
                     </li>
                     <li>
@@ -417,7 +418,7 @@
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
-                <input autofocus type="text" id="prov" placeholder="Prov" maxlength="2" />
+                <input type="text" id="prov" placeholder="Prov" maxlength="2" autofocus />
                 <input type="text" id="city" placeholder="Comune" />
                 <textarea id="route" placeholder="Indirizzo"></textarea>
                 <div id="map" style="width:100%;height:300px"></div>

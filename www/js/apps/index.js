@@ -30,6 +30,7 @@ var app = {
         $('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', app.initReportingPage);
+        reportingPage.on('pagebeforeshow', app.showReportingPage);
         $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
         $('#reportingDescriptionPage #confirmDescriptionButton').on('click', app.confirmReportingDescription);
         $('#editLocationButton', reportingPage).on('click', app.editReportingLocation);
@@ -99,16 +100,18 @@ var app = {
             helper.alert('Nessuna connessione', null, 'Accesso a GretaCITY');
             return;
         }
-        $('#username').addClass('ui-disabled');
-        $('#password').addClass('ui-disabled');
-        $('#loginButton').addClass('ui-disabled');
-        $('#registerPageButton').addClass('ui-disabled');
+        $('#username', page).addClass('ui-disabled');
+        $('#password', page).addClass('ui-disabled');
+        var initialVal = $('#loginButton', page).html();
+        $('#loginButton', page).html('Accesso in corso...').addClass('ui-disabled');
+        $('#registerPageButton', page).addClass('ui-disabled');
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(data) {
             // Successfully loggedin, move forward
             $.mobile.changePage('index.html#homePage');
         }, function(e) {
             $.mobile.loading('hide');
+            $('#loginButton', page).html(initialVal).removeClass('ui-disabled');
             helper.alert('Login non valido', function() {
                 $('#username').removeClass('ui-disabled');
                 $('#password').removeClass('ui-disabled');
@@ -298,6 +301,7 @@ var app = {
                 if(completionDate != null) html += '<small>completata il ' + completionDate.toDMY() + '</small>';
                 var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
                 if(closingDate != null) html += '<small>chiusa il ' + completionDate.toDMY() + '</small>';
+                if(row.descrizione_chiusura != '') html += '<br />' + row.descrizione_chiusura;
                 html +=  '<!--/a--></li>';
             } 
             list.append(html); 
@@ -317,14 +321,16 @@ var app = {
     
     
     initReportingPage: function() {
+        var page = $('#reportingPage');
+        $('#sendReportingButton', page).addClass('ui-disabled');
         services.getReportingCategories(function(result) {
             var html = '<option value="0" selected>seleziona</option>';
             for(var i in result) {
                 var row = result[i];
                 html += '<option value="'+row.id+'">'+row.descrizione+'</option>';
             }
-            $('#reportingPage #reportingCategory').html(html);
-            $('#reportingPage #reportingCategory').selectmenu('refresh');
+            $('#reportingCategory', page).html(html);
+            $('#reportingCategory', page).selectmenu('refresh');
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -338,45 +344,57 @@ var app = {
                         '<img src="" class="report-imagelist-missing" data-pos="0" data-acquired="0" />' +
                     '</a></li>';
         }
-        $('#reportingPage #photoList').html(html2);
+        $('#photoList', page).html(html2);
+    },
+    showReportingPage: function() {
+        if(app.latLng.lat > 0) return;
+        var page = $('#reportingPage');
+        $('#loaderIndicator', page).show();
         geoLocation.acquireGeoCoordinates(function(pos) {
             app.latLng.lat = pos.coords.latitude;
             app.latLng.lng = pos.coords.longitude;
             geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
 console.log(result);
-                var routeEl = $('#locationInfo span.route');
-                var cityEl =  $('#locationInfo span.city');
-                var provEl =  $('#locationInfo span.prov');
+                var routeEl = $('#locationInfo span.route', page);
+                var cityEl =  $('#locationInfo span.city', page);
+                var provEl =  $('#locationInfo span.prov', page);
                 // Don't override data
                 if((routeEl.html() != '') || (cityEl.html() != '') || (provEl.html() != '')) return;
                 routeEl.html(result.road + " " + result.streetNumber);
                 cityEl.html(result.city);
                 provEl.html(result.prov);
             });
-            $('#sendReportingButton').removeClass('ui-disabled');
+            $('#loaderIndicator', page).hide();
+            $('#sendReportingButton', page).removeClass('ui-disabled');
         }, function(e) {
             // If the device is unable to retrieve current geo coordinates,
             // set the default position to Rome and the map zoom to 
-            app.latLng = {lat: 41.900046, lng: 12.477215};
-            app.mapZoom = 5;
-            $('#sendReportingButton').addClass('ui-disabled');
+            //app.latLng = {lat: 0, lng: 0};
+            //app.mapZoom = 5;
+            $('#loaderIndicator', page).hide();
             helper.alert(e, null, "Localizzazione GPS");
         });
     },
     mapsScriptLoaded: function() {
     },
     
-    // Default lat lng is set to Rome
-    latLng: {lat: 41.900046, lng: 12.477215},
-    mapZoom: config.GOOGLE_MAPS_ZOOM,
+    latLng: {lat: 0, lng: 0},
     map: null,
     marker: null,
     mapsSetup: function() {
         if(typeof(google) == 'undefined') return;
         if(app.map != null) google.maps.event.clearListeners(app.map);
+        var lat = app.latLng.lat;
+        var lng = app.latLng.lng;
+        var mapZoom = config.GOOGLE_MAPS_ZOOM;
+        if(lat == 0) {
+            // Set default lat lng is set to Rome
+            lat = 41.900046; lng = 12.477215;
+            mapZoom = 5;
+        }
         var options = {
-            zoom: app.mapZoom,
-            center: new google.maps.LatLng(app.latLng.lat, app.latLng.lng),
+            zoom: mapZoom,
+            center: new google.maps.LatLng(lat, lng),
             mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID)
         };
         app.map = new google.maps.Map(document.getElementById('map'), options);
@@ -385,7 +403,16 @@ console.log(result);
     mapsSetMarker: function() {
         if(app.map == null) return;
 //console.log("Setting map position to " + app.latLng.lat + " " + app.latLng.lng);
-        var markerPoint = new google.maps.LatLng(app.latLng.lat, app.latLng.lng);
+        var lat = app.latLng.lat;
+        var lng = app.latLng.lng;
+        var mapZoom = config.GOOGLE_MAPS_ZOOM;
+        if(lat == 0) {
+            // Set default lat lng is set to Rome
+            lat = 41.900046; lng = 12.477215;
+            mapZoom = 5;
+        }
+        
+        var markerPoint = new google.maps.LatLng(lat, lng);
         app.marker = new google.maps.Marker({
             position: markerPoint,
             map: app.map,
@@ -465,7 +492,7 @@ console.log(result);
                 imgEl.removeClass('report-imagelist-missing').addClass('report-imagelist-done');
             }
         }, function(e) {
-            helper.alert(e, null, 'Impossibile scattare la foto');
+            //helper.alert(e, null, 'Impossibile scattare la foto');
         });
     },
     viewReportingPhoto: function() {
@@ -507,7 +534,7 @@ console.log(result);
             reporting.photos.push(src.substr(pos+7));
         });
         
-        console.log(reporting);
+        //console.log(reporting);
         
         var errors = [];
         if(reporting.categoryId == '0') errors.push('- seleziona la categoria');
@@ -520,9 +547,15 @@ console.log(result);
             return;
         }
         
+        var initialValue = $('#sendReportingButton', page).html();
+        $('#sendReportingButton', page).html('Invio...').addClass('ui-disabled');
+        
         services.sendReporting(reporting, function() {
             // Successfully sent
+            $('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
             reporting = null;
+            app.latLng.lat = 0;
+            app.latLng.lng = 0;
             $('#description', page).html('');
             $('#photoList', page).html('');
             helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
@@ -530,6 +563,7 @@ console.log(result);
             }, 'Invia segnalazione');
         }, function(e) {
             // An error occurred
+            $('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
             helper.alert(e, null, 'Invia segnalazione');
         });
     }

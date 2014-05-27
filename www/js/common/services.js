@@ -140,7 +140,7 @@ var services = {
         }
         $.ajax(url, {
             type: 'POST',
-            async: false,
+            //async: false,
             url: url, 
             data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
             dataType: 'text',
