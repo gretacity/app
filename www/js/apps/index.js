@@ -263,48 +263,52 @@ var app = {
             // Success
             var list = $('#reportingListPage #reportingList');
             var html = '';
-            for(var i in result) {
-                var row = result[i];
-                /*[{
-                    "id":"95",
-                    "descrizione_problema":"asdadasdsa",
-                    "descrizione_chiusura":"",
-                    "foto":"http:\/\/www.gretacity.com\/test\/Data\/Upload\/Segnalazioni\/thumbs\/600_800_95.jpg",
-                    "stato":"0",
-                    "r_qr_code_id":"0",
-                    "r_qr_categoria_id":"2",
-                    "data_inserimento":"2014-05-23 05:05:32",
-                    "data_lavorazione":"0000-00-00 00:00:00",
-                    "data_chiusura":"0000-00-00 00:00:00",
-                    "mittente_id":"38",
-                    "latitudine":"38.858364","longitudine":"16.549469",
-                    "foto_chiusura":"",
-                    "data_accettazione":"0000-00-00 00:00:00",
-                    "data_fine_lavorazione":"0000-00-00 00:00:00",
-                    "note_notifica":"",
-                    "note_chiusura":"",
-                    "id_ente":"0",
-                    "nome_categoria":"Beni"
-                }]*/
-                html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
-                html += '<li><!--a href=""-->';
-                //html +=  '<h2>' + row.nome_categoria + '</h2>';
-                html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
-                //html +=  '<p>' + row.commento + '</p>';
-                //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
-                if(row.foto != '') html += '<div><img src="' + row.foto + '" style="width:100%" /></div>';
-                var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
-                if(insertDate != null) html += '<small>inserita il ' + insertDate.toDMYHMS() + '</small>';
-                var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
-                if(acceptanceDate != null) html += '<small>accettata il ' + acceptanceDate.toDMY() + '</small>';
-                var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
-                if(processingDate != null) html += '<small>in lavorazione dal ' + processingDate.toDMY() + '</small>';
-                var completionDate = Date.parseFromYMDHMS(row.data_fine_lavorazione);
-                if(completionDate != null) html += '<small>completata il ' + completionDate.toDMY() + '</small>';
-                var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
-                if(closingDate != null) html += '<small>chiusa il ' + completionDate.toDMY() + '</small>';
-                if(row.descrizione_chiusura != '') html += '<br />' + row.descrizione_chiusura;
-                html +=  '<!--/a--></li>';
+            if(result.length == 0) {
+                html += '<li data-role="list-divider">Non ci sono segnalazioni</li><li><a href="#reportingPage">segnala</a></li>';
+            } else {
+                for(var i in result) {
+                    var row = result[i];
+                    /*[{
+                        "id":"95",
+                        "descrizione_problema":"asdadasdsa",
+                        "descrizione_chiusura":"",
+                        "foto":"http:\/\/www.gretacity.com\/test\/Data\/Upload\/Segnalazioni\/thumbs\/600_800_95.jpg",
+                        "stato":"0",
+                        "r_qr_code_id":"0",
+                        "r_qr_categoria_id":"2",
+                        "data_inserimento":"2014-05-23 05:05:32",
+                        "data_lavorazione":"0000-00-00 00:00:00",
+                        "data_chiusura":"0000-00-00 00:00:00",
+                        "mittente_id":"38",
+                        "latitudine":"38.858364","longitudine":"16.549469",
+                        "foto_chiusura":"",
+                        "data_accettazione":"0000-00-00 00:00:00",
+                        "data_fine_lavorazione":"0000-00-00 00:00:00",
+                        "note_notifica":"",
+                        "note_chiusura":"",
+                        "id_ente":"0",
+                        "nome_categoria":"Beni"
+                    }]*/
+                    html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
+                    html += '<li><!--a href=""-->';
+                    //html +=  '<h2>' + row.nome_categoria + '</h2>';
+                    html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
+                    //html +=  '<p>' + row.commento + '</p>';
+                    //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
+                    if(row.foto != '') html += '<div><img src="' + row.foto + '" style="width:100%" /></div>';
+                    var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
+                    if(insertDate != null) html += '<small>inserita il ' + insertDate.toDMYHMS() + '</small>';
+                    var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
+                    if(acceptanceDate != null) html += '<small>accettata il ' + acceptanceDate.toDMY() + '</small>';
+                    var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
+                    if(processingDate != null) html += '<small>in lavorazione dal ' + processingDate.toDMY() + '</small>';
+                    var completionDate = Date.parseFromYMDHMS(row.data_fine_lavorazione);
+                    if(completionDate != null) html += '<small>completata il ' + completionDate.toDMY() + '</small>';
+                    var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
+                    if(closingDate != null) html += '<small>chiusa il ' + completionDate.toDMY() + '</small>';
+                    if(row.descrizione_chiusura != '') html += '<br />' + row.descrizione_chiusura;
+                    html +=  '<!--/a--></li>';
+                }
             }
             list.html(html);
             list.listview('refresh');
