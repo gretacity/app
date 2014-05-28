@@ -250,7 +250,7 @@ var app = {
     },
     
     openLink: function(url) {
-        var ref = window.open('http://apache.org', '_blank', 'location=yes');
+        var ref = window.open(url, '_blank', 'location=yes');
     },
     
     followQrCode: function() {
