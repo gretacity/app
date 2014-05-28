@@ -49,9 +49,9 @@ var services = {
     getSummaryData: function(successCallback, failCallback) {
         // TODO
         var result = {
-            reportinCount: 5,
-            newsCount: 24,
-            commentsCount: 18
+            reportingCount: '?',
+            newsCount: '?',
+            commentsCount: '?'
         };
         successCallback(result);
     },

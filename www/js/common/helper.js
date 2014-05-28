@@ -40,6 +40,68 @@ var helper = {
     
     
     
+    imageShrinkToFit: function(item) {
+        var img_height = $(item).height();
+        var div_height = $(item).parent().height();
+        if(img_height<div_height){
+            //IMAGE IS SHORTER THAN CONTAINER HEIGHT - CENTER IT VERTICALLY
+            var newMargin = (div_height-img_height)/2+'px';
+            $(item).css({'margin-top': newMargin });
+        }else if(img_height>div_height){
+            //IMAGE IS GREATER THAN CONTAINER HEIGHT - REDUCE HEIGHT TO CONTAINER MAX - SET WIDTH TO AUTO  
+            $(item).css({'width': 'auto', 'height': '100%'});
+            //CENTER IT HORIZONTALLY
+            var img_width = $(item).width();
+            var div_width = $(item).parent().width();
+            var newMargin = (div_width-img_width)/2+'px';
+            $(item).css({'margin-left': newMargin});
+        }
+    },
+    
+    imageCropToFit: function(item) {
+        var img_height = $(item).height();
+        var div_height = $(item).parent().height();
+        if(img_height<div_height){
+            //INCREASE HEIGHT OF IMAGE TO MATCH CONTAINER
+            $(item).css({'width': 'auto', 'height': div_height });
+            //GET THE NEW WIDTH AFTER RESIZE
+            var img_width = $(item).width();
+            //GET THE PARENT WIDTH
+            var div_width = $(item).parent().width();
+            //GET THE NEW HORIZONTAL MARGIN
+            var newMargin = (div_width-img_width)/2+'px';
+            //SET THE NEW HORIZONTAL MARGIN (EXCESS IMAGE WIDTH IS CROPPED)
+            $(item).css({'margin-left': newMargin });
+        }else{
+            //CENTER IT VERTICALLY (EXCESS IMAGE HEIGHT IS CROPPED)
+            var newMargin = (div_height-img_height)/2+'px';
+            $(item).css({'margin-top': newMargin});
+        }
+        /*
+        var img_width = $(item).width();
+        var div_width = $(item).parent().width();
+        if(img_width<div_width){
+            //INCREASE WIDTH OF IMAGE TO MATCH CONTAINER
+            $(item).css({'height': 'auto', 'width': div_width });
+            //GET THE NEW HEIGHT AFTER RESIZE
+            var img_height = $(item).height();
+            //GET THE PARENT HEIGHT
+            var div_height = $(item).parent().height();
+            //GET THE NEW VERTICAL MARGIN
+            var newMargin = (div_height-img_height)/2+'px';
+            //SET THE NEW VERTICAL MARGIN (EXCESS IMAGE HEIGHT IS CROPPED)
+            $(item).css({'margin-top': newMargin });
+        }else{
+            //CENTER IT HORIZONTALLY (EXCESS IMAGE WIDTH IS CROPPED)
+            var newMargin = (div_width-img_width)/2+'px';
+            $(item).css({'margin-left': newMargin});
+        }*/
+    },
+    
+    
+    
+    
+    
     
     alert: function(message, callback, title, buttonName) {
         if(config.EMULATE_ON_BROWSER) {

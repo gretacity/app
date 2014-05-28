@@ -25,6 +25,20 @@
                 color: #FF0000;
             }
             
+            .replist-photo-container {
+                text-align: center;
+                overflow: hidden;
+                height:150px;
+            }
+            .replist-photo-container img {
+                position:relative;
+                width: 100%;
+                left: 100%;
+                margin-left: -200%;
+                top: 100%;
+                margin-top: -200%;
+            }
+            
             #photoList {
                 list-style-type:none;
                 margin:0 auto;
@@ -214,6 +228,16 @@
             </div>
         </div>
         <!-- /reportingListPage -->
+        
+        <!-- photoDialog -->
+        <div dat-role="dialog" id="photoPage">
+            <div data-role="main" style="ui-content"></div>
+                <a href="#" data-rel="back">
+                    <img id="photo" />
+                </a>
+            </div>
+        </div>
+        <!-- /photoDialog -->
         
         
         <!-- newsPage -->

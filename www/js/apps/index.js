@@ -109,6 +109,10 @@ var app = {
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(data) {
             // Successfully loggedin, move forward
+            $('#username').removeClass('ui-disabled');
+            $('#password').removeClass('ui-disabled').val('');
+            $('#loginButton').removeClass('ui-disabled');
+            $('#registerPageButton').removeClass('ui-disabled');
             $.mobile.changePage('index.html#homePage');
         }, function(e) {
             $.mobile.loading('hide');
@@ -179,7 +183,7 @@ var app = {
     initHome: function() {
         services.getSummaryData(function(result) {
             // Success
-            $('#reportingCount').html(result.reportinCount);
+            $('#reportingCount').html(result.reportingCount);
             $('#newsCount').html(result.newsCount);
             $('#commentsCount').html(result.commentsCount);
         }, function(e) {
@@ -290,14 +294,12 @@ var app = {
                         "nome_categoria":"Beni"
                     }]*/
                     html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
-                    html += '<li><!--a href=""-->';
-                    //html +=  '<h2>' + row.nome_categoria + '</h2>';
-                    html +=  '<p><strong>' + row.descrizione_problema + '</strong></p>';
-                    //html +=  '<p>' + row.commento + '</p>';
-                    //html +=  '<p class="ui-li-aside"><strong>' + row.orario + '</strong></p>';
-                    if(row.foto != '') html += '<div><img src="' + row.foto + '" style="width:100%" /></div>';
+                    html += '<li><strong>' + row.descrizione_problema + '</strong></li>';
+                    if(row.foto != '') 
+                        html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="app.reportingListPageViewPhoto(this)" /></div></li>';
+                    html += '<li>';
                     var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
-                    if(insertDate != null) html += '<small>inserita il ' + insertDate.toDMYHMS() + '</small>';
+                    if(insertDate != null) html += '<div><small>inserita il ' + insertDate.toDMYHMS() + '</small></div>';
                     var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
                     if(acceptanceDate != null) html += '<small>accettata il ' + acceptanceDate.toDMY() + '</small>';
                     var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
@@ -312,6 +314,9 @@ var app = {
             }
             list.html(html);
             list.listview('refresh');
+            $('div.replist-photo-container img', list).each(function(i, item) {
+                //helper.imageCropToFit(item);
+            });
             $.mobile.loading('hide');
             $.mobile.silentScroll();
         }, function(e, loginRequired) {
@@ -323,6 +328,16 @@ var app = {
             }
         });
     },
+    reportingListPageViewPhoto: function(el) {
+        $('#photoPage #photo').attr('src', $(el).attr('src'));
+        $.mobile.changePage('#photoPage');
+    },
+    
+    
+    
+    
+    
+    
     
     
     
@@ -556,10 +571,12 @@ console.log(result);
         
         var initialValue = $('#sendReportingButton', page).html();
         $('#sendReportingButton', page).html('Invio...').addClass('ui-disabled');
+        $.mobile.loading('show');
         
         services.sendReporting(reporting, function() {
             // Successfully sent
             $('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
+            $.mobile.loading('hide');
             reporting = null;
             app.latLng.lat = 0;
             app.latLng.lng = 0;
@@ -571,6 +588,7 @@ console.log(result);
         }, function(e) {
             // An error occurred
             $('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
+            $.mobile.loading('hide');
             helper.alert(e, null, 'Invia segnalazione');
         });
     }
