@@ -508,14 +508,20 @@ console.log(result);
             helper.alert('Hai raggiunto il limite massimo', null, 'Scatta foto');
             return;
         }
+        $('#reportingPage #acquirePhotoButton label').html('Acquisizione foto...');
+        $('#reportingPage #acquirePhotoButton').addClass('ui-disabled');
         camera.getPicture(function(imageData) {
             var imgEl = $('#photoList li a img[data-acquired="0"]').first();
             if(imgEl.length == 1) {
                 imgEl.attr('src', 'data:image/jpeg;base64,' + imageData).attr('data-acquired', '1');
                 imgEl.removeClass('report-imagelist-missing').addClass('report-imagelist-done');
             }
+            $('#reportingPage #acquirePhotoButton label').html('Scatta');
+            $('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
         }, function(e) {
             //helper.alert(e, null, 'Impossibile scattare la foto');
+            $('#reportingPage #acquirePhotoButton label').html('Scatta');
+            $('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
         });
     },
     viewReportingPhoto: function() {
@@ -535,7 +541,6 @@ console.log(result);
     },
     
     sendReporting: function() {
-helper.alert(app.latLng.lat + " " + app.latLng.lng);return;
         // Validate report
         var page = $('#reportingPage');
         /*var description = $('#description', reportingPage).html().trim();
@@ -595,12 +600,3 @@ helper.alert(app.latLng.lat + " " + app.latLng.lng);return;
         });
     }
 };
-
-/*
-$(function(){
-    $( '#LoginForm' ).bind( 'submit', UserLogin );
-    // $( document ).bind( "pagebeforeload", AppLoadJSON );
-    // $( '#home' ).bind( 'pagebeforeload', AppLoadJSON );
-    $( '#home' ).on( 'pageinit', AppLoad_JSON );
-    $( '#segnalazioni' ).on( 'pageinit', AppLoad_SEGNALAZIONI );
-});*/
