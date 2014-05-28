@@ -342,6 +342,7 @@
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets" data-transition="slide" data-direction="reverse">Segnalazioni</a>
             </div>
             <div data-role="main" class="ui-content">
                 
@@ -361,8 +362,6 @@
                             <label id="description"></label>
                         </a>
                     </li>
-                </ul>
-                <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">
                         <div>
                             <img src="js/jquery.mobile-1.4.2/images/icons-png/location-black.png" />
@@ -379,8 +378,6 @@
                             </label>
                         </a>
                     </li>
-                </ul>
-                <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">
                         <div>
                             <img src="js/jquery.mobile-1.4.2/images/icons-png/camera-black.png" />
@@ -436,7 +433,7 @@
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
-                <textarea autofocus placeholder="Descrizione del problema"></textarea>
+                <textarea placeholder="Descrizione del problema" autofocus></textarea>
                 <div data-role="controlgroup" data-type="horizontal" align="right">
                     <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
                     <a href="#" id="confirmDescriptionButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
@@ -451,8 +448,11 @@
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
+                <label>Provincia</label>
                 <input type="text" id="prov" placeholder="Prov" maxlength="2" autofocus />
+                <label>Comune</label>
                 <input type="text" id="city" placeholder="Comune" />
+                <label>Indirizzo</label>
                 <textarea id="route" placeholder="Indirizzo"></textarea>
                 <div id="map" style="width:100%;height:300px"></div>
                 <div data-role="controlgroup" data-type="horizontal" align="right">

@@ -299,15 +299,15 @@ var app = {
                         html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="app.reportingListPageViewPhoto(this)" /></div></li>';
                     html += '<li>';
                     var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
-                    if(insertDate != null) html += '<div><small>inserita il ' + insertDate.toDMYHMS() + '</small></div>';
+                    if(insertDate != null) html += '<div><small>Inviata il ' + insertDate.toDMYHMS() + '</small></div>';
                     var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
-                    if(acceptanceDate != null) html += '<small>accettata il ' + acceptanceDate.toDMY() + '</small>';
+                    if(acceptanceDate != null) html += '<small>Accettata il ' + acceptanceDate.toDMY() + '</small>';
                     var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
-                    if(processingDate != null) html += '<small>in lavorazione dal ' + processingDate.toDMY() + '</small>';
+                    if(processingDate != null) html += '<small>In lavorazione dal ' + processingDate.toDMY() + '</small>';
                     var completionDate = Date.parseFromYMDHMS(row.data_fine_lavorazione);
-                    if(completionDate != null) html += '<small>completata il ' + completionDate.toDMY() + '</small>';
+                    if(completionDate != null) html += '<small>Completata il ' + completionDate.toDMY() + '</small>';
                     var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
-                    if(closingDate != null) html += '<small>chiusa il ' + completionDate.toDMY() + '</small>';
+                    if(closingDate != null) html += '<small>Chiusa il ' + completionDate.toDMY() + '</small>';
                     if(row.descrizione_chiusura != '') html += '<br />' + row.descrizione_chiusura;
                     html +=  '<!--/a--></li>';
                 }
@@ -394,6 +394,7 @@ console.log(result);
             //app.latLng = {lat: 0, lng: 0};
             //app.mapZoom = 5;
             $('#loaderIndicator', page).hide();
+            $('#sendReportingButton', page).removeClass('ui-disabled');
             helper.alert(e, null, "Localizzazione GPS");
         });
     },
@@ -534,6 +535,7 @@ console.log(result);
     },
     
     sendReporting: function() {
+helper.alert(app.latLng.lat + " " + app.latLng.lng);return;
         // Validate report
         var page = $('#reportingPage');
         /*var description = $('#description', reportingPage).html().trim();
