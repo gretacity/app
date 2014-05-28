@@ -198,20 +198,27 @@ var app = {
     
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(code) {
-            //successCallback
             services.getInfoFromQrCode(code, function(result) {
-                //successCallback
                 if(result == null) {
                     helper.alert('Non ci sono informazioni disponibili', null, 'Ottieni info');
                     return;
                 }
                 // Format result
                 var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
-                           '<h3>' + result.name + '</h3><p style="text-align:left;">' + result.text + '</p></div>';
+                           '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
                 html += '<input type="checkbox" onchange="app.followQrCode()" id="following" ' + (result.following ? ' checked' : '') + '/> <label for="following">segui</label>';
-                //html += '<h4>Commenti</h4>';
-                if(result.comments.length == 0) {
-                    html += '<p style="text-align:left;">Non ci sono commenti</p>';
+                if(result.links.length > 0) {
+                    html += '<ul id="links" style="text-align:left;" data-inset="true">';
+                    html += '<li data-role="list-divider">Link</li>';
+                    for(var i in result.links) {
+                        var l = result.links[i];
+                        html += '<li><a href="#" onclick="javascript:app.openLink(\'' + l.link.replace(/'/g, "''") + '\')" target="_system">' + l.nome +
+                                '</a></li>';
+                    }
+                    html += '</ul>';
+                }
+                if(result.commenti.length == 0) {
+                    html += '<p style="text-align:left;">Nessun commento</p>';
                 } else {
                     html += '<ul id="commentList" style="text-align:left;" data-inset="true">';
                     html += '<li data-role="list-divider">Commenti</li>';
@@ -228,14 +235,22 @@ var app = {
                 $('#qrCodeInfoPage #infoResult').html(html);
                 $('#qrCodeInfoPage #infoResult #following').checkboxradio();
                 $('#qrCodeInfoPage #infoResult #commentList').listview();
-            }, function(e) {
-                // errorCallback
-                helper.alert('Impossibile recuperare informazioni', null, 'Ottieni info');
+                $('#qrCodeInfoPage #infoResult #links').listview();
+            }, function(e, loginRequired) {
+                if(loginRequired) {
+                    $.mobile.changePage('#loginPage');
+                } else {
+                    helper.alert('Impossibile recuperare informazioni', null, 'Ottieni info');
+                }
             });
         }, function(e) {
             // errorCallback
             helper.alert('Impossibile leggere il codice', null, 'Ottieni info');
         });
+    },
+    
+    openLink: function(url) {
+        var ref = window.open('http://apache.org', '_blank', 'location=yes');
     },
     
     followQrCode: function() {

@@ -35,6 +35,10 @@ var config = {
     URL_USER_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     URL_USER_REGISTER: '/web/index.php?mode=module&p=login&s=add_user',
     
+    //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
+    URL_QRCODE_GET_INFO: '/web/index.php?p=qrcode&a=get&mode=module',   // qrcode=1000000769
+    
+    
     URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
     URL_REPORTING_SEND: '/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
     URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',

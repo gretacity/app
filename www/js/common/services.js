@@ -58,7 +58,7 @@ var services = {
     
     
     getInfoFromQrCode: function(code, successCallback, failCallback) {
-        // TODO
+        /*
         var result = {
             id: 1,
             name: 'Basilica dell\'Immacolata',
@@ -74,7 +74,35 @@ var services = {
                 {id: 3418, text: 'Una delle cose da vedere assolutamente a Catanzaro'}
             ]
         };
+        
+        var result = {
+            "info":[],
+            "commenti":[],
+            "links":[
+                {"id":"23","nome":"cxzxzvz<v","alias":"cxvvzcv","link":"cxvzvcxzvxzvcxzvcxv","qrcode_censimento_id":"39"}],
+            "foto":[
+                "http:\/\/www.gretacity.com\/test\/Data\/Upload\/Qrcode\/thumbs\/600_800_39-3.jpg",
+                "http:\/\/www.gretacity.com\/test\/Data\/Upload\/Qrcode\/thumbs\/600_800_39-4.jpg",
+                "http:\/\/www.gretacity.com\/test\/Data\/Upload\/Qrcode\/thumbs\/600_800_39-5.jpg"],
+            "youtube":[]
+        };
         successCallback(result);
+        */
+        
+code = '1000000769';
+        var url = config.URL_BASE + config.URL_QRCODE_GET_INFO;
+        url += '&'+services.getRequestCommonParameters();
+        $.ajax(url, {
+            type: 'GET',
+            data: 'qrcode=' + encodeURIComponent(code),
+            dataType: 'json'
+        }).done(function(result) {
+console.log('SUCCESS', result);
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('FAIL', textStatus);
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     },
     
     followQrCode: function(follow) {
