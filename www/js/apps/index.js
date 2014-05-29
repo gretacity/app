@@ -256,6 +256,7 @@ code = '1000000769';
                 $('#qrCodeInfoPage #infoResult #links').listview();
                 if(hasSlider) {
                     var glide = $('.slider').glide({
+                        //autoplay: false, // or 4000
                         arrowLeftText: '',
                         arrowRightText: ''
                     });
