@@ -58,37 +58,6 @@ var services = {
     
     
     getInfoFromQrCode: function(code, successCallback, failCallback) {
-        /*
-        var result = {
-            id: 1,
-            name: 'Basilica dell\'Immacolata',
-            following: true,
-            text: 'Una delle chiese più importanti di Catanzaro. ' +
-                  'È situata nel centro storico della città, precisamente su corso Mazzini. ' +
-                  'La posa della prima pietra avvenne il primo agosto 1759. ' +
-                  'Nel corso della sua storia svolse il ruolo di principale cattedrale della città in due periodi diversi: ' +
-                  'dal 1783 al 1833, in seguito ad un disastroso terremoto che distrusse il duomo, e nel 1943, ' +
-                  'quando fu distrutto dai bombardamenti della seconda guerra mondiale.',
-            comments: [
-                {id: 1001, text: 'L\'ho visitata diverse volte, è molto bella'},
-                {id: 3418, text: 'Una delle cose da vedere assolutamente a Catanzaro'}
-            ]
-        };
-        
-        var result = {
-            "info":[],
-            "commenti":[],
-            "links":[
-                {"id":"23","nome":"cxzxzvz<v","alias":"cxvvzcv","link":"cxvzvcxzvxzvcxzvcxv","qrcode_censimento_id":"39"}],
-            "foto":[
-                "http:\/\/www.gretacity.com\/test\/Data\/Upload\/Qrcode\/thumbs\/600_800_39-3.jpg",
-                "http:\/\/www.gretacity.com\/test\/Data\/Upload\/Qrcode\/thumbs\/600_800_39-4.jpg",
-                "http:\/\/www.gretacity.com\/test\/Data\/Upload\/Qrcode\/thumbs\/600_800_39-5.jpg"],
-            "youtube":[]
-        };
-        successCallback(result);
-        */
-        
         var url = config.URL_BASE + config.URL_QRCODE_GET_INFO;
         url += '&'+services.getRequestCommonParameters();
         $.ajax(url, {
@@ -96,10 +65,10 @@ var services = {
             data: 'qrcode=' + encodeURIComponent(code),
             dataType: 'json'
         }).done(function(result) {
-console.log('SUCCESS', result);//return;
+//console.log('SUCCESS', result);//return;
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('FAIL', textStatus);
+//console.log('FAIL', textStatus);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -117,16 +86,15 @@ console.log('FAIL', textStatus);
         };
         var url = config.URL_BASE + config.URL_QRCODE_SEND_COMMENT;
         url += '&' + services.getRequestCommonParameters();
-console.log(url, obj);
-//console.log('obj='+JSON.stringify(obj));//return;
+//console.log(url, obj);
         $.ajax(url, {
             type: 'POST',
             data: 'obj='+JSON.stringify(obj)
         }).done(function(result) {
-console.log('SUCCESS', result);
+//console.log('SUCCESS', result);
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('FAIL', textStatus);
+//console.log('FAIL', textStatus);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },

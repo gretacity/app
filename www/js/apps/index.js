@@ -19,6 +19,8 @@ var app = {
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
         $('#loginButton', loginPage).on('click', app.login);
+        var profilePage = $('#profilePage');
+        $('#logoutButton', profilePage).on('click', app.logout);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', app.register);
         var homePage = $('#homePage');
@@ -126,6 +128,11 @@ var app = {
         });
     },
     
+    logout: function() {
+        auth.setSessionId(null);
+        $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
+    },
+    
     register: function() {
         var params = {lastname: '', firstname: '', phone: '', email: ''};
         // Validation
@@ -218,7 +225,9 @@ code = '1000000769';
                     var hasSlider = true;
                     html += '<div class="slider"><ul class="slides">';
                     for(var i in result.foto) {
-                        html += '<li class="slide"><img src="' + result.foto[i] + '" /></li>';
+                        html += '<li class="slide">' +
+                                    '<img src="' + result.foto[i] + '" />' +
+                                '</li>';
                     }
                     html += '</ul></div>';
                 }
@@ -227,8 +236,7 @@ code = '1000000769';
                     html += '<li data-role="list-divider">Link</li>';
                     for(var i in result.links) {
                         var l = result.links[i];
-                        html += '<li><a href="#" onclick="javascript:app.openLink(\'' + l.link.replace(/'/g, "''") + '\')" target="_system">' + l.nome +
-                                '</a></li>';
+                        html += '<li><a href="#" onclick="javascript:app.openLink(\'' + l.link.replace(/'/g, "''") + '\')" target="_system">' + l.nome + '</a></li>';
                     }
                     html += '</ul>';
                 }
