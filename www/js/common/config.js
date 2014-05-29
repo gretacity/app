@@ -37,7 +37,7 @@ var config = {
     
     //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
     URL_QRCODE_GET_INFO: '/web/index.php?p=qrcode&a=get&mode=module',   // qrcode=1000000769
-    
+    URL_QRCODE_SEND_COMMENT: '/web/index.php?mode=module&p=commenti&s=commenti&s_t=add_app',
     
     URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
     URL_REPORTING_SEND: '/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
@@ -171,6 +171,14 @@ Date.prototype.toDMY = function() {
         day = "0" + day;
     }
     return day + "/" + month + "/" + year;
+}
+Date.prototype.toHM = function() {
+    var hh, mm;
+    hh = String(this.getHours());
+    if(hh.length == 1) hh = "0" + hh;
+    mm = String(this.getMinutes());
+    if(mm.length == 1) mm = "0" + mm;
+    return hh + ":" + mm;
 }
 
 Date.prototype.toDMYHMS = function() {

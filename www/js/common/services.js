@@ -89,7 +89,6 @@ var services = {
         successCallback(result);
         */
         
-code = '1000000769';
         var url = config.URL_BASE + config.URL_QRCODE_GET_INFO;
         url += '&'+services.getRequestCommonParameters();
         $.ajax(url, {
@@ -97,7 +96,7 @@ code = '1000000769';
             data: 'qrcode=' + encodeURIComponent(code),
             dataType: 'json'
         }).done(function(result) {
-console.log('SUCCESS', result);
+console.log('SUCCESS', result);//return;
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
 console.log('FAIL', textStatus);
@@ -110,9 +109,26 @@ console.log('FAIL', textStatus);
     },
     
     leaveCommentOnQrCode: function(params, successCallback, failCallback) {
-        // TODO
-        //params.text
-        successCallback();
+        var obj = {
+            commento: {
+                descrizione: params.comment,
+                r_qr_code_id: params.qrCodeId,
+            }
+        };
+        var url = config.URL_BASE + config.URL_QRCODE_SEND_COMMENT;
+        url += '&' + services.getRequestCommonParameters();
+console.log(url, obj);
+//console.log('obj='+JSON.stringify(obj));//return;
+        $.ajax(url, {
+            type: 'POST',
+            data: 'obj='+JSON.stringify(obj)
+        }).done(function(result) {
+console.log('SUCCESS', result);
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('FAIL', textStatus);
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     },
     
     getFeedPosts: function(params, successCallback, failCallback) {

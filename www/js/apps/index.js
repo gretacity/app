@@ -198,11 +198,16 @@ var app = {
     
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(code) {
+code = '1000000769';
+            $.mobile.loading('show');
             services.getInfoFromQrCode(code, function(result) {
+                $.mobile.loading('hide');
                 if(result == null) {
+                    $('#qrCodeInfoPage #qrCodeId').val('');
                     helper.alert('Non ci sono informazioni disponibili', null, 'Ottieni info');
                     return;
                 }
+                $('#qrCodeInfoPage #qrCodeId').val(code);
                 // Format result
                 var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
                            '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
@@ -217,18 +222,21 @@ var app = {
                     }
                     html += '</ul>';
                 }
-                if(result.commenti.length == 0) {
-                    html += '<p style="text-align:left;">Nessun commento</p>';
-                } else {
-                    html += '<ul id="commentList" style="text-align:left;" data-inset="true">';
+                html += '<ul id="commentList" style="text-align:left;" data-inset="true">';
+                if(result.commenti.length > 0) {
                     html += '<li data-role="list-divider">Commenti</li>';
-                    for(var i in result.comments) {
-                        var c = result.comments[i];
-                        html += '<li><p>' + c.text + 
-                                '</p><small>27/02/2104, user1</small>'
-                                '</li>';
+                    for(var i in result.commenti) {
+                        var c = result.commenti[i];
+                        var d = Date.parseFromYMDHMS(c.data_inserimento);
+                        html += '<li><p>' + c.descrizione + '</p>';
+                        html += '<small>' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
+                        if(c.stato == 0) html += '<div><small><i>commento in attesa di approvazione</i></small></div>';
+                        html += '</li>';
                     }
-                    html += '</ul>';
+                }
+                html += '</ul>';
+                if(result.commenti.length == 0) {
+                    html += '<p id="noComments" style="text-align:left;">Nessun commento</p>';
                 }
                 html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
                 html += '<div style="height:150px;"></div>';
@@ -237,6 +245,8 @@ var app = {
                 $('#qrCodeInfoPage #infoResult #commentList').listview();
                 $('#qrCodeInfoPage #infoResult #links').listview();
             }, function(e, loginRequired) {
+                $.mobile.loading('hide');
+                $('#qrCodeInfoPage #qrCodeId').val('');
                 if(loginRequired) {
                     $.mobile.changePage('#loginPage');
                 } else {
@@ -244,6 +254,7 @@ var app = {
                 }
             });
         }, function(e) {
+            $('#qrCodeInfoPage #qrCodeId').val('');
             // errorCallback
             helper.alert('Impossibile leggere il codice', null, 'Ottieni info');
         });
@@ -261,13 +272,21 @@ var app = {
     leaveCommentOnQrCode: function() {
         var text = $('#qrCodeInfoPage #comment').val().trim();
         if(text == '') return;
-        services.leaveCommentOnQrCode({text: text}, function() {
+        var params = {
+            comment: text,
+            qrCodeId: $('#qrCodeInfoPage #qrCodeId').val()
+        };
+        $.mobile.loading('show');
+        services.leaveCommentOnQrCode(params, function() {
             // success
-            $('#qrCodeInfoPage #infoResult #commentList').append('<li><p>' + text + '</p><small>adesso, tu</small></li>');
+            var d = new Date();
+            $('#qrCodeInfoPage #infoResult #noComments').hide();
+            $('#qrCodeInfoPage #infoResult #commentList').append('<li><p>' + text + '</p><small>' + d.toDMY() + ' alle ' + d.toHM() + '</small></li>');
             $('#qrCodeInfoPage #infoResult #commentList').listview('refresh');
             $('#qrCodeInfoPage #comment').val('');
+            $.mobile.loading('hide');
         }, function(e) {
-            // error
+            $.mobile.loading('hide');
             helper.alert('Impossibile inviare il commento', null, 'Lascia il commento');
         });
     },
@@ -308,30 +327,58 @@ var app = {
                         "id_ente":"0",
                         "nome_categoria":"Beni"
                     }]*/
+/***
+0:  da notificare all'ente          data_inserimento
+1:  notificata all'ente             data_accettazione
+2:  in lavorazione                  data_lavorazione
+3:  in lavorazione                      "
+4:  terminata                       data_fine_lavorazione
+5:  chiusa                          data_chiusura
+*/
+
+/*row.data_accettazione = '2014-05-07 12:00:00';
+row.data_lavorazione = '2014-05-07 12:00:00';
+row.data_fine_lavorazione = '2014-05-07 12:00:00';
+row.data_chiusura = '2014-05-07 12:00:00';
+row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';*/
+                    
+                    
                     html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
                     html += '<li><strong>' + row.descrizione_problema + '</strong></li>';
                     if(row.foto != '') 
                         html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="app.reportingListPageViewPhoto(this)" /></div></li>';
                     html += '<li>';
+                    
                     var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
-                    if(insertDate != null) html += '<div><small>Inviata il ' + insertDate.toDMYHMS() + '</small></div>';
                     var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
-                    if(acceptanceDate != null) html += '<small>Accettata il ' + acceptanceDate.toDMY() + '</small>';
                     var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
-                    if(processingDate != null) html += '<small>In lavorazione dal ' + processingDate.toDMY() + '</small>';
                     var completionDate = Date.parseFromYMDHMS(row.data_fine_lavorazione);
-                    if(completionDate != null) html += '<small>Completata il ' + completionDate.toDMY() + '</small>';
                     var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
-                    if(closingDate != null) html += '<small>Chiusa il ' + completionDate.toDMY() + '</small>';
-                    if(row.descrizione_chiusura != '') html += '<br />' + row.descrizione_chiusura;
+                    
+                    if(insertDate != null) 
+                        html += '<div><small>Inviata il ' + insertDate.toDMY() + ' alle ' + insertDate.toHM() + '</small></div>';
+                    
+                    if(closingDate != null) 
+                        html += '<div><small>Chiusa il ' + closingDate.toDMY() + '</small></div>';
+                    else if(completionDate != null) 
+                        html += '<div><small>Terminata il ' + completionDate.toDMY() + '</small></div>';
+                    else if(acceptanceDate != null) 
+                        html += '<div><small>notificata il ' + acceptanceDate.toDMY() + '</small></div>';
+                    else if(processingDate != null) 
+                        html += '<div><small>In lavorazione dal ' + processingDate.toDMY() + '</small></div>';
+                    
+                    if(row.descrizione_chiusura != '') 
+                        html += '<div><small>' + row.descrizione_chiusura + '</small></div>';
+                    
                     html +=  '<!--/a--></li>';
                 }
             }
             list.html(html);
             list.listview('refresh');
-            $('div.replist-photo-container img', list).each(function(i, item) {
+            $('#test').collapsible();
+            /*$('div.replist-photo-container img', list).each(function(i, item) {
                 //helper.imageCropToFit(item);
-            });
+            });*/
             $.mobile.loading('hide');
             $.mobile.silentScroll();
         }, function(e, loginRequired) {
