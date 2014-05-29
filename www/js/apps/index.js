@@ -212,6 +212,16 @@ code = '1000000769';
                 var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
                            '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
                 html += '<input type="checkbox" onchange="app.followQrCode()" id="following" ' + (result.following ? ' checked' : '') + '/> <label for="following">segui</label>';
+                
+                var hasSlider = false;
+                if(result.foto.length > 0) {
+                    var hasSlider = true;
+                    html += '<div class="slider"><ul class="slides">';
+                    for(var i in result.foto) {
+                        html += '<li class="slide"><img src="' + result.foto[i] + '" /></li>';
+                    }
+                    html += '</ul></div>';
+                }
                 if(result.links.length > 0) {
                     html += '<ul id="links" style="text-align:left;" data-inset="true">';
                     html += '<li data-role="list-divider">Link</li>';
@@ -244,6 +254,12 @@ code = '1000000769';
                 $('#qrCodeInfoPage #infoResult #following').checkboxradio();
                 $('#qrCodeInfoPage #infoResult #commentList').listview();
                 $('#qrCodeInfoPage #infoResult #links').listview();
+                if(hasSlider) {
+                    var glide = $('.slider').glide({
+                        arrowLeftText: '',
+                        arrowRightText: ''
+                    });
+                }
             }, function(e, loginRequired) {
                 $.mobile.loading('hide');
                 $('#qrCodeInfoPage #qrCodeId').val('');
