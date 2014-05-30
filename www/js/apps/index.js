@@ -230,6 +230,8 @@ code = '1000000769';
                                 '</li>';
                     }
                     html += '</ul></div>';
+                    //$('div.slider').height($('div.slider ul li img').height());
+                    //$('div.slider').width($('div.slider ul li img').width());
                 }
                 if(result.links.length > 0) {
                     html += '<ul id="links" style="text-align:left;" data-inset="true">';
@@ -350,6 +352,7 @@ code = '1000000769';
                         "note_notifica":"",
                         "note_chiusura":"",
                         "id_ente":"0",
+                        "ente":"Nessun ente associato",
                         "nome_categoria":"Beni"
                     }]*/
 /***
@@ -361,13 +364,13 @@ code = '1000000769';
 5:  chiusa                          data_chiusura
 */
 
-/*row.data_accettazione = '2014-05-07 12:00:00';
+/*
+row.data_accettazione = '2014-05-07 12:00:00';
 row.data_lavorazione = '2014-05-07 12:00:00';
 row.data_fine_lavorazione = '2014-05-07 12:00:00';
 row.data_chiusura = '2014-05-07 12:00:00';
-row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';*/
-                    
-                    
+row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
+*/
                     html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
                     html += '<li><strong>' + row.descrizione_problema + '</strong></li>';
                     if(row.foto != '') 
@@ -382,13 +385,16 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';*/
                     
                     if(insertDate != null) 
                         html += '<div><small>Inviata il ' + insertDate.toDMY() + ' alle ' + insertDate.toHM() + '</small></div>';
+                    if(acceptanceDate != null) {
+                        html += '<div><small>Notificata il ' + acceptanceDate.toDMY();
+                        if(row.id_ente > 0) html += ' a ' + row.ente;
+                        html += '</small></div>';
+                    }
                     
                     if(closingDate != null) 
                         html += '<div><small>Chiusa il ' + closingDate.toDMY() + '</small></div>';
                     else if(completionDate != null) 
                         html += '<div><small>Terminata il ' + completionDate.toDMY() + '</small></div>';
-                    else if(acceptanceDate != null) 
-                        html += '<div><small>notificata il ' + acceptanceDate.toDMY() + '</small></div>';
                     else if(processingDate != null) 
                         html += '<div><small>In lavorazione dal ' + processingDate.toDMY() + '</small></div>';
                     

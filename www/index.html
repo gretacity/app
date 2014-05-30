@@ -42,6 +42,16 @@
             }
             .slides {
                 list-style-type:none;
+                height:100%;
+            }
+            .slide {
+                text-align: center;
+                margin: 0 -5px;
+            }
+            .slide img {
+                height:100%;
+                left: 100%;
+                margin-left:-200%;
             }
             .slider-arrow {
                 background-image: url(img/glide-arrows.png);
@@ -68,14 +78,8 @@
             .slider-nav__item--current {
                 background: #0088CC;
             }
-            .slide {
-            }
-            .slide img {
-                width:100%;
-                height:100%;
-                left: 100%;
-                margin-left:-200%;
-            }
+            
+            
             #photoList {
                 list-style-type:none;
                 margin:0 auto;
@@ -218,6 +222,42 @@
                 <a href="#homePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
+                
+                <ul data-role="listview">
+                    <li data-role="list-divider">
+                        <label>I tuoi Canali</label>
+                    </li>
+                    <li>
+                        <a href="#newsPage" style="padding:0 40px 0 0;">
+                            <input type="checkbox" id="channel1" checked />
+                            <label for="channel1">Avvisi Comune 1</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#newsPage" style="padding:0 40px 0 0;">
+                            <input type="checkbox" id="channel2" checked />
+                            <label for="channel2">Avvisi Comune 2</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#newsPage" style="padding:0 40px 0 0;">
+                            <input type="checkbox" id="channel3" checked />
+                            <label for="channel3">Anas Comune 1</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#newsPage" style="padding:0 40px 0 0;">
+                            <input type="checkbox" id="channel4" checked />
+                            <label for="channel4">Ordine Avvocati Comune 2</label>
+                        </a>
+                    </li>
+                </ul>
+                <br />
+                <a href="#channelSubscriptionPage" class="ui-btn">Aggiungi canale</a>
+                
+                <!--
+                <br /><br /><br />
+                
                 <fieldset data-role="controlgroup">
                     <legend><small>Le tue preferenze:</small></legend>
                     <input name="checkbox-1a" id="checkbox-1a" checked="" type="checkbox">
@@ -231,6 +271,8 @@
                 </fieldset>
                 <br/>
                 <p><a href="#user-login" data-role="button" data-icon="check" data-iconpos="left">Salva</a></p>
+                -->
+                
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
@@ -243,6 +285,54 @@
             </div>  		
         </div>
         <!-- /profilePage -->
+        
+        <!-- channelSubscriptionPage -->
+        <div data-role="page" id="channelSubscriptionPage">
+            <div data-role="header" data-position="fixed">
+                <h1>Aggiungi Canale</h1>
+                <a href="#profilePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>                
+            </div>
+            
+            <div data-role="main" class="ui-content">
+                <label>Comune</label>
+                <select>
+                    <option>Comune 1</option>
+                    <option>Comune 2</option>
+                    <option>Comune 3</option>
+                </select>
+                
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">
+                        <label>Canali associati</label>
+                    </li>
+                    <li style="padding:0;">
+                        <fieldset data-role="controlgroup" style="padding:0;margin:0;">
+                            <input type="checkbox" id="channel1" />
+                            <label for="channel1">Canale 1</label>
+                            <input type="checkbox" id="channel2" />
+                            <label for="channel2">Canale 2</label>
+                            <input type="checkbox" id="channel3" />
+                            <label for="channel3">Canale 3</label>
+                            <input type="checkbox" id="channel4" />
+                            <label for="channel4">Canale 4</label>
+                            <input type="checkbox" id="channel5" />
+                            <label for="channel5">Canale 5</label>
+                        </fieldset>
+                    </li>
+                </ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#user-profilo" data-icon="gear" class="ui-btn-active"><small>Profilo</small></a></li>
+                        <li><a href="#user-location" data-icon="location"><small>Comune</small></a></li>
+                        <li><a href="#user" data-icon="heart"><small>Follow QR</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /channelSubscriptionPage -->
+        
         
         <!-- reportingListPage -->
         <div data-role="page" id="reportingListPage">
@@ -290,21 +380,28 @@
                 <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>
                 -->
             </div>
-            <div data-role="main" class="">
-                <div id="notizie-list">
-                    <ul data-role="listview" data-inset="false">
-                        <li data-role="list-divider">Friday, October 8, 2010</li>
-                        <li>
-                            <a href="index.html">
-                                <h2>Stephen Weber</h2>
-                                <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                                <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                                <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                            </a>
-                        </li>
+            <div data-role="main" class="ui-content">
+                <ul data-role="listview" data-inset="false">
+                    <li data-role="list-divider">Friday, October 8, 2010</li>
+                    <li>
+                        <a href="index.html">
+                            <h2>Stephen Weber</h2>
+                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+                            <p class="ui-li-aside"><strong>6:24</strong>PM</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
+                        <li><a href="#closeToMePage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
-            </div>            
+            </div>
         </div>
         <!-- /newsPage -->
         

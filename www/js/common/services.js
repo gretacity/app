@@ -17,7 +17,8 @@ var services = {
         var commonParams = 'app=' + config.APP_NAME + '&api=' + config.API_V;
         if(!(excludeSessionId || false)) {
             var sessionId = auth.getSessionId();
-            if((sessionId || '') != '') commonParams += '&session_id=' + sessionId;
+            //if((sessionId || '') != '') commonParams += '&session_id=' + sessionId;
+            commonParams += '&session_id=' + (sessionId || '');
         }
         if(typeof(device) != 'undefined') commonParams += '&uuid=' + device.uuid;
         if(typeof(device) == 'undefined' && config.EMULATE_ON_BROWSER) commonParams += '&uuid=browser_emulation';
@@ -56,6 +57,10 @@ var services = {
         successCallback(result);
     },
     
+    
+    
+    //////////////////////////////////////////////////////
+    // QRCODE INFO RELATED FUNCTIONS
     
     getInfoFromQrCode: function(code, successCallback, failCallback) {
         var url = config.URL_BASE + config.URL_QRCODE_GET_INFO;
@@ -99,13 +104,89 @@ var services = {
         });
     },
     
-    getFeedPosts: function(params, successCallback, failCallback) {
+    
+    
+    //////////////////////////////////////////////////////
+    // NEWS RELATED FUNCTIONS
+    
+    /***
+     *  Retrieve the location names based to the latitude and longitude
+     */
+    getChannelGeoLocations: function(params, success, fail) {
+        // TODO
+    },
+    
+    /***
+     *  Retrieve the available channels gived a geo location
+     */
+    getAvailableChannels: function(params, success, fail) {
+        // TODO
+    },
+    
+    /***
+     *  Get paginated posts related to subscribed channels
+     */
+    getChannelPosts: function(params, successCallback, failCallback) {
         // TODO
         var result = [
-            //{}
+            {
+                title: 'title 1',
+                text: 'text of title 1 text of title 1 text of title 1 text of title 1 text of title 1',
+                owner: 'Comune di Provincia',
+                date: '2014-05-13 09:57:00',
+                categories: ['category 1', 'category 2', 'category 3']
+            },
+            {
+                title: 'title 2',
+                text: 'text of title 2 text of title 2 text of title 2 text of title 2 text of title 2',
+                owner: 'Comune di Provincia',
+                date: '2014-05-13 12:31:00',
+                categories: ['category 1', 'category 3']
+            },
+            {
+                title: 'title 3',
+                text: 'text of title 3 text of title 3 text of title 3 text of title 3 text of title 3',
+                owner: 'Comune di Provincia',
+                date: '2014-05-13 14:15:00',
+                categories: ['category 12', 'category 21', 'category 23']
+            },
+            {
+                title: 'title 4',
+                text: 'text of title 4 text of title 4 text of title 4 text of title 4 text of title 4',
+                owner: 'Comune di Provincia',
+                date: '2014-05-13 18:21:00',
+                categories: ['category 18', 'category 12', 'category 39']
+            },
+            {
+                title: 'title 5',
+                text: 'text of title 5 text of title 5 text of title 5 text of title 5 text of title 5',
+                owner: 'Comune di Provincia',
+                date: '2014-05-13 19:59:00',
+                categories: ['category 1', 'category 2', 'category 3']
+            },
+            {
+                title: 'title 6',
+                text: 'text of title 6 text of title 6 text of title 6 text of title 6 text of title 6',
+                owner: 'Comune di Provincia',
+                date: '2014-05-14 08:52:00',
+                categories: ['category 1', 'category 2', 'category 3']
+            },
+            {
+                title: 'title 7',
+                text: 'text of title 7 text of title 7 text of title 7 text of title 7 text of title 7',
+                owner: 'Comune di Provincia',
+                date: '2014-05-14 09:50:00',
+                categories: ['category 19', 'category 29', 'category 63']
+            }
         ];
         successCallback(result);
     },
+    
+    
+    
+    
+    //////////////////////////////////////////////////////
+    // "CLOSE TO ME" RELATED FUNCTIONS
     
     getCloseToMeInfo: function(params, successCallback, failCallback) {
         // TODO
@@ -163,7 +244,6 @@ var services = {
         }).done(function(result) {
             successCallback();
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            //var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -178,7 +258,6 @@ var services = {
         }).done(function(result) {
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            //var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     }
