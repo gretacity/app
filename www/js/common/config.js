@@ -22,7 +22,7 @@ var config = {
     
     // To speed up development / testing
     // In release mode they must be empty
-    QR_CODE_TEST: '',
+    QR_CODE_TEST: '1000000769',
     LOGIN_DEFAULT_USERNAME: '',
     LOGIN_DEFAULT_PASSWORD: '',
     
@@ -34,6 +34,17 @@ var config = {
     
     URL_USER_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     URL_USER_REGISTER: '/web/index.php?mode=module&p=login&s=add_user',
+    
+    URL_NEWS_NEARBY_LOCATION: '/web/index.php?mode=module&p=app_services&a=comuni',
+    // Ricerca comuni per nome
+    URL_NEWS_SEARCH_LOCATION: '/web/index.php?mode=module&p=app_services&a=search_comune',
+    // Elenco dei feed per zona geografica: id_comune, id_provincia, id_regione
+    URL_NEWS_CHANNELS: '/web/index.php?mode=module&p=app_services&a=search_feed',
+    // Elenco dei feed sottoscritti dall'utente
+    URL_NEWS_SUBSCRIBED_CHANNELS: '/web/index.php?mode=module&p=app_services&a=user_feed',
+    URL_NEWS_SUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=add_feed',
+    URL_NEWS_UNSUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=rem_feed',
+    URL_NEWS_LIST: '/web/index.php?mode=module&p=app_services&a=get_notizie',
     
     //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
     URL_QRCODE_GET_INFO: '/web/index.php?p=qrcode&a=get&mode=module',   // qrcode=1000000769

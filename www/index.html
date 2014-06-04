@@ -223,35 +223,7 @@
             </div>
             <div data-role="main" class="ui-content">
                 
-                <ul data-role="listview">
-                    <li data-role="list-divider">
-                        <label>I tuoi Canali</label>
-                    </li>
-                    <li>
-                        <a href="#newsPage" style="padding:0 40px 0 0;">
-                            <input type="checkbox" id="channel1" checked />
-                            <label for="channel1">Avvisi Comune 1</label>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#newsPage" style="padding:0 40px 0 0;">
-                            <input type="checkbox" id="channel2" checked />
-                            <label for="channel2">Avvisi Comune 2</label>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#newsPage" style="padding:0 40px 0 0;">
-                            <input type="checkbox" id="channel3" checked />
-                            <label for="channel3">Anas Comune 1</label>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#newsPage" style="padding:0 40px 0 0;">
-                            <input type="checkbox" id="channel4" checked />
-                            <label for="channel4">Ordine Avvocati Comune 2</label>
-                        </a>
-                    </li>
-                </ul>
+                <ul data-role="listview" id="subscribedChannels"></ul>
                 <br />
                 <a href="#channelSubscriptionPage" class="ui-btn">Aggiungi canale</a>
                 
@@ -294,29 +266,21 @@
             </div>
             
             <div data-role="main" class="ui-content">
-                <label>Comune</label>
-                <select>
-                    <option>Comune 1</option>
-                    <option>Comune 2</option>
-                    <option>Comune 3</option>
-                </select>
+                <select id="city"></select>
+                <div id="manualSelectionPanel" style="display:none;">
+                    <input id="cityNameManual" placeholder="Cerca comune" />
+                    <ul id="citySuggestions" data-role="listview" data-inset="true"></ul>
+                    <!--
+                    <input type="button" id="getAvailableChannelsButton" value="Procedi" />
+                    -->
+                </div>
                 
-                <ul data-role="listview" data-inset="true">
+                <ul id="availableChannelsContainer" data-role="listview" data-inset="true" style="display:none;">
                     <li data-role="list-divider">
                         <label>Canali associati</label>
                     </li>
                     <li style="padding:0;">
-                        <fieldset data-role="controlgroup" style="padding:0;margin:0;">
-                            <input type="checkbox" id="channel1" />
-                            <label for="channel1">Canale 1</label>
-                            <input type="checkbox" id="channel2" />
-                            <label for="channel2">Canale 2</label>
-                            <input type="checkbox" id="channel3" />
-                            <label for="channel3">Canale 3</label>
-                            <input type="checkbox" id="channel4" />
-                            <label for="channel4">Canale 4</label>
-                            <input type="checkbox" id="channel5" />
-                            <label for="channel5">Canale 5</label>
+                        <fieldset data-role="controlgroup" style="padding:0;margin:0;" id="availableChannelList">
                         </fieldset>
                     </li>
                 </ul>

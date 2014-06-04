@@ -110,24 +110,105 @@ var services = {
     // NEWS RELATED FUNCTIONS
     
     /***
+     *  Retrieve subscribed channel of the current user
+     */
+    getSubscribedChannels: function(success, fail) {
+        var url = config.URL_BASE + config.URL_NEWS_SUBSCRIBED_CHANNELS
+        url += '&' + services.getRequestCommonParameters();
+        $.ajax(url,{
+            type:'GET',
+            dataType:'json'
+        }).done(function(result) {
+//console.log("SUCCESS", result);
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log("FAIL", textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+    
+    /***
      *  Retrieve the location names based to the latitude and longitude
      */
-    getChannelGeoLocations: function(params, success, fail) {
-        // TODO
+    getNearbyLocations: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_NEWS_NEARBY_LOCATION;
+        url += '&' + services.getRequestCommonParameters();
+        var data = 'lat='+params.coords.latitude+'&lon='+params.coords.longitude;
+        $.ajax(url,{
+            type:'GET',
+            data:data,
+            dataType:'json'
+        }).done(function(result) {
+//console.log("SUCCESS", result);
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log("FAIL", textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+    
+    getLocationsByName: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_NEWS_SEARCH_LOCATION;
+        url += '&' + services.getRequestCommonParameters();
+        var data = 'search='+params.name;
+        $.ajax(url,{
+            type:'GET',
+            data:data,
+            dataType:'json'
+        }).done(function(result) {
+//console.log("SUCCESS", result);
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log("FAIL", textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     },
     
     /***
      *  Retrieve the available channels gived a geo location
      */
     getAvailableChannels: function(params, success, fail) {
-        // TODO
+        var url = config.URL_BASE + config.URL_NEWS_CHANNELS;
+        url += '&' + services.getRequestCommonParameters();
+        var data = '&id_comune=' + params.cityId +
+                   '&id_provincia=' + params.provId +
+                   '&id_regione=' + params.regionId;
+//console.log(url, data);
+        $.ajax(url,{
+            type:'GET',
+            data:data,
+            dataType:'json'
+        }).done(function(result) {
+//console.log("SUCCESS", result);
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log("FAIL", textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     },
     
+    subscribeToChannel: function(params) {
+        //parasm:{channelId: channelId, subscribe: subscribe});
+        var url = config.URL_BASE + (params.subscribe ? config.URL_NEWS_SUBSCRIBE_CHANNEL : config.URL_NEWS_UNSUBSCRIBE_CHANNEL);
+        url += '&' + services.getRequestCommonParameters();
+        data = 'id_feed=' + params.channelId;
+        $.ajax(url,{
+            type:'GET',
+            data:data
+        }).done(function(result) {
+//console.log("SUCCESS", result);
+            //success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log("FAIL", textStatus);
+            //fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+            
     /***
      *  Get paginated posts related to subscribed channels
      */
     getChannelPosts: function(params, successCallback, failCallback) {
-        // TODO
+        /*
         var result = [
             {
                 title: 'title 1',
@@ -179,7 +260,8 @@ var services = {
                 categories: ['category 19', 'category 29', 'category 63']
             }
         ];
-        successCallback(result);
+        successCallback(result);*/
+        successCallback([]);
     },
     
     

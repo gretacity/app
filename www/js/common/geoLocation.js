@@ -24,11 +24,10 @@ var geoLocation = {
     
     
     acquireGeoCoordinates: function(successCallback, errorCallback) {
-        
+//setTimeout(errorCallback, 3000);return;
         var options = {maximumAge: config.GEO_OPTS_MAXIMUM_AGE,
                        timeout: config.GEO_OPTS_TIMEOUT, 
                        enableHighAccuracy: config.GEO_OPTS_HIGH_ACCURACY};
-        
         
         if(config.EMULATE_ON_BROWSER) {
             //errorCallback('errorino');return;
@@ -40,8 +39,7 @@ var geoLocation = {
             }
             return;
         }
-        
-        navigator.geolocation.getCurrentPosition(function(position) {  
+        navigator.geolocation.getCurrentPosition(function(position) {
             // success
             if(successCallback) successCallback(position);
         }, function (error) {

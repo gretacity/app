@@ -20,7 +20,15 @@ var app = {
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
         $('#loginButton', loginPage).on('click', app.login);
         var profilePage = $('#profilePage');
+        profilePage.on('pagebeforeshow', app.initProfilePage);
         $('#logoutButton', profilePage).on('click', app.logout);
+        var channelSubscriptionPage = $('#channelSubscriptionPage');
+        channelSubscriptionPage.on('pagebeforeshow', app.initChannelSubscriptionPageBeforeShow);
+        channelSubscriptionPage.on('pageshow', app.initChannelSubscriptionPage);
+        $('#city', channelSubscriptionPage).change(app.subscriptionCityChanged);
+        //$('#cityNameManual', channelSubscriptionPage).on('keyup', app.cityNameManualChanged);
+        $('#cityNameManual', channelSubscriptionPage).on('input', app.cityNameManualChanged);
+        //$('#getAvailableChannelsButton', channelSubscriptionPage).on('click', app.getAvailableChannelsButtonClicked);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', app.register);
         var homePage = $('#homePage');
@@ -203,9 +211,158 @@ var app = {
     
     
     
+    
+    initProfilePage: function() {
+        services.getSubscribedChannels(function(result) {
+            var html = '<li data-role="list-divider"><label>I tuoi Canali</label></li>';
+            for(var i in result) {
+                var channelId = result[i].id_feed;
+                var channelName = result[i].nome_feed;
+                html += '<li><a href="#newsPage" style="padding:0 40px 0 0;">'+
+                            '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked />'+
+                            '<label for="channel' + channelId + '">' + channelName + '</label>'+
+                        '</a></li>';
+            }
+            $('#subscribedChannels').html(html).listview('refresh');
+            $('#subscribedChannels li input[type="checkbox"]').checkboxradio().on('click', function() {
+                services.subscribeToChannel({
+                    channelId: $(this).attr('data-id'), 
+                    subscribe: $(this).is(':checked')
+                });
+            });
+        }, function(e) {
+            helper.alert('Si è verificato un errore durante il caricamento', null, 'I tuoi canali');
+        });
+    },
+    
+    
+    
+    initChannelSubscriptionPageBeforeShow: function() {
+        $('#channelSubscriptionPage #city').parents('div.ui-select').addClass('ui-screen-hidden');
+    },
+    initChannelSubscriptionPage: function() {
+        $.mobile.loading('show');
+        geoLocation.acquireGeoCoordinates(function(pos) {
+            services.getNearbyLocations(pos, function(result) {
+                // Successfully retrieved nearby locations from GPS coordinates
+                app.setNearbyLocations(result);
+            }, function(e, loginRequired) {
+                // Unable to retrieve nearby locations
+                if(loginRequired) {
+                    $.mobile.changePage('#loginPage');
+                    return;
+                }
+                app.setNearbyLocations(null);
+            });
+        }, function(e) {
+            // Unable to retrieve GPS coordinates
+            app.setNearbyLocations(null);
+        });
+    },
+    setNearbyLocations: function(result) {
+        var page = $('#channelSubscriptionPage');
+        var html = '';
+        if(result != null) {
+            html += '<optgroup label="seleziona">';
+            for(var i in result) {
+                var l = result[i];
+                html += '<option data-regid="' + l.id_regione + '" data-provid="' + l.id_provincia + '" data-cityid="' + l.id + '">' + l.nome + '</option>';
+            }
+            html += '<option value="manual">Cerca manualmente</option>';
+            html += '</optgroup>';
+            $('#city', page).html(html);
+            $('#city', page).parents('div.ui-select').removeClass('ui-screen-hidden');
+            //$('#city', page).selectmenu('refresh');
+        } else {
+            $('#city', page).parents('div.ui-select').addClass('ui-screen-hidden');
+            app.showManualCitySearch();
+        }
+        $.mobile.loading('hide');
+    },
+    subscriptionCityChanged: function() {
+        var page = $('#channelSubscriptionPage');
+        if($(this).val() == 'manual') {
+            app.showManualCitySearch();
+        } else {
+            $('#manualSelectionPanel', page).hide('fast');
+            //app.getAvailableChannels($(this).val());
+            var selectedItem = $('#channelSubscriptionPage #city option:selected');
+            var cityId = selectedItem.attr('data-cityid');
+            var provId = selectedItem.attr('data-provid');
+            var regionId = selectedItem.attr('data-regid');
+            app.getAvailableChannels(cityId, provId, regionId);
+        }
+    },
+    showManualCitySearch: function() {
+        var page = $('#channelSubscriptionPage');
+        $('#manualSelectionPanel', page).show('fast', function() {
+            $('#manualSelectionPanel #cityNameManual', page).focus();
+        });
+    },
+    cityNameManualChanged: function() {
+        var val = $(this).val();
+        if(val.length >= 4) {
+            services.getLocationsByName({name:val}, function(result) {
+                var html = '';
+                var max_rows = 20;
+                var ix = 0;
+                for(var i in result) {
+                    if(ix++ >= max_rows) {
+                        html += '<li>Altri risultati omessi</li>';
+                        break;
+                    }
+                    var row = result[i];
+                    html += '<li><a href="javascript:app.getAvailableChannels('+row.id+',' + row.id_provincia + ', ' + row.id_regione + ')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
+                }
+                $('#channelSubscriptionPage #citySuggestions').html(html).listview("refresh");
+console.dir(result);
+            });
+        }
+    },
+    getAvailableChannels: function(cityId, provId, regionId) {
+//alert(cityId+', '+provId+', '+regionId);return;
+        $.mobile.loading('show');
+        $('#channelSubscriptionPage #availableChannelsContainer').show();
+        $('#channelSubscriptionPage #availableChannelList').empty();
+        services.getAvailableChannels({cityId: cityId, provId: provId, regionId: regionId}, function(result) {
+            var html = '';
+            if(result.length == 0) {
+                html = '<label>Nessun canale disponibile</label>';
+                $('#channelSubscriptionPage #availableChannelList').html(html);
+            } else {
+                for(var i in result) {
+                    var channelId = result[i].id;
+                    var channelName = result[i].nome;
+                    var subscribed = result[i].sottoscritto == '1';
+                    html += '<input type="checkbox" id="channel' + channelId + '" data-channelid="' + channelId + '" ' + (subscribed ? ' checked' : '') + '/>' +
+                            '<label for="channel' + channelId + '">' + channelName + '</label>';
+                }
+                $('#channelSubscriptionPage #availableChannelList').html(html);
+                $('#channelSubscriptionPage #availableChannelList input[type="checkbox"]').checkboxradio().on('click', app.subscribeToChannel);
+            }
+            $.mobile.loading('hide');
+        }, function(e) {
+            $.mobile.loading('hide');
+        });
+    },
+    subscribeToChannel: function() {
+        var channelId = $(this).attr('data-channelid');
+        var subscribe = $(this).is(':checked');
+        //helper.alert((subscribe ? "Subscribe" : "Unsubscribe") + " to channel with ID " + channelId, null, 'todo');
+        services.subscribeToChannel({channelId: channelId, subscribe: subscribe});
+    },
+    
+    
+    
+    
+    
+    
+    
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(code) {
-code = '1000000769';
+
+            if(config.QR_CODE_TEST != '') code = config.QR_CODE_TEST;
+            
             $.mobile.loading('show');
             services.getInfoFromQrCode(code, function(result) {
                 $.mobile.loading('hide');
