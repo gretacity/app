@@ -28,7 +28,13 @@ var app = {
         $('#city', channelSubscriptionPage).change(app.subscriptionCityChanged);
         //$('#cityNameManual', channelSubscriptionPage).on('keyup', app.cityNameManualChanged);
         $('#cityNameManual', channelSubscriptionPage).on('input', app.cityNameManualChanged);
-        //$('#getAvailableChannelsButton', channelSubscriptionPage).on('click', app.getAvailableChannelsButtonClicked);
+        var newsPage = $('#newsPage');
+        //newsPage.on('pagebeforeshow', app.initNewsPage);
+        newsPage.on('pageinit', app.initNewsPage);
+        $('#subscribedChannels', newsPage).on('change', app.retrieveChannelContent);
+        $('#moreNewsButton', newsPage).on('click', app.retrieveMoreChannelContent);
+        var newsDetailPage = $('#newsDetailPage');
+        newsDetailPage.on('pagebeforeshow', app.initNewsDetailPage);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', app.register);
         var homePage = $('#homePage');
@@ -214,6 +220,7 @@ var app = {
     
     initProfilePage: function() {
         services.getSubscribedChannels(function(result) {
+            var page = $('#profilePage');
             var html = '<li data-role="list-divider"><label>I tuoi Canali</label></li>';
             for(var i in result) {
                 var channelId = result[i].id_feed;
@@ -223,8 +230,8 @@ var app = {
                             '<label for="channel' + channelId + '">' + channelName + '</label>'+
                         '</a></li>';
             }
-            $('#subscribedChannels').html(html).listview('refresh');
-            $('#subscribedChannels li input[type="checkbox"]').checkboxradio().on('click', function() {
+            $('#subscribedChannels', page).html(html).listview('refresh');
+            $('#subscribedChannels li input[type="checkbox"]', page).checkboxradio().on('click', function() {
                 services.subscribeToChannel({
                     channelId: $(this).attr('data-id'), 
                     subscribe: $(this).is(':checked')
@@ -352,6 +359,130 @@ console.dir(result);
         services.subscribeToChannel({channelId: channelId, subscribe: subscribe});
     },
     
+    
+    
+    
+    
+    
+    
+    
+    newsChannelId: 0,
+    newsContentLastId: null,
+    newsContentFirstId: null,
+    initNewsPage: function() {
+        services.getSubscribedChannels(function(result) {
+            app.newsContentLastId = null;
+            app.newsContentFirstId = null;
+            var page = $('#newsPage');
+            $('#channelContent', page).empty();
+            var html = '';
+            for(var i in result) {
+                html += '<option value="' + result[i].id_feed + '">' + result[i].nome_feed + '</option>';
+            }
+            $('#subscribedChannels', page).html(html).selectmenu('refresh').trigger('change');
+            // Hack (TODO Move in JQM pageinit event)
+            $('#subscribedChannels', page).parents('div.ui-btn').css({width:'85%'}).parents('div.ui-select').css({'text-align': 'center'})
+        }, function(e, loginRequired) {
+            if(loginRequired) $.mobile.changePage('#loginPage');
+        });
+    },
+    retrieveChannelContent: function() {
+        $.mobile.loading('show');
+        
+        var channelId = (this == app) ? app.newsChannelId : $(this).val();
+        
+        if(channelId != app.newsChannelId) {
+            app.newsContentFirstId = null;
+            app.newsContentLastId = null;
+        }
+        
+        var params = {
+            channelId: channelId, 
+            lastId: app.newsContentLastId,
+            firstId: app.newsContentFirstId
+        };
+        
+        services.getChannelContent(params, function(result) {            
+            var html = '';
+            
+            if(result.vecchie.length > 0) {
+                for(var i in result.vecchie) {
+                    var r = result.vecchie[i];
+                    var dateAdded = Date.parseFromYMDHMS(r.data_inserimento);
+                    html += '<li><a href="javascript:app.showNewsDetail(' + r.id + ')">' +
+                                '<span>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</span>' +
+                                '<p style="white-space:normal;">' + r.descrizione + '</p>' +
+                            '</a></li>';
+                    if((app.newsContentFirstId == null) || (app.newsContentFirstId > r.id)) app.newsContentFirstId = r.id;
+                    if((app.newsContentLastId == null) || (app.newsContentLastId < r.id)) app.newsContentLastId = r.id;
+                }
+            }
+            
+            if(app.newsChannelId != params.channelId) {
+                app.newsChannelId = params.channelId;
+                $('#newsPage #channelContent').html(html).listview('refresh');
+            } else {
+                $('#newsPage #channelContent').append(html).listview('refresh');
+            }
+            if(result.vecchie.length == 0) {
+                $('#moreNewsButton').addClass('ui-disabled');
+            } else {
+                $('#moreNewsButton').removeClass('ui-disabled'); 
+            }
+            
+            /*newsChannelList
+            <li data-role="list-divider">Friday, October 8, 2010</li>
+            <li>
+                <a href="index.html">
+                    <h2>Stephen Weber</h2>
+                    <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                    <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+                    <p class="ui-li-aside"><strong>6:24</strong>PM</p>
+                </a>
+            </li>*/
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile recuperare il contenuto', null, 'Canale');
+        });
+    },
+    retrieveMoreChannelContent: function() {
+        app.retrieveChannelContent();
+    },
+    
+    
+    
+    
+    _newsDetailId: null,
+    showNewsDetail: function(id) {
+        app._newsDetailId = id;
+        $.mobile.changePage('#newsDetailPage', {transition: 'slide'});
+    },
+    initNewsDetailPage: function() {
+        $.mobile.loading('show');
+        var id = app._newsDetailId;
+        app._newsDetailId = null;
+        services.getChannelContentDetail({id: id}, function(result) {
+            var page = $('#newsDetailPage');
+            // id_categoria
+            var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
+            $('div[data-role="header"] h1', page).html(result.oggetto);
+            $('#newsDate', page).html("Inserita il " + dateAdded.toDMY() + " alle " + dateAdded.toHM());
+            $('#newsText', page).html(result.descrizione);
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile recuperare il contenuto', null, 'Notizia');
+        });
+    },
     
     
     

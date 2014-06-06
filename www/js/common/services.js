@@ -122,7 +122,7 @@ var services = {
 //console.log("SUCCESS", result);
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("FAIL", textStatus);
+//console.log("FAIL", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -207,61 +207,44 @@ var services = {
     /***
      *  Get paginated posts related to subscribed channels
      */
-    getChannelPosts: function(params, successCallback, failCallback) {
-        /*
-        var result = [
-            {
-                title: 'title 1',
-                text: 'text of title 1 text of title 1 text of title 1 text of title 1 text of title 1',
-                owner: 'Comune di Provincia',
-                date: '2014-05-13 09:57:00',
-                categories: ['category 1', 'category 2', 'category 3']
-            },
-            {
-                title: 'title 2',
-                text: 'text of title 2 text of title 2 text of title 2 text of title 2 text of title 2',
-                owner: 'Comune di Provincia',
-                date: '2014-05-13 12:31:00',
-                categories: ['category 1', 'category 3']
-            },
-            {
-                title: 'title 3',
-                text: 'text of title 3 text of title 3 text of title 3 text of title 3 text of title 3',
-                owner: 'Comune di Provincia',
-                date: '2014-05-13 14:15:00',
-                categories: ['category 12', 'category 21', 'category 23']
-            },
-            {
-                title: 'title 4',
-                text: 'text of title 4 text of title 4 text of title 4 text of title 4 text of title 4',
-                owner: 'Comune di Provincia',
-                date: '2014-05-13 18:21:00',
-                categories: ['category 18', 'category 12', 'category 39']
-            },
-            {
-                title: 'title 5',
-                text: 'text of title 5 text of title 5 text of title 5 text of title 5 text of title 5',
-                owner: 'Comune di Provincia',
-                date: '2014-05-13 19:59:00',
-                categories: ['category 1', 'category 2', 'category 3']
-            },
-            {
-                title: 'title 6',
-                text: 'text of title 6 text of title 6 text of title 6 text of title 6 text of title 6',
-                owner: 'Comune di Provincia',
-                date: '2014-05-14 08:52:00',
-                categories: ['category 1', 'category 2', 'category 3']
-            },
-            {
-                title: 'title 7',
-                text: 'text of title 7 text of title 7 text of title 7 text of title 7 text of title 7',
-                owner: 'Comune di Provincia',
-                date: '2014-05-14 09:50:00',
-                categories: ['category 19', 'category 29', 'category 63']
-            }
-        ];
-        successCallback(result);*/
-        successCallback([]);
+    getChannelContent: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_NEWS_LIST;
+        url += '&' + services.getRequestCommonParameters();
+//console.log(url);
+        var data = 'id_feed=' + params.channelId + '&f_id=' + params.lastId + '&l_id=' + params.firstId;
+//console.log(data);
+        $.ajax(url,{
+            type:'GET',
+            data:data,
+            dataType: 'json',
+        }).done(function(result) {
+//console.log("SUCCESS", result);
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log("FAIL", textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+    
+    
+    getChannelContentDetail: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_NEWS_DETAIL;
+        url += '&' + services.getRequestCommonParameters();
+        var data = "id_notizia=" + params.id;
+        $.ajax(url,{
+            type:'GET',
+            data:data,
+            dataType: 'json',
+        }).done(function(result) {
+//console.log("SUCCESS", result);
+            if(Array.isArray(result) && (result.length == 1))
+                success(result[0]);
+            else
+                success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log("FAIL", textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     },
     
     

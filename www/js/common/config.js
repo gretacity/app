@@ -45,6 +45,7 @@ var config = {
     URL_NEWS_SUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=add_feed',
     URL_NEWS_UNSUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=rem_feed',
     URL_NEWS_LIST: '/web/index.php?mode=module&p=app_services&a=get_notizie',
+    URL_NEWS_DETAIL: '/web/index.php?mode=module&p=app_services&a=get_notizia',
     
     //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
     URL_QRCODE_GET_INFO: '/web/index.php?p=qrcode&a=get&mode=module',   // qrcode=1000000769
