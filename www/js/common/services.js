@@ -187,7 +187,7 @@ var services = {
         });
     },
     
-    subscribeToChannel: function(params) {
+    subscribeToChannel: function(params, success, fail) {
         //parasm:{channelId: channelId, subscribe: subscribe});
         var url = config.URL_BASE + (params.subscribe ? config.URL_NEWS_SUBSCRIBE_CHANNEL : config.URL_NEWS_UNSUBSCRIBE_CHANNEL);
         url += '&' + services.getRequestCommonParameters();
@@ -197,10 +197,10 @@ var services = {
             data:data
         }).done(function(result) {
 //console.log("SUCCESS", result);
-            //success(result);
+            if(success) success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
 //console.log("FAIL", textStatus);
-            //fail(textStatus, services.isLoginRequired(jqXHR.status));
+            if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
             

@@ -123,7 +123,7 @@ var app = {
         $('#loginButton', page).html('Accesso in corso...').addClass('ui-disabled');
         $('#registerPageButton', page).addClass('ui-disabled');
         $.mobile.loading('show');
-        auth.login({username: username, password: password}, function(data) {
+        auth.login({username: username, password: password}, function(result) {
             // Successfully loggedin, move forward
             $('#username').removeClass('ui-disabled');
             $('#password').removeClass('ui-disabled').val('');
@@ -237,7 +237,11 @@ var app = {
                     subscribe: $(this).is(':checked')
                 });
             });
-        }, function(e) {
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
             helper.alert('Si è verificato un errore durante il caricamento', null, 'I tuoi canali');
         });
     },
@@ -341,7 +345,8 @@ console.dir(result);
                     var channelId = result[i].id;
                     var channelName = result[i].nome;
                     var subscribed = result[i].sottoscritto == '1';
-                    html += '<input type="checkbox" id="channel' + channelId + '" data-channelid="' + channelId + '" ' + (subscribed ? ' checked' : '') + '/>' +
+                    html += '<input type="checkbox" id="channel' + channelId + '" data-channelid="' + channelId + '" ' + 
+                            'data-channelname="' + channelName + '"' + (subscribed ? ' checked' : '') + '/>' +
                             '<label for="channel' + channelId + '">' + channelName + '</label>';
                 }
                 $('#channelSubscriptionPage #availableChannelList').html(html);
@@ -354,9 +359,18 @@ console.dir(result);
     },
     subscribeToChannel: function() {
         var channelId = $(this).attr('data-channelid');
+        var channelName = $(this).attr('data-channelname');
         var subscribe = $(this).is(':checked');
-        //helper.alert((subscribe ? "Subscribe" : "Unsubscribe") + " to channel with ID " + channelId, null, 'todo');
-        services.subscribeToChannel({channelId: channelId, subscribe: subscribe});
+        services.subscribeToChannel({channelId: channelId, subscribe: subscribe}, function() {
+            // Update the subscribedChannels element in newsPage
+            var channelsElements = $('#newsPage #subscribedChannels');
+            if(subscribe) {
+                //var selectedValue = channelsElements.val();
+                channelsElements.append('<option value="' + channelId + '" >' + channelName + '</option>');
+            } else {
+                $('option[value="' + channelId + '"]', channelsElements).remove();
+            }
+        });
     },
     
     
@@ -380,7 +394,7 @@ console.dir(result);
                 html += '<option value="' + result[i].id_feed + '">' + result[i].nome_feed + '</option>';
             }
             $('#subscribedChannels', page).html(html).selectmenu('refresh').trigger('change');
-            // Hack (TODO Move in JQM pageinit event)
+            // Hack (TODO Move in JQM pagebeforeshow event)
             $('#subscribedChannels', page).parents('div.ui-btn').css({width:'85%'}).parents('div.ui-select').css({'text-align': 'center'})
         }, function(e, loginRequired) {
             if(loginRequired) $.mobile.changePage('#loginPage');
@@ -468,7 +482,6 @@ console.dir(result);
         app._newsDetailId = null;
         services.getChannelContentDetail({id: id}, function(result) {
             var page = $('#newsDetailPage');
-            // id_categoria
             var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
             $('div[data-role="header"] h1', page).html(result.oggetto);
             $('#newsDate', page).html("Inserita il " + dateAdded.toDMY() + " alle " + dateAdded.toHM());

@@ -53,15 +53,15 @@ var auth = {
             async: false,
             url : loginUrl,
             data: data,
-            dataType: "text",
+            dataType: "json",
             crossDomain: true,
 		}).done(function(data, textStatus, jqXHR) {
-/*console.log('success');
-console.log(jqXHR);
+//console.log(data);
+/*console.log(jqXHR);
 console.log(textStatus);
 console.log(data);*/
 			if(data != '') {
-                auth.setSessionId(data);
+                auth.setSessionId(data.session.id);
 //alert(auth.getSessionId() + '\n' + data);
                 auth.lastLoginTime = new Date();
 				if(successCallback) successCallback(data);
