@@ -56,13 +56,8 @@ var auth = {
             dataType: "json",
             crossDomain: true,
 		}).done(function(data, textStatus, jqXHR) {
-//console.log(data);
-/*console.log(jqXHR);
-console.log(textStatus);
-console.log(data);*/
 			if(data != '') {
                 auth.setSessionId(data.session.id);
-//alert(auth.getSessionId() + '\n' + data);
                 auth.lastLoginTime = new Date();
 				if(successCallback) successCallback(data);
             } else {
@@ -70,9 +65,6 @@ console.log(data);*/
             }
 		}).fail(function(jqXHR, textStatus, errorThrown) {
             auth.setSessionId('');
-/*console.log('fail');
-console.log(jqXHR);
-console.log(textStatus);*/
             if(failCallback) failCallback(textStatus);
         });
     },

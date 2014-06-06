@@ -21,7 +21,7 @@ var app = {
         $('#loginButton', loginPage).on('click', app.login);
         var profilePage = $('#profilePage');
         profilePage.on('pagebeforeshow', app.initProfilePage);
-        $('#logoutButton', profilePage).on('click', app.logout);
+        //$('#logoutButton', profilePage).on('click', app.logout);
         var channelSubscriptionPage = $('#channelSubscriptionPage');
         channelSubscriptionPage.on('pagebeforeshow', app.initChannelSubscriptionPageBeforeShow);
         channelSubscriptionPage.on('pageshow', app.initChannelSubscriptionPage);
@@ -39,6 +39,7 @@ var app = {
         $('#registerButton', registerPage).on('click', app.register);
         var homePage = $('#homePage');
         homePage.on('pageinit', app.initHome);
+        $('#logoutButton', homePage).on('click', app.logout);
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', app.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
@@ -358,6 +359,7 @@ console.dir(result);
         });
     },
     subscribeToChannel: function() {
+        $.mobile.loading('show');
         var channelId = $(this).attr('data-channelid');
         var channelName = $(this).attr('data-channelname');
         var subscribe = $(this).is(':checked');
@@ -370,6 +372,10 @@ console.dir(result);
             } else {
                 $('option[value="' + channelId + '"]', channelsElements).remove();
             }
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            // TODO
+            $.mobile.loading('hide');
         });
     },
     
