@@ -1,6 +1,8 @@
 var app = {
+    self: null,
     language : '',
     initialize: function() {
+        self = this;
         this.bindEvents();
         geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
     },
@@ -33,6 +35,7 @@ var app = {
         newsPage.on('pageinit', app.initNewsPage);
         $('#subscribedChannels', newsPage).on('change', app.retrieveChannelContent);
         $('#moreNewsButton', newsPage).on('click', app.retrieveMoreChannelContent);
+        $('#newContentReceivedButton', newsPage).on('click', app.showNewChannelContentReceived);
         var newsDetailPage = $('#newsDetailPage');
         newsDetailPage.on('pagebeforeshow', app.initNewsDetailPage);
         var registerPage = $('#registrationPage');
@@ -327,7 +330,7 @@ var app = {
                     html += '<li><a href="javascript:app.getAvailableChannels('+row.id+',' + row.id_provincia + ', ' + row.id_regione + ')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
                 }
                 $('#channelSubscriptionPage #citySuggestions').html(html).listview("refresh");
-console.dir(result);
+//console.dir(result);
             });
         }
     },
@@ -374,7 +377,13 @@ console.dir(result);
             }
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
-            // TODO
+            if(subscribe) {
+                // Remove the check mark
+                $(this).removeAttr('checked').checkboxradio("refresh");
+            } else {
+                // Reset the check mark
+                $(this).prop('checked', true).checkboxradio("refresh");
+            }
             $.mobile.loading('hide');
         });
     },
@@ -389,6 +398,8 @@ console.dir(result);
     newsChannelId: 0,
     newsContentLastId: null,
     newsContentFirstId: null,
+    newChannelContentReceived: [],
+    newsContentTimeout: null,
     initNewsPage: function() {
         services.getSubscribedChannels(function(result) {
             app.newsContentLastId = null;
@@ -406,8 +417,26 @@ console.dir(result);
             if(loginRequired) $.mobile.changePage('#loginPage');
         });
     },
-    retrieveChannelContent: function() {
-        $.mobile.loading('show');
+    formatChannelContentItem: function(item) {
+        var rowId = parseInt(item.id);
+        var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
+        return '<li><a href="javascript:app.showNewsDetail(' + item.id + ')">' +
+                    '<span>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</span>' +
+                    '<p style="white-space:normal;">' + item.descrizione + '</p>' +
+               '</a></li>';
+        // First ID is the top of the list and has id more greater then others
+        if((app.newsContentFirstId == null) || (app.newsContentFirstId < rowId)) app.newsContentFirstId = rowId;
+        if((app.newsContentLastId == null) || (app.newsContentLastId > rowId)) app.newsContentLastId = rowId;
+    },
+    retrieveChannelContent: function(onlyNew) {
+        
+        onlyNew = onlyNew || false;
+        
+        if(!onlyNew) {
+            $.mobile.loading('show');
+        }
+        
+        if(self.newsContentTimeout != null) clearTimeout(self.newsContentTimeout);
         
         var channelId = (this == app) ? app.newsChannelId : $(this).val();
         
@@ -419,22 +448,23 @@ console.dir(result);
         var params = {
             channelId: channelId, 
             lastId: app.newsContentLastId,
-            firstId: app.newsContentFirstId
+            firstId: app.newsContentFirstId,
+            onlyNew: onlyNew
         };
         
         services.getChannelContent(params, function(result) {            
             var html = '';
             
-            if(result.vecchie.length > 0) {
-                for(var i in result.vecchie) {
-                    var r = result.vecchie[i];
-                    var dateAdded = Date.parseFromYMDHMS(r.data_inserimento);
-                    html += '<li><a href="javascript:app.showNewsDetail(' + r.id + ')">' +
-                                '<span>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</span>' +
-                                '<p style="white-space:normal;">' + r.descrizione + '</p>' +
-                            '</a></li>';
-                    if((app.newsContentFirstId == null) || (app.newsContentFirstId > r.id)) app.newsContentFirstId = r.id;
-                    if((app.newsContentLastId == null) || (app.newsContentLastId < r.id)) app.newsContentLastId = r.id;
+            if(typeof(result.vecchie) != 'undefined') {
+                if(result.vecchie.length > 0) {
+                    for(var i in result.vecchie) {
+                        html += app.formatChannelContentItem(result.vecchie[i]);
+                    }
+                }
+                if(result.vecchie.length == 0) {
+                    $('#moreNewsButton').addClass('ui-disabled');
+                } else {
+                    $('#moreNewsButton').removeClass('ui-disabled'); 
                 }
             }
             
@@ -444,22 +474,19 @@ console.dir(result);
             } else {
                 $('#newsPage #channelContent').append(html).listview('refresh');
             }
-            if(result.vecchie.length == 0) {
-                $('#moreNewsButton').addClass('ui-disabled');
-            } else {
-                $('#moreNewsButton').removeClass('ui-disabled'); 
+            
+            if((typeof(result.nuove) != 'undefined') && (Array.isArray(result.nuove)) && (result.nuove.length > 0)) {
+                app.newChannelContentReceived = result.nuove;
+                $('#newContentReceivedButton').html(
+                    app.newChannelContentReceived.length + (app.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
+                ).show('fast');
             }
             
-            /*newsChannelList
-            <li data-role="list-divider">Friday, October 8, 2010</li>
-            <li>
-                <a href="index.html">
-                    <h2>Stephen Weber</h2>
-                    <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                    <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                    <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                </a>
-            </li>*/
+            //self.newsContentTimeout = setTimeout(self.retrieveChannelContent, 2000);
+            self.newsContentTimeout = setTimeout(function() {
+                self.retrieveChannelContent(true);
+            }, 20000);  // 20 secs
+            
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
             $.mobile.loading('hide');
@@ -467,13 +494,39 @@ console.dir(result);
                 $.mobile.changePage('#loginPage');
                 return;
             }
-            helper.alert('Impossibile recuperare il contenuto', null, 'Canale');
+            if(onlyNew) {
+                self.newsContentTimeout = setTimeout(function() {
+                    self.retrieveChannelContent(true);
+                }, 20000);  // repeat after 20 secs
+            } else {
+                helper.alert('Impossibile recuperare il contenuto', function() {
+                    self.newsContentTimeout = setTimeout(function() {
+                        self.retrieveChannelContent(true);
+                    }, 20000);  // repeat after 20 secs
+                }, 'Canale');
+            }
         });
     },
     retrieveMoreChannelContent: function() {
-        app.retrieveChannelContent();
+        self.retrieveChannelContent();
     },
-    
+    showNewChannelContentReceived: function() {
+        $('#newContentReceivedButton').hide();
+        // Insert new rows in the top
+        var html = '';
+        for(var i in self.newChannelContentReceived) {
+            html += self.formatChannelContentItem(self.newChannelContentReceived[i]);
+        }
+        var channelContent = $('#newsPage #channelContent');
+        if($('li:first-child', channelContent).length == 1)
+            $('li:first-child', channelContent).before(html);
+        else
+            channelContent.append(html);
+        channelContent.listview('refresh');
+        self.newChannelContentReceived = null;
+        // Scroll to top
+        $.mobile.silentScroll(0);
+    },
     
     
     
