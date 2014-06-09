@@ -259,14 +259,28 @@ result.nuove = [
     
     
     //////////////////////////////////////////////////////
-    // "CLOSE TO ME" RELATED FUNCTIONS
+    // "NEARBY PLACES" RELATED FUNCTIONS
     
-    getCloseToMeInfo: function(params, successCallback, failCallback) {
-        // TODO
-        var result = [
-            //{}
-        ];
-        successCallback(result);
+    getNearbyMePlaces: function(params, success, fail) {
+        var placeCatId = params.placeCatId;
+        var result = null;
+        switch(placeCatId) {
+            case 1:     // restaurants
+                result = [
+                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}}
+                ];
+                break;
+            case 2:     // drugstores
+                result = [
+                    {id: 1001, name: 'Farmacia uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                ];
+                break;
+        }
+        success(result);
     },
     
     

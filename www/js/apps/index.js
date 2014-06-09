@@ -4,63 +4,69 @@ var app = {
     initialize: function() {
         self = this;
         this.bindEvents();
-        geoLocation.loadGoogleMapsScript('app.mapsScriptLoaded');
+        geoLocation.loadGoogleMapsScript('self.mapsScriptLoaded');
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.addEventListener('online', this.onOnline, false);
-        document.addEventListener('offline', this.onOffline, false);
+        document.addEventListener('deviceready', self.onDeviceReady, false);
+        document.addEventListener('online', self.onOnline, false);
+        document.addEventListener('offline', self.onOffline, false);
         
-        if(config.EMULATE_ON_BROWSER) app.onDeviceReady();
+        if(config.EMULATE_ON_BROWSER) self.onDeviceReady();
         
         var loginPage = $('#loginPage');
+        loginPage.on('pagebeforeshow', function() {$('#password', loginPage).val('');});
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
-        $('#loginButton', loginPage).on('click', app.login);
+        $('#loginButton', loginPage).on('click', self.login);
         var profilePage = $('#profilePage');
-        profilePage.on('pagebeforeshow', app.initProfilePage);
-        //$('#logoutButton', profilePage).on('click', app.logout);
+        profilePage.on('pagebeforeshow', self.initProfilePage);
+        //$('#logoutButton', profilePage).on('click', self.logout);
         var channelSubscriptionPage = $('#channelSubscriptionPage');
-        channelSubscriptionPage.on('pagebeforeshow', app.initChannelSubscriptionPageBeforeShow);
-        channelSubscriptionPage.on('pageshow', app.initChannelSubscriptionPage);
-        $('#city', channelSubscriptionPage).change(app.subscriptionCityChanged);
-        //$('#cityNameManual', channelSubscriptionPage).on('keyup', app.cityNameManualChanged);
-        $('#cityNameManual', channelSubscriptionPage).on('input', app.cityNameManualChanged);
+        channelSubscriptionPage.on('pagebeforeshow', self.initChannelSubscriptionPageBeforeShow);
+        channelSubscriptionPage.on('pageshow', self.initChannelSubscriptionPage);
+        $('#city', channelSubscriptionPage).change(self.subscriptionCityChanged);
+        //$('#cityNameManual', channelSubscriptionPage).on('keyup', self.cityNameManualChanged);
+        $('#cityNameManual', channelSubscriptionPage).on('input', self.cityNameManualChanged);
         var newsPage = $('#newsPage');
-        //newsPage.on('pagebeforeshow', app.initNewsPage);
-        newsPage.on('pageinit', app.initNewsPage);
-        $('#subscribedChannels', newsPage).on('change', app.retrieveChannelContent);
-        $('#moreNewsButton', newsPage).on('click', app.retrieveMoreChannelContent);
-        $('#newContentReceivedButton', newsPage).on('click', app.showNewChannelContentReceived);
+        newsPage.on('pageinit', self.initNewsPage);
+        newsPage.on('pagebeforeshow', self.beforeShowNewsPage);
+        newsPage.on('pagebeforehide', self.beforeHideNewsPage);
+        $('#subscribedChannels', newsPage).on('change', self.retrieveChannelContent);
+        $('#moreNewsButton', newsPage).on('click', self.retrieveMoreChannelContent);
+        $('#newContentReceivedButton', newsPage).on('click', self.showNewChannelContentReceived);
         var newsDetailPage = $('#newsDetailPage');
-        newsDetailPage.on('pagebeforeshow', app.initNewsDetailPage);
+        newsDetailPage.on('pagebeforeshow', self.initNewsDetailPage);
         var registerPage = $('#registrationPage');
-        $('#registerButton', registerPage).on('click', app.register);
+        $('#registerButton', registerPage).on('click', self.register);
         var homePage = $('#homePage');
-        homePage.on('pageinit', app.initHome);
-        $('#logoutButton', homePage).on('click', app.logout);
+        homePage.on('pageinit', self.initHome);
+        $('#logoutButton', homePage).on('click', self.logout);
         var infoPage = $('#qrCodeInfoPage');
-        $('#getInfoButton', infoPage).on('click', app.getInfoFromQrCode);
+        $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
-        reportingListPage.on('pagebeforeshow', app.loadReportingItems);
-        $('#refreshReportingListButton', reportingListPage).on('click', app.loadReportingItems);
-        //$('#loadMoreReportingItemsButton', reportingListPage).on('click', app.loadReportingItems);
+        reportingListPage.on('pagebeforeshow', self.loadReportingItems);
+        $('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
+        //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
         var reportingPage = $('#reportingPage');
-        reportingPage.on('pageinit', app.initReportingPage);
-        reportingPage.on('pagebeforeshow', app.showReportingPage);
-        $('#editDesciptionButton', reportingPage).on('click', app.editReportingDescription);
-        $('#reportingDescriptionPage #confirmDescriptionButton').on('click', app.confirmReportingDescription);
-        $('#editLocationButton', reportingPage).on('click', app.editReportingLocation);
-        $('#acquirePhotoButton', reportingPage).on('click', app.acquireReportingPhoto);
-        $('#reportingPhotoPage #removePhotoButton').on('click', app.removeReportingPhoto);
-        $('#sendReportingButton', reportingPage).on('click', app.sendReporting);
+        reportingPage.on('pageinit', self.initReportingPage);
+        reportingPage.on('pagebeforeshow', self.showReportingPage);
+        $('#editDesciptionButton', reportingPage).on('click', self.editReportingDescription);
+        $('#reportingDescriptionPage #confirmDescriptionButton').on('click', self.confirmReportingDescription);
+        $('#editLocationButton', reportingPage).on('click', self.editReportingLocation);
+        $('#acquirePhotoButton', reportingPage).on('click', self.acquireReportingPhoto);
+        $('#reportingPhotoPage #removePhotoButton').on('click', self.removeReportingPhoto);
+        $('#sendReportingButton', reportingPage).on('click', self.sendReporting);
         var reportingLocationPage = $('#reportingLocationPage');
-        reportingLocationPage.on('pageshow', app.mapsSetup);
-        $('#confirmLocationButton', reportingLocationPage).on('click', app.confirmReportingLocation);
+        reportingLocationPage.on('pageshow', self.mapsSetup);
+        $('#confirmLocationButton', reportingLocationPage).on('click', self.confirmReportingLocation);
+        var nearbyPage = $('#nearbyPage');
+        nearbyPage.on('pageinit', self.initNearbyPage);
+        var nearbyResultsPage = $('#nearbyResultsPage');
+        nearbyResultsPage.on('pagebeforeshow', self.beforeShowNearbyPage);
     },
     onOnline: function() {
         $('#loginPage #loginButton').removeClass('ui-disabled');
@@ -71,14 +77,14 @@ var app = {
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
+    // function, we must explicity call 'self.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        self.receivedEvent('deviceready');
         if(typeof(navigator.language) == 'string') {
-            app.language = navigator.language;
+            self.language = navigator.language;
         } else {
             navigator.globalization.getPreferredLanguage(
-                function (language) {app.language = language.value},
+                function (language) {self.language = language.value},
                 function () {}
             );
         }
@@ -253,25 +259,27 @@ var app = {
     
     
     initChannelSubscriptionPageBeforeShow: function() {
-        $('#channelSubscriptionPage #city').parents('div.ui-select').addClass('ui-screen-hidden');
+        //$('#channelSubscriptionPage #city').parents('div.ui-select').addClass('ui-screen-hidden');
+        $('#automaticSelectionPanel').hide();
+        $('#manualSelectionPanel').hide();    
     },
     initChannelSubscriptionPage: function() {
         $.mobile.loading('show');
         geoLocation.acquireGeoCoordinates(function(pos) {
             services.getNearbyLocations(pos, function(result) {
                 // Successfully retrieved nearby locations from GPS coordinates
-                app.setNearbyLocations(result);
+                self.setNearbyLocations(result);
             }, function(e, loginRequired) {
                 // Unable to retrieve nearby locations
                 if(loginRequired) {
                     $.mobile.changePage('#loginPage');
                     return;
                 }
-                app.setNearbyLocations(null);
+                self.setNearbyLocations(null);
             });
         }, function(e) {
             // Unable to retrieve GPS coordinates
-            app.setNearbyLocations(null);
+            self.setNearbyLocations(null);
         });
     },
     setNearbyLocations: function(result) {
@@ -286,33 +294,42 @@ var app = {
             html += '<option value="manual">Cerca manualmente</option>';
             html += '</optgroup>';
             $('#city', page).html(html);
-            $('#city', page).parents('div.ui-select').removeClass('ui-screen-hidden');
+            //$('#city', page).parents('div.ui-select').removeClass('ui-screen-hidden');
             //$('#city', page).selectmenu('refresh');
+            
+            self.showManualCitySearch(false);
+            
         } else {
-            $('#city', page).parents('div.ui-select').addClass('ui-screen-hidden');
-            app.showManualCitySearch();
+            //$('#city', page).parents('div.ui-select').addClass('ui-screen-hidden');
+            self.showManualCitySearch(true);
         }
         $.mobile.loading('hide');
     },
     subscriptionCityChanged: function() {
         var page = $('#channelSubscriptionPage');
         if($(this).val() == 'manual') {
-            app.showManualCitySearch();
+            self.showManualCitySearch(true);
         } else {
             $('#manualSelectionPanel', page).hide('fast');
-            //app.getAvailableChannels($(this).val());
+            //self.getAvailableChannels($(this).val());
             var selectedItem = $('#channelSubscriptionPage #city option:selected');
             var cityId = selectedItem.attr('data-cityid');
             var provId = selectedItem.attr('data-provid');
             var regionId = selectedItem.attr('data-regid');
-            app.getAvailableChannels(cityId, provId, regionId);
+            self.getAvailableChannels(cityId, provId, regionId);
         }
     },
-    showManualCitySearch: function() {
+    showManualCitySearch: function(show) {
         var page = $('#channelSubscriptionPage');
-        $('#manualSelectionPanel', page).show('fast', function() {
-            $('#manualSelectionPanel #cityNameManual', page).focus();
-        });
+        if(show === true) {
+            $('#automaticSelectionPanel').hide();
+            $('#manualSelectionPanel', page).show('fast', function() {
+                $('#manualSelectionPanel #cityNameManual', page).focus();
+            });
+        } else {
+            $('#automaticSelectionPanel').show();
+            $('#manualSelectionPanel', page).hide();
+        }
     },
     cityNameManualChanged: function() {
         var val = $(this).val();
@@ -327,7 +344,7 @@ var app = {
                         break;
                     }
                     var row = result[i];
-                    html += '<li><a href="javascript:app.getAvailableChannels('+row.id+',' + row.id_provincia + ', ' + row.id_regione + ')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
+                    html += '<li><a href="javascript:self.getAvailableChannels('+row.id+',' + row.id_provincia + ', ' + row.id_regione + ')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
                 }
                 $('#channelSubscriptionPage #citySuggestions').html(html).listview("refresh");
 //console.dir(result);
@@ -354,7 +371,7 @@ var app = {
                             '<label for="channel' + channelId + '">' + channelName + '</label>';
                 }
                 $('#channelSubscriptionPage #availableChannelList').html(html);
-                $('#channelSubscriptionPage #availableChannelList input[type="checkbox"]').checkboxradio().on('click', app.subscribeToChannel);
+                $('#channelSubscriptionPage #availableChannelList input[type="checkbox"]').checkboxradio().on('click', self.subscribeToChannel);
             }
             $.mobile.loading('hide');
         }, function(e) {
@@ -395,6 +412,8 @@ var app = {
     
     
     
+    NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
+    newsEmptyBeforeShow: true,
     newsChannelId: 0,
     newsContentLastId: null,
     newsContentFirstId: null,
@@ -402,31 +421,50 @@ var app = {
     newsContentTimeout: null,
     initNewsPage: function() {
         services.getSubscribedChannels(function(result) {
-            app.newsContentLastId = null;
-            app.newsContentFirstId = null;
+            self.newsContentLastId = null;
+            self.newsContentFirstId = null;
             var page = $('#newsPage');
             $('#channelContent', page).empty();
             var html = '';
             for(var i in result) {
                 html += '<option value="' + result[i].id_feed + '">' + result[i].nome_feed + '</option>';
             }
-            $('#subscribedChannels', page).html(html).selectmenu('refresh').trigger('change');
-            // Hack (TODO Move in JQM pagebeforeshow event)
+            $('#subscribedChannels', page).html(html).selectmenu('refresh'); //.trigger('change');
+            app.newsChannelId = $('#subscribedChannels', page).val();
             $('#subscribedChannels', page).parents('div.ui-btn').css({width:'85%'}).parents('div.ui-select').css({'text-align': 'center'})
         }, function(e, loginRequired) {
             if(loginRequired) $.mobile.changePage('#loginPage');
         });
     },
+    beforeShowNewsPage: function() {
+        var onlyNew = !self.newsEmptyBeforeShow;
+        if(self.newsEmptyBeforeShow === true) {
+            $('#newsPage #channelContent').empty();
+        } else {
+            self.newsEmptyBeforeShow = true;
+        }
+        if(self.newsContentTimeout == null) {
+            setTimeout(function() {
+                self.retrieveChannelContent(onlyNew);
+            }, 100); // start immediatly
+        }
+    },
+    beforeHideNewsPage: function() {
+        if(self.newsContentTimeout != null) {
+            clearTimeout(self.newsContentTimeout);
+            self.newsContentTimeout = null;
+        }
+    },
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        return '<li><a href="javascript:app.showNewsDetail(' + item.id + ')">' +
+        return '<li><a href="javascript:self.showNewsDetail(' + item.id + ')">' +
                     '<span>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</span>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
                '</a></li>';
         // First ID is the top of the list and has id more greater then others
-        if((app.newsContentFirstId == null) || (app.newsContentFirstId < rowId)) app.newsContentFirstId = rowId;
-        if((app.newsContentLastId == null) || (app.newsContentLastId > rowId)) app.newsContentLastId = rowId;
+        if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
+        if((self.newsContentLastId == null) || (self.newsContentLastId > rowId)) self.newsContentLastId = rowId;
     },
     retrieveChannelContent: function(onlyNew) {
         
@@ -438,27 +476,27 @@ var app = {
         
         if(self.newsContentTimeout != null) clearTimeout(self.newsContentTimeout);
         
-        var channelId = (this == app) ? app.newsChannelId : $(this).val();
+        var channelId = (this == self) ? self.newsChannelId : $(this).val();
         
-        if(channelId != app.newsChannelId) {
-            app.newsContentFirstId = null;
-            app.newsContentLastId = null;
+        if(channelId != self.newsChannelId) {
+            self.newsContentFirstId = null;
+            self.newsContentLastId = null;
         }
         
         var params = {
             channelId: channelId, 
-            lastId: app.newsContentLastId,
-            firstId: app.newsContentFirstId,
+            lastId: self.newsContentLastId,
+            firstId: self.newsContentFirstId,
             onlyNew: onlyNew
         };
         
         services.getChannelContent(params, function(result) {            
             var html = '';
-            
+                        
             if(typeof(result.vecchie) != 'undefined') {
                 if(result.vecchie.length > 0) {
                     for(var i in result.vecchie) {
-                        html += app.formatChannelContentItem(result.vecchie[i]);
+                        html += self.formatChannelContentItem(result.vecchie[i]);
                     }
                 }
                 if(result.vecchie.length == 0) {
@@ -468,24 +506,32 @@ var app = {
                 }
             }
             
-            if(app.newsChannelId != params.channelId) {
-                app.newsChannelId = params.channelId;
+            if(self.newsChannelId != params.channelId) {
+                self.newsChannelId = params.channelId;
                 $('#newsPage #channelContent').html(html).listview('refresh');
             } else {
                 $('#newsPage #channelContent').append(html).listview('refresh');
             }
             
+if(onlyNew === true) {
+    console.log('Checking for news updates...');
+}
             if((typeof(result.nuove) != 'undefined') && (Array.isArray(result.nuove)) && (result.nuove.length > 0)) {
-                app.newChannelContentReceived = result.nuove;
+                self.newChannelContentReceived = result.nuove;
+if(onlyNew === true) {
+    console.log('Found ' + self.newChannelContentReceived.length);
+}
                 $('#newContentReceivedButton').html(
-                    app.newChannelContentReceived.length + (app.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
+                    self.newChannelContentReceived.length + (self.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
                 ).show('fast');
             }
             
             //self.newsContentTimeout = setTimeout(self.retrieveChannelContent, 2000);
             self.newsContentTimeout = setTimeout(function() {
-                self.retrieveChannelContent(true);
-            }, 20000);  // 20 secs
+                if($.mobile.activePage.attr('id') == 'newsPage') {
+                    self.retrieveChannelContent(true);
+                }
+            }, self.NEWS_UPDATE_CONTENT);
             
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
@@ -494,21 +540,22 @@ var app = {
                 $.mobile.changePage('#loginPage');
                 return;
             }
+            if($.mobile.activePage.attr('id') != 'newsPage') return;
             if(onlyNew) {
                 self.newsContentTimeout = setTimeout(function() {
                     self.retrieveChannelContent(true);
-                }, 20000);  // repeat after 20 secs
+                }, self.NEWS_UPDATE_CONTENT);
             } else {
                 helper.alert('Impossibile recuperare il contenuto', function() {
                     self.newsContentTimeout = setTimeout(function() {
                         self.retrieveChannelContent(true);
-                    }, 20000);  // repeat after 20 secs
+                    }, self.NEWS_UPDATE_CONTENT);
                 }, 'Canale');
             }
         });
     },
     retrieveMoreChannelContent: function() {
-        self.retrieveChannelContent();
+        self.retrieveChannelContent(false);
     },
     showNewChannelContentReceived: function() {
         $('#newContentReceivedButton').hide();
@@ -532,13 +579,14 @@ var app = {
     
     _newsDetailId: null,
     showNewsDetail: function(id) {
-        app._newsDetailId = id;
+        self._newsDetailId = id;
+        self.newsEmptyBeforeShow = false;
         $.mobile.changePage('#newsDetailPage', {transition: 'slide'});
     },
     initNewsDetailPage: function() {
         $.mobile.loading('show');
-        var id = app._newsDetailId;
-        app._newsDetailId = null;
+        var id = self._newsDetailId;
+        self._newsDetailId = null;
         services.getChannelContentDetail({id: id}, function(result) {
             var page = $('#newsDetailPage');
             var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
@@ -578,7 +626,7 @@ var app = {
                 // Format result
                 var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
                            '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
-                html += '<input type="checkbox" onchange="app.followQrCode()" id="following" ' + (result.following ? ' checked' : '') + '/> <label for="following">segui</label>';
+                html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.following ? ' checked' : '') + '/> <label for="following">segui</label>';
                 
                 var hasSlider = false;
                 if(result.foto.length > 0) {
@@ -598,7 +646,7 @@ var app = {
                     html += '<li data-role="list-divider">Link</li>';
                     for(var i in result.links) {
                         var l = result.links[i];
-                        html += '<li><a href="#" onclick="javascript:app.openLink(\'' + l.link.replace(/'/g, "''") + '\')" target="_system">' + l.nome + '</a></li>';
+                        html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "''") + '\')" target="_system">' + l.nome + '</a></li>';
                     }
                     html += '</ul>';
                 }
@@ -618,7 +666,7 @@ var app = {
                 if(result.commenti.length == 0) {
                     html += '<p id="noComments" style="text-align:left;">Nessun commento</p>';
                 }
-                html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
+                html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
                 html += '<div style="height:150px;"></div>';
                 $('#qrCodeInfoPage #infoResult').html(html);
                 $('#qrCodeInfoPage #infoResult #following').checkboxradio();
@@ -734,7 +782,7 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
                     html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
                     html += '<li><strong>' + row.descrizione_problema + '</strong></li>';
                     if(row.foto != '') 
-                        html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="app.reportingListPageViewPhoto(this)" /></div></li>';
+                        html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';
                     html += '<li>';
                     
                     var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
@@ -766,7 +814,7 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
             }
             list.html(html);
             list.listview('refresh');
-            $('#test').collapsible();
+            //$('#test').collapsible();
             /*$('div.replist-photo-container img', list).each(function(i, item) {
                 //helper.imageCropToFit(item);
             });*/
@@ -815,19 +863,19 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
         });
         var html2 = '';
         for(var i = 0; i < config.REPORTING_MAX_PHOTOS; i++) {
-            html2 += '<li><a href="#" onclick="app.viewReportingPhoto()">' +
+            html2 += '<li><a href="#" onclick="self.viewReportingPhoto()">' +
                         '<img src="" class="report-imagelist-missing" data-pos="0" data-acquired="0" />' +
                     '</a></li>';
         }
         $('#photoList', page).html(html2);
     },
     showReportingPage: function() {
-        if(app.latLng.lat > 0) return;
+        if(self.latLng.lat > 0) return;
         var page = $('#reportingPage');
         $('#loaderIndicator', page).show();
         geoLocation.acquireGeoCoordinates(function(pos) {
-            app.latLng.lat = pos.coords.latitude;
-            app.latLng.lng = pos.coords.longitude;
+            self.latLng.lat = pos.coords.latitude;
+            self.latLng.lng = pos.coords.longitude;
             geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
 console.log(result);
                 var routeEl = $('#locationInfo span.route', page);
@@ -844,8 +892,8 @@ console.log(result);
         }, function(e) {
             // If the device is unable to retrieve current geo coordinates,
             // set the default position to Rome and the map zoom to 
-            //app.latLng = {lat: 0, lng: 0};
-            //app.mapZoom = 5;
+            //self.latLng = {lat: 0, lng: 0};
+            //self.mapZoom = 5;
             $('#loaderIndicator', page).hide();
             $('#sendReportingButton', page).removeClass('ui-disabled');
             helper.alert(e, null, "Localizzazione GPS");
@@ -859,9 +907,9 @@ console.log(result);
     marker: null,
     mapsSetup: function() {
         if(typeof(google) == 'undefined') return;
-        if(app.map != null) google.maps.event.clearListeners(app.map);
-        var lat = app.latLng.lat;
-        var lng = app.latLng.lng;
+        if(self.map != null) google.maps.event.clearListeners(self.map);
+        var lat = self.latLng.lat;
+        var lng = self.latLng.lng;
         var mapZoom = config.GOOGLE_MAPS_ZOOM;
         if(lat == 0) {
             // Set default lat lng is set to Rome
@@ -873,14 +921,14 @@ console.log(result);
             center: new google.maps.LatLng(lat, lng),
             mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID)
         };
-        app.map = new google.maps.Map(document.getElementById('map'), options);
-        app.mapsSetMarker();
+        self.map = new google.maps.Map(document.getElementById('map'), options);
+        self.mapsSetMarker();
     },
     mapsSetMarker: function() {
-        if(app.map == null) return;
-//console.log("Setting map position to " + app.latLng.lat + " " + app.latLng.lng);
-        var lat = app.latLng.lat;
-        var lng = app.latLng.lng;
+        if(self.map == null) return;
+//console.log("Setting map position to " + self.latLng.lat + " " + self.latLng.lng);
+        var lat = self.latLng.lat;
+        var lng = self.latLng.lng;
         var mapZoom = config.GOOGLE_MAPS_ZOOM;
         if(lat == 0) {
             // Set default lat lng is set to Rome
@@ -889,24 +937,24 @@ console.log(result);
         }
         
         var markerPoint = new google.maps.LatLng(lat, lng);
-        app.marker = new google.maps.Marker({
+        self.marker = new google.maps.Marker({
             position: markerPoint,
-            map: app.map,
+            map: self.map,
             draggable: true,
             animation: google.maps.Animation.DROP,
             title: 'Luogo della segnalazione'
         });
-        app.map.panTo(markerPoint);
-        app.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
+        self.map.panTo(markerPoint);
+        self.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
         google.maps.event.addListener(
-            app.marker, 
+            self.marker, 
             'dragend', 
             function() {
-                app.latLng.lat = app.marker.getPosition().lat();
-                app.latLng.lng = app.marker.getPosition().lng();
+                self.latLng.lat = self.marker.getPosition().lat();
+                self.latLng.lng = self.marker.getPosition().lng();
         });
         var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
-        infowindow.open(app.map, app.marker);
+        infowindow.open(self.map, self.marker);
     },
     
     
@@ -1001,7 +1049,7 @@ console.log(result);
         var city = $('#locationInfo span.city', reportingPage).html().trim();
         var hasPhoto = ($('#photoList li a img[data-acquired="1"]', reportingPage).length > 0);*/
         var reporting = {
-            latLng: app.latLng,
+            latLng: self.latLng,
             categoryId: $('#reportingCategory', reportingPage).val(),
             road: $('#locationInfo span.route', reportingPage).html().trim(),
             city: $('#locationInfo span.city', reportingPage).html().trim(),
@@ -1038,8 +1086,8 @@ console.log(result);
             $('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
             $.mobile.loading('hide');
             reporting = null;
-            app.latLng.lat = 0;
-            app.latLng.lng = 0;
+            self.latLng.lat = 0;
+            self.latLng.lng = 0;
             $('#description', page).html('');
             $('#photoList', page).html('');
             helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
@@ -1051,5 +1099,54 @@ console.log(result);
             $.mobile.loading('hide');
             helper.alert(e, null, 'Invia segnalazione');
         });
+    },
+    
+    
+    
+    
+    
+    
+    _nearbyCategoryId: null,
+    initNearbyPage: function() {
+        var placeTypes = [
+            {id: 1, catName: 'Ristoranti'},
+            {id: 2, catName: 'Farmacie'}
+        ];
+        var html = '';
+        for(var i in placeTypes) {
+            var place = placeTypes[i];
+            html += '<li><a href="javascript:self.showNearbyPlaces(' + place.id + ')">' + place.catName + '</a></li>';
+        }
+        $('#nearbyPage #placeTypeList').html(html).listview('refresh');
+    },
+    showNearbyPlaces: function(catId) {
+        self._nearbyCategoryId = catId;
+        $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
+    },
+    beforeShowNearbyPage: function() {
+        if(self._nearbyCategoryId != null) {
+            self.searchNearbyPlaces(self._nearbyCategoryId);
+            self._nearbyCategoryId = null;
+        }
+    },
+    searchNearbyPlaces: function() {
+        services.getNearbyMePlaces({placeCatId: self._nearbyCategoryId}, function(result) {
+            console.dir(result);
+            alert('show nearby places');
+            var html = '';
+            for(var i in result) {
+                //...
+            }
+        }, function(e, requireLogin) {
+            if(requireLogin) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert("Si sono verificati errori", null, "QUI vicino");
+        });
     }
+    
+    
+    
+    
 };

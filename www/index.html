@@ -195,7 +195,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
                         <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#closeToMePage" data-icon="location"><small>QUI Vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -273,7 +273,10 @@
             </div>
             
             <div data-role="main" class="ui-content">
-                <select id="city"></select>
+                <div id="automaticSelectionPanel">
+                    <label>Vicino a te</label>
+                    <select id="city"></select>
+                </div>
                 <div id="manualSelectionPanel" style="display:none;">
                     <input id="cityNameManual" placeholder="Cerca comune" />
                     <ul id="citySuggestions" data-role="listview" data-inset="true"></ul>
@@ -324,7 +327,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
                         <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#closeToMePage" data-icon="location"><small>QUI Vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -364,7 +367,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
                         <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#closeToMePage" data-icon="location"><small>QUI Vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -428,21 +431,14 @@
         </div>
         <!-- /commentsPage -->
         
-        <!-- closeToMePage -->
-        <div data-role="page" id="closeToMePage">
+        <!-- nearbyPage -->
+        <div data-role="page" id="nearbyPage">
             <div data-role="header" data-position="fixed">
                 <h1>QUI vicino</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <!--<a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>-->
             </div>
             <div data-role="main" class="ui-content">
-                <ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
-                    <li><a href="#">Apple</a></li>
-                    <li><a href="#">Banana</a></li>
-                    <li><a href="#">Cherry</a></li>
-                    <li><a href="#">Cranberry</a></li>
-                    <li><a href="#">Grape</a></li>
-                    <li><a href="#">Orange</a></li>
+                <ul data-role="listview" id="placeTypeList">
                 </ul>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -450,12 +446,34 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
                         <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#closeToMePage" data-icon="location"><small>QUI vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" class="ui-btn-active"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
-            </div>                
+            </div>
         </div>
-        <!-- /closeToMePage -->
+        <!-- /nearByPage -->
+    
+        <!-- nearbyResultsPage -->
+        <div data-role="page" id="nearbyResultsPage">
+            <div data-role="header" data-position="fixed">
+                <h1>QUI vicino</h1>
+                <a href="#nearbyPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul data-role="listview" id="placesList">
+                </ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" class="ui-btn-active"><small>QUI vicino</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /nearbyResultsPage -->
         
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">
@@ -540,7 +558,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info</small></a></li>
                         <li><a href="#reportingPage" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
-                        <li><a href="#closeToMePage" data-icon="location"><small>QUI Vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -619,7 +637,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="tag" class="ui-btn-active"><small>Info QR code</small></a></li>
                         <li><a href="#reportingPage" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#closeToMePage" data-icon="location"><small>QUI vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
             </div>		
