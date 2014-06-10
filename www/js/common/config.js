@@ -55,6 +55,13 @@ var config = {
     URL_REPORTING_SEND: '/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
     URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',
     
+    URL_NEARBY_PLACES: '',  // TODO
+    
+    
+    
+    NEARBY_DEFAULT_DISTANCE: 2, // In KM
+    
+    
     GOOGLE_MAPS_API_KEY: "AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ",
     GOOGLE_MAPS_SENSOR: "true",
     GOOGLE_MAPS_ZOOM: 19,

@@ -1106,8 +1106,11 @@ console.log(result);
     
     
     
-    _nearbyCategoryId: null,
+    nearbyCategoryId: null,
+    nearbyCurrentPos: null,
+    nearbyDistance: config.NEARBY_DEFAULT_DISTANCE,
     initNearbyPage: function() {
+        self.nearbyCurrentPos = null;
         var placeTypes = [
             {id: 1, catName: 'Ristoranti'},
             {id: 2, catName: 'Farmacie'}
@@ -1118,26 +1121,54 @@ console.log(result);
             html += '<li><a href="javascript:self.showNearbyPlaces(' + place.id + ')">' + place.catName + '</a></li>';
         }
         $('#nearbyPage #placeTypeList').html(html).listview('refresh');
+        geoLocation.acquireGeoCoordinates(function(result) {
+            //console.log(result);
+            self.nearbyCurrentPos = result;
+        }, function(e) {
+            console.log(e);
+        });
     },
     showNearbyPlaces: function(catId) {
-        self._nearbyCategoryId = catId;
+        if(self.nearbyCurrentPos == null) {
+            helper.alert('Impossibile recuperare la posizione GPS', null, 'QUI vicino');
+            return;
+        }
+        self.nearbyCategoryId = catId;
         $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
     },
     beforeShowNearbyPage: function() {
-        if(self._nearbyCategoryId != null) {
-            self.searchNearbyPlaces(self._nearbyCategoryId);
-            self._nearbyCategoryId = null;
+        if(self.nearbyCategoryId != null) {
+            self.searchNearbyPlaces(self.nearbyCategoryId);
+            //self.nearbyCategoryId = null;
         }
+   
+// TODO Move from here
+$('#nearbyResultsPage #nearbySearchSlider').on('slidestop', function() {
+    self.nearbyDistance = $('#nearbyResultsPage #nearbySearchSlider').val();
+    // refine search
+    self.searchNearbyPlaces();
+});
+        
     },
     searchNearbyPlaces: function() {
-        services.getNearbyMePlaces({placeCatId: self._nearbyCategoryId}, function(result) {
-            console.dir(result);
-            alert('show nearby places');
+        $.mobile.loading('show');
+        var options = {
+            coords: self.nearbyCurrentPos,
+            distance: self.nearbyDistance,
+            placeCatId: self.nearbyCategoryId
+        };
+        services.getNearbyMePlaces(options, function(result) {
+console.dir(result);
             var html = '';
             for(var i in result) {
-                //...
+                var row = result[i];
+                html += '<li><a href="#">' + row.name + '</a></li>';
             }
+            $('#nearbyResultsPage #placesList').html(html).listview('refresh');
+            $.mobile.silentScroll();
+            $.mobile.loading('hide');
         }, function(e, requireLogin) {
+            $.mobile.loading('hide');
             if(requireLogin) {
                 $.mobile.changePage('#loginPage');
                 return;

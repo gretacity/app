@@ -263,10 +263,34 @@ result.nuove = [
     
     getNearbyMePlaces: function(params, success, fail) {
         var placeCatId = params.placeCatId;
+        var lat = params.coords.latitude;
+        var lng = params.coords.longitude;
+        var distance = params.distance;
+        
+        var url = config.URL_BASE + config.URL_NEARBY_PLACES;
+        url += '&' + services.getRequestCommonParameters();
+        var data = 'id_categoria='+placeCatId+'&lat='+lat+'&lon='+lng+'&distanza='+distance;
+        // TODO
+        //$.ajax(url, {type:'GET', data:data, dataType: 'json'});
         var result = null;
         switch(placeCatId) {
             case 1:     // restaurants
                 result = [
+                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
+                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
                     {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
                     {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
                     {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},

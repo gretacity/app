@@ -459,8 +459,12 @@
                 <h1>QUI vicino</h1>
                 <a href="#nearbyPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
             </div>
+            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:10px;top:45px;z-index:100;background:#fff;">
+                <label>Cerca nel raggio (in Km) di </label>
+                <input type="range" id="nearbySearchSlider" min="1" max="100" step="1" value="2" data-highlight="true" data-mini="true" />
+            </div>
             <div data-role="main" class="ui-content">
-                <ul data-role="listview" id="placesList">
+                <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;">
                 </ul>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -474,6 +478,7 @@
             </div>
         </div>
         <!-- /nearbyResultsPage -->
+    
         
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">
@@ -483,11 +488,8 @@
                 <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets" data-transition="slide" data-direction="reverse">Segnalazioni</a>
             </div>
             <div data-role="main" class="ui-content">
-                
                 <h2>Segnala</h2>
-                
                 <select id="reportingCategory"></select>
-                
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">
                         <div>
