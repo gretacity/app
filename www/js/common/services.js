@@ -224,7 +224,7 @@ console.log('FROM SERVER', result);
         url += '&' + services.getRequestCommonParameters();
         var data = 'id_feed=' + params.channelId + '&f_id=' + params.firstId + '&l_id=' + params.lastId;
         if(params.onlyNew === true) data += '&new=1';
-//console.log(data);return;
+console.log(data);//return;
         $.ajax(url,{
             type:'GET',
             data:data,
@@ -287,29 +287,6 @@ result.nuove = [
         var result = [];
         switch(placeCatId) {
             case 1:     // restaurants
-                /*result = [
-                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                    {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}}
-                ];*/
-console.log(distance);
                 for(var i = 1; i<= distance; i+=2) {
                     result.push(
                         {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}}

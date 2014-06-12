@@ -117,7 +117,7 @@
                 <h2>Login</h2>
                 <form id="loginForm">
                     <label for="username">Username</label>
-                    <input type="text" name="username" id="username" placeholder="Username" />
+                    <input type="text" name="username" id="username" placeholder="Username" autofocus />
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
                     <input id="loginButton" type="button" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" />
@@ -157,7 +157,7 @@
         <!-- /registrationPage -->
         
         <!-- homePage -->
-        <div data-role="page" id="homePage">
+        <div data-role="page" id="homePage" data-theme="a">
             <div data-role="header" data-position="fixed" data-fullscreen="true">
                 <h1>GretaCITY</h1>
                 <!--
@@ -358,7 +358,7 @@
         <!-- newsChannelsPage -->
         <div data-role="page" id="newsChannelsPage">
             <div data-role="header" data-position="fixed">
-                <h1>Notizie</h1>
+                <h1>Canali Notizie</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -529,18 +529,15 @@
                 <h1>QUI vicino</h1>
                 <a href="#nearbyResultsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
             </div>
+            <div data-role="main" class="ui-content">
+                <h1>Name of the place</h1>
+                <div>adress of the place</div>
+                <div>city of the place</div>
+                <div>other refs (phone, email, etc...)</div>
+
+                View in Map (how to reach it)
             
-            div main
-            
-            name of the place
-            adress of the place
-            city of the place
-            other refs (phone, email, etc...)
-            
-            View in Map (how to reach it)
-            
-            TODO
-            
+            </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
@@ -557,50 +554,51 @@
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">
             <div data-role="header" data-position="fixed">
-                <h1>GretaCITY</h1>
+                <h1>Segnala</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets" data-transition="slide" data-direction="reverse">Segnalazioni</a>
             </div>
             <div data-role="main" class="ui-content">
-                <h2>Segnala</h2>
+                <!--<h2>Segnala</h2>-->
+                
                 <select id="reportingCategory"></select>
                 <ul data-role="listview" data-inset="true">
-                    <li data-role="list-divider">
+                    <li data-role="list-divider" style="padding: 10px;">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/edit-black.png" />
-                            Descrivi il problema
+                            <img src="js/jquery.mobile-1.4.2/images/icons-png/edit-white.png" style="float:left;"/>
+                            <span style="float:left;padding-left:15px;">Descrivi il problema</span>
                         </div>
                     </li>
                     <li>
-                        <a href="#" id="editDesciptionButton">
-                            <label id="description"></label>
+                        <a href="#" id="editDesciptionButton" style="display:block;min-height:40px;padding:10px;">
+                            <label id="description" style="white-space:normal;"></label>
                         </a>
                     </li>
-                    <li data-role="list-divider">
+                    <li data-role="list-divider" style="padding: 10px;">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/location-black.png" />
-                            Specifica il luogo
+                            <img src="js/jquery.mobile-1.4.2/images/icons-png/location-white.png" style="float:left;" />
+                            <span style="float:left;padding-left:15px;">Specifica il luogo</span>
                             <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
                         </div>
                     </li>
                     <li>
                         <a href="#" id="editLocationButton">
-                            <label id="locationInfo">
+                            <label id="locationInfo" style="display:block;min-height:30px;padding:2px;white-space:normal;">
                                 <span class="route"></span>
                                 <span class="city"></span>
                                 <span class="prov"></span>
                             </label>
                         </a>
                     </li>
-                    <li data-role="list-divider">
+                    <li data-role="list-divider" style="padding: 10px;">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/camera-black.png" />
-                            Aggiungi una foto
+                            <img src="js/jquery.mobile-1.4.2/images/icons-png/camera-white.png" style="float:left;" />
+                            <span style="float:left;padding-left:15px;">Aggiungi una foto</span>
                         </div>
                     </li>
                     <li>
                         <a href="#" id="acquirePhotoButton">
-                            <label>
+                            <label style="display:block;padding:2px;">
                                 Scatta
                             </label>
                         </a>

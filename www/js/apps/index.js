@@ -67,6 +67,7 @@ var app = {
         $('#confirmLocationButton', reportingLocationPage).on('click', self.confirmReportingLocation);
         var nearbyPage = $('#nearbyPage');
         nearbyPage.on('pageinit', self.initNearbyPage);
+        nearbyPage.on('pagebeforeshow', self.beforeShowNearbyPage);
         var nearbyResultsPage = $('#nearbyResultsPage');
         nearbyResultsPage.on('pageinit', function() {
             $('#nearbySearchSlider', nearbyResultsPage).on('slidestop', self.searchNearbyPlaces);
@@ -444,8 +445,6 @@ var app = {
     },
     
     
-    
-    
     NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
     newsEmptyBeforeShow: true,
     newsChannelId: 0,
@@ -497,13 +496,14 @@ var app = {
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        return '<li><a href="javascript:self.showNewsDetail(' + item.id + ')">' +
+        html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')">' +
                     '<span>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</span>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
                '</a></li>';
         // First ID is the top of the list and has id more greater then others
         if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
         if((self.newsContentLastId == null) || (self.newsContentLastId > rowId)) self.newsContentLastId = rowId;
+        return html;
     },
     retrieveChannelContent: function(onlyNew) {
         
@@ -515,15 +515,14 @@ var app = {
         
         if(self.newsContentTimeout != null) clearTimeout(self.newsContentTimeout);
         
-        var channelId = (this == self) ? self.newsChannelId : $(this).val();
-        
+        /*var channelId = (this == self) ? self.newsChannelId : $(this).val();
         if(channelId != self.newsChannelId) {
             self.newsContentFirstId = null;
             self.newsContentLastId = null;
-        }
+        }*/
         
         var params = {
-            channelId: channelId, 
+            channelId: self.newsChannelId, 
             lastId: self.newsContentLastId,
             firstId: self.newsContentFirstId,
             onlyNew: onlyNew
@@ -891,7 +890,7 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
         var page = $('#reportingPage');
         $('#sendReportingButton', page).addClass('ui-disabled');
         services.getReportingCategories(function(result) {
-            var html = '<option value="0" selected>seleziona</option>';
+            var html = '<option value="0" selected>Seleziona categoria</option>';
             for(var i in result) {
                 var row = result[i];
                 html += '<option value="'+row.id+'">'+row.descrizione+'</option>';
@@ -1165,6 +1164,8 @@ console.log(result);
             html += '<li><a href="javascript:self.showNearbyPlaces(' + place.id + ')">' + place.catName + '</a></li>';
         }
         $('#nearbyPage #placeTypeList').html(html).listview('refresh');
+    },
+    beforeShowNearbyPage: function() {
         geoLocation.acquireGeoCoordinates(function(result) {
             //console.log(result);
             self.nearbyCurrentPos = result;
@@ -1174,7 +1175,7 @@ console.log(result);
     },
     showNearbyPlaces: function(catId) {
         if(self.nearbyCurrentPos == null) {
-            helper.alert('Impossibile recuperare la posizione GPS', null, 'QUI vicino');
+            helper.alert('Impossibile recuperare la tua posizione', null, 'Localizzazione GPS');
             return;
         }
         self.nearbyCategoryId = catId;
@@ -1234,7 +1235,6 @@ console.log(result);
         $.mobile.loading('show');
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId}, function(result) {
             $.mobile.loading('hide');
-            helper.alert('Rendering', null, 'TODO');
         }, function(e, requireLogin) {
             $.mobile.loading('hide');
             if(requireLogin) {
