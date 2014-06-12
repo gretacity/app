@@ -64,8 +64,12 @@ var auth = {
 				if(failCallback) failCallback("Login errato");
             }
 		}).fail(function(jqXHR, textStatus, errorThrown) {
+            auth.tmp = jqXHR;
+            var errorMessage = (jqXHR.statusText.substr(0, 12).toLowerCase() == 'networkerror') ? 
+                                                                                    'Errore di connessione' : 
+                                                                                    'Login non valido';
             auth.setSessionId('');
-            if(failCallback) failCallback(textStatus);
+            if(failCallback) failCallback(errorMessage);
         });
     },
     

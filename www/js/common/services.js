@@ -1,6 +1,8 @@
 
 var services = {
     
+    self: this,
+    
     // see:
     // http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
     CODE_SUCCESS: 200,
@@ -112,7 +114,13 @@ var services = {
     /***
      *  Retrieve subscribed channel of the current user
      */
+    _subscribedChannels: null,  // cache results
     getSubscribedChannels: function(success, fail) {
+        if(self._subscribedChannels != null) {
+console.log('FROM CACHE', self._subscribedChannels);
+            success(self._subscribedChannels);
+            return;
+        }
         var url = config.URL_BASE + config.URL_NEWS_SUBSCRIBED_CHANNELS
         url += '&' + services.getRequestCommonParameters();
         $.ajax(url,{
@@ -120,6 +128,8 @@ var services = {
             dataType:'json'
         }).done(function(result) {
 //console.log("SUCCESS", result);
+console.log('FROM SERVER', result);
+            self._subscribedChannels = result;
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
 //console.log("FAIL", jqXHR);
@@ -188,6 +198,8 @@ var services = {
     },
     
     subscribeToChannel: function(params, success, fail) {
+        // Invalidate cache
+        self._subscribedChannels = null;
         //parasm:{channelId: channelId, subscribe: subscribe});
         var url = config.URL_BASE + (params.subscribe ? config.URL_NEWS_SUBSCRIBE_CHANNEL : config.URL_NEWS_UNSUBSCRIBE_CHANNEL);
         url += '&' + services.getRequestCommonParameters();
@@ -261,7 +273,7 @@ result.nuove = [
     //////////////////////////////////////////////////////
     // "NEARBY PLACES" RELATED FUNCTIONS
     
-    getNearbyMePlaces: function(params, success, fail) {
+    getNearbyPlaces: function(params, success, fail) {
         var placeCatId = params.placeCatId;
         var lat = params.coords.latitude;
         var lng = params.coords.longitude;
@@ -272,10 +284,10 @@ result.nuove = [
         var data = 'id_categoria='+placeCatId+'&lat='+lat+'&lon='+lng+'&distanza='+distance;
         // TODO
         //$.ajax(url, {type:'GET', data:data, dataType: 'json'});
-        var result = null;
+        var result = [];
         switch(placeCatId) {
             case 1:     // restaurants
-                result = [
+                /*result = [
                     {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
                     {id: 1001, name: 'Ristorante due', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
                     {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
@@ -296,7 +308,13 @@ result.nuove = [
                     {id: 1001, name: 'Ristorante tre', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
                     {id: 1001, name: 'Ristorante quattro', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
                     {id: 1001, name: 'Ristorante cinque', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}}
-                ];
+                ];*/
+console.log(distance);
+                for(var i = 1; i<= distance; i+=2) {
+                    result.push(
+                        {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}}
+                    );
+                }
                 break;
             case 2:     // drugstores
                 result = [
@@ -304,6 +322,21 @@ result.nuove = [
                 ];
                 break;
         }
+        success(result);
+    },
+    
+    getNearbyPlaceInfo: function(params, success, fail) {
+        // TODO
+        var result = {
+            id: 1,
+            name: 'place name',
+            lat: 38.858364,
+            lng: 16.549469,
+            address: {
+                road: 'Via... n...',
+                city: 'Catanzaro'
+            }
+        };
         success(result);
     },
     
@@ -321,7 +354,6 @@ result.nuove = [
         }).done(function(result) {
             successCallbak(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            //var loginRequired = ((jqXHR.status == services.CODE_UNAUTHORIZED) || (jqXHR.status == services.CODE_FORBIDDEN));
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },

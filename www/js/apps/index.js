@@ -31,6 +31,8 @@ var app = {
         $('#city', channelSubscriptionPage).change(self.subscriptionCityChanged);
         //$('#cityNameManual', channelSubscriptionPage).on('keyup', self.cityNameManualChanged);
         $('#cityNameManual', channelSubscriptionPage).on('input', self.cityNameManualChanged);
+        var newsChannelsPage = $('#newsChannelsPage');
+        newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
         var newsPage = $('#newsPage');
         newsPage.on('pageinit', self.initNewsPage);
         newsPage.on('pagebeforeshow', self.beforeShowNewsPage);
@@ -66,7 +68,12 @@ var app = {
         var nearbyPage = $('#nearbyPage');
         nearbyPage.on('pageinit', self.initNearbyPage);
         var nearbyResultsPage = $('#nearbyResultsPage');
-        nearbyResultsPage.on('pagebeforeshow', self.beforeShowNearbyPage);
+        nearbyResultsPage.on('pageinit', function() {
+            $('#nearbySearchSlider', nearbyResultsPage).on('slidestop', self.searchNearbyPlaces);
+        });
+        nearbyResultsPage.on('pagebeforeshow', self.beforeShowNearbyResultsPage);        
+        var nearbyPlaceInfoPage = $('#nearbyPlaceInfoPage');
+        nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
     },
     onOnline: function() {
         $('#loginPage #loginButton').removeClass('ui-disabled');
@@ -143,7 +150,7 @@ var app = {
         }, function(e) {
             $.mobile.loading('hide');
             $('#loginButton', page).html(initialVal).removeClass('ui-disabled');
-            helper.alert('Login non valido', function() {
+            helper.alert(e, function() {
                 $('#username').removeClass('ui-disabled');
                 $('#password').removeClass('ui-disabled');
                 $('#loginButton').removeClass('ui-disabled');
@@ -385,13 +392,14 @@ var app = {
         var subscribe = $(this).is(':checked');
         services.subscribeToChannel({channelId: channelId, subscribe: subscribe}, function() {
             // Update the subscribedChannels element in newsPage
+            /*
             var channelsElements = $('#newsPage #subscribedChannels');
             if(subscribe) {
                 //var selectedValue = channelsElements.val();
                 channelsElements.append('<option value="' + channelId + '" >' + channelName + '</option>');
             } else {
                 $('option[value="' + channelId + '"]', channelsElements).remove();
-            }
+            }*/
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
             if(subscribe) {
@@ -412,6 +420,32 @@ var app = {
     
     
     
+    beforeShowNewsChannelsPage: function() {
+        services.getSubscribedChannels(function(result) {
+            var html = '';
+            for(var i in result) {
+                var row = result[i];
+                html += '<li><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
+                            + row.denominazione + '</span><label>' + row.nome_feed 
+                            + '</label></a</li>';
+            }
+            $('#newsChannelsPage #channelList').html(html).listview('refresh');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
+        });
+    },
+    showNewsChannel: function(channelId) {
+        self.newsChannelId = channelId;
+        $.mobile.changePage('#newsPage', {transition: 'slide'});
+    },
+    
+    
+    
+    
     NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
     newsEmptyBeforeShow: true,
     newsChannelId: 0,
@@ -420,6 +454,7 @@ var app = {
     newChannelContentReceived: [],
     newsContentTimeout: null,
     initNewsPage: function() {
+        /*
         services.getSubscribedChannels(function(result) {
             self.newsContentLastId = null;
             self.newsContentFirstId = null;
@@ -428,13 +463,17 @@ var app = {
             var html = '';
             for(var i in result) {
                 html += '<option value="' + result[i].id_feed + '">' + result[i].nome_feed + '</option>';
-            }
+            }            
             $('#subscribedChannels', page).html(html).selectmenu('refresh'); //.trigger('change');
             app.newsChannelId = $('#subscribedChannels', page).val();
-            $('#subscribedChannels', page).parents('div.ui-btn').css({width:'85%'}).parents('div.ui-select').css({'text-align': 'center'})
+            $('#subscribedChannels', page).parents('div.ui-btn').css({width:'85%'}).parents('div.ui-select').css({'text-align': 'center'});
         }, function(e, loginRequired) {
             if(loginRequired) $.mobile.changePage('#loginPage');
-        });
+        });*/
+        self.newsContentLastId = null;
+        self.newsContentFirstId = null;
+        var page = $('#newsPage');
+        $('#channelContent', page).empty();
     },
     beforeShowNewsPage: function() {
         var onlyNew = !self.newsEmptyBeforeShow;
@@ -615,8 +654,12 @@ if(onlyNew === true) {
             if(config.QR_CODE_TEST != '') code = config.QR_CODE_TEST;
             
             $.mobile.loading('show');
+            $('#qrCodeInfoPage #getInfoButton').addClass('ui-disabled');
+            
             services.getInfoFromQrCode(code, function(result) {
                 $.mobile.loading('hide');
+                $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
+                
                 if(result == null) {
                     $('#qrCodeInfoPage #qrCodeId').val('');
                     helper.alert('Non ci sono informazioni disponibili', null, 'Ottieni info');
@@ -681,11 +724,12 @@ if(onlyNew === true) {
                 }
             }, function(e, loginRequired) {
                 $.mobile.loading('hide');
+                $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
                 $('#qrCodeInfoPage #qrCodeId').val('');
                 if(loginRequired) {
                     $.mobile.changePage('#loginPage');
                 } else {
-                    helper.alert('Impossibile recuperare informazioni', null, 'Ottieni info');
+                    helper.alert('Impossibile recuperare le informazioni', null, 'Ottieni info');
                 }
             });
         }, function(e) {
@@ -825,7 +869,7 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
                 $.mobile.changePage('#loginPage');
             } else {
                 $.mobile.loading('hide');
-                helper.alert("Si sono verificati errori durante il caricamento", null, "Segnalazioni");
+                helper.alert("Impossibile recuperare il contenuto", null, "Segnalazioni");
             }
         });
     },
@@ -1136,33 +1180,31 @@ console.log(result);
         self.nearbyCategoryId = catId;
         $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
     },
-    beforeShowNearbyPage: function() {
-        if(self.nearbyCategoryId != null) {
-            self.searchNearbyPlaces(self.nearbyCategoryId);
-            //self.nearbyCategoryId = null;
+    beforeShowNearbyResultsPage: function() {
+        $('#nearbyResultsPage #nearbySearchSlider').parents('div.ui-slider').css({'padding-right': 10});
+        if(self.nearbyCategoryId == null) {
+            $.mobile.changePage('#nearbyPage', {transition: 'slide', reverse: true});
+            return;
         }
-   
-// TODO Move from here
-$('#nearbyResultsPage #nearbySearchSlider').on('slidestop', function() {
-    self.nearbyDistance = $('#nearbyResultsPage #nearbySearchSlider').val();
-    // refine search
-    self.searchNearbyPlaces();
-});
-        
+        self.searchNearbyPlaces(self.nearbyCategoryId);
     },
     searchNearbyPlaces: function() {
         $.mobile.loading('show');
+        self.nearbyDistance = $('#nearbyResultsPage #nearbySearchSlider').val();
         var options = {
             coords: self.nearbyCurrentPos,
             distance: self.nearbyDistance,
             placeCatId: self.nearbyCategoryId
         };
-        services.getNearbyMePlaces(options, function(result) {
-console.dir(result);
+        services.getNearbyPlaces(options, function(result) {
+//console.dir(result);
             var html = '';
             for(var i in result) {
                 var row = result[i];
-                html += '<li><a href="#">' + row.name + '</a></li>';
+                html += '<li><a href="javascript:self.showNearbyPlaceInfo(' + row.id + ')">' 
+                            + row.name + '<label><small>' 
+                            + row.address.road + ', ' + row.address.city
+                            + '</small></label></a></li>';
             }
             $('#nearbyResultsPage #placesList').html(html).listview('refresh');
             $.mobile.silentScroll();
@@ -1175,9 +1217,31 @@ console.dir(result);
             }
             helper.alert("Si sono verificati errori", null, "QUI vicino");
         });
+    },
+    
+    nearbyPlaceId: null,
+    showNearbyPlaceInfo: function(placeId) {
+        self.nearbyPlaceId = placeId;
+        $.mobile.changePage('#nearbyPlaceInfoPage');
+    },
+    
+    
+    beforeShowNearbyPlaceInfo: function() {
+        if(self.nearbyPlaceId == null) {
+            $.mobile.changePage('#nearbyResultsPage');
+            return;
+        }
+        $.mobile.loading('show');
+        services.getNearbyPlaceInfo({id: self.nearbyPlaceId}, function(result) {
+            $.mobile.loading('hide');
+            helper.alert('Rendering', null, 'TODO');
+        }, function(e, requireLogin) {
+            $.mobile.loading('hide');
+            if(requireLogin) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert("Si sono verificati errori", null, "QUI vicino");
+        });
     }
-    
-    
-    
-    
 };
