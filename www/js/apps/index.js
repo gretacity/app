@@ -243,9 +243,11 @@ var app = {
             for(var i in result) {
                 var channelId = result[i].id_feed;
                 var channelName = result[i].nome_feed;
+                var channelOwner = result[i].denominazione;
                 html += '<li><a href="#newsPage" style="padding:0 40px 0 0;">'+
                             '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked />'+
-                            '<label for="channel' + channelId + '">' + channelName + '</label>'+
+                            '<label for="channel' + channelId + '">' + channelName + 
+                            '<br /><small>' + channelOwner + '</small></label>'+
                         '</a></li>';
             }
             $('#subscribedChannels', page).html(html).listview('refresh');
@@ -381,6 +383,7 @@ var app = {
                 $('#channelSubscriptionPage #availableChannelList').html(html);
                 $('#channelSubscriptionPage #availableChannelList input[type="checkbox"]').checkboxradio().on('click', self.subscribeToChannel);
             }
+            $.mobile.silentScroll($('#channelSubscriptionPage #availableChannelsContainer').offset().top);
             $.mobile.loading('hide');
         }, function(e) {
             $.mobile.loading('hide');
@@ -427,8 +430,8 @@ var app = {
             for(var i in result) {
                 var row = result[i];
                 html += '<li><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
-                            + row.denominazione + '</span><label>' + row.nome_feed 
-                            + '</label></a</li>';
+                            + row.nome_feed + '</span><label><small>' + row.denominazione 
+                            + '</small></label></a</li>';
             }
             $('#newsChannelsPage #channelList').html(html).listview('refresh');
         }, function(e, loginRequired) {
@@ -500,7 +503,7 @@ var app = {
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')">' +
+        html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;">' +
                     '<span>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</span>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
                '</a></li>';
