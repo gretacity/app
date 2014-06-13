@@ -230,7 +230,7 @@ console.log(data);//return;
             data:data,
             dataType: 'json',
         }).done(function(result) {
-//console.log("SUCCESS", result);
+console.log("SUCCESS", result);
 /*
 // Test
 result.nuove = [

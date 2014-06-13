@@ -440,7 +440,13 @@ var app = {
         });
     },
     showNewsChannel: function(channelId) {
-        self.newsChannelId = channelId;
+        if(self.newsChannelId != channelId) {
+            self.newsChannelId = channelId;
+            self.newsContentLastId = null;
+            self.newsContentFirstId = null;
+        } else {
+            self.newsEmptyBeforeShow = false;
+        }
         $.mobile.changePage('#newsPage', {transition: 'slide'});
     },
     
@@ -469,8 +475,6 @@ var app = {
         }, function(e, loginRequired) {
             if(loginRequired) $.mobile.changePage('#loginPage');
         });*/
-        self.newsContentLastId = null;
-        self.newsContentFirstId = null;
         var page = $('#newsPage');
         $('#channelContent', page).empty();
     },
