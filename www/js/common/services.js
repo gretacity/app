@@ -350,13 +350,18 @@ console.log(result);
     
     //////////////////////////////////////////////////////
     // REPORTING RELATED FUNCTIONS
-    
+    _reportingCategories: null,  // cache results
     getReportingCategories: function(successCallbak, failCallback) {
+        if(services._reportingCategories != null) {
+            successCallbak(services._reportingCategories);
+            return;
+        }
         var url = config.URL_BASE + config.URL_REPORTING_CATEGORY_LIST + '&' + services.getRequestCommonParameters();
         $.ajax(url, {
             type: 'GET',
             dataType: 'json'
         }).done(function(result) {
+            services._reportingCategories = result;
             successCallbak(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));

@@ -1122,7 +1122,7 @@ console.log(result);
         if(reporting.categoryId == '0') errors.push('- seleziona la categoria');
         if(reporting.prov == '') errors.push('- specifica la provincia');
         if((reporting.road == '') || (reporting.comune == '')) errors.push('- specifica l\'indirizzo');
-        if(reporting.description == '') errors.push('- inserisci la descrizione');
+        if(reporting.description == '') errors.push('- descrivi il problema');
         if(reporting.photos.length == 0) errors.push('- scatta almeno una foto');
         if(errors.length > 0) {
             helper.alert(errors.join('\n', null, 'Invia segnalazione'));
@@ -1174,20 +1174,37 @@ console.log(result);
         });        
     },
     beforeShowNearbyPage: function() {
+        $.mobile.loading('show');
         geoLocation.acquireGeoCoordinates(function(result) {
             self.nearbyCurrentPos = result;
+            $.mobile.loading('hide');
         }, function(e) {
             console.log(e);
+            $.mobile.loading('hide');
         });
     },
     showNearbyPlaces: function(catId, catName) {
         if(self.nearbyCurrentPos == null) {
-            helper.alert('Impossibile recuperare la tua posizione', null, 'Localizzazione GPS');
+            helper.confirm('Impossibile recuperare la tua posizione GPS', function(choice) {
+                if(choice == 1) {
+                    $.mobile.loading('show');
+                    geoLocation.acquireGeoCoordinates(function(result) {
+                        self.nearbyCurrentPos = result;
+                        $.mobile.loading('hide');
+                        self.showNearbyPlaces(catId, catName);
+                    }, function(e) {
+                        console.log(e);
+                        $.mobile.loading('hide');
+                        self.showNearbyPlaces(catId, catName);
+                    });
+                }
+            }, 'Localizzazione GPS', ['Riprova', 'Annulla']);
             return;
+        } else {
+            self.nearbyCategoryId = catId;
+            self.nearbyCategoryName = catName;
+            $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
         }
-        self.nearbyCategoryId = catId;
-        self.nearbyCategoryName = catName;
-        $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
     },
     beforeShowNearbyResultsPage: function() {
         $('#nearbyResultsPage #nearbySearchSlider').parents('div.ui-slider').css({'padding-right': 10});
@@ -1198,7 +1215,6 @@ console.log(result);
         self.searchNearbyPlaces(self.nearbyCategoryId);
     },
     searchNearbyPlaces: function() {
-        $.mobile.loading('show');
         var page = $('#nearbyResultsPage');
         self.nearbyDistance = $('#nearbySearchSlider', page).val();
         var options = {
@@ -1208,6 +1224,7 @@ console.log(result);
         };        
         $('#currentPlaceType', page).html(self.nearbyCategoryName.toUpperCase());
         $('#placesList', page).html('').listview('refresh');
+        $.mobile.loading('show');
         services.getNearbyPlaces(options, function(result) {
 //console.dir(result);
             var html = '';
@@ -1219,7 +1236,6 @@ console.log(result);
                                 + (row.phoneNumber != null ? 'Tel. ' + row.phoneNumber : '') + '<br />'
                                 + row.address
                                 + '</small><br /><b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b></label></a></li>';
-                    // distance in meters
                 }
             } else {
                 html = '<li>Nessun risultato</li>';
@@ -1245,32 +1261,7 @@ console.log(result);
     },
     
     
-    initNearbyPlaceInfo: function() {
-        
-        
-        /*self.mapsSetMarker();
-
-        
-        self.marker = new google.maps.Marker({
-            position: markerPoint,
-            map: self.map,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-            title: 'Luogo della segnalazione'
-        });
-        self.map.panTo(markerPoint);
-        self.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
-        google.maps.event.addListener(
-            self.marker, 
-            'dragend', 
-            function() {
-                self.latLng.lat = self.marker.getPosition().lat();
-                self.latLng.lng = self.marker.getPosition().lng();
-        });
-        var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
-        infowindow.open(self.map, self.marker);*/
-        
-        
+    initNearbyPlaceInfo: function() {        
     },
     
     beforeShowNearbyPlaceInfo: function() {
@@ -1289,10 +1280,9 @@ console.log(result);
             var options = {
                 zoom: config.GOOGLE_MAPS_ZOOM,
                 center: new google.maps.LatLng(lat, lng),
-                mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID)
+                mapTypeId: google.maps.MapTypeId.ROADMAP //eval(config.GOOGLE_MAPS_TYPE_ID)
             };
             var map = new google.maps.Map(document.getElementById('nearbyPlaceMap'), options);
-            $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
             var startingMarkerPoint = new google.maps.LatLng(lat, lng);
             var startingMarker = new google.maps.Marker({
                 position: startingMarkerPoint,
@@ -1305,6 +1295,7 @@ console.log(result);
             map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
             var infowindow = new google.maps.InfoWindow({content: '<div>La tua posizione</div>'});
             infowindow.open(map, startingMarker);
+            $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
         }
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId}, function(result) {
 console.log(self.nearbyPlaceId);
@@ -1317,8 +1308,6 @@ console.log(self.nearbyPlaceId);
                     animation: google.maps.Animation.DROP,
                     title: result.name
                 });
-                //map.panTo(endingMarkerPoint);
-                //map.setCenter(endingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
                 var infowindow2 = new google.maps.InfoWindow({content: '<div>' + result.name + '</div>'});
                 infowindow2.open(map, endingMarker);
                 
