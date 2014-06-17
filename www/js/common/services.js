@@ -273,48 +273,76 @@ result.nuove = [
     //////////////////////////////////////////////////////
     // "NEARBY PLACES" RELATED FUNCTIONS
     
+    
+    getNearbyPlaceTypes: function(success, fail) {
+        var results = [
+            {name: 'aeroporti', key: 'airport'},
+            {name: 'autobus', key: 'bus_station'},
+            {name: 'bancomat', key: 'atm'},
+            {name: 'bar', key: 'bar'},
+            {name: 'biblioteche', key: 'library'},
+            {name: 'cinema', key: 'movie_theater'},
+            {name: 'farmacie', key: 'pharmacy'},
+            {name: 'fitness', key: 'gym'},
+            {name: 'musei', key: 'museum'},
+            {name: 'ospedali', key: 'hospital'},
+            {name: 'parcheggi', key: 'parking'},
+            {name: 'ristoranti', key: 'restaurant'},
+            {name: 'stazioni di servizio', key: 'gas_station'},
+            {name: 'uffici postali', key: 'post_office'},
+        ];
+        success(results);
+    },
+    
     getNearbyPlaces: function(params, success, fail) {
         var placeCatId = params.placeCatId;
         var lat = params.coords.latitude;
         var lng = params.coords.longitude;
         var distance = params.distance;
         
-        var url = config.URL_BASE + config.URL_NEARBY_PLACES;
-        url += '&' + services.getRequestCommonParameters();
-        var data = 'id_categoria='+placeCatId+'&lat='+lat+'&lon='+lng+'&distanza='+distance;
-        // TODO
-        //$.ajax(url, {type:'GET', data:data, dataType: 'json'});
-        var result = [];
-        switch(placeCatId) {
-            case 1:     // restaurants
-                for(var i = 1; i<= distance; i+=2) {
-                    result.push(
-                        {id: 1001, name: 'Ristorante uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}}
-                    );
-                }
-                break;
-            case 2:     // drugstores
-                result = [
-                    {id: 1001, name: 'Farmacia uno', lat: 1, lng: 1, address: {road: 'Via... n...', city: 'Catanzaro'}},
-                ];
-                break;
-        }
-        success(result);
+        //var url = config.URL_BASE + config.URL_NEARBY_PLACES;
+        //url += '&' + services.getRequestCommonParameters();
+        var url = config.URL_NEARBY_PLACES;
+        var data = 'types='+placeCatId+'&lat='+lat+'&lng='+lng+'&distance='+distance;
+//console.log(data);
+        $.ajax(url, {
+            type:'GET', 
+            data:data,
+            dataType: 'json'
+        }).done(function(result) {
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     },
     
     getNearbyPlaceInfo: function(params, success, fail) {
         // TODO
+        //var url = config.URL_BASE + config.URL_NEARBY_PLACE_INFO;
+        //url += '&' + services.getRequestCommonParameters();
+        var url = config.URL_NEARBY_PLACE_INFO;
+        var data = 'id=' + params.id;
+console.log(data);
+        $.ajax(url, {
+            type: 'GET',
+            data: data, 
+            dataType: 'json'
+        }).done(function(result) {
+console.log(result);
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+/*
         var result = {
             id: 1,
             name: 'place name',
             lat: 38.858364,
             lng: 16.549469,
-            address: {
-                road: 'Via... n...',
-                city: 'Catanzaro'
-            }
+            address: 'Via... n..., Catanzaro'
         };
         success(result);
+*/
     },
     
     
@@ -378,6 +406,7 @@ result.nuove = [
         }).done(function(result) {
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('FAIL', jqXHR);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     }

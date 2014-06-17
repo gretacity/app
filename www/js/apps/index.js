@@ -74,7 +74,9 @@ var app = {
         });
         nearbyResultsPage.on('pagebeforeshow', self.beforeShowNearbyResultsPage);        
         var nearbyPlaceInfoPage = $('#nearbyPlaceInfoPage');
+        nearbyPlaceInfoPage.on('pageinit', self.initNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
+        nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
     },
     onOnline: function() {
         $('#loginPage #loginButton').removeClass('ui-disabled');
@@ -1157,35 +1159,34 @@ console.log(result);
     
     
     nearbyCategoryId: null,
+    nearbyCategoryName: null,
     nearbyCurrentPos: null,
     nearbyDistance: config.NEARBY_DEFAULT_DISTANCE,
     initNearbyPage: function() {
         self.nearbyCurrentPos = null;
-        var placeTypes = [
-            {id: 1, catName: 'Ristoranti'},
-            {id: 2, catName: 'Farmacie'}
-        ];
-        var html = '';
-        for(var i in placeTypes) {
-            var place = placeTypes[i];
-            html += '<li><a href="javascript:self.showNearbyPlaces(' + place.id + ')">' + place.catName + '</a></li>';
-        }
-        $('#nearbyPage #placeTypeList').html(html).listview('refresh');
+        services.getNearbyPlaceTypes(function(placeTypes) {
+            var html = '';
+            for(var i in placeTypes) {
+                var place = placeTypes[i];
+                html += '<li><a href="javascript:self.showNearbyPlaces(\'' + place.key + '\', \'' + place.name.replace(/'/g, "''") + '\')">' + place.name.capitalize() + '</a></li>';
+            }
+            $('#nearbyPage #placeTypeList').html(html).listview('refresh');
+        });        
     },
     beforeShowNearbyPage: function() {
         geoLocation.acquireGeoCoordinates(function(result) {
-            //console.log(result);
             self.nearbyCurrentPos = result;
         }, function(e) {
             console.log(e);
         });
     },
-    showNearbyPlaces: function(catId) {
+    showNearbyPlaces: function(catId, catName) {
         if(self.nearbyCurrentPos == null) {
             helper.alert('Impossibile recuperare la tua posizione', null, 'Localizzazione GPS');
             return;
         }
         self.nearbyCategoryId = catId;
+        self.nearbyCategoryName = catName;
         $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
     },
     beforeShowNearbyResultsPage: function() {
@@ -1198,23 +1199,32 @@ console.log(result);
     },
     searchNearbyPlaces: function() {
         $.mobile.loading('show');
-        self.nearbyDistance = $('#nearbyResultsPage #nearbySearchSlider').val();
+        var page = $('#nearbyResultsPage');
+        self.nearbyDistance = $('#nearbySearchSlider', page).val();
         var options = {
-            coords: self.nearbyCurrentPos,
+            coords: self.nearbyCurrentPos.coords,
             distance: self.nearbyDistance,
             placeCatId: self.nearbyCategoryId
-        };
+        };        
+        $('#currentPlaceType', page).html(self.nearbyCategoryName.toUpperCase());
+        $('#placesList', page).html('').listview('refresh');
         services.getNearbyPlaces(options, function(result) {
 //console.dir(result);
             var html = '';
-            for(var i in result) {
-                var row = result[i];
-                html += '<li><a href="javascript:self.showNearbyPlaceInfo(' + row.id + ')">' 
-                            + row.name + '<label><small>' 
-                            + row.address.road + ', ' + row.address.city
-                            + '</small></label></a></li>';
+            if(result.length > 0) {
+                for(var i in result) {
+                    var row = result[i];
+                    html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.ref + '\')">' 
+                                + row.name + '<label><small>' 
+                                + (row.phoneNumber != null ? 'Tel. ' + row.phoneNumber : '') + '<br />'
+                                + row.address
+                                + '</small><br /><b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b></label></a></li>';
+                    // distance in meters
+                }
+            } else {
+                html = '<li>Nessun risultato</li>';
             }
-            $('#nearbyResultsPage #placesList').html(html).listview('refresh');
+            $('#placesList', page).html(html).listview('refresh');
             $.mobile.silentScroll();
             $.mobile.loading('hide');
         }, function(e, requireLogin) {
@@ -1228,20 +1238,97 @@ console.log(result);
     },
     
     nearbyPlaceId: null,
-    showNearbyPlaceInfo: function(placeId) {
+    showNearbyPlace: function(placeId) {
+        if(typeof(google) == 'undefined') return;
         self.nearbyPlaceId = placeId;
         $.mobile.changePage('#nearbyPlaceInfoPage');
     },
     
+    
+    initNearbyPlaceInfo: function() {
+        
+        
+        /*self.mapsSetMarker();
+
+        
+        self.marker = new google.maps.Marker({
+            position: markerPoint,
+            map: self.map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            title: 'Luogo della segnalazione'
+        });
+        self.map.panTo(markerPoint);
+        self.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
+        google.maps.event.addListener(
+            self.marker, 
+            'dragend', 
+            function() {
+                self.latLng.lat = self.marker.getPosition().lat();
+                self.latLng.lng = self.marker.getPosition().lng();
+        });
+        var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
+        infowindow.open(self.map, self.marker);*/
+        
+        
+    },
     
     beforeShowNearbyPlaceInfo: function() {
         if(self.nearbyPlaceId == null) {
             $.mobile.changePage('#nearbyResultsPage');
             return;
         }
+    },
+    
+    showNearbyPlaceInfo: function() {
         $.mobile.loading('show');
+        if(self.nearbyPlaceId == null) return;
+        var showMap = self.nearbyCurrentPos != null;
+        if(showMap) {
+            var lat = self.nearbyCurrentPos.coords.latitude, lng = self.nearbyCurrentPos.coords.longitude;
+            var options = {
+                zoom: config.GOOGLE_MAPS_ZOOM,
+                center: new google.maps.LatLng(lat, lng),
+                mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID)
+            };
+            var map = new google.maps.Map(document.getElementById('nearbyPlaceMap'), options);
+            $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
+            var startingMarkerPoint = new google.maps.LatLng(lat, lng);
+            var startingMarker = new google.maps.Marker({
+                position: startingMarkerPoint,
+                map: map,
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                title: 'La tua positione'
+            });
+            map.panTo(startingMarkerPoint);
+            map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
+            var infowindow = new google.maps.InfoWindow({content: '<div>La tua posizione</div>'});
+            infowindow.open(map, startingMarker);
+        }
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId}, function(result) {
+console.log(self.nearbyPlaceId);
+            if(showMap) {
+                var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
+                var endingMarker = new google.maps.Marker({
+                    position: endingMarkerPoint,
+                    map: map,
+                    draggable: false,
+                    animation: google.maps.Animation.DROP,
+                    title: result.name
+                });
+                //map.panTo(endingMarkerPoint);
+                //map.setCenter(endingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
+                var infowindow2 = new google.maps.InfoWindow({content: '<div>' + result.name + '</div>'});
+                infowindow2.open(map, endingMarker);
+                
+                var bounds = new google.maps.LatLngBounds();
+                bounds.extend(startingMarker.position);
+                bounds.extend(endingMarker.position);
+                map.fitBounds(bounds);
+            }
             $.mobile.loading('hide');
+            
         }, function(e, requireLogin) {
             $.mobile.loading('hide');
             if(requireLogin) {

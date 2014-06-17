@@ -55,8 +55,9 @@ var config = {
     URL_REPORTING_SEND: '/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
     URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',
     
-    URL_NEARBY_PLACES: '',  // TODO
-    
+    // TODO
+    URL_NEARBY_PLACES: 'http://bitroad.it/google/places.php',
+    URL_NEARBY_PLACE_INFO: 'http://bitroad.it/google/info.php',
     
     
     NEARBY_DEFAULT_DISTANCE: 2, // In KM
@@ -217,5 +218,10 @@ Date.parseFromYMDHMS = function(dateText) {
     var timeParts = parts[1].split(':');
     return new Date(dateParts[0], parseInt(dateParts[1])-1, 
                     dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
+}
+
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 

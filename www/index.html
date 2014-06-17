@@ -503,8 +503,8 @@
                 <a href="#nearbyPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
             </div>
             <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:10px;top:45px;z-index:100;background:#fff;">
-                <label>Cerca nel raggio (in Km) di </label>
-                <input type="range" id="nearbySearchSlider" min="1" max="100" step="1" value="2" data-highlight="true" data-mini="true" />
+                <label>Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
+                <input type="range" id="nearbySearchSlider" min="1" max="50" step="1" value="2" data-highlight="true" data-mini="true" />
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;">
@@ -529,14 +529,8 @@
                 <h1>QUI vicino</h1>
                 <a href="#nearbyResultsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
             </div>
-            <div data-role="main" class="ui-content">
-                <h1>Name of the place</h1>
-                <div>adress of the place</div>
-                <div>city of the place</div>
-                <div>other refs (phone, email, etc...)</div>
-
-                View in Map (how to reach it)
-            
+            <div data-role="main" class="ui-content" style="margin:0;padding:0;text.align:center;">
+                <div id="nearbyPlaceMap" style="margin:0;padding:0;sswidth:100%;ssheight:100%;">View in Map</div>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">

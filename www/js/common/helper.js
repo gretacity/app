@@ -30,8 +30,10 @@ var helper = {
         var headhigh = $('[data-role="header"]').first().outerHeight(); //Get height of first page's header
         var foothigh = $('[data-role="footer"]').first().outerHeight(); //Get height of first page's header
         var $content=$('[data-role="main"]');
-        var contentpaddingwidth=parseInt(($content.css("padding-left")||'').replace("px", ""))+parseInt(($('[data-role="main"]').css("padding-right")||'').replace("px", ""));
-        var contentpaddingheight=parseInt(($content.css("padding-top")||'').replace("px", ""))+parseInt(($('[data-role="main"]').css("padding-bottom")||'').replace("px", ""));
+        var contentpaddingwidth = parseInt(($content.css("padding-left")||'').replace("px", ""))
+                                  + parseInt(($('[data-role="main"]').css("padding-right")||'').replace("px", ""));
+        var contentpaddingheight = parseInt(($content.css("padding-top")||'').replace("px", "")) 
+                                   + parseInt(($('[data-role="main"]').css("padding-bottom")||'').replace("px", ""));
         winhigh = winhigh - headhigh - foothigh - contentpaddingheight; 
         winwide = $(document).width(); //Get width of document
         winwide = winwide - contentpaddingwidth; 
@@ -143,7 +145,16 @@ var helper = {
         }
         if(number.length < 6) return false;
         return true;
-    }
+    },
     
-
+    
+    
+    distanceText: function(distanceInMt) {
+        //var km = (distanceInMt / 1000);
+        if(distanceInMt < 1000) {
+            return distanceInMt + ' metri';
+        } else {
+            return Math.floor(distanceInMt / 1000) + ' km e ' + (distanceInMt % 1000) + ' metri';
+        }
+    }
 }
