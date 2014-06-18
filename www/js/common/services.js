@@ -40,7 +40,8 @@ var services = {
                    '&email='+encodeURIComponent(params.email) + '&' + services.getRequestCommonParameters(true);
         $.ajax(url, {
             type: 'POST',
-            data: data
+            data: data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
         }).done(function(result) {
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -67,9 +68,12 @@ var services = {
     getInfoFromQrCode: function(code, successCallback, failCallback) {
         var url = config.URL_BASE + config.URL_QRCODE_GET_INFO;
         url += '&'+services.getRequestCommonParameters();
+//console.log(url);
+//console.log('qrcode=' + encodeURIComponent(code));
         $.ajax(url, {
             type: 'GET',
             data: 'qrcode=' + encodeURIComponent(code),
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
 //console.log('SUCCESS', result);//return;
@@ -80,8 +84,20 @@ var services = {
         });
     },
     
-    followQrCode: function(follow) {
-        // TODO
+    followQrCode: function(code, follow, success, fail) {
+        var url = config.URL_BASE + ((follow === true) ? config.URL_QRCODE_FOLLOW : config.URL_QRCODE_UNFOLLOW);
+        url += '&'+services.getRequestCommonParameters();
+        url += '&qrcode='+encodeURIComponent(code);
+//console.log(url);//return;
+        $.ajax(url, {
+            type: 'GET',
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result) {
+//console.log('SUCCESS', result);//return;
+            //if(success) success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            //if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     },
     
     leaveCommentOnQrCode: function(params, successCallback, failCallback) {
@@ -93,15 +109,13 @@ var services = {
         };
         var url = config.URL_BASE + config.URL_QRCODE_SEND_COMMENT;
         url += '&' + services.getRequestCommonParameters();
-//console.log(url, obj);
         $.ajax(url, {
             type: 'POST',
-            data: 'obj='+JSON.stringify(obj)
+            data: 'obj='+JSON.stringify(obj),
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
         }).done(function(result) {
-//console.log('SUCCESS', result);
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log('FAIL', textStatus);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -117,7 +131,7 @@ var services = {
     _subscribedChannels: null,  // cache results
     getSubscribedChannels: function(success, fail) {
         if(self._subscribedChannels != null) {
-console.log('FROM CACHE', self._subscribedChannels);
+//console.log('FROM CACHE', self._subscribedChannels);
             success(self._subscribedChannels);
             return;
         }
@@ -125,14 +139,13 @@ console.log('FROM CACHE', self._subscribedChannels);
         url += '&' + services.getRequestCommonParameters();
         $.ajax(url,{
             type:'GET',
-            dataType:'json'
+            dataType:'json',
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
         }).done(function(result) {
-//console.log("SUCCESS", result);
-console.log('FROM SERVER', result);
+//console.log('FROM SERVER', result);
             self._subscribedChannels = result;
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("FAIL", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -147,12 +160,11 @@ console.log('FROM SERVER', result);
         $.ajax(url,{
             type:'GET',
             data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType:'json'
         }).done(function(result) {
-//console.log("SUCCESS", result);
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("FAIL", textStatus);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -164,12 +176,11 @@ console.log('FROM SERVER', result);
         $.ajax(url,{
             type:'GET',
             data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType:'json'
         }).done(function(result) {
-//console.log("SUCCESS", result);
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("FAIL", textStatus);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -187,6 +198,7 @@ console.log('FROM SERVER', result);
         $.ajax(url,{
             type:'GET',
             data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType:'json'
         }).done(function(result) {
 //console.log("SUCCESS", result);
@@ -206,7 +218,8 @@ console.log('FROM SERVER', result);
         data = 'id_feed=' + params.channelId;
         $.ajax(url,{
             type:'GET',
-            data:data
+            data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
         }).done(function(result) {
 //console.log("SUCCESS", result);
             if(success) success(result);
@@ -228,6 +241,7 @@ console.log(data);//return;
         $.ajax(url,{
             type:'GET',
             data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json',
         }).done(function(result) {
 console.log("SUCCESS", result);
@@ -254,6 +268,7 @@ result.nuove = [
         $.ajax(url,{
             type:'GET',
             data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json',
         }).done(function(result) {
 //console.log("SUCCESS", result);
@@ -308,10 +323,13 @@ result.nuove = [
         $.ajax(url, {
             type:'GET', 
             data:data,
+            //timeout: 8000,  // 5 secs
             dataType: 'json'
         }).done(function(result) {
+console.log("NEARBYPLACES SUCCESS", result);            
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log("NEARBYPLACES FAIL", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -326,23 +344,15 @@ console.log(data);
         $.ajax(url, {
             type: 'GET',
             data: data, 
+            //timeout: 8000, // 8 secs
             dataType: 'json'
         }).done(function(result) {
-console.log(result);
+console.log("NEARBYPLACEINFO SUCCESS", result);
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log("NEARBYPLACEINFO FAIL ", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
-/*
-        var result = {
-            id: 1,
-            name: 'place name',
-            lat: 38.858364,
-            lng: 16.549469,
-            address: 'Via... n..., Catanzaro'
-        };
-        success(result);
-*/
     },
     
     
@@ -351,6 +361,7 @@ console.log(result);
     //////////////////////////////////////////////////////
     // REPORTING RELATED FUNCTIONS
     _reportingCategories: null,  // cache results
+    // TODO These are QR-code categories not reporting categories !!!
     getReportingCategories: function(successCallbak, failCallback) {
         if(services._reportingCategories != null) {
             successCallbak(services._reportingCategories);
@@ -359,6 +370,7 @@ console.log(result);
         var url = config.URL_BASE + config.URL_REPORTING_CATEGORY_LIST + '&' + services.getRequestCommonParameters();
         $.ajax(url, {
             type: 'GET',
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
             services._reportingCategories = result;
@@ -372,7 +384,7 @@ console.log(result);
         var url = config.URL_BASE + config.URL_REPORTING_SEND + '&' + services.getRequestCommonParameters();
         var obj = {
             segnalazione: {
-                r_qr_code_id: '',
+                r_qr_code_id: reporting.qrCode,
                 lat: reporting.latLng.lat,
                 lon: reporting.latLng.lng,
                 id_categoria: reporting.categoryId,
@@ -393,6 +405,7 @@ console.log(result);
             //async: false,
             url: url, 
             data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
+            //timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'text',
         }).done(function(result) {
             successCallback();
@@ -407,6 +420,7 @@ console.log(result);
         $.ajax(url, {
             type: 'get',
             data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
             successCallback(result);

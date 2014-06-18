@@ -1,6 +1,7 @@
 var app = {
     self: null,
-    language : '',
+    language: '',
+    pushNotification: null,
     initialize: function() {
         self = this;
         this.bindEvents();
@@ -53,6 +54,8 @@ var app = {
         reportingListPage.on('pagebeforeshow', self.loadReportingItems);
         $('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
         //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
+        var reportingMethodPage = $('#reportingMethodPage');
+        reportingMethodPage.on('pageinit', self.initReportingMethodPage);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', self.initReportingPage);
         reportingPage.on('pagebeforeshow', self.showReportingPage);
@@ -98,6 +101,11 @@ var app = {
                 function () {}
             );
         }
+        pushNotificationHelper.register(function(result) {
+            //helper.alert('success ' + result);
+        }, function(e) {
+            //helper.alert('error ' + e);
+        });
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -168,6 +176,7 @@ var app = {
     },
     
     register: function() {
+        var page = $('#registrationPage');
         var params = {lastname: '', firstname: '', phone: '', email: ''};
         // Validation
         var hasErrors = false;
@@ -176,12 +185,12 @@ var app = {
                               'email'];
         for(var i in requiredFields) {
             var fieldId = requiredFields[i];
-            var fieldVal = $('#' + fieldId).val().trim();
+            var fieldVal = $('#' + fieldId, page).val().trim();
             if(fieldVal == '') {
-                $('label[for="' + fieldId + '"]').addClass('fielderror');
+                $('label[for="' + fieldId + '"]', page).addClass('fielderror');
                 hasErrors = true;
             } else {
-                $('label[for="' + fieldId + '"]').removeClass('fielderror');
+                $('label[for="' + fieldId + '"]', page).removeClass('fielderror');
                 eval('params.'+fieldId+'="'+fieldVal+'"');
             }
         }
@@ -193,16 +202,22 @@ var app = {
         if(!helper.isPhoneNumberValid(params.phone)) {
             $('label[for="phone"]').addClass('fielderror');
             helper.alert('Inserisci un numero di telefono valido', function() {
-                $('#phone').focus();
+                $('#phone', page).focus();
             }, 'Registrazione');
             return;
         }*/
         // Specific validation for email
         if(!helper.isEmailValid(params.email)) {
-            $('label[for="email"]').addClass('fielderror');
+            $('label[for="email"]', page).addClass('fielderror');
             helper.alert('Inserisci un indirizzo email valido', function() {
-                $('#email').focus();
+                $('#email', page).focus();
             }, 'Registrazione');
+            return;
+        }
+        // Specific validation for 
+        if(!$('#privacyPolicyAccepted', page).is(':checked') ||
+           !$('#disclaimerPolicyAccepted', page).is(':checked')) {
+            helper.alert('E\' necessario acconsentire al trattamento dei dati personali e accettare le note legali');
             return;
         }
         // Registration
@@ -655,11 +670,13 @@ if(onlyNew === true) {
     
     
     
-    
+    currentQrCodeInfo: null,
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(code) {
 
             if(config.QR_CODE_TEST != '') code = config.QR_CODE_TEST;
+            
+            self.currentQrCodeInfo = code;
             
             $.mobile.loading('show');
             $('#qrCodeInfoPage #getInfoButton').addClass('ui-disabled');
@@ -677,7 +694,7 @@ if(onlyNew === true) {
                 // Format result
                 var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
                            '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
-                html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.following ? ' checked' : '') + '/> <label for="following">segui</label>';
+                html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
                 
                 var hasSlider = false;
                 if(result.foto.length > 0) {
@@ -752,8 +769,8 @@ if(onlyNew === true) {
     },
     
     followQrCode: function() {
-        var follow = $('#qrCodeInfoPage #infoText #following').is(':checked');
-        services.followQrCode(follow);
+        var follow = $('#qrCodeInfoPage #infoResult #following').is(':checked');
+        services.followQrCode(self.currentQrCodeInfo, follow);
     },
     
     leaveCommentOnQrCode: function() {
@@ -793,6 +810,7 @@ if(onlyNew === true) {
             } else {
                 for(var i in result) {
                     var row = result[i];
+console.log(row);
                     /*[{
                         "id":"95",
                         "descrizione_problema":"asdadasdsa",
@@ -895,6 +913,36 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
     
     
     
+    
+    initReportingMethodPage: function() {
+        var page = $('#reportingMethodPage');
+        $('#positionFromQrCodeButton', page).on('click', function() {
+            barcodeReader.acquireQrCode(function(code) {
+                self.reportingQrCode = code;
+                self.reportingUpdateLatLng = true;
+                self.reportingLocalizationMode = self.REPORTING_LOCALIZATION_MODE_QRCODE;
+                $.mobile.changePage('#reportingPage', {transition: 'slide'});
+            });
+        });
+        $('#manualPositionButton', page).on('click', function() {
+            self.reportingQrCode = null;
+            self.reportingUpdateLatLng = true;
+            self.reportingLocalizationMode = self.REPORTING_LOCALIZATION_MODE_MANUAL;
+            $.mobile.changePage('#reportingPage', {transition: 'slide'});
+        });
+    },
+    
+    
+    
+    
+    
+    
+    
+    reportingQrCode : null,
+    reportingLocalizationMode: null,
+    REPORTING_LOCALIZATION_MODE_QRCODE: 1,
+    REPORTING_LOCALIZATION_MODE_MANUAL: 2,
+    reportingUpdateLatLng: false,
     initReportingPage: function() {
         var page = $('#reportingPage');
         $('#sendReportingButton', page).addClass('ui-disabled');
@@ -915,30 +963,46 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
         });
         var html2 = '';
         for(var i = 0; i < config.REPORTING_MAX_PHOTOS; i++) {
-            html2 += '<li><a href="#" onclick="self.viewReportingPhoto()">' +
-                        '<img src="" class="report-imagelist-missing" data-pos="0" data-acquired="0" />' +
+            html2 += '<li><a href="#" onclick="self.viewReportingPhoto('+i+')">' +
+                        '<img src="" class="report-imagelist-missing" data-pos="'+i+'" data-acquired="0" />' +
                     '</a></li>';
         }
         $('#photoList', page).html(html2);
     },
     showReportingPage: function() {
-        if(self.latLng.lat > 0) return;
         var page = $('#reportingPage');
+        if(self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE) {
+            // Use QR-code to set position
+            $('#qrCode', page).html(self.reportingQrCode);
+            $('#qrCodeHeader', page).show();
+            $('#qrCodeRow', page).show();
+            $('#locationHeader', page).hide();
+            $('#locationRow', page).hide();
+        } else {
+            //self.REPORTING_LOCALIZATION_MODE_MANUAL
+            $('#qrCodeHeader', page).hide();
+            $('#qrCodeRow', page).hide();
+            $('#locationHeader', page).show();
+            $('#locationRow', page).show();
+        }
+        if((self.latLng.lat > 0) && (!self.reportingUpdateLatLng)) return;
         $('#loaderIndicator', page).show();
         geoLocation.acquireGeoCoordinates(function(pos) {
             self.latLng.lat = pos.coords.latitude;
             self.latLng.lng = pos.coords.longitude;
-            geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
+            if((self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_MANUAL) || self.reportingUpdateLatLng) {
+                geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
 console.log(result);
-                var routeEl = $('#locationInfo span.route', page);
-                var cityEl =  $('#locationInfo span.city', page);
-                var provEl =  $('#locationInfo span.prov', page);
-                // Don't override data
-                if((routeEl.html() != '') || (cityEl.html() != '') || (provEl.html() != '')) return;
-                routeEl.html(result.road + " " + result.streetNumber);
-                cityEl.html(result.city);
-                provEl.html(result.prov);
-            });
+                    var routeEl = $('#locationInfo span.route', page);
+                    var cityEl =  $('#locationInfo span.city', page);
+                    var provEl =  $('#locationInfo span.prov', page);
+                    // Don't override data
+                    if((routeEl.html() != '') || (cityEl.html() != '') || (provEl.html() != '')) return;
+                    routeEl.html(result.road + " " + result.streetNumber);
+                    cityEl.html(result.city);
+                    provEl.html(result.prov);
+                });
+            }
             $('#loaderIndicator', page).hide();
             $('#sendReportingButton', page).removeClass('ui-disabled');
         }, function(e) {
@@ -1025,6 +1089,7 @@ console.log(result);
         $('#reportingPage #description').html(
             $('#reportingDescriptionPage textarea').val()
         );
+        self.reportingUpdateLatLng = false;
         $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
     },
     
@@ -1050,6 +1115,7 @@ console.log(result);
         $('#reportingPage #locationInfo span.route').html(
             $('#reportingLocationPage textarea#route').val()
         );
+        self.reportingUpdateLatLng = false;
         $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
     },
     
@@ -1077,8 +1143,8 @@ console.log(result);
             $('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
         });
     },
-    viewReportingPhoto: function() {
-        var imgEl = $('#reportingPage #photoList li a img[data-acquired="1"]');
+    viewReportingPhoto: function(pos) {
+        var imgEl = $('#reportingPage #photoList li a img[data-acquired="1"][data-pos="' + pos + '"]');
         if(imgEl.length == 0) return;
         $('#reportingPhotoPage img').attr('src', imgEl.attr('src')).attr('data-pos', imgEl.attr('data-pos'));
         var width = $('#reportingPhotoPage').width();
@@ -1090,7 +1156,11 @@ console.log(result);
         imgEl.attr('src', '');
         var pos = imgEl.attr('data-pos');
         $('#reportingPage #photoList li a img[data-pos='+pos+']').attr('src', '').removeClass('report-imagelist-done').addClass('report-imagelist-missing').attr('data-acquired', '0');
+        self.reportingUpdateLatLng = false;
         $.mobile.changePage('#reportingPage', {transition: 'pop', reverse: true});
+    },
+    removeAllReportingPhoto: function() {
+        $('#reportingPage #photoList li a img').attr('src', '').removeClass('report-imagelist-done').addClass('report-imagelist-missing').attr('data-acquired', '0');
     },
     
     sendReporting: function() {
@@ -1101,6 +1171,7 @@ console.log(result);
         var city = $('#locationInfo span.city', reportingPage).html().trim();
         var hasPhoto = ($('#photoList li a img[data-acquired="1"]', reportingPage).length > 0);*/
         var reporting = {
+            qrCode: $('#qrCode', page).html(),
             latLng: self.latLng,
             categoryId: $('#reportingCategory', reportingPage).val(),
             road: $('#locationInfo span.route', reportingPage).html().trim(),
@@ -1116,19 +1187,19 @@ console.log(result);
             reporting.photos.push(src.substr(pos+7));
         });
         
-        //console.log(reporting);
-        
         var errors = [];
         if(reporting.categoryId == '0') errors.push('- seleziona la categoria');
-        if(reporting.prov == '') errors.push('- specifica la provincia');
-        if((reporting.road == '') || (reporting.comune == '')) errors.push('- specifica l\'indirizzo');
+        if(self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_MANUAL) {
+            if(reporting.prov == '') errors.push('- specifica la provincia');
+            if((reporting.road == '') || (reporting.comune == '')) errors.push('- specifica l\'indirizzo');
+        }
         if(reporting.description == '') errors.push('- descrivi il problema');
         if(reporting.photos.length == 0) errors.push('- scatta almeno una foto');
         if(errors.length > 0) {
             helper.alert(errors.join('\n', null, 'Invia segnalazione'));
             return;
         }
-        
+//console.log(reporting);return;
         var initialValue = $('#sendReportingButton', page).html();
         $('#sendReportingButton', page).html('Invio...').addClass('ui-disabled');
         $.mobile.loading('show');
@@ -1141,7 +1212,7 @@ console.log(result);
             self.latLng.lat = 0;
             self.latLng.lng = 0;
             $('#description', page).html('');
-            $('#photoList', page).html('');
+            self.removeAllReportingPhoto();
             helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
                 $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
             }, 'Invia segnalazione');
@@ -1298,7 +1369,6 @@ console.log(result);
             $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
         }
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId}, function(result) {
-console.log(self.nearbyPlaceId);
             if(showMap) {
                 var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
                 var endingMarker = new google.maps.Marker({

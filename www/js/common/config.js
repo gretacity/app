@@ -27,8 +27,10 @@ var config = {
     LOGIN_DEFAULT_PASSWORD: '',
     
     
-    REPORTING_MAX_PHOTOS: 1,
+    REPORTING_MAX_PHOTOS: 3,
     
+    
+    REQUEST_DEFAULT_TIMEOUT: 1000,  // 1 sec
     
     URL_BASE: 'http://www.gretacity.com/test',
     
@@ -48,11 +50,15 @@ var config = {
     URL_NEWS_DETAIL: '/web/index.php?mode=module&p=app_services&a=get_notizia',
     
     //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
-    URL_QRCODE_GET_INFO: '/web/index.php?p=qrcode&a=get&mode=module',   // qrcode=1000000769
+    URL_QRCODE_GET_INFO: '/web/index.php?p=app_services&a=get&mode=module',   // qrcode=1000000769
     URL_QRCODE_SEND_COMMENT: '/web/index.php?mode=module&p=commenti&s=commenti&s_t=add_app',
     
+    //params: qrcode
+    URL_QRCODE_FOLLOW: '/web/index.php?mode=module&p=app_services&a=follow',
+    URL_QRCODE_UNFOLLOW: '/web/index.php?mode=module&p=app_services&a=unfollow',
+    
     URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
-    URL_REPORTING_SEND: '/web/index.php?p=segnalazioni_utente&mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
+    URL_REPORTING_SEND: '/web/index.php?mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
     URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',
     
     // TODO
