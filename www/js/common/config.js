@@ -30,12 +30,18 @@ var config = {
     REPORTING_MAX_PHOTOS: 3,
     
     
-    REQUEST_DEFAULT_TIMEOUT: 1000,  // 1 sec
+    REQUEST_DEFAULT_TIMEOUT: 3000,  // 3 secs
     
     URL_BASE: 'http://www.gretacity.com/test',
     
+    // TODO
+    URL_NOTIFICATION_REGISTER: '/web/index.php?mode=module',
+    
     URL_USER_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     URL_USER_REGISTER: '/web/index.php?mode=module&p=login&s=add_user',
+    
+    URL_PROFILE_LOAD: '/web/index.php?mode=module&p=login&s=get_user',
+    URL_PROFILE_UPDATE: '/web/index.php?mode=module&p=login&s=update_user',
     
     URL_NEWS_NEARBY_LOCATION: '/web/index.php?mode=module&p=app_services&a=comuni',
     // Ricerca comuni per nome
@@ -48,6 +54,10 @@ var config = {
     URL_NEWS_UNSUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=rem_feed',
     URL_NEWS_LIST: '/web/index.php?mode=module&p=app_services&a=get_notizie',
     URL_NEWS_DETAIL: '/web/index.php?mode=module&p=app_services&a=get_notizia',
+    
+    // TODO Message URLs
+    // TODO TODO TODO TODO
+    
     
     //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
     URL_QRCODE_GET_INFO: '/web/index.php?p=app_services&a=get&mode=module',   // qrcode=1000000769
@@ -129,8 +139,24 @@ var config = {
     },
     setNativeBaseURL: function(url) {
         window.localStorage.setItem(config.NATIVE_BASE_URL_KEY, url);
-    }
+    },
     
+    
+    USER_PROFILE_HAS_BEEN_SET_KEY: 'gretacity_userprofilehasbeenset',
+    userProfileHasBeenSet: function(val) {
+        if(typeof(val) != 'undefined') {
+            window.localStorage.setItem(config.USER_PROFILE_HAS_BEEN_SET_KEY, !!val);
+        }
+        return (window.localStorage.getItem(config.USER_PROFILE_HAS_BEEN_SET_KEY) || false);
+    },
+    
+    USER_LAST_LOGIN_USERNAME_KEY: 'gretacity_userlastloginusername',
+    userLastLoginUsername: function(val) {
+        if(typeof(val) != 'undefined') {
+            window.localStorage.setItem(config.USER_LAST_LOGIN_USERNAME_KEY, val);
+        }
+        return (window.localStorage.getItem(config.USER_LAST_LOGIN_USERNAME_KEY) || '');
+    }
 };
 
 

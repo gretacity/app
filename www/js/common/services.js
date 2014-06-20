@@ -62,6 +62,60 @@ var services = {
     
     
     
+    
+    
+    //////////////////////////////////////////////////////
+    // PROFILE RELATED FUNCTIONS
+    
+    getProfile: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_PROFILE_LOAD;
+        url += '&' + services.getRequestCommonParameters();
+        $.ajax(url, {
+            type:'GET',
+            dataType:'json',
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result) {
+console.log('SUCCESS', result);//return;
+            var r = {
+                firstname : result.anagrafica[0].nome,
+                lastname : result.anagrafica[0].cognome,
+                email : result.user.email,
+                phone: result.anagrafica[0].telefono,
+                city: {
+                    id: result.anagrafica[0].dic_comune_id,
+                    name: result.anagrafica[0].comune
+                }
+            };
+            success(r);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('FAIL', textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+    
+    updateProfile: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_PROFILE_UPDATE;
+        url += '&' + services.getRequestCommonParameters();
+        data = 'cognome=' + encodeURIComponent(params.profile.lastname) +
+               '&nome=' + encodeURIComponent(params.profile.firstname) +
+               '&email=' + encodeURIComponent(params.profile.email) +
+               '&id_comune=' + encodeURIComponent(params.profile.city.id);
+//console.log(url, data);
+        $.ajax(url, {
+            type: 'POST',
+            data: data,
+            //dataType: 'json',
+        }).done(function(result) {
+//console.log('SUCCESS', result);//return;
+            success(result);
+            config.userProfileHasBeenSet(true);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log('FAIL', textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+    
+    
     //////////////////////////////////////////////////////
     // QRCODE INFO RELATED FUNCTIONS
     
@@ -326,10 +380,10 @@ result.nuove = [
             //timeout: 8000,  // 5 secs
             dataType: 'json'
         }).done(function(result) {
-console.log("NEARBYPLACES SUCCESS", result);            
+//console.log("NEARBYPLACES SUCCESS", result);            
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log("NEARBYPLACES FAIL", jqXHR);
+//console.log("NEARBYPLACES FAIL", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -340,17 +394,17 @@ console.log("NEARBYPLACES FAIL", jqXHR);
         //url += '&' + services.getRequestCommonParameters();
         var url = config.URL_NEARBY_PLACE_INFO;
         var data = 'id=' + params.id;
-console.log(data);
+//console.log(data);
         $.ajax(url, {
             type: 'GET',
             data: data, 
             //timeout: 8000, // 8 secs
             dataType: 'json'
         }).done(function(result) {
-console.log("NEARBYPLACEINFO SUCCESS", result);
+//console.log("NEARBYPLACEINFO SUCCESS", result);
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log("NEARBYPLACEINFO FAIL ", jqXHR);
+//console.log("NEARBYPLACEINFO FAIL ", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -428,5 +482,36 @@ console.log("NEARBYPLACEINFO FAIL ", jqXHR);
 console.log('FAIL', jqXHR);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
+    },
+
+
+
+
+
+
+
+    //////////////////////////////////////////////////////
+    // COMMENTS RELATED FUNCTIONS
+    
+    getComments: function(params, success, fail) {
+        var result = [
+            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
+            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
+            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
+            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
+            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
+        ];
+        success(result);
+    },
+            
+            
+    getCommentDetail: function(params, success, fail) {
+        // TODO
+    },
+            
+            
+    leaveComment: function(params, success, fail) {
+        // TODO
     }
+    
 }

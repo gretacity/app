@@ -19,13 +19,24 @@ var app = {
         if(config.EMULATE_ON_BROWSER) self.onDeviceReady();
         
         var loginPage = $('#loginPage');
-        loginPage.on('pagebeforeshow', function() {$('#password', loginPage).val('');});
+        loginPage.on('pagebeforeshow', function() {
+            $('#username', loginPage).val(config.userLastLoginUsername());
+            $('#password', loginPage).val('');
+        });
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
         $('#loginButton', loginPage).on('click', self.login);
         var profilePage = $('#profilePage');
-        profilePage.on('pagebeforeshow', self.initProfilePage);
-        //$('#logoutButton', profilePage).on('click', self.logout);
+        profilePage.on('pageshow', self.showProfilePage);
+        var profileNamePage = $('#profileNamePage');
+        profileNamePage.on('pageinit', self.intiProfileNamePage);
+        profileNamePage.on('pageshow', self.showProfileNamePage);
+        var profileCityPage = $('#profileCityPage');
+        profileCityPage.on('pageinit', self.initProfileCityPage);
+        profileCityPage.on('pageshow', self.showProfileCityPage);
+        var profileChannelsPage = $('#profileChannelsPage');
+        profileChannelsPage.on('pageinit', self.initProfileChannelPage);
+        profileChannelsPage.on('pagebeforeshow', self.showProfileChannelsPage);
         var channelSubscriptionPage = $('#channelSubscriptionPage');
         channelSubscriptionPage.on('pagebeforeshow', self.initChannelSubscriptionPageBeforeShow);
         channelSubscriptionPage.on('pageshow', self.initChannelSubscriptionPage);
@@ -43,11 +54,14 @@ var app = {
         $('#newContentReceivedButton', newsPage).on('click', self.showNewChannelContentReceived);
         var newsDetailPage = $('#newsDetailPage');
         newsDetailPage.on('pagebeforeshow', self.initNewsDetailPage);
+        var commentListPage = $('#commentListPage');
+        commentListPage.on('pageinit', self.initCommentListPage);
+        commentListPage.on('pageshow', self.showCommentListPage);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', self.register);
         var homePage = $('#homePage');
         homePage.on('pageinit', self.initHome);
-        $('#logoutButton', homePage).on('click', self.logout);
+        homePage.on('pagebeforeshow', self.showHome);
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
@@ -157,6 +171,7 @@ var app = {
             $('#password').removeClass('ui-disabled').val('');
             $('#loginButton').removeClass('ui-disabled');
             $('#registerPageButton').removeClass('ui-disabled');
+            config.userLastLoginUsername(username);
             $.mobile.changePage('index.html#homePage');
         }, function(e) {
             $.mobile.loading('hide');
@@ -237,25 +252,168 @@ var app = {
     
     
     initHome: function() {
-        services.getSummaryData(function(result) {
+        $('#logoutButton', homePage).on('click', self.logout);
+        /*services.getSummaryData(function(result) {
             // Success
             $('#reportingCount').html(result.reportingCount);
             $('#newsCount').html(result.newsCount);
             $('#commentsCount').html(result.commentsCount);
         }, function(e) {
             // Error occurred
-            // che famo?
-        });
-        
+        });*/
+    },
+    showHome: function() {
+        if(!config.userProfileHasBeenSet()) {
+            // DO SOMETHING
+            helper.alert('Il tuo profilo non è stato ancora impostato', function() {
+                $.mobile.changePage('#profilePage');
+            }, 'Profilo');
+        }
     },
     
     
     
+    userProfile: null,
+    showProfilePage: function() {
+        if(self.userProfile != null) {
+            self.fillProfilePage();
+            return;
+        }
+        $.mobile.loading('show');
+        services.getProfile(null, function(result) {
+            self.userProfile = result;
+            self.fillProfilePage();
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert(e, null, 'An Error Occurred')
+        });
+    },
+    fillProfilePage: function() {
+        var page = $('#profilePage');
+        $('#profileFirstname', page).html(self.userProfile.firstname);
+        $('#profileLastname', page).html(self.userProfile.lastname);
+        $('#profileEmail', page).html(self.userProfile.email);
+        $('#profileCity', page).html((self.userProfile.city.name || '') == '' ? 
+                                     'Comune non specificato' : 
+                                     self.userProfile.city.name);
+    },
     
     
-    initProfilePage: function() {
+    
+    intiProfileNamePage: function() {
+        $('#profileNamePage #saveProfileNameButton').on('click', self.updateProfileName);
+    },
+    showProfileNamePage: function() {
+        if(self.userProfile == null) {
+            $.mobile.changePage('#profilePage');
+            return;
+        }
+        // Get last name, first name and email address from user profile
+        var page = $('#profileNamePage');
+        $('#firstname', page).val(self.userProfile.firstname);
+        $('#lastname', page).val(self.userProfile.lastname);
+        $('#email', page).val(self.userProfile.email);
+    },
+    updateProfileName: function() {
+        var page = $('#profileNamePage');
+        // Validate data
+        var firstname = $('#firstname', page).val().trim();
+        var lastname = $('#lastname', page).val().trim();
+        var email = $('#email', page).val().trim();
+        var errors = [];
+        if(firstname == '') errors.push('il nome');
+        if(lastname == '') errors.push('il cognome');
+        if(email == '') errors.push('l\'email');
+        if(errors.length > 0) {
+            var message = 'Inserisci ' + errors.join(', ');
+            helper.alert(message, null, 'Aggiorna profilo');
+            return;
+        }
+        if(!helper.isEmailValid(email)) {
+            helper.alert('L\'email inserita non è corretta', function() {
+                $('#email', page).focus();
+            }, 'Aggiorna profilo');
+            return;
+        }
+        // Update user profile
+        self.userProfile.firstname = firstname;
+        self.userProfile.lastname = lastname;
+        self.userProfile.email = email;
+        services.updateProfile({profile: self.userProfile}, function() {
+            // and navigate back
+            $.mobile.back();
+            //$.mobile.changePage('#profilePage');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Si è verificato un errore durante il salvataggio', null, 'Il tuo profilo');
+        });
+    },
+    
+    initProfileCityPage: function() {
+        $('#profileCityPage #cityName').on('input', self.profileCityNameChanged);
+    },
+    showProfileCityPage: function() {
+        if(self.userProfile == null) {
+            $.mobile.changePage('#profilePage');
+            return;
+        }
+        var page = $('#profileCityPage');
+        $('#cityName', page).val('');
+        $('#citySuggestions', page).empty();
+    },
+    
+    
+    profileCityNameChanged: function() {
+        var val = $(this).val();
+        if(val.length >= 4) {
+            services.getLocationsByName({name:val}, function(result) {
+                var html = '';
+                var max_rows = 20;
+                var ix = 0;
+                for(var i in result) {
+                    if(ix++ >= max_rows) {
+                        html += '<li>Altri risultati omessi</li>';
+                        break;
+                    }
+                    var row = result[i];
+                    html += '<li><a href="javascript:self.setProfileCity(\'' + row.nome.trim().replace(/'/g, "\\'") + '\', '+row.id+')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
+                }
+                $('#profileCityPage #citySuggestions').html(html).listview("refresh");
+            });
+        }
+    },
+    setProfileCity: function(cityName, cityId) {
+        self.userProfile.city.id = cityId;
+        self.userProfile.city.name = cityName;
+        services.updateProfile({profile: self.userProfile}, function() {
+            // and navigate back
+            $.mobile.back();
+            //$.mobile.changePage('#profilePage');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Si è verificato un errore durante il salvataggio', null, 'Il tuo profilo');
+        });
+    },
+    
+    
+    
+    initProfileChannelsPage: function() {
+    },
+    
+    showProfileChannelsPage: function() {
         services.getSubscribedChannels(function(result) {
-            var page = $('#profilePage');
+            var page = $('#profileChannelsPage');
             var html = '<li data-role="list-divider"><label>I tuoi Canali</label></li>';
             for(var i in result) {
                 var channelId = result[i].id_feed;
@@ -318,7 +476,7 @@ var app = {
                 var l = result[i];
                 html += '<option data-regid="' + l.id_regione + '" data-provid="' + l.id_provincia + '" data-cityid="' + l.id + '">' + l.nome + '</option>';
             }
-            html += '<option value="manual">Cerca manualmente</option>';
+            html += '<option value="manual">RICERCA AVANZATA</option>';
             html += '</optgroup>';
             $('#city', page).html(html);
             //$('#city', page).parents('div.ui-select').removeClass('ui-screen-hidden');
@@ -340,10 +498,11 @@ var app = {
             $('#manualSelectionPanel', page).hide('fast');
             //self.getAvailableChannels($(this).val());
             var selectedItem = $('#channelSubscriptionPage #city option:selected');
+            var cityName = selectedItem.html().trim();
             var cityId = selectedItem.attr('data-cityid');
             var provId = selectedItem.attr('data-provid');
             var regionId = selectedItem.attr('data-regid');
-            self.getAvailableChannels(cityId, provId, regionId);
+            self.getAvailableChannels(cityName, cityId, provId, regionId);
         }
     },
     showManualCitySearch: function(show) {
@@ -371,22 +530,23 @@ var app = {
                         break;
                     }
                     var row = result[i];
-                    html += '<li><a href="javascript:self.getAvailableChannels('+row.id+',' + row.id_provincia + ', ' + row.id_regione + ')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
+                    html += '<li><a href="javascript:self.getAvailableChannels(\'' + row.nome.trim().replace(/'/g, "\\'") + '\', '+row.id+',' + row.id_provincia + ', ' + row.id_regione + ')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
                 }
                 $('#channelSubscriptionPage #citySuggestions').html(html).listview("refresh");
 //console.dir(result);
             });
         }
     },
-    getAvailableChannels: function(cityId, provId, regionId) {
-//alert(cityId+', '+provId+', '+regionId);return;
+    getAvailableChannels: function(cityName, cityId, provId, regionId) {
+//alert(cityName+','+cityId+', '+provId+', '+regionId);return;
         $.mobile.loading('show');
         $('#channelSubscriptionPage #availableChannelsContainer').show();
         $('#channelSubscriptionPage #availableChannelList').empty();
         services.getAvailableChannels({cityId: cityId, provId: provId, regionId: regionId}, function(result) {
             var html = '';
             if(result.length == 0) {
-                html = '<label>Nessun canale disponibile</label>';
+                html = '<label style="white-space:normal;">Sei stato associato al comune di ' + cityName 
+                       + '.<br />Attualmente non ci sono canali disponibili, ma ti invieremo delle notifiche quando ce ne saranno.</label>';
                 $('#channelSubscriptionPage #availableChannelList').html(html);
             } else {
                 for(var i in result) {
@@ -479,22 +639,6 @@ var app = {
     newChannelContentReceived: [],
     newsContentTimeout: null,
     initNewsPage: function() {
-        /*
-        services.getSubscribedChannels(function(result) {
-            self.newsContentLastId = null;
-            self.newsContentFirstId = null;
-            var page = $('#newsPage');
-            $('#channelContent', page).empty();
-            var html = '';
-            for(var i in result) {
-                html += '<option value="' + result[i].id_feed + '">' + result[i].nome_feed + '</option>';
-            }            
-            $('#subscribedChannels', page).html(html).selectmenu('refresh'); //.trigger('change');
-            app.newsChannelId = $('#subscribedChannels', page).val();
-            $('#subscribedChannels', page).parents('div.ui-btn').css({width:'85%'}).parents('div.ui-select').css({'text-align': 'center'});
-        }, function(e, loginRequired) {
-            if(loginRequired) $.mobile.changePage('#loginPage');
-        });*/
         var page = $('#newsPage');
         $('#channelContent', page).empty();
     },
@@ -670,6 +814,36 @@ if(onlyNew === true) {
     
     
     
+    
+    
+    // 
+    initCommentListPage: function() {
+    },
+    
+    showCommentListPage: function() {
+        $.mobile.loading('show');
+        services.getComments({}, function(result) {
+            $.mobile.loading('hide');
+            var html = '';
+            for(var i in result) {
+                var row = result[i];
+                html += '<li><a href="#">' + row.username + '</a></li>';
+            }
+            $('#commentList').html(html).listview('refresh');
+        }, function(e) {
+            $.mobile.loading('hide');
+        });
+    },
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     currentQrCodeInfo: null,
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(code) {
@@ -714,7 +888,7 @@ if(onlyNew === true) {
                     html += '<li data-role="list-divider">Link</li>';
                     for(var i in result.links) {
                         var l = result.links[i];
-                        html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "''") + '\')" target="_system">' + l.nome + '</a></li>';
+                        html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "\\'") + '\')" target="_system">' + l.nome + '</a></li>';
                     }
                     html += '</ul>';
                 }
@@ -950,7 +1124,7 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
             var html = '<option value="0" selected>Seleziona categoria</option>';
             for(var i in result) {
                 var row = result[i];
-                html += '<option value="'+row.id+'">'+row.descrizione+'</option>';
+                html += '<option value="'+row.id+'">'+row.nome+'</option>';
             }
             $('#reportingCategory', page).html(html);
             $('#reportingCategory', page).selectmenu('refresh');
@@ -1239,7 +1413,7 @@ console.log(result);
             var html = '';
             for(var i in placeTypes) {
                 var place = placeTypes[i];
-                html += '<li><a href="javascript:self.showNearbyPlaces(\'' + place.key + '\', \'' + place.name.replace(/'/g, "''") + '\')">' + place.name.capitalize() + '</a></li>';
+                html += '<li><a href="javascript:self.showNearbyPlaces(\'' + place.key + '\', \'' + place.name.replace(/'/g, "\\'") + '\')">' + place.name.capitalize() + '</a></li>';
             }
             $('#nearbyPage #placeTypeList').html(html).listview('refresh');
         });        

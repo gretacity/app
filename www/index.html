@@ -111,13 +111,15 @@
         <div data-role="page" id="loginPage">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
+                <!--
                 <a href="#info" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>
+                -->
             </div>
             <div data-role="main" class="ui-content">
                 <h2>Login</h2>
                 <form id="loginForm">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" placeholder="Username" autofocus />
+                    <label for="username">Email</label>
+                    <input type="text" name="username" id="username" placeholder="Email" autofocus />
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
                     <input id="loginButton" type="button" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" />
@@ -166,12 +168,6 @@
         <div data-role="page" id="homePage" data-theme="a">
             <div data-role="header" data-position="fixed" data-fullscreen="true">
                 <h1>GretaCITY</h1>
-                <!--
-                <a href="#infoPage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>
-                -->
-                <!--
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-gear">profilo</a>
-                -->
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -187,19 +183,12 @@
                             Le Tue Segnalazioni<!--<span id="reportingCount" class="ui-li-count ui-li-count-cust"></span>-->
                         </a>
                     </p>
-                    <!--
                     <p>
-                        <a href="#commentsPage" data-role="button" data-icon="comment" data-iconpos="left">
-                            Commenti<span id="commentsCount" class="ui-li-count ui-li-count-cust"></span>
+                        <a href="#commentListPage" data-role="button" data-icon="comment" data-iconpos="left">
+                            Commenti<!--<span id="commentsCount" class="ui-li-count ui-li-count-cust"></span>-->
                         </a>
                     </p>
-                    -->
                     <p>
-                        <!--
-                        <a href="#" id="logoutButton" data-role="button" data-icon="power" data-iconpos="left">
-                            Disconnetti
-                        </a>
-                        -->
                         <a href="#profilePage" data-role="button" data-icon="gear" data-iconpos="left">
                             Impostazioni
                         </a>
@@ -238,14 +227,102 @@
         <!-- profilePage -->
         <div data-role="page" id="profilePage">
             <div data-role="header" data-position="fixed">
-                <h1>GretaCITY</h1>
+                <h1>Profilo</h1>
                 <!--
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
                 -->
                 <a href="#homePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
-                
+                <ul data-role="listview">
+                    <li>
+                        <a href="#profileNamePage">
+                            <span id="profileFirstname"></span> <span id="profileLastname"></span>
+                            <label id="profileEmail">email@email.com</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profileCityPage">
+                            <label>Comune di residenza</label>
+                            <span id="profileCity"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profileChannelsPage"><label>I tuoi canali</label></a>
+                    </li>
+                </ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /profilePage -->
+        
+        <!-- profileNamePage -->
+        <div data-role="page" id="profileNamePage">
+            <div data-role="header" data-position="fixed">
+                <h1>Nominativo</h1>
+                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div data-role="fieldcontain">
+                    <input type="text" id="firstname" placeholder="Nome" />
+                    <input type="text" id="lastname" placeholder="Cognome" />
+                    <input type="email" id="email" placeholder="Email" />
+                    <a href="#" id="saveProfileNameButton" class="ui-btn">Conferma</a>
+                </div>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /profileNamePage -->
+        
+        <!-- profileCityPage -->
+        <div data-role="page" id="profileCityPage">
+            <div data-role="header" data-position="fixed">
+                <h1>Residenza</h1>
+                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <label for="cityName">Specifica il tuo comune di residenza</label>
+                <input id="cityName" placeholder="Cerca comune" autofocus />
+                <ul id="citySuggestions" data-role="listview" data-inset="true"></ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /profileCityPage -->
+            
+        <!-- profileChannelsPage -->
+        <div data-role="page" id="profileChannelsPage">
+            <div data-role="header" data-position="fixed">
+                <h1>Canali</h1>
+                <!--
+                <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
+                -->
+                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="subscribedChannels"></ul>
                 <br />
                 <a href="#channelSubscriptionPage" class="ui-btn">Aggiungi canale</a>
@@ -277,9 +354,9 @@
                         <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
-            </div>  		
+            </div>
         </div>
-        <!-- /profilePage -->
+        <!-- /profileChannelsPage -->
         
         <!-- channelSubscriptionPage -->
         <div data-role="page" id="channelSubscriptionPage">
@@ -296,9 +373,6 @@
                 <div id="manualSelectionPanel" style="display:none;">
                     <input id="cityNameManual" placeholder="Cerca comune" />
                     <ul id="citySuggestions" data-role="listview" data-inset="true"></ul>
-                    <!--
-                    <input type="button" id="getAvailableChannelsButton" value="Procedi" />
-                    -->
                 </div>
                 
                 <ul id="availableChannelsContainer" data-role="listview" data-inset="true" style="display:none;">
@@ -441,13 +515,15 @@
     
         
         <!-- commentsPage -->
-        <div data-role="page" id="commentsPage">
+        <div data-role="page" id="commentListPage">
             <div data-role="header" data-position="fixed">
                 <h1>Commenti</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <!--<a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>-->                          
             </div>
             <div data-role="main" class="ui-content">
+                
+                <!--
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
                     <li>
@@ -476,6 +552,18 @@
                         </a>
                     </li>
                 </ul>
+                -->
+                <ul data-role="listview" id="commentList"></ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <!-- /commentsPage -->
