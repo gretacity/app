@@ -888,6 +888,10 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
         $.mobile.changePage('#newsDetailPage', {transition: 'slide'});
     },
     initNewsDetailPage: function() {
+        if(self._newsDetailId == null) {
+            $.mobile.changePage('#newsChannelsPage');
+            return;
+        }
         $.mobile.loading('show');
         var id = self._newsDetailId;
         self._newsDetailId = null;
@@ -982,13 +986,19 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
             }
             // Extra Info related to the current QR-code
             /*result.info.info_extra = [
-                "uno uno uno uno uno ", 
-                "due due due due due "
+                "uno uno uno uno uno", 
+                "due due due due due",
+                "testo testo testo testo testo testo testo testo testo testo testo testo testo testo " +
+                "testo testo testo testo testo testo testo testo testo testo testo testo testo testo "
             ];*/
             if((result.info.info_extra != null) && Array.isArray(result.info.info_extra) && (result.info.info_extra.length > 0)) {
-                html += '<div style="text-align:left;"><p>';
-                html += result.info.info_extra.join('</p><hr /><p>');
-                html += '</p></div>';
+                html += '<div style="text-align:left;">';
+                for(var i in result.info.info_extra) {
+                    html += '<p style="color:#FFF;background-color:rgb(89, 196, 248);text-shadow:none;border:solid 1px #0088cc;padding:1.3em;margin: 0.2em 0;">' +
+                            result.info.info_extra[i] +
+                            '</p>';
+                }
+                html += '</div>';
             }
             
             var hasSlider = false;
@@ -1164,6 +1174,9 @@ row.data_chiusura = '2014-05-07 12:00:00';
 row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
 */
                     html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
+                    if(row.indirizzo && row.indirizzo.length > 0) {
+                        html += '<li>' + row.indirizzo + '</li>';
+                    }
                     html += '<li><strong>' + row.descrizione_problema + '</strong></li>';
                     if(row.foto != '') 
                         html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';

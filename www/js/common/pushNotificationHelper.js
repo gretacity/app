@@ -29,12 +29,6 @@ var pushNotificationHelper = {
             }
         })
         .dispatchNotification();
-        
-        app.updateBalloonsInHome();
-        app.updateBalloonsInNews();
-        app.updateBalloonsInNewsContent();
-        app.updateBalloonsInReporting();
-        app.updateBalloonsInFollowing();
     },
     
     
