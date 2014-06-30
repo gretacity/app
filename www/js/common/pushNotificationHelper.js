@@ -1,18 +1,50 @@
 var pushNotificationHelper = {
 
-    self: this,
-    pushNotification : null,
     
     testPushNotification: function() {
         var pnm = PushNotificationMessage.fromGCM({
+            foreground: true,
+            coldstart: false,
             payload: {
-                type: '1', 
-                title: 'title', 
-                message: 'message'}
-        });
-        pnm.dispatchNotification();
+                type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL,
+                title: 'titolo del messaggio', 
+                message: 'testo del messaggio',
+                data: [
+                    
+                    /*/ Complex notification data
+                    {id: 12, tot: 3},       // group 12 has 3 new items
+                    {id: 2, tot: 1},        // group 2 has 1 new item
+                    {id: 23, tot: 8},       // group 23 has 8 new items
+                    {id: 13, tot: 19}*/
+                    
+                    // qrcode: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING
+                    //{id: config.QR_CODE_TEST, tot: 2}
+                    
+                    // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
+                    {id: '25', tot: 2}
+                    
+                    // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
+                    //{id: '172', tot: 1}*/
+                ]
+            }
+        })
+        .dispatchNotification();
+        
+        app.updateBalloonsInHome();
+        app.updateBalloonsInNews();
+        app.updateBalloonsInNewsContent();
+        app.updateBalloonsInReporting();
+        app.updateBalloonsInFollowing();
     },
     
+    
+
+    
+    
+    
+    
+    self: this,
+    pushNotification : null,
     
     register: function(successCallback, errorCallback) {
         if(window.plugins) {
@@ -20,29 +52,38 @@ var pushNotificationHelper = {
             
             if(device.platform.toLowerCase() == 'android') {
                 self.pushNotification.register(
-                    successCallback, // success: result contains any message sent from the plugin call
+                    successCallback,  // success: result contains any message sent from the plugin call
                     errorCallback,    // error: result contains any error description text returned from the plugin call
                     {
-                        'senderID': '79537853092',  // Project ID
+                        'senderID': config.GOOGLE_GCM_PROJECT_ID,  // Project ID
                         'ecb': 'pushNotificationHelper.onNotificationGCM'
                     }
                 );
             } else {
-                /*
-                pushNotification.register(
-                    tokenCallback,
+                self.pushNotification.register(
+                    self.tokenCallback,
                     errorCallback, {
                         "badge":"true",
                         "sound":"true",
                         "alert":"true",
                         "ecb":"onNotificationAPN"
                 });
-                */
             }
         }
     },
     
-    // Android only:
+    // iOS only
+    tokenCallback: function(result) {
+        self.registerToPushServer(result);
+    },
+    
+    // iOS only
+    onNotificationAPN: function(e) {
+        // TODO
+    },
+    
+    
+    // Android only
     onNotificationGCM: function(e) {
         
         // https://android.googleapis.com/gcm/send
@@ -52,58 +93,139 @@ var pushNotificationHelper = {
         // cd plugins/com.phonegap.plugins.PushPlugin/Example/server
         // ruby pushGCM.rb
         
-        //APA91bFFZJW4vGsS_aE9ruM7ssylJDpy1G_i2ksPyXTLyg1rwiyqrHwuXy0jG_R_C6e7qOxPlSs2Fk_NVLIUgvEmQwcdTdNc1E2Zn4ETiQlE8tj9joYkPC46h4OxpkCA6ou-YKMdFGy9WMX5GCWLadsMWC_RpqP9xQ
-        //helper.alert(e.event, null, 'Push Notification');
-        //helper.alert(e.regid, null, 'Push Notification');
-
+/* For testing purposes
+e = {
+    event :'registered', 
+    regid : 'test'
+};
+var device = {
+    platform: 'android'
+};*/
         switch(e.event) {
             case 'registered':
                 if(e.regid.length > 0) {
-                    //helper.alert(e.event + '\n' + e.regid, null, 'Push Notification');
-                    // TODO Send a notification to our server
-                    var url = config.URL_BASE + config.URL_NOTIFICATION_REGISTER;
-                    url += services.getRequestCommonParameters();
-                    var params = 'regid='+encodeURIComponent(e.regid)+'&platform='+device.platform;
-                    /*$.ajax(url, {
-                        type: 'POST',
-                        data: params,
-                        dataType: 'json'
-                    }).done(function(result) {
-                        //success();
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-                        //fail(textStatus, services.isLoginRequired(jqXHR.status));
-                    });*/
+                    // Send a notification to our server
+                    self.registerToPushServer(e.regid);
                 }
                 break;
             case 'message':
-                var pnm = PushNotificationMessage.fromGCM(e);                
+                var pnm = PushNotificationMessage.fromGCM(e);
                 pnm.dispatchNotification();
-//self.pushNotification.setApplicationIconBadgeNumber("2");
                 break;
             case 'error':
-                helper.alert(e.msg, null, 'Notificaion Error');
+                //helper.alert(e.msg, null, 'Notificaion Error');
                 break;
             default:
-                helper.alert('What should I do?', null, 'Unknown notification event');
+                //helper.alert('What should I do?', null, 'Unknown notification event');
                 break;
         }
-    }
+    },
     
+    
+    registerToPushServer: function(devicePushId) {
+        var url = config.URL_BASE + config.URL_NOTIFICATION_REGISTER;
+        url += '&' + services.getRequestCommonParameters();
+        var params = 'key='+encodeURIComponent(devicePushId)+'&platform='+device.platform;
+        $.ajax(url, {
+            type: 'POST',
+            data: params
+        }).done(function(result) {
+//helper.alert('regid='+e.regid, null, 'SUCCESS');
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//helper.alert('regid='+e.regid+'\n'+textStatus, null, 'FAIL');
+        });
+    },
+    
+    
+    
+    /***
+     *  typeId: NEWS, COMMENT, REPORTING --> PushNotificationMessage.{PUSH_NOTIFICATION_TYPE_CHANNEL | PUSH_NOTIFICATION_TYPE_FOLLOWING | PUSH_NOTIFICATION_TYPE_REPORTING}
+     *  groupId: CHANNEL_ID, QR_CODE_ID, REPORTING_ID
+     *
+     *      feeds:
+     *          feed_id         tot_unread
+     *      news:
+     *          qr_code_id      tot_unread
+     *      reporting:
+     *          reporting_id    tot_unread
+     */
+    addUnread: function(typeId, groupId, totUnread) {
+        var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
+        if(unreadData[typeId] == null) {
+            unreadData[typeId] = {};
+        }
+        if(unreadData[typeId][groupId] == null) {
+            unreadData[typeId][groupId] = totUnread;
+        } else {
+            unreadData[typeId][groupId] += totUnread;
+        }
+        window.localStorage.setItem('gretacity_unreaddata', JSON.stringify(unreadData));
+    },
+    
+    getUnread: function(typeId, groupId, grouped) {
+        var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
+        if(unreadData[typeId] == null) {
+            return 0;
+        }
+        if(groupId != null) {
+            return unreadData[typeId][groupId] == null ? 0 : unreadData[typeId][groupId];
+        }
+        grouped |= false;
+        if(grouped) {
+            return unreadData[typeId];
+        } 
+        
+        var tot = 0;
+        for(var i in unreadData[typeId]) {
+            tot += unreadData[typeId][i];
+        }
+        return tot;
+    },
+    
+    setAsRead: function(typeId, groupId) {
+        var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
+        if((unreadData[typeId] == null) || (unreadData[typeId][groupId]) == null) {
+            return;
+        }
+        delete unreadData[typeId][groupId];
+        window.localStorage.setItem('gretacity_unreaddata', JSON.stringify(unreadData));
+    },
+    
+    setAllAsRead: function(typeId) {
+        if(typeId == null) {
+            window.localStorage.setItem('gretacity_unreaddata', null);
+        } else {
+            var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
+            delete unreadData[typeId];
+            window.localStorage.setItem('gretacity_unreaddata', JSON.stringify(unreadData));
+        }
+    }
 }
 
 
 function PushNotificationMessage() {
 
-    this.PUSH_NOTIFICATION_TYPE_CHANNEL = "1";
-    this.PUSH_NOTIFICATION_TYPE_COMMENT = "2";
-    this.PUSH_NOTIFICATION_TYPE_REPORTING = "3";
-
+    
+    /*e.foreground) {
+        title = 'Inline notification';
+    } else if(e.coldstart) {
+        title = 'Coldstart notification';
+    } else {
+        title = 'Background notification';
+      */
+    
+    this._appState = null;
     this._notificationType = null;
     this._messageTitle = null;
     this._messageText = null;
+    this._data = null;
 
+    this.setAppState = function(state) {
+        this._appState = state;
+        return this;
+    }
     this.setNotificationType = function(notificationType) {
-        this._notificationType = notificationType;
+        this._notificationType = parseInt(notificationType);
         return this;
     }
     this.setMessageTitle = function(title) {
@@ -115,23 +237,94 @@ function PushNotificationMessage() {
         return this;
     }
     
-    this.dispatchNotification = function() {        
-        switch(this._notificationType) {
-            case this.PUSH_NOTIFICATION_TYPE_CHANNEL:
-                helper.alert('Nuovo messaggio per il feed...');
-                break;
-            case this.PUSH_NOTIFICATION_TYPE_COMMENT:
-                helper.alert('Nuovo commento per il qr-code...');
-                break;
-            case this.PUSH_NOTIFICATION_TYPE_REPORTING:
-                helper.alert('Nuovo messaggio per la segnalazione...');
-                break;
-            default:
-                helper.alert('Tipo messaggio non definito *' + this._notificationType + '*');
-                break;
-        }
+    this.setData = function(d) {
+        this._data = d;
+        return this;
+    }
+    
+    this.dispatchNotification = function() {
+
+        // Update unread data
+        typeId = this._notificationType;
+        for(var i in this._data) {
+            var row = this._data[i];
+            var groupId = row.id;
+            var totUnread = parseInt(row.tot);
+//console.log('type ' + typeId + ', group ' + groupId + ', unread ' + totUnread);
+            pushNotificationHelper.addUnread(
+                typeId, 
+                groupId, 
+                totUnread
+            );
+        }        
+        
+        // Android app can be in inline, background or coldstart mode
+        if(this._appState != PushNotificationMessage.APP_STATE_INLINE) {
+            // App is in BACKGROUND state:
+            // show the related page
+            var pageId = '';
+            switch(typeId) {
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING:
+                    pageId = 'followingListPage';
+                    break;
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL:
+                    pageId = 'newsChannelsPage';
+                    break;
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING:
+                    pageId = 'reportingListPage';
+                    break;
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE:
+                    pageId = '';    // TODO
+                    break;
+                default:
+                    console.error('Undefined push message type *' + typeId + '*');
+                break;                    
+            }
+            if((pageId != '') && (pageId != $.mobile.activePage.attr('id'))) {
+                if(this._appState == PushNotificationMessage.APP_STATE_BACKGROUND) {
+                    $.mobile.changePage('#' + pageId);
+                } else { // PushNotificationMessage.APP_STATE_COLDSTART
+                    app.changePageAfterLogin(pageId);
+                }
+            }
+        } else {
+            // App is in ACTIVE state:
+            switch($.mobile.activePage.attr('id')) {
+                case 'homePage':
+                    app.updateBalloonsInHome();
+                    break;
+                case 'followingListPage':
+                    app.updateBalloonsInFollowing();
+                    break;
+                case 'newsChannelsPage':
+                    app.updateBalloonsInNews();
+                    break;
+                case 'newsPage':
+                    if(pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, app.newsChannelId) > 0) {
+                        app.updateBalloonsInNewsContent();
+                    } else {
+                        app.updateBalloonsInNews();
+                    }
+                    break;
+                case 'reportingListPage':
+                    app.updateBalloonsInReporting();
+                    break;
+                //default:
+                    // Let's play a sound?
+                    //break;
+            }   
+        }        
     }
 }
+
+PushNotificationMessage.APP_STATE_INLINE = 1;
+PushNotificationMessage.APP_STATE_BACKGROUND = 2;
+PushNotificationMessage.APP_STATE_COLDSTART = 3;
+    
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING = 1;
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING = 2;
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL = 3;
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE = 4;
 
 PushNotificationMessage.fromGCM = function(e) {
 
@@ -150,14 +343,25 @@ PushNotificationMessage.fromGCM = function(e) {
     var messageTest = e.payload.msgtest;
     helper.alert(messageCount + '\n' + messageTest, null, title);*/
 
-    pnm.setNotificationType(e.payload.type)
-       .setMessageTitle(e.payload.title)
-       .setMessageText(e.payload.message);
+    var appState = null;
+    if(e.foreground == true) {
+        appState = PushNotificationMessage.APP_STATE_INLINE;
+    } else if(e.coldstart == true) {
+        appState = PushNotificationMessage.APP_STATE_COLDSTART;
+    } else {
+        appState = PushNotificationMessage.APP_STATE_BACKGROUND;
+    } 
 
+    pnm.setNotificationType(e.payload.type)
+       .setAppState(appState)
+       .setMessageTitle(e.payload.title)
+       .setMessageText(e.payload.message)
+       .setData(e.payload.data);
+//alert('payload : ' + JSON.stringify(e.payload));
+//console.log(pnm);
     return pnm;
 }
 
 PushNotificationMessage.fromAPN = function(e) {
     // TODO
 }
-

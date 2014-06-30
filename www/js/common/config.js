@@ -30,12 +30,11 @@ var config = {
     REPORTING_MAX_PHOTOS: 3,
     
     
-    REQUEST_DEFAULT_TIMEOUT: 3000,  // 3 secs
+    REQUEST_DEFAULT_TIMEOUT: 5000,  // 5 secs
     
     URL_BASE: 'http://www.gretacity.com/test',
     
-    // TODO
-    URL_NOTIFICATION_REGISTER: '/web/index.php?mode=module',
+    URL_NOTIFICATION_REGISTER: '/web/index.php?mode=module&p=app_services&a=register_app',
     
     URL_USER_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     URL_USER_REGISTER: '/web/index.php?mode=module&p=login&s=add_user',
@@ -55,9 +54,6 @@ var config = {
     URL_NEWS_LIST: '/web/index.php?mode=module&p=app_services&a=get_notizie',
     URL_NEWS_DETAIL: '/web/index.php?mode=module&p=app_services&a=get_notizia',
     
-    // TODO Message URLs
-    // TODO TODO TODO TODO
-    
     
     //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
     URL_QRCODE_GET_INFO: '/web/index.php?p=app_services&a=get&mode=module',   // qrcode=1000000769
@@ -66,6 +62,8 @@ var config = {
     //params: qrcode
     URL_QRCODE_FOLLOW: '/web/index.php?mode=module&p=app_services&a=follow',
     URL_QRCODE_UNFOLLOW: '/web/index.php?mode=module&p=app_services&a=unfollow',
+    
+    URL_QRCODE_FOLLOWING : '/web/index.php?mode=module&p=app_services&a=get_follows',
     
     URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
     URL_REPORTING_SEND: '/web/index.php?mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
@@ -78,6 +76,8 @@ var config = {
     
     NEARBY_DEFAULT_DISTANCE: 2, // In KM
     
+    
+    GOOGLE_GCM_PROJECT_ID: '79537853092',
     
     GOOGLE_MAPS_API_KEY: "AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ",
     GOOGLE_MAPS_SENSOR: "true",

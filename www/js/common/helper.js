@@ -139,11 +139,14 @@ var helper = {
     },
     isPhoneNumberValid: function(number) {
         for(var i in number) {
-            if(number[i] < '0' || number[i] > '9') {
+            var ch = number.charAt(i);
+            if(ch < '0' || ch > '9') {
                 return false;
             }    
         }
         if(number.length < 6) return false;
+        // Only mobile phone number
+        //if(number.charAt(0) != '3') return false;
         return true;
     },
     

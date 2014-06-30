@@ -54,9 +54,11 @@ var app = {
         $('#newContentReceivedButton', newsPage).on('click', self.showNewChannelContentReceived);
         var newsDetailPage = $('#newsDetailPage');
         newsDetailPage.on('pagebeforeshow', self.initNewsDetailPage);
-        var commentListPage = $('#commentListPage');
-        commentListPage.on('pageinit', self.initCommentListPage);
-        commentListPage.on('pageshow', self.showCommentListPage);
+        
+        var followingListPage = $('#followingListPage');
+        followingListPage.on('pageinit', self.initFollowingListPage);
+        followingListPage.on('pageshow', self.showFollowingListPage);
+        
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', self.register);
         var homePage = $('#homePage');
@@ -96,10 +98,10 @@ var app = {
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
     },
     onOnline: function() {
-        $('#loginPage #loginButton').removeClass('ui-disabled');
+        //$('#loginPage #loginButton').removeClass('ui-disabled');
     },
     onOffline: function() {
-        $('#loginPage #loginButton').addClass('ui-disabled');
+        //$('#loginPage #loginButton').addClass('ui-disabled');
     },
     // deviceready Event Handler
     //
@@ -115,11 +117,13 @@ var app = {
                 function () {}
             );
         }
+        /*
+        // Move in the login function
         pushNotificationHelper.register(function(result) {
             //helper.alert('success ' + result);
         }, function(e) {
             //helper.alert('error ' + e);
-        });
+        });*/
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -129,6 +133,11 @@ var app = {
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');*/
         console.log('Received Event: ' + id);
+    },
+    
+    pageId : null,
+    changePageAfterLogin: function(pageId) {
+        self.pageId = pageId;
     },
     
     login: function() {
@@ -167,12 +176,20 @@ var app = {
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(result) {
             // Successfully loggedin, move forward
+            pushNotificationHelper.register(function(result) {}, function(e) {});
             $('#username').removeClass('ui-disabled');
             $('#password').removeClass('ui-disabled').val('');
             $('#loginButton').removeClass('ui-disabled');
             $('#registerPageButton').removeClass('ui-disabled');
             config.userLastLoginUsername(username);
-            $.mobile.changePage('index.html#homePage');
+            if(self.pageId != null) {
+                $.mobile.changePage('#' + self.pageId);
+                self.pageId = null;
+            }
+            else {
+                //$.mobile.changePage('index.html#homePage');
+                $.mobile.changePage('#homePage');
+            }
         }, function(e) {
             $.mobile.loading('hide');
             $('#loginButton', page).html(initialVal).removeClass('ui-disabled');
@@ -196,7 +213,7 @@ var app = {
         // Validation
         var hasErrors = false;
         var requiredFields = ['lastname', 'firstname', 
-                              //'phone', 
+                              'phone', 
                               'email'];
         for(var i in requiredFields) {
             var fieldId = requiredFields[i];
@@ -213,14 +230,14 @@ var app = {
             helper.alert('Alcuni campi non sono stati compilati', null, 'Registrazione');
             return;
         }
-        /*// Specific validation for phone number
+        // Specific validation for phone number
         if(!helper.isPhoneNumberValid(params.phone)) {
             $('label[for="phone"]').addClass('fielderror');
             helper.alert('Inserisci un numero di telefono valido', function() {
                 $('#phone', page).focus();
             }, 'Registrazione');
             return;
-        }*/
+        }
         // Specific validation for email
         if(!helper.isEmailValid(params.email)) {
             $('label[for="email"]', page).addClass('fielderror');
@@ -268,8 +285,62 @@ var app = {
             helper.alert('Il tuo profilo non è stato ancora impostato', function() {
                 $.mobile.changePage('#profilePage');
             }, 'Profilo');
+        } else {
+            self.updateBalloonsInHome();
         }
     },
+    
+    
+    
+    updateBalloonsInHome: function() {
+        var page = $('#homePage');
+        var cfg = [
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount'},
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount'},
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, elementId: 'followingCount'}
+        ];
+        for(var i in cfg) {
+            var unreadCount = pushNotificationHelper.getUnread(cfg[i].type);
+            var el = $('#'+cfg[i].elementId, page);
+            el.html(unreadCount);
+            if(unreadCount > 0) {
+                el.show();
+            } else {
+                el.hide();
+            }
+        }
+    },
+    updateBalloonsInNews: function() {
+        // Display a balloon for each feed that contains updates
+        var listEl = $('#newsChannelsPage #channelList');
+        $('li a span.ui-li-count', listEl).hide();
+        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, null, true);
+        for(var i in unreadData) {
+            if(unreadData[i] == 0) continue;
+            $('li a #count_' + i, listEl).html(unreadData[i]).show();
+        }
+    },
+    updateBalloonsInNewsContent: function() {
+        // Don't display the balloon on top of the feed,
+        // but uses the old feed update system and display 
+        // a button on the top of the page to add new posts.
+        self.retrieveChannelContent(true);
+    },
+    updateBalloonsInReporting: function() {
+        // TODO
+        // Display a balloon for each item that contains updates
+    },
+    updateBalloonsInFollowing: function() {
+        var listEl = $('#followingListPage #followingList');
+        $('li a span.ui-li-count', listEl).hide();
+        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, null, true);
+        for(var i in unreadData) {
+            if(unreadData[i] == 0) continue;
+            $('li a #count_' + i, listEl).html(unreadData[i]).show();
+        }
+    },
+    
+    
     
     
     
@@ -414,7 +485,7 @@ var app = {
     showProfileChannelsPage: function() {
         services.getSubscribedChannels(function(result) {
             var page = $('#profileChannelsPage');
-            var html = '<li data-role="list-divider"><label>I tuoi Canali</label></li>';
+            var html = ''; //'<li data-role="list-divider"><label>I tuoi Canali</label></li>';
             for(var i in result) {
                 var channelId = result[i].id_feed;
                 var channelName = result[i].nome_feed;
@@ -608,9 +679,12 @@ var app = {
                 var row = result[i];
                 html += '<li><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
                             + row.nome_feed + '</span><label><small>' + row.denominazione 
-                            + '</small></label></a</li>';
+                            + '</small></label>'
+                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust"></span>'
+                            + '</a></li>';
             }
             $('#newsChannelsPage #channelList').html(html).listview('refresh');
+            self.updateBalloonsInNews();
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -631,15 +705,27 @@ var app = {
     },
     
     
-    NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
+    //NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
     newsEmptyBeforeShow: true,
     newsChannelId: 0,
     newsContentLastId: null,
     newsContentFirstId: null,
     newChannelContentReceived: [],
-    newsContentTimeout: null,
+    //newsContentTimeout: null,
     initNewsPage: function() {
         var page = $('#newsPage');
+        $('#unsubscribeChannelButton', page).on('click', function() {
+            helper.confirm('Rimuovere la sottoscrizione al canale?', function(buttonIndex) {
+                if(buttonIndex == 1) {
+                    $('#unsubscribeChannelButton', page).addClass('ui-disabled');
+                    services.subscribeToChannel({subscribe: false, channelId: self.newsChannelId}, function(result) {
+                        helper.alert('La sottoscrizione al canale è stata rimossa', null, 'Rimuovi sottoscrizione');
+                    }, function(e) {
+                        $('#unsubscribeChannelButton', page).removeClass('ui-disabled');
+                    });
+                }
+            }, 'Notizie', ['Rimuovi', 'No']);
+        });
         $('#channelContent', page).empty();
     },
     beforeShowNewsPage: function() {
@@ -649,24 +735,32 @@ var app = {
         } else {
             self.newsEmptyBeforeShow = true;
         }
-        if(self.newsContentTimeout == null) {
+        /*if(self.newsContentTimeout == null) {
             setTimeout(function() {
                 self.retrieveChannelContent(onlyNew);
             }, 100); // start immediatly
+        }*/
+        self.retrieveChannelContent(onlyNew);
+        pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
+        if(self.newsChannelId > 0) {
+            $('#newsPage #unsubscribeChannelButton').removeClass('ui-disabled').show();
+        } else {
+            $('#newsPage #unsubscribeChannelButton').hide();
         }
     },
     beforeHideNewsPage: function() {
-        if(self.newsContentTimeout != null) {
+        /*if(self.newsContentTimeout != null) {
             clearTimeout(self.newsContentTimeout);
             self.newsContentTimeout = null;
-        }
+        }*/
     },
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
         html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;">' +
-                    '<span>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</span>' +
+                    '<span>' + item.oggetto + '</span>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
+                    '<p><i>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
                '</a></li>';
         // First ID is the top of the list and has id more greater then others
         if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
@@ -676,12 +770,13 @@ var app = {
     retrieveChannelContent: function(onlyNew) {
         
         onlyNew = onlyNew || false;
+//console.log('Retreiving news... ', onlyNew);
         
         if(!onlyNew) {
             $.mobile.loading('show');
         }
         
-        if(self.newsContentTimeout != null) clearTimeout(self.newsContentTimeout);
+        //if(self.newsContentTimeout != null) clearTimeout(self.newsContentTimeout);
         
         /*var channelId = (this == self) ? self.newsChannelId : $(this).val();
         if(channelId != self.newsChannelId) {
@@ -719,25 +814,28 @@ var app = {
                 $('#newsPage #channelContent').append(html).listview('refresh');
             }
             
-if(onlyNew === true) {
-    console.log('Checking for news updates...');
-}
+            
+            
+            
+if(onlyNew === true) console.log('Checking for news updates...');
+
             if((typeof(result.nuove) != 'undefined') && (Array.isArray(result.nuove)) && (result.nuove.length > 0)) {
                 self.newChannelContentReceived = result.nuove;
-if(onlyNew === true) {
-    console.log('Found ' + self.newChannelContentReceived.length);
-}
+
+if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.length);
+
                 $('#newContentReceivedButton').html(
                     self.newChannelContentReceived.length + (self.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
                 ).show('fast');
             }
             
+            
             //self.newsContentTimeout = setTimeout(self.retrieveChannelContent, 2000);
-            self.newsContentTimeout = setTimeout(function() {
+            /*self.newsContentTimeout = setTimeout(function() {
                 if($.mobile.activePage.attr('id') == 'newsPage') {
                     self.retrieveChannelContent(true);
                 }
-            }, self.NEWS_UPDATE_CONTENT);
+            }, self.NEWS_UPDATE_CONTENT);*/
             
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
@@ -748,14 +846,14 @@ if(onlyNew === true) {
             }
             if($.mobile.activePage.attr('id') != 'newsPage') return;
             if(onlyNew) {
-                self.newsContentTimeout = setTimeout(function() {
+                /*self.newsContentTimeout = setTimeout(function() {
                     self.retrieveChannelContent(true);
-                }, self.NEWS_UPDATE_CONTENT);
+                }, self.NEWS_UPDATE_CONTENT);*/
             } else {
                 helper.alert('Impossibile recuperare il contenuto', function() {
-                    self.newsContentTimeout = setTimeout(function() {
+                    /*self.newsContentTimeout = setTimeout(function() {
                         self.retrieveChannelContent(true);
-                    }, self.NEWS_UPDATE_CONTENT);
+                    }, self.NEWS_UPDATE_CONTENT);*/
                 }, 'Canale');
             }
         });
@@ -817,34 +915,152 @@ if(onlyNew === true) {
     
     
     // 
-    initCommentListPage: function() {
+    initFollowingListPage: function() {
     },
     
-    showCommentListPage: function() {
+    showFollowingListPage: function() {
         $.mobile.loading('show');
-        services.getComments({}, function(result) {
+        services.getFollowings({}, function(result) {
             $.mobile.loading('hide');
             var html = '';
-            for(var i in result) {
-                var row = result[i];
-                html += '<li><a href="#">' + row.username + '</a></li>';
+            for(var i in result.follows) {
+                var row = result.follows[i];
+                var name = row.denominazione || '';
+                var description = row.descrizione || '';
+                if(description.length > 40) description = description.substr(0, 40) + '...';
+                var qrCodeId = row.r_qrcode_id || '';
+                
+                html += '<li><a href="javascript:self.getFollowingInfo(\'' + qrCodeId.replace(/'/g, "\\'") + '\')">' + name + 
+                        '<span id="count_' + qrCodeId + '" class="ui-li-count ui-li-count-cust"></span>' +
+                        '<label>' + description +'</label></a></li>';
             }
-            $('#commentList').html(html).listview('refresh');
+            $('#followingListPage #followingList').html(html).listview('refresh');
+            self.updateBalloonsInFollowing();
         }, function(e) {
             $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile recuperare il contenuto', null, 'Notizia');
         });
     },
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     currentQrCodeInfo: null,
+    getFollowingInfo: function(code) {
+        
+        $('#followingListPage #followingList li a span.ui-li-count').hide();
+        
+        if($.mobile.activePage.attr('id') != 'qrCodeInfoPage') {
+            $.mobile.changePage('#qrCodeInfoPage', {transition: 'slide'});
+        }
+        
+        $.mobile.loading('show');
+        $('#qrCodeInfoPage #getInfoButton').addClass('ui-disabled');
+        
+        services.getInfoFromQrCode(code, function(result) {
+
+            pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, code);
+            
+            var canLeaveComment = (result.categoria.commenti == 1);
+            var canFollow = (result.categoria.follows == 1);
+
+            $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
+
+            if(result == null) {
+                $('#qrCodeInfoPage #qrCodeId').val('');
+                helper.alert('Non ci sono informazioni disponibili', null, 'Ottieni info');
+                return;
+            }
+            $('#qrCodeInfoPage #qrCodeId').val(code);
+            // Format result
+            var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
+                       '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
+            if(canFollow) {
+                html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
+            }
+            // Extra Info related to the current QR-code
+            /*result.info.info_extra = [
+                "uno uno uno uno uno ", 
+                "due due due due due "
+            ];*/
+            if((result.info.info_extra != null) && Array.isArray(result.info.info_extra) && (result.info.info_extra.length > 0)) {
+                html += '<div style="text-align:left;"><p>';
+                html += result.info.info_extra.join('</p><hr /><p>');
+                html += '</p></div>';
+            }
+            
+            var hasSlider = false;
+            if(result.foto.length > 0) {
+                var hasSlider = true;
+                html += '<div class="slider"><ul class="slides">';
+                for(var i in result.foto) {
+                    html += '<li class="slide">' +
+                                '<img src="' + result.foto[i] + '" />' +
+                            '</li>';
+                }
+                html += '</ul></div>';
+                //$('div.slider').height($('div.slider ul li img').height());
+                //$('div.slider').width($('div.slider ul li img').width());
+            }
+            if(result.links.length > 0) {
+                html += '<ul id="links" style="text-align:left;" data-inset="true">';
+                html += '<li data-role="list-divider">Link</li>';
+                for(var i in result.links) {
+                    var l = result.links[i];
+                    html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "\\'") + '\')" target="_system">' + l.nome + '</a></li>';
+                }
+                html += '</ul>';
+            }
+            html += '<ul id="commentList" style="text-align:left;" data-inset="true">';
+            if(result.commenti.length > 0) {
+                html += '<li data-role="list-divider">Commenti</li>';
+                for(var i in result.commenti) {
+                    var c = result.commenti[i];
+                    var d = Date.parseFromYMDHMS(c.data_inserimento);
+                    html += '<li><p>' + c.descrizione + '</p>';
+                    html += '<small>' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
+                    if(c.stato == 0) html += '<div><small><i>commento in attesa di approvazione</i></small></div>';
+                    html += '</li>';
+                }
+            }
+            html += '</ul>';
+            if(result.commenti.length == 0) {
+                html += '<p id="noComments" style="text-align:left;">Nessun commento</p>';
+            }
+            if(canLeaveComment) {
+                html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
+            }
+            html += '<div style="height:150px;"></div>';
+            $('#qrCodeInfoPage #infoResult').html(html);
+            $('#qrCodeInfoPage #infoResult #following').checkboxradio();
+            $('#qrCodeInfoPage #infoResult #commentList').listview();
+            $('#qrCodeInfoPage #infoResult #links').listview();
+            if(hasSlider) {
+                var glide = $('.slider').glide({
+                    //autoplay: false, // or 4000
+                    arrowLeftText: '',
+                    arrowRightText: ''
+                });
+            }
+            $.mobile.loading('hide');
+
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
+            $('#qrCodeInfoPage #qrCodeId').val('');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+            } else {
+                helper.alert('Impossibile recuperare le informazioni', null, 'Ottieni info');
+            }
+        });
+
+        
+    },
+    
+    
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(code) {
 
@@ -852,85 +1068,8 @@ if(onlyNew === true) {
             
             self.currentQrCodeInfo = code;
             
-            $.mobile.loading('show');
-            $('#qrCodeInfoPage #getInfoButton').addClass('ui-disabled');
+            self.getFollowingInfo(code);
             
-            services.getInfoFromQrCode(code, function(result) {
-                $.mobile.loading('hide');
-                $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
-                
-                if(result == null) {
-                    $('#qrCodeInfoPage #qrCodeId').val('');
-                    helper.alert('Non ci sono informazioni disponibili', null, 'Ottieni info');
-                    return;
-                }
-                $('#qrCodeInfoPage #qrCodeId').val(code);
-                // Format result
-                var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
-                           '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
-                html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
-                
-                var hasSlider = false;
-                if(result.foto.length > 0) {
-                    var hasSlider = true;
-                    html += '<div class="slider"><ul class="slides">';
-                    for(var i in result.foto) {
-                        html += '<li class="slide">' +
-                                    '<img src="' + result.foto[i] + '" />' +
-                                '</li>';
-                    }
-                    html += '</ul></div>';
-                    //$('div.slider').height($('div.slider ul li img').height());
-                    //$('div.slider').width($('div.slider ul li img').width());
-                }
-                if(result.links.length > 0) {
-                    html += '<ul id="links" style="text-align:left;" data-inset="true">';
-                    html += '<li data-role="list-divider">Link</li>';
-                    for(var i in result.links) {
-                        var l = result.links[i];
-                        html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "\\'") + '\')" target="_system">' + l.nome + '</a></li>';
-                    }
-                    html += '</ul>';
-                }
-                html += '<ul id="commentList" style="text-align:left;" data-inset="true">';
-                if(result.commenti.length > 0) {
-                    html += '<li data-role="list-divider">Commenti</li>';
-                    for(var i in result.commenti) {
-                        var c = result.commenti[i];
-                        var d = Date.parseFromYMDHMS(c.data_inserimento);
-                        html += '<li><p>' + c.descrizione + '</p>';
-                        html += '<small>' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
-                        if(c.stato == 0) html += '<div><small><i>commento in attesa di approvazione</i></small></div>';
-                        html += '</li>';
-                    }
-                }
-                html += '</ul>';
-                if(result.commenti.length == 0) {
-                    html += '<p id="noComments" style="text-align:left;">Nessun commento</p>';
-                }
-                html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
-                html += '<div style="height:150px;"></div>';
-                $('#qrCodeInfoPage #infoResult').html(html);
-                $('#qrCodeInfoPage #infoResult #following').checkboxradio();
-                $('#qrCodeInfoPage #infoResult #commentList').listview();
-                $('#qrCodeInfoPage #infoResult #links').listview();
-                if(hasSlider) {
-                    var glide = $('.slider').glide({
-                        //autoplay: false, // or 4000
-                        arrowLeftText: '',
-                        arrowRightText: ''
-                    });
-                }
-            }, function(e, loginRequired) {
-                $.mobile.loading('hide');
-                $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
-                $('#qrCodeInfoPage #qrCodeId').val('');
-                if(loginRequired) {
-                    $.mobile.changePage('#loginPage');
-                } else {
-                    helper.alert('Impossibile recuperare le informazioni', null, 'Ottieni info');
-                }
-            });
         }, function(e) {
             $('#qrCodeInfoPage #qrCodeId').val('');
             // errorCallback
@@ -975,12 +1114,13 @@ if(onlyNew === true) {
     
     loadReportingItems: function() {
         $.mobile.loading('show');
+        pushNotificationHelper.setAllAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING);
         services.getReportingList({}, function(result) {
             // Success
             var list = $('#reportingListPage #reportingList');
             var html = '';
             if(result.length == 0) {
-                html += '<li data-role="list-divider">Non ci sono segnalazioni</li><li><a href="#reportingPage">segnala</a></li>';
+                html += '<li data-role="list-divider">Non ci sono segnalazioni</li><li><a href="#reportingMethodPage">Nuova segnalazione</a></li>';
             } else {
                 for(var i in result) {
                     var row = result[i];
@@ -1413,7 +1553,8 @@ console.log(result);
             var html = '';
             for(var i in placeTypes) {
                 var place = placeTypes[i];
-                html += '<li><a href="javascript:self.showNearbyPlaces(\'' + place.key + '\', \'' + place.name.replace(/'/g, "\\'") + '\')">' + place.name.capitalize() + '</a></li>';
+                var img = place.icon || '';
+                html += '<li><a href="javascript:self.showNearbyPlaces(\'' + place.key + '\', \'' + place.name.replace(/'/g, "\\'") + '\')"><img src="' + img + '" style="padding:7px 0 0 5px;" />' + place.name.capitalize() + '</a></li>';
             }
             $('#nearbyPage #placeTypeList').html(html).listview('refresh');
         });        
@@ -1457,9 +1598,11 @@ console.log(result);
             $.mobile.changePage('#nearbyPage', {transition: 'slide', reverse: true});
             return;
         }
+        $.mobile.loading('show');
         self.searchNearbyPlaces(self.nearbyCategoryId);
     },
     searchNearbyPlaces: function() {
+        $.mobile.loading('show');
         var page = $('#nearbyResultsPage');
         self.nearbyDistance = $('#nearbySearchSlider', page).val();
         var options = {
@@ -1469,7 +1612,6 @@ console.log(result);
         };        
         $('#currentPlaceType', page).html(self.nearbyCategoryName.toUpperCase());
         $('#placesList', page).html('').listview('refresh');
-        $.mobile.loading('show');
         services.getNearbyPlaces(options, function(result) {
 //console.dir(result);
             var html = '';

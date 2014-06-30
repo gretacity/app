@@ -12,10 +12,28 @@
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="css/glide-style.css" />
         <style>
+            
+            div[data-role="navbar"] ul li a {
+                background-color: rgb(89, 196, 248) !important;
+                text-shadow: none !important;
+            }
+            div[data-role="navbar"] ul li a.ui-btn-active {
+                background-color:rgb(255, 184, 0) !important;
+            }
+            
+            #profileChannelsPage #openChannelSubscriptionPageButton {
+                color: #FFF;
+                text-shadow: none !important;
+                background-color: rgb(89, 196, 248) !important;
+            }
+            
+            /*.ui-disabled {background-color: #cecece !important;}*/
+            
             .ui-li-count-cust {
-                min-width: 2em;
-                background:#FF920A;
-                color:#FFF
+                min-width: 2em !important;
+                background: #FF0A2B !important; /*#FF920A !important;*/
+                color:#FFF !important;
+                border-radius: 1em !important;
             }
             .fielderror {
                 color: #FF0000;
@@ -142,10 +160,8 @@
                 <input type="text" id="lastname" placeholder="Cognome">
                 <label for="firstname">Nome</label>
                 <input type="text" id="firstname" placeholder="Nome">
-                <!--
                 <label for="phone">Telefono</label>
                 <input type="tel" id="phone" placeholder="Telefono">
-                -->
                 <label for="email">Email</label>
                 <input type="email" id="email" placeholder="Email">
                 <!-- privacy policy accepted -->
@@ -156,9 +172,9 @@
                 <label for="disclaimerPolicyAccepted">ho preso visione delle note legali</label>
                 <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left">Registrati</a>
                 <p style="text-align:justify">
-                    <small>Ti sara' notificata la password di accesso tramite e-mail ai contatti inseriti.<br/>
+                    <small>Ti sara' notificata la password di accesso tramite SMS ai contatti inseriti.<br/>
                         Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">www.gretacity.com</a> 
-                        oppure consulta le <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">NOTE LEGALI</a>.</small>
+                        oppure consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">NOTE LEGALI</a>.</small>
                 </p>
             </div>            
         </div>
@@ -171,28 +187,28 @@
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
             </div>
             <div data-role="main" class="ui-content">
-                <img style="width:90%;max-width:2048px;margin:30px auto;padding-top:2em;display:block;" _src="./img/splash.png" src="./img/logo-2.png" />
-                <div class="ui-content">
+                <img style="width:90%;max-width:2048px;margin:1em auto;padding-top:2em;display:block;" _src="./img/splash.png" src="./img/logo-2.png" />
+                <div class="ui-content" style="margin:1em;border:solid #0088CC .2em;border-radius:1.2em;">
                     <p>
-                        <a href="#newsChannelsPage" data-role="button" data-icon="bars" data-iconpos="left" __style="background:#71CEEF;">
-                            Notizie<!--<span id="newsCount" class="ui-li-count ui-li-count-cust"></span>-->
+                        <a href="#newsChannelsPage" class="ui-btn ui-icon-bars ui-btn-icon-left" style="border:none;">
+                            Notizie<span id="newsCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
                         </a>
                     </p>
                     <p>
-                        <a href="#reportingListPage" data-role="button" data-icon="bullets" data-iconpos="left">
-                            Le Tue Segnalazioni<!--<span id="reportingCount" class="ui-li-count ui-li-count-cust"></span>-->
+                        <a href="#reportingListPage" class="ui-btn ui-icon-bullets ui-btn-icon-left" style="border:none;">
+                            Le Tue Segnalazioni<span id="reportingCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
                         </a>
                     </p>
                     <p>
-                        <a href="#commentListPage" data-role="button" data-icon="comment" data-iconpos="left">
-                            Commenti<!--<span id="commentsCount" class="ui-li-count ui-li-count-cust"></span>-->
+                        <a href="#followingListPage" class="ui-btn ui-icon-comment ui-btn-icon-left" style="border:none;">
+                            Punti d'interesse<span id="followingCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
                         </a>
                     </p>
                     <p>
-                        <a href="#profilePage" data-role="button" data-icon="gear" data-iconpos="left">
-                            Impostazioni
+                        <a href="#profilePage" class="ui-btn ui-icon-gear ui-btn-icon-left" style="border:none;">
+                            Il Tuo Profilo
                         </a>
-                    </p>                    
+                    </p>
                 </div>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -316,7 +332,7 @@
         <!-- profileChannelsPage -->
         <div data-role="page" id="profileChannelsPage">
             <div data-role="header" data-position="fixed">
-                <h1>Canali</h1>
+                <h1>I Tuoi Canali</h1>
                 <!--
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
                 -->
@@ -325,7 +341,7 @@
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="subscribedChannels"></ul>
                 <br />
-                <a href="#channelSubscriptionPage" class="ui-btn">Aggiungi canale</a>
+                <a href="#channelSubscriptionPage" id="openChannelSubscriptionPageButton" class="ui-btn">Aggiungi canale</a>
                 
                 <!--
                 <br /><br /><br />
@@ -404,7 +420,7 @@
                 <h1>Segnalazioni</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <!-- <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a> -->
-                <a href="#" id="refreshReportingListButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-refresh">Aggiorna</a>
+                <!-- <a href="#" id="refreshReportingListButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-refresh">Aggiorna</a> -->
             </div>
             <div data-role="main" class="ui-content">
                 <ul id="reportingList" data-role="listview" data-inset="false"></ul>
@@ -466,6 +482,7 @@
                 <!--
                 <select id="subscribedChannels"></select>
                 -->
+                <a href="#" id="unsubscribeChannelButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-delete">Unsubscribe</a>
             </div>
             <div data-role="main" class="ui-content">
             
@@ -514,46 +531,15 @@
         <!-- /newsDetailPage -->
     
         
-        <!-- commentsPage -->
-        <div data-role="page" id="commentListPage">
+        <!-- followingListPage -->
+        <div data-role="page" id="followingListPage">
             <div data-role="header" data-position="fixed">
-                <h1>Commenti</h1>
+                <h1>Punti d'interesse</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <!--<a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>-->                          
             </div>
-            <div data-role="main" class="ui-content">
-                
-                <!--
-                <ul data-role="listview" data-inset="true">
-                    <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Stephen Weber</h2>
-                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                            <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="index.html">
-                            <h2>jQuery Team</h2>
-                            <p><strong>Boston Conference Planning</strong></p>
-                            <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-                            <p class="ui-li-aside"><strong>9:18</strong>AM</p>
-                        </a>
-                    </li>
-                    <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
-                    <li>
-                        <a href="index.html">
-                            <h2>Avery Walker</h2>
-                            <p><strong>Re: Dinner Tonight</strong></p>
-                            <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-                            <p class="ui-li-aside"><strong>4:48</strong>PM</p>
-                        </a>
-                    </li>
-                </ul>
-                -->
-                <ul data-role="listview" id="commentList"></ul>
+            <div data-role="main" class="ui-content">                
+                <ul data-role="listview" id="followingList"></ul>
             </div>
             <div data-role="footer" data-position="fixed">
                 <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
@@ -566,7 +552,8 @@
                 </div>
             </div>
         </div>
-        <!-- /commentsPage -->
+        <!-- /followingListPage -->
+    
         
         <!-- nearbyPage -->
         <div data-role="page" id="nearbyPage">
@@ -583,7 +570,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
                         <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" class="ui-btn-active"><small>QUI vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" class="ui-state-persist ui-btn-active"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -609,7 +596,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
                         <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" class="ui-btn-active"><small>QUI vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" class="ui-state-persist ui-btn-active"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -631,7 +618,7 @@
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
                         <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" class="ui-btn-active"><small>QUI vicino</small></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" class="ui-state-persist ui-btn-active"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -669,7 +656,7 @@
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag" class="ui-btn-active"><small>Segnala</small></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="tag" class="ui-state-persist ui-btn-active"><small>Segnala</small></a></li>
                         <li><a href="#nearbyPage" data-icon="location"><small>QUI vicino</small></a></li>
                     </ul>
                 </div>
@@ -753,7 +740,7 @@
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#qrCodeInfoPage" data-icon="tag"><small>Info</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="camera" class="ui-btn-active"><small>Segnala</small></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="camera" class="ui-state-persist ui-btn-active"><small>Segnala</small></a></li>
                         <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
@@ -815,7 +802,8 @@
         <div data-role="page" id="qrCodeInfoPage" style="background:url('img/bg-qrcode.png')">
             <div data-role="header" data-position="fixed">
                 <h1>GretaCITY</h1>
-                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <!-- href="#followingListPage" or data-rel="back" -->
+                <a href="#followingListPage" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
                 <input type="hidden" id="qrCodeId" />
@@ -831,7 +819,7 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#qrCodeInfoPage" data-icon="camera" class="ui-btn-active"><small>Info QR code</small></a></li>
+                        <li><a href="#qrCodeInfoPage" data-icon="camera" class="ui-state-persist ui-btn-active"><small>Info QR code</small></a></li>
                         <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
                         <li><a href="#nearbyPage" data-icon="location"><small>QUI vicino</small></a></li>
                     </ul>

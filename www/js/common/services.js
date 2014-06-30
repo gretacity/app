@@ -22,8 +22,12 @@ var services = {
             //if((sessionId || '') != '') commonParams += '&session_id=' + sessionId;
             commonParams += '&session_id=' + (sessionId || '');
         }
-        if(typeof(device) != 'undefined') commonParams += '&uuid=' + device.uuid;
-        if(typeof(device) == 'undefined' && config.EMULATE_ON_BROWSER) commonParams += '&uuid=browser_emulation';
+        if(typeof(device) != 'undefined') {
+            commonParams += '&uuid=' + device.uuid;
+            commonParams += '&platform=' + device.platform;
+        } else if(config.EMULATE_ON_BROWSER) {
+            commonParams += '&uuid=browser_emulation';
+        }
         if(typeof(app) != 'undefined') commonParams += '&lang=' + app.language;
         return commonParams;
     },
@@ -119,7 +123,24 @@ console.log('FAIL', textStatus);
     //////////////////////////////////////////////////////
     // QRCODE INFO RELATED FUNCTIONS
     
-    getInfoFromQrCode: function(code, successCallback, failCallback) {
+    
+    getFollowings: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_QRCODE_FOLLOWING;
+        url += '&' + services.getRequestCommonParameters();
+        $.ajax(url, {
+            type:'GET',
+            dataType: 'json'
+        }).done(function(result) {
+//console.log('SUCCESS', result);return;
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log('FAIL', textStatus);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+    
+    
+    getInfoFromQrCode: function(code, success, fail) {
         var url = config.URL_BASE + config.URL_QRCODE_GET_INFO;
         url += '&'+services.getRequestCommonParameters();
 //console.log(url);
@@ -130,11 +151,11 @@ console.log('FAIL', textStatus);
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
-//console.log('SUCCESS', result);//return;
-            successCallback(result);
+console.log('SUCCESS', result);//return;
+            success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log('FAIL', textStatus);
-            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
+console.log('FAIL', jqXHR);
+            fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
     
@@ -345,20 +366,20 @@ result.nuove = [
     
     getNearbyPlaceTypes: function(success, fail) {
         var results = [
-            {name: 'aeroporti', key: 'airport'},
-            {name: 'autobus', key: 'bus_station'},
-            {name: 'bancomat', key: 'atm'},
-            {name: 'bar', key: 'bar'},
-            {name: 'biblioteche', key: 'library'},
-            {name: 'cinema', key: 'movie_theater'},
-            {name: 'farmacie', key: 'pharmacy'},
-            {name: 'fitness', key: 'gym'},
-            {name: 'musei', key: 'museum'},
-            {name: 'ospedali', key: 'hospital'},
-            {name: 'parcheggi', key: 'parking'},
-            {name: 'ristoranti', key: 'restaurant'},
-            {name: 'stazioni di servizio', key: 'gas_station'},
-            {name: 'uffici postali', key: 'post_office'},
+            {name: 'aeroporti', key: 'airport', icon: 'img/nearby/Aeroporto.png'},
+            {name: 'autobus', key: 'bus_station', icon: 'img/nearby/Autobus.png'},
+            {name: 'bancomat', key: 'atm', icon: 'img/nearby/Banca.png'},
+            {name: 'bar', key: 'bar', icon: 'img/nearby/Bar.png'},
+            {name: 'biblioteche', key: 'library', icon: 'img/nearby/Biblioteca.png'},
+            {name: 'cinema', key: 'movie_theater', icon: 'img/nearby/Cinema.png'},
+            {name: 'farmacie', key: 'pharmacy', icon: 'img/nearby/Farmacia.png'},
+            {name: 'fitness', key: 'gym', icon: 'img/nearby/Centro-Sportivo.png'},
+            {name: 'musei', key: 'museum', icon: 'img/nearby/Museo.png'},
+            {name: 'ospedali', key: 'hospital', icon: 'img/nearby/Ospedale.png'},
+            {name: 'parcheggi', key: 'parking', icon: 'img/nearby/Parcheggio.png'},
+            {name: 'ristoranti', key: 'restaurant', icon: 'img/nearby/Ristorante.png'},
+            {name: 'stazioni di servizio', key: 'gas_station', icon: 'img/nearby/Rifornimeto.png'},
+            {name: 'uffici postali', key: 'post_office', icon: 'img/nearby/Ufficio-Postali.png'},
         ];
         success(results);
     },
@@ -479,39 +500,8 @@ result.nuove = [
         }).done(function(result) {
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('FAIL', jqXHR);
+console.log('FAIL', jqXHR, textStatus);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
-    },
-
-
-
-
-
-
-
-    //////////////////////////////////////////////////////
-    // COMMENTS RELATED FUNCTIONS
-    
-    getComments: function(params, success, fail) {
-        var result = [
-            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
-            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
-            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
-            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
-            {id: 1, qr_code_id: '00070832', text: 'Questo è il testo del messaggio', date_added: '2014-06-02 09:46:23', username: 'nome dell\'utente'},
-        ];
-        success(result);
-    },
-            
-            
-    getCommentDetail: function(params, success, fail) {
-        // TODO
-    },
-            
-            
-    leaveComment: function(params, success, fail) {
-        // TODO
     }
-    
 }
