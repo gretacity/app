@@ -918,7 +918,7 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
     
     
     showNewsChannelAvailable: function() {
-//return;
+return;
         var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
         if(newsChannelAvailableIds.length == 0) return;
         var page = $('#channelInfoPage');

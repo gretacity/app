@@ -35,6 +35,8 @@ var pushNotificationHelper = {
 
             // iOS testing
             var pnm = PushNotificationMessage.fromAPN({
+                foreground: true,
+                coldstart: false,
                 payload: {
                     type: notificationType,
                     title: 'titolo del messaggio', 
