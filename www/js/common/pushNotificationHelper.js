@@ -1,47 +1,71 @@
 var pushNotificationHelper = {
 
     
-    testPushNotification: function() {
+    testPushNotification: function(ix) {
         
+        ix = ix || 0;
         
-        self.pushNotification.setApplicationIconBadgeNumber(function() {
-            console.log('success handler');
-        }, function() {
-            console.log('errorHandler');
-        }, "3");
-return;
+        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL;
+        var data = [
+            /*/ Complex notification data
+            {id: 12, tot: 3},       // group 12 has 3 new items
+            {id: 2, tot: 1},        // group 2 has 1 new item
+            {id: 23, tot: 8},       // group 23 has 8 new items
+            {id: 13, tot: 19}*/
+
+            // qrcode: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING
+            //{id: config.QR_CODE_TEST, tot: 2}
+
+            // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
+            {id: '25', tot: 2}
+
+            // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
+            //{id: '172', tot: 1}
+
+            // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
+            //{id: '4', tot: 1}
+        ];
         
+        if(data.length == 0) {
+            helper.alert('Data not set');
+            return;
+        }
         
-        var pnm = PushNotificationMessage.fromGCM({
-            foreground: true,
-            coldstart: false,
-            payload: {
-                type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE,
-                title: 'titolo del messaggio', 
-                message: 'testo del messaggio',
-                data: [
-                    
-                    /*/ Complex notification data
-                    {id: 12, tot: 3},       // group 12 has 3 new items
-                    {id: 2, tot: 1},        // group 2 has 1 new item
-                    {id: 23, tot: 8},       // group 23 has 8 new items
-                    {id: 13, tot: 19}*/
-                    
-                    // qrcode: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING
-                    //{id: config.QR_CODE_TEST, tot: 2}
-                    
-                    // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
-                    //{id: '25', tot: 2}
-                    
-                    // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
-                    //{id: '172', tot: 1}
-                    
-                    // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
-                    {id: '4', tot: 1}
-                ]
-            }
-        })
-        .dispatchNotification();
+        if(ix == 0) {
+
+            // iOS testing
+            var pnm = PushNotificationMessage.fromAPN({
+                payload: {
+                    type: notificationType,
+                    title: 'titolo del messaggio', 
+                    message: 'testo del messaggio',
+                    data: data
+                }
+            })
+            .dispatchNotification();
+        } else if(ix == 1) {
+
+            // iOS testing
+            self.pushNotification.setApplicationIconBadgeNumber(function() {
+                console.log('success handler');
+            }, function() {
+                console.log('errorHandler');
+            }, "3");
+        } else {
+
+            // Android testing
+            var pnm = PushNotificationMessage.fromGCM({
+                foreground: true,
+                coldstart: false,
+                payload: {
+                    type: notificationType,
+                    title: 'titolo del messaggio', 
+                    message: 'testo del messaggio',
+                    data: data
+                }
+            })
+            .dispatchNotification();
+        }
     },
     
     
@@ -73,7 +97,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
                         "badge":"true",
                         "sound":"true",
                         "alert":"true",
-                        "ecb":"onNotificationAPN"
+                        "ecb":"pushNotificationHelper.onNotificationAPN"
                 });
             }
         }
@@ -325,6 +349,8 @@ function PushNotificationMessage() {
     }
 }
 
+
+PushNotificationMessage.APP_STATE_UNDEFINED = 0;
 PushNotificationMessage.APP_STATE_INLINE = 1;
 PushNotificationMessage.APP_STATE_BACKGROUND = 2;
 PushNotificationMessage.APP_STATE_COLDSTART = 3;
@@ -371,5 +397,25 @@ PushNotificationMessage.fromGCM = function(e) {
 }
 
 PushNotificationMessage.fromAPN = function(e) {
+
+helper.alert(JSON.stringify(e));
+    
     // TODO
+    /*if(e.alert) {
+        navigator.notification.alert(e.alert);
+    }
+    if(e.sound) {
+        var snd = new Media(e.sound);
+        snd.play();
+    }
+    if(e.badge ) {
+        pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, e.badge);
+    }*/
+    
+    var pnm = new PushNotificationMessage();
+    pnm.setNotificationType(e.payload.type)
+       .setAppState(PushNotificationMessage.APP_STATE_UNDEFINED)
+       .setMessageTitle(e.payload.title)
+       .setMessageText(e.payload.message);
+    return pnm;
 }
