@@ -427,6 +427,7 @@ helper.alert(JSON.stringify(e));
     pnm.setNotificationType(e.payload.type)
        .setAppState(appState)
        .setMessageTitle(e.payload.title)
-       .setMessageText(e.payload.message);
+       .setMessageText(e.payload.message)
+       .setData(e.payload.data);
     return pnm;
 }
