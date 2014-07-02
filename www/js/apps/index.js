@@ -921,19 +921,24 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
 //return;
         var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
         if(newsChannelAvailableIds.length == 0) return;
-        $('#channelInfoPage div[data-role="main"] p').html('Ci sono nuovi canali disponibili ai quali potresti essere interessato');
+        var page = $('#channelInfoPage');
+        $('div[data-role="main"] p', page).html('Ci sono nuovi canali disponibili ai quali potresti essere interessato');
         $.mobile.changePage('#channelInfoPage', {transition : 'slideup'});
-        
+console.log(newsChannelAvailableIds);
         $.mobile.loading('show');
         services.getChannelInfo({ids: newsChannelAvailableIds}, function(result) {
-            
-            // TODO
             var html = '';
             for(var i in result) {
                 var row = result[i];
-                html += '<div>...</div>';
+                html += '<div style="border-top:solid #0088CC 0.1em;margin-top:1em;padding-top:0.5em;">' +
+                            //'<label>Amministrazione Comunale di ...</label>' +
+                            '<strong>' + row.nome + '</strong>' +
+                            '<a href="#" class="ui-btn" style="background-color:#0088CC;color:#FFF;text-shadow: none;">Sottoscritto</a>' +
+                        '</div>';
+                // TODO
+                // Once subscribed change text to "Sottoscritto" and add class ui-disabled
             }
-            
+            $('#channelInfoContainer', page).html(html);
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
             $.mobile.loading('hide');

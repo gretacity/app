@@ -2,6 +2,16 @@ var pushNotificationHelper = {
 
     
     testPushNotification: function() {
+        
+        
+        self.pushNotification.setApplicationIconBadgeNumber(function() {
+            console.log('success handler');
+        }, function() {
+            console.log('errorHandler');
+        }, "3");
+return;
+        
+        
         var pnm = PushNotificationMessage.fromGCM({
             foreground: true,
             coldstart: false,
@@ -27,7 +37,7 @@ var pushNotificationHelper = {
                     //{id: '172', tot: 1}
                     
                     // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
-                    {id: '998', tot: 1}
+                    {id: '4', tot: 1}
                 ]
             }
         })
@@ -46,7 +56,7 @@ var pushNotificationHelper = {
     register: function(successCallback, errorCallback) {
         if(window.plugins) {
             self.pushNotification = window.plugins.pushNotification;
-            
+console.log('pushNotificationHelper: Registering device ' + device.platform);            
             if(device.platform.toLowerCase() == 'android') {
                 self.pushNotification.register(
                     successCallback,  // success: result contains any message sent from the plugin call
@@ -82,24 +92,9 @@ var pushNotificationHelper = {
     
     // Android only
     onNotificationGCM: function(e) {
-        
-        // https://android.googleapis.com/gcm/send
-        // ports: 5228, 5229, 5230
-        // see:
-        // http://developer.android.com/google/gcm/server.html
-        // cd plugins/com.phonegap.plugins.PushPlugin/Example/server
-        // ruby pushGCM.rb
-        
-/* For testing purposes
-e = {
-    event :'registered', 
-    regid : 'test'
-};
-var device = {
-    platform: 'android'
-};*/
         switch(e.event) {
             case 'registered':
+console.log('pushNotificationService: received notification from GCM, regid is ' + e.regid);
                 if(e.regid.length > 0) {
                     // Send a notification to our server
                     self.registerToPushServer(e.regid);
@@ -120,6 +115,7 @@ var device = {
     
     
     registerToPushServer: function(devicePushId) {
+console.log('pushNotificationService: received notification from Apple server');
         var url = config.URL_BASE + config.URL_NOTIFICATION_REGISTER;
         url += '&' + services.getRequestCommonParameters();
         var params = 'key='+encodeURIComponent(devicePushId)+'&platform='+device.platform;
