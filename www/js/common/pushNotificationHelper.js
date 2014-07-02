@@ -414,9 +414,18 @@ helper.alert(JSON.stringify(e));
         pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, e.badge);
     }*/
     
+    var appState = null;
+    if(e.foreground == true) {
+        appState = PushNotificationMessage.APP_STATE_INLINE;
+    } else if(e.coldstart == true) {
+        appState = PushNotificationMessage.APP_STATE_COLDSTART;
+    } else {
+        appState = PushNotificationMessage.APP_STATE_BACKGROUND;
+    } 
+
     var pnm = new PushNotificationMessage();
     pnm.setNotificationType(e.payload.type)
-       .setAppState(PushNotificationMessage.APP_STATE_UNDEFINED)
+       .setAppState(appState)
        .setMessageTitle(e.payload.title)
        .setMessageText(e.payload.message);
     return pnm;
