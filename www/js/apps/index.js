@@ -917,6 +917,39 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
     
     
     
+    showNewsChannelAvailable: function() {
+//return;
+        var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
+        if(newsChannelAvailableIds.length == 0) return;
+        $('#channelInfoPage div[data-role="main"] p').html('Ci sono nuovi canali disponibili ai quali potresti essere interessato');
+        $.mobile.changePage('#channelInfoPage', {transition : 'slideup'});
+        
+        $.mobile.loading('show');
+        services.getChannelInfo({ids: newsChannelAvailableIds}, function(result) {
+            
+            // TODO
+            var html = '';
+            for(var i in result) {
+                var row = result[i];
+                html += '<div>...</div>';
+            }
+            
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile recuperare il contenuto', null, 'Canali disponibili');
+        });
+    },
+    
+    
+    
+    
+    
+    
     
     // 
     initFollowingListPage: function() {
@@ -940,7 +973,7 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
             }
             $('#followingListPage #followingList').html(html).listview('refresh');
             self.updateBalloonsInFollowing();
-        }, function(e) {
+        }, function(e, loginRequired) {
             $.mobile.loading('hide');
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');

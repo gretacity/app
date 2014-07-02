@@ -284,6 +284,24 @@ console.log('FAIL', jqXHR);
         });
     },
     
+    
+    getChannelInfo: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_NEWS_CHANNEL_INFO;
+        url += '&' + services.getRequestCommonParameters();
+        var data = params.ids.join(',');
+        //$.ajax(url, {});
+        // TODO
+        setTimeout(function() {
+            success([
+                {id: 1, name: 'channel 1'},
+                {id: 2, name: 'channel 2'},
+                {id: 3, name: 'channel 3'},
+                {id: 4, name: 'channel 4'},
+                {id: 5, name: 'channel 5'}
+            ]);
+        }, 1000);
+    },
+    
     subscribeToChannel: function(params, success, fail) {
         // Invalidate cache
         self._subscribedChannels = null;

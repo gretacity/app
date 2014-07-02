@@ -6,7 +6,7 @@ var pushNotificationHelper = {
             foreground: true,
             coldstart: false,
             payload: {
-                type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL,
+                type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE,
                 title: 'titolo del messaggio', 
                 message: 'testo del messaggio',
                 data: [
@@ -21,10 +21,13 @@ var pushNotificationHelper = {
                     //{id: config.QR_CODE_TEST, tot: 2}
                     
                     // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
-                    {id: '25', tot: 2}
+                    //{id: '25', tot: 2}
                     
                     // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
-                    //{id: '172', tot: 1}*/
+                    //{id: '172', tot: 1}
+                    
+                    // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
+                    {id: '998', tot: 1}
                 ]
             }
         })
@@ -156,6 +159,18 @@ var device = {
         window.localStorage.setItem('gretacity_unreaddata', JSON.stringify(unreadData));
     },
     
+    
+    getUnreadIds: function(typeId) {
+        var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
+        var ids = [];
+        if(typeId in unreadData) {
+            for(var i in unreadData[typeId]) {
+                ids.push(i);
+            }
+        }
+        return ids;
+    },
+    
     getUnread: function(typeId, groupId, grouped) {
         var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
         if(unreadData[typeId] == null) {
@@ -237,7 +252,6 @@ function PushNotificationMessage() {
     }
     
     this.dispatchNotification = function() {
-
         // Update unread data
         typeId = this._notificationType;
         for(var i in this._data) {
@@ -268,7 +282,7 @@ function PushNotificationMessage() {
                     pageId = 'reportingListPage';
                     break;
                 case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE:
-                    pageId = '';    // TODO
+                    pageId = 'channelInfoPage';
                     break;
                 default:
                     console.error('Undefined push message type *' + typeId + '*');
@@ -283,30 +297,34 @@ function PushNotificationMessage() {
             }
         } else {
             // App is in ACTIVE state:
-            switch($.mobile.activePage.attr('id')) {
-                case 'homePage':
-                    app.updateBalloonsInHome();
-                    break;
-                case 'followingListPage':
-                    app.updateBalloonsInFollowing();
-                    break;
-                case 'newsChannelsPage':
-                    app.updateBalloonsInNews();
-                    break;
-                case 'newsPage':
-                    if(pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, app.newsChannelId) > 0) {
-                        app.updateBalloonsInNewsContent();
-                    } else {
+            if(typeId == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE) {
+                app.showNewsChannelAvailable();
+            } else {
+                switch($.mobile.activePage.attr('id')) {
+                    case 'homePage':
+                        app.updateBalloonsInHome();
+                        break;
+                    case 'followingListPage':
+                        app.updateBalloonsInFollowing();
+                        break;
+                    case 'newsChannelsPage':
                         app.updateBalloonsInNews();
-                    }
-                    break;
-                case 'reportingListPage':
-                    app.updateBalloonsInReporting();
-                    break;
-                //default:
-                    // Let's play a sound?
-                    //break;
-            }   
+                        break;
+                    case 'newsPage':
+                        if(pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, app.newsChannelId) > 0) {
+                            app.updateBalloonsInNewsContent();
+                        } else {
+                            app.updateBalloonsInNews();
+                        }
+                        break;
+                    case 'reportingListPage':
+                        app.updateBalloonsInReporting();
+                        break;
+                    //default:
+                        // Let's play a sound?
+                        //break;
+                }
+            }
         }        
     }
 }

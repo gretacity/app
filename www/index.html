@@ -184,7 +184,8 @@
         <div data-role="page" id="homePage" data-theme="a">
             <div data-role="header" data-position="fixed" data-fullscreen="true">
                 <h1>GretaCITY</h1>
-                <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
+                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>                
+                <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
             </div>
             <div data-role="main" class="ui-content">
                 <img style="width:90%;max-width:2048px;margin:1em auto;padding-top:2em;display:block;" _src="./img/splash.png" src="./img/logo-2.png" />
@@ -201,12 +202,7 @@
                     </p>
                     <p>
                         <a href="#followingListPage" class="ui-btn ui-icon-comment ui-btn-icon-left" style="border:none;">
-                            Punti d'interesse<span id="followingCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
-                        </a>
-                    </p>
-                    <p>
-                        <a href="#profilePage" class="ui-btn ui-icon-gear ui-btn-icon-left" style="border:none;">
-                            Il Tuo Profilo
+                            Following<span id="followingCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
                         </a>
                     </p>
                 </div>
@@ -414,6 +410,69 @@
         <!-- /channelSubscriptionPage -->
         
         
+        <!-- channelInfoPage -->
+        <div data-role="dialog" id="channelInfoPage">
+            <!--
+            <div data-role="header">
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            -->
+            <div data-role="main" class="ui-content">
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <p style="margin-top:2em;">info</p>
+                <!--
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">
+                        <label style="white-space:normal;">Amministrazione Comunale di Marcellinara</label>
+                        <label>Canale 1</label>
+                    </li>
+                    <li>
+                        <a href="#" class="">
+                            <strong>Sottoscrivi</strong>
+                        </a>
+                    </li>
+                    <li data-role="list-divider">
+                        <label style="white-space:normal;">Amministrazione Comunale di Marcellinara</label>
+                        <label>Canale 2</label>
+                    </li>
+                    <li>
+                        <a href="#" class="">
+                            <strong>Sottoscrivi</strong>
+                        </a>
+                    </li>
+                    <li data-role="list-divider">
+                        <label style="white-space:normal;">Amministrazione Comunale di Marcellinara</label>
+                        <label>Canale 3</label>
+                    </li>
+                    <li>
+                        <a href="#" class="">
+                            <strong>Sottoscrivi</strong>
+                        </a>
+                    </li>
+                </ul>
+                -->
+                
+                <div style="border-top:solid #0088CC 0.1em;margin-top:1em;padding-top:0.5em;">
+                    <label>Amministrazione Comunale di Marcellinara</label>
+                    <strong>Canale 2</strong>
+                    <a href="#" class="ui-btn ui-disabled" style="background-color:#0088CC;color:#FFF;text-shadow: none;">Sottoscritto</a>
+                </div>
+                <div style="border-top:solid #0088CC 0.1em;margin-top:1em;padding-top:0.5em;">
+                    <label>Amministrazione Comunale di Marcellinara</label>
+                    <strong>Canale 3</strong>
+                    <a href="#" class="ui-btn" style="background-color:#0088CC;color:#FFF;text-shadow: none;">Sottoscrivi</a>
+                </div>
+                <div style="border-top:solid #0088CC 0.1em;margin-top:1em;padding-top:0.5em;">
+                    <label>Amministrazione Comunale di Marcellinara</label>
+                    <strong>Canale 4</strong>
+                    <a href="#" class="ui-btn" style="background-color:#0088CC;color:#FFF;text-shadow: none;">Sottoscrivi</a>
+                </div>
+                
+            </div>
+        </div>
+        <!-- /channelInfoPage -->
+        
+        
         <!-- reportingListPage -->
         <div data-role="page" id="reportingListPage">
             <div data-role="header" data-position="fixed">
@@ -421,6 +480,7 @@
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <!-- <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a> -->
                 <!-- <a href="#" id="refreshReportingListButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-refresh">Aggiorna</a> -->
+                <a href="#reportingMethodPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-plus">Report</a>
             </div>
             <div data-role="main" class="ui-content">
                 <ul id="reportingList" data-role="listview" data-inset="false"></ul>
@@ -534,7 +594,7 @@
         <!-- followingListPage -->
         <div data-role="page" id="followingListPage">
             <div data-role="header" data-position="fixed">
-                <h1>Punti d'interesse</h1>
+                <h1>Following</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <!--<a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>-->                          
             </div>
