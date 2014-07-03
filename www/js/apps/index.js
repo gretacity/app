@@ -105,9 +105,9 @@ helper.alert('onResume');
         pushNotificationHelper.updateApplicationIconBadgeNumber();
     },
     onPause: function() {
-console.log('onPause');
+/*console.log('onPause');
 helper.alert('onPause');
-        pushNotificationHelper.updateApplicationIconBadgeNumber();
+        pushNotificationHelper.updateApplicationIconBadgeNumber();*/
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
