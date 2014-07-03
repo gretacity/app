@@ -80,13 +80,6 @@ var pushNotificationHelper = {
     self: this,
     pushNotification : null,
     
-/*    init: function() {
-        if(window.plugins) {
-            if(
-            self.pushNotification = window.plugins.pushNotification;
-        }
-    },*/
-    
     register: function(successCallback, errorCallback) {
         if(window.plugins) {
             pushNotificationHelper.pushNotification = window.plugins.pushNotification;
@@ -120,7 +113,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
     
     // iOS only
     updateApplicationIconBadgeNumber: function() {
-        if(device && (device.platform == 'iOS')) {
+        if(device && (device.platform == 'iOS') && pushNotificationHelper.pushNotification) {
             var totUnread = pushNotificationHelper.getUnread();
 totUnread = 999;
             pushNotificationHelper.pushNotification.setApplicationIconBadgeNumber(function() {}, function() {}, totUnread);

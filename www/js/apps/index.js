@@ -13,7 +13,6 @@ var app = {
     // 'load', 'deviceready', 'pause', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', self.onDeviceReady, false);
-        document.addEventListener('pause', self.onPause, false);
         document.addEventListener('resume', self.onResume, false);
         document.addEventListener('online', self.onOnline, false);
         document.addEventListener('offline', self.onOffline, false);
@@ -100,14 +99,7 @@ var app = {
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
     },
     onResume: function() {
-console.log('onResume');
-helper.alert('onResume');
-        pushNotificationHelper.updateApplicationIconBadgeNumber();
-    },
-    onPause: function() {
-/*console.log('onPause');
-helper.alert('onPause');
-        pushNotificationHelper.updateApplicationIconBadgeNumber();*/
+        //pushNotificationHelper.updateApplicationIconBadgeNumber();
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
