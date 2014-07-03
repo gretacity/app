@@ -100,6 +100,7 @@ var app = {
     },
     onPause: function() {
         pushNotificationHelper.updateApplicationBadgeNumber();
+        helper.alert('onPause');
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
