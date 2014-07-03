@@ -99,8 +99,9 @@ var app = {
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
     },
     onPause: function() {
+console.log('onPause');
+helper.alert('onPause');
         pushNotificationHelper.updateApplicationBadgeNumber();
-        helper.alert('onPause');
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');

@@ -108,6 +108,14 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
     },
     
     // iOS only
+    updateApplicationBadgeNumber: function() {
+        if(device && (device.platform == 'iOS')) {
+            var totUnread = pushNotificationHelper.getUnread();
+            self.pushNotification.setApplicationIconBadgeNumber(function() {}, function() {}, totUnread);
+        }
+    },
+
+    // iOS only
     onNotificationAPN: function(e) {
         var pnm = PushNotificationMessage.fromAPN(e);
         pnm.dispatchNotification();
@@ -153,18 +161,7 @@ console.log('pushNotificationService: received notification from Apple server');
         }).fail(function(jqXHR, textStatus, errorThrown) {
 //helper.alert('regid='+e.regid+'\n'+textStatus, null, 'FAIL');
         });
-    },
-    
-    
-    
-    // iOS only
-    updateApplicationBadgeNumber: function() {
-        if(device && (device.platform == 'iOS')) {
-            var totUnread = self.getUnread();
-            self.pushNotification.setApplicationIconBadgeNumber(function() {}, function() {}, totUnread);
-        }
-    },
-    
+    },    
     
     
     /***
@@ -205,7 +202,7 @@ console.log('pushNotificationService: received notification from Apple server');
     
     getUnread: function(typeId, groupId, grouped) {
         var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
-        if(unreadData[typeId] == null) {
+        if(typeId == null) {
             // Count all
             var tot = 0;
             for(var i in unreadData) {
@@ -214,6 +211,9 @@ console.log('pushNotificationService: received notification from Apple server');
                 }
             }
             return tot;
+        }
+        if(unreadData[typeId] == null) {
+            return 0;
         }
         if(groupId != null) {
             return unreadData[typeId][groupId] == null ? 0 : unreadData[typeId][groupId];
