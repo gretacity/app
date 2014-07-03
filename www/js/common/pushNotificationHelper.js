@@ -92,7 +92,7 @@ var pushNotificationHelper = {
             pushNotificationHelper.pushNotification = window.plugins.pushNotification;
 console.log('pushNotificationHelper: Registering device ' + device.platform);            
             if(device.platform.toLowerCase() == 'android') {
-                self.pushNotification.register(
+                pushNotificationHelper.pushNotification.register(
                     successCallback,  // success: result contains any message sent from the plugin call
                     errorCallback,    // error: result contains any error description text returned from the plugin call
                     {
@@ -101,7 +101,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
                     }
                 );
             } else {
-                self.pushNotification.register(
+                pushNotificationHelper.pushNotification.register(
                     pushNotificationHelper.tokenCallback,
                     errorCallback, {
                         "badge":"true",
