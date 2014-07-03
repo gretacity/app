@@ -86,7 +86,7 @@ console.log('SUCCESS', result);//return;
                 email : result.user.email,
                 phone: result.anagrafica[0].telefono,
                 city: {
-                    id: result.anagrafica[0].dic_comune_id,
+                    id: (result.anagrafica[0].dic_comune_id || 0),
                     name: result.anagrafica[0].comune
                 }
             };

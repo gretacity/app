@@ -99,7 +99,7 @@ var app = {
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
     },
     onResume: function() {
-        //pushNotificationHelper.updateApplicationIconBadgeNumber();
+        pushNotificationHelper.updateApplicationIconBadgeNumber();
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
@@ -121,21 +121,9 @@ var app = {
                 function () {}
             );
         }
-        /*
-        // Move in the login function
-        pushNotificationHelper.register(function(result) {
-            //helper.alert('success ' + result);
-        }, function(e) {
-            //helper.alert('error ' + e);
-        });*/
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        /*var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');*/
         console.log('Received Event: ' + id);
     },
     
@@ -179,8 +167,9 @@ var app = {
         $('#registerPageButton', page).addClass('ui-disabled');
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(result) {
+console.log(result);
             // Successfully loggedin, move forward
-            pushNotificationHelper.register(function(result) {}, function(e) {});
+            pushNotificationHelper.register(function(res) {}, function(e) {});
             $('#username').removeClass('ui-disabled');
             $('#password').removeClass('ui-disabled').val('');
             $('#loginButton').removeClass('ui-disabled');
@@ -284,11 +273,22 @@ var app = {
         });*/
     },
     showHome: function() {
-        if(!config.userProfileHasBeenSet()) {
-            // DO SOMETHING
-            helper.alert('Il tuo profilo non è stato ancora impostato', function() {
-                $.mobile.changePage('#profilePage');
-            }, 'Profilo');
+        if(!config.userProfileHasBeenSet()) {        
+            $.mobile.loading('show');
+            // Load profile from server
+            services.getProfile({}, function(result) {
+                self.userProfile = result;
+                $.mobile.loading('hide');
+                // City is mandatory
+                if(self.userProfile.city.id == 0) {
+                    helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
+                        $.mobile.changePage('#profilePage');
+                    }, 'Profilo');
+                }
+            }, function(e) {
+                $.mobile.loading('hide');
+            });
+            
         } else {
             self.updateBalloonsInHome();
         }
