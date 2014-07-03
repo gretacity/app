@@ -5,7 +5,7 @@ var pushNotificationHelper = {
         
         ix = ix || 0;
         
-        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL;
+        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE;
         var data = [
             /*/ Complex notification data
             {id: 12, tot: 3},       // group 12 has 3 new items
@@ -17,13 +17,13 @@ var pushNotificationHelper = {
             //{id: config.QR_CODE_TEST, tot: 2}
 
             // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
-            {id: '25', tot: 2}
+            //{id: '25', tot: 2}
 
             // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
             //{id: '172', tot: 1}
 
             // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
-            //{id: '4', tot: 1}
+            {id: '4', tot: 1}
         ];
         
         if(data.length == 0) {
@@ -32,7 +32,6 @@ var pushNotificationHelper = {
         }
         
         if(ix == 0) {
-
             // iOS testing
             var pnm = PushNotificationMessage.fromAPN({
                 foreground: true,
@@ -46,7 +45,6 @@ var pushNotificationHelper = {
             })
             .dispatchNotification();
         } else if(ix == 1) {
-
             // iOS testing
             self.pushNotification.setApplicationIconBadgeNumber(function() {
                 console.log('success handler');
@@ -54,7 +52,6 @@ var pushNotificationHelper = {
                 console.log('errorHandler');
             }, "3");
         } else {
-
             // Android testing
             var pnm = PushNotificationMessage.fromGCM({
                 foreground: true,
@@ -112,7 +109,10 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
     
     // iOS only
     onNotificationAPN: function(e) {
-        // TODO
+        var pnm = PushNotificationMessage.fromAPN(e);
+        pnm.dispatchNotification();
+        // Update the application badge number
+        self.updateApplicationBadgeNumber();
     },
     
     
@@ -157,6 +157,16 @@ console.log('pushNotificationService: received notification from Apple server');
     
     
     
+    // iOS only
+    updateApplicationBadgeNumber: function() {
+        if(device && (device.platform == 'iOS')) {
+            var totUnread = self.getUnread();
+            self.pushNotification.setApplicationIconBadgeNumber(function() {}, function() {}, totUnread);
+        }
+    },
+    
+    
+    
     /***
      *  typeId: NEWS, COMMENT, REPORTING --> PushNotificationMessage.{PUSH_NOTIFICATION_TYPE_CHANNEL | PUSH_NOTIFICATION_TYPE_FOLLOWING | PUSH_NOTIFICATION_TYPE_REPORTING}
      *  groupId: CHANNEL_ID, QR_CODE_ID, REPORTING_ID
@@ -196,7 +206,14 @@ console.log('pushNotificationService: received notification from Apple server');
     getUnread: function(typeId, groupId, grouped) {
         var unreadData = JSON.parse(window.localStorage.getItem('gretacity_unreaddata')) || {};
         if(unreadData[typeId] == null) {
-            return 0;
+            // Count all
+            var tot = 0;
+            for(var i in unreadData) {
+                for(var j in unreadData[i]) {
+                    tot += unreadData[i][j];
+                }
+            }
+            return tot;
         }
         if(groupId != null) {
             return unreadData[typeId][groupId] == null ? 0 : unreadData[typeId][groupId];
@@ -286,12 +303,11 @@ function PushNotificationMessage() {
                 groupId, 
                 totUnread
             );
-        }        
-        
-        // Android app can be in inline, background or coldstart mode
+        }
+        // App can be in inline, background or coldstart mode
         if(this._appState != PushNotificationMessage.APP_STATE_INLINE) {
             // App is in BACKGROUND state:
-            // show the related page
+            // once in foreground, show the related page
             var pageId = '';
             switch(typeId) {
                 case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING:

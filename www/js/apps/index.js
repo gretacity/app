@@ -10,9 +10,10 @@ var app = {
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
+    // 'load', 'deviceready', 'pause', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', self.onDeviceReady, false);
+        document.addEventListener('pause', self.onPause, false);
         document.addEventListener('online', self.onOnline, false);
         document.addEventListener('offline', self.onOffline, false);
         
@@ -96,6 +97,9 @@ var app = {
         nearbyPlaceInfoPage.on('pageinit', self.initNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
+    },
+    onPause: function() {
+        pushNotificationHelper.updateApplicationBadgeNumber();
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
@@ -482,22 +486,29 @@ var app = {
     initProfileChannelsPage: function() {
     },
     
+    
     showProfileChannelsPage: function() {
         services.getSubscribedChannels(function(result) {
             var page = $('#profileChannelsPage');
-            var html = ''; //'<li data-role="list-divider"><label>I tuoi Canali</label></li>';
+            var html = '';
             for(var i in result) {
                 var channelId = result[i].id_feed;
                 var channelName = result[i].nome_feed;
                 var channelOwner = result[i].denominazione;
-                html += '<li><a href="#newsPage" style="padding:0 40px 0 0;">'+
-                            '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked />'+
+                html += '<li>'+
+                            '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
                             '<label for="channel' + channelId + '">' + channelName + 
                             '<br /><small>' + channelOwner + '</small></label>'+
-                        '</a></li>';
+                        '</li>';
             }
             $('#subscribedChannels', page).html(html).listview('refresh');
-            $('#subscribedChannels li input[type="checkbox"]', page).checkboxradio().on('click', function() {
+            $('#subscribedChannels li input[type="checkbox"]', page).checkboxradio().on('click', function(e) {
+                var removable = $(this).attr('data-removable') == '1';
+                if(!removable) {
+                    $(this).prop('checked', true);
+                    e.preventDefault();
+                    return;
+                }
                 services.subscribeToChannel({
                     channelId: $(this).attr('data-id'), 
                     subscribe: $(this).is(':checked')
@@ -912,13 +923,15 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
         });
     },
     
+
+    
     
     
     
     
     
     showNewsChannelAvailable: function() {
-return;
+//return;
         var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
         if(newsChannelAvailableIds.length == 0) return;
         var page = $('#channelInfoPage');
@@ -930,13 +943,11 @@ console.log(newsChannelAvailableIds);
             var html = '';
             for(var i in result) {
                 var row = result[i];
-                html += '<div style="border-top:solid #0088CC 0.1em;margin-top:1em;padding-top:0.5em;">' +
+                html += '<div data-channelid="' + row.id + '" style="border-top:solid #0088CC 0.1em;margin-top:1em;padding-top:0.5em;">' +
                             //'<label>Amministrazione Comunale di ...</label>' +
                             '<strong>' + row.nome + '</strong>' +
-                            '<a href="#" class="ui-btn" style="background-color:#0088CC;color:#FFF;text-shadow: none;">Sottoscritto</a>' +
+                            '<a href="javascript:self.subscribeToNewsChannelAvailable('+row.id+')" class="ui-btn" style="background-color:#0088CC;color:#FFF;text-shadow: none;">Sottoscrivi</a>' +
                         '</div>';
-                // TODO
-                // Once subscribed change text to "Sottoscritto" and add class ui-disabled
             }
             $('#channelInfoContainer', page).html(html);
             $.mobile.loading('hide');
@@ -949,7 +960,28 @@ console.log(newsChannelAvailableIds);
             helper.alert('Impossibile recuperare il contenuto', null, 'Canali disponibili');
         });
     },
-    
+    subscribeToNewsChannelAvailable: function(id) {
+        var page = $('#channelInfoPage');
+        var subscribeButton = $('#channelInfoContainer div[data-channelid="' + id + '"] a', page);
+        subscribeButton.html('Sottoscrizione...').addClass('ui-disabled');
+        
+        services.subscribeToChannel({
+            channelId: id, 
+            subscribe: true
+        }, function() {
+            // Once subscribed change text to "Sottoscritto" and add class ui-disabled
+            subscribeButton.html('Sottoscritto');
+        }, function(e, loginRequired) {
+            // An error occurred
+            subscribeButton.html('Sottoscrivi').removeClass('ui-disabled');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile completare l\'operazione', null, 'Sottoscrizione canale');
+        });
+    },
+
     
     
     
