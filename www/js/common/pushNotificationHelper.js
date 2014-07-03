@@ -91,7 +91,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
                 );
             } else {
                 self.pushNotification.register(
-                    self.tokenCallback,
+                    pushNotificationHelper.tokenCallback,
                     errorCallback, {
                         "badge":"true",
                         "sound":"true",
