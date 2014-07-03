@@ -46,11 +46,15 @@ var pushNotificationHelper = {
             .dispatchNotification();
         } else if(ix == 1) {
             // iOS testing
-            pushNotificationHelper.pushNotification.setApplicationIconBadgeNumber(function() {
-                console.log('success handler');
-            }, function() {
-                console.log('errorHandler');
-            }, "3");
+            if(pushNotificationHelper.pushNotification == null) {
+                console.error('pushNotificationHelper.pushNotification is null');
+            } else {
+                pushNotificationHelper.pushNotification.setApplicationIconBadgeNumber(function() {
+                    console.log('success handler');
+                }, function() {
+                    console.log('errorHandler');
+                }, "3");
+            }
         } else {
             // Android testing
             var pnm = PushNotificationMessage.fromGCM({
@@ -76,9 +80,16 @@ var pushNotificationHelper = {
     self: this,
     pushNotification : null,
     
+/*    init: function() {
+        if(window.plugins) {
+            if(
+            self.pushNotification = window.plugins.pushNotification;
+        }
+    },*/
+    
     register: function(successCallback, errorCallback) {
         if(window.plugins) {
-            self.pushNotification = window.plugins.pushNotification;
+            pushNotificationHelper.pushNotification = window.plugins.pushNotification;
 console.log('pushNotificationHelper: Registering device ' + device.platform);            
             if(device.platform.toLowerCase() == 'android') {
                 self.pushNotification.register(
