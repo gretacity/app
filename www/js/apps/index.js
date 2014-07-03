@@ -98,10 +98,15 @@ var app = {
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
     },
+    onResume: function() {
+console.log('onPause');
+helper.alert('onPause');
+        pushNotificationHelper.updateApplicationIconBadgeNumber();
+    },
     onPause: function() {
 console.log('onPause');
 helper.alert('onPause');
-        pushNotificationHelper.updateApplicationBadgeNumber();
+        pushNotificationHelper.updateApplicationIconBadgeNumber();
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');

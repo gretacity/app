@@ -46,7 +46,7 @@ var pushNotificationHelper = {
             .dispatchNotification();
         } else if(ix == 1) {
             // iOS testing
-            self.pushNotification.setApplicationIconBadgeNumber(function() {
+            pushNotificationHelper.pushNotification.setApplicationIconBadgeNumber(function() {
                 console.log('success handler');
             }, function() {
                 console.log('errorHandler');
@@ -108,11 +108,11 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
     },
     
     // iOS only
-    updateApplicationBadgeNumber: function() {
+    updateApplicationIconBadgeNumber: function() {
         if(device && (device.platform == 'iOS')) {
             var totUnread = pushNotificationHelper.getUnread();
 totUnread = 999;
-            self.pushNotification.setApplicationIconBadgeNumber(function() {}, function() {}, totUnread);
+            pushNotificationHelper.pushNotification.setApplicationIconBadgeNumber(function() {}, function() {}, totUnread);
         }
     },
 
