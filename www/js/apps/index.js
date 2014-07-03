@@ -14,6 +14,7 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', self.onDeviceReady, false);
         document.addEventListener('pause', self.onPause, false);
+        document.addEventListener('resume', self.onResume, false);
         document.addEventListener('online', self.onOnline, false);
         document.addEventListener('offline', self.onOffline, false);
         
@@ -99,8 +100,8 @@ var app = {
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
     },
     onResume: function() {
-console.log('onPause');
-helper.alert('onPause');
+console.log('onResume');
+helper.alert('onResume');
         pushNotificationHelper.updateApplicationIconBadgeNumber();
     },
     onPause: function() {
