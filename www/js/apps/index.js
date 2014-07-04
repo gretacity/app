@@ -911,7 +911,19 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
             var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
             $('div[data-role="header"] h1', page).html(result.oggetto);
             $('#newsDate', page).html("Inserita il " + dateAdded.toDMY() + " alle " + dateAdded.toHM());
-            $('#newsText', page).html(result.descrizione);
+            
+            var text = $('<span class="temp">'+result.descrizione+'</span>');
+            $('a', text).each(function() {
+                var href = $(this).attr('href');
+                $(this).attr('href', '#')
+                       .attr('onclick', 'javascript:window.open(\'' + href + '\', \'_system\', \'location=yes\');');
+            });
+            $('#newsText', page).html(
+                text.html()
+            );
+            
+            //$('#newsText', page).html(result.descrizione);
+            
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
             $.mobile.loading('hide');

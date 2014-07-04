@@ -3,8 +3,8 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.gretacity.app"
-        version   = "0.8.0">
+        id        = "com.roadart.gretacity"
+        version   = "0.9.0">
 
     <name>GretaCITY</name>
 

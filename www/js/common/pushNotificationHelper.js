@@ -116,7 +116,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
         if(device && (device.platform == 'iOS') && pushNotificationHelper.pushNotification) {
             var totUnread = pushNotificationHelper.getUnread();
 // For testing purposes:
-totUnread = 999;
+//totUnread = 999;
             pushNotificationHelper.pushNotification.setApplicationIconBadgeNumber(function() {}, function() {}, totUnread);
         }
     },
