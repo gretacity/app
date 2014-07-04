@@ -245,6 +245,12 @@ console.log(result);
             helper.alert('E\' necessario acconsentire al trattamento dei dati personali e accettare le note legali');
             return;
         }
+        
+        if(!helper.isOnline()) {
+            helper.alert('Errore di connessione', null, 'Registrazione');
+            return;
+        }
+        
         // Registration
         services.registerUser(params, function() {
             helper.alert('La registrazione è stata completata con successo.\n' +
@@ -253,6 +259,7 @@ console.log(result);
             }, 'Registrazione');
         }, function(e) {
             // error callback
+            if((e||'') == '') e = 'Impossibile completare la registrazione';
             helper.alert(e, null, 'Registrazione');
         });
     },

@@ -29,7 +29,7 @@ var geoLocation = {
                        timeout: config.GEO_OPTS_TIMEOUT, 
                        enableHighAccuracy: config.GEO_OPTS_HIGH_ACCURACY};
         
-        if(true || config.EMULATE_ON_BROWSER) {
+        if(config.EMULATE_ON_BROWSER) {
             //errorCallback('errorino');return;
             if(successCallback) {
                 var lat = 38.858364, lng = 16.549469, accuracy = 15;
