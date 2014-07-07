@@ -697,8 +697,8 @@ console.log(result);
             for(var i in result) {
                 var row = result[i];
                 html += '<li><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
-                            + row.nome_feed + '</span><label><small>' + row.denominazione 
-                            + '</small></label>'
+                            + row.denominazione + '</span><label>' + row.nome_feed
+                            + '</label>'
                             + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust"></span>'
                             + '</a></li>';
             }

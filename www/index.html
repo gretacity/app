@@ -32,11 +32,20 @@
             
             /*.ui-disabled {background-color: #cecece !important;}*/
             
+            .ui-navbar-item-cust {
+                font-weight: lighter !importat;
+                color: #FFF !importat;
+            }
+            
             .ui-li-count-cust {
-                min-width: 2em !important;
+                min-width: 1em !important;
                 background: #FF0A2B !important; /*#FF920A !important;*/
                 color:#FFF !important;
                 border-radius: 1em !important;
+                z-index: 100;
+                position: absolute;
+                top:1em;
+                right:0;
             }
             .fielderror {
                 color: #FF0000;
@@ -486,10 +495,10 @@
                         <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
                         <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
                         -->
-                        <li><a href="#" data-icon="bars" style="font-weight:normal;color:#FFF;">Notizie</a></li>
-                        <li><a href="#" data-icon="comment" style="font-weight:normal;color:#FFF;">Following</a></li>
-                        <li><a href="#" data-icon="bullets" style="font-weight:normal;color:#FFF;">Segnalazioni</a>
-                        <li><a href="#" data-icon="location" style="font-weight:normal;color:#FFF;">QUI Vicino</a></li>
+                        <li><a href="#" data-icon="bars" class="ui-state-persist" style="font-weight:lighter;color:#FFF;">Notizie</a></li>
+                        <li><a href="#" data-icon="comment" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count ui-li-count-cust">99</span></a></li>
+                        <li><a href="#" data-icon="bullets" style="font-weight: lighter;color:#FFF;">Segnalazioni</a>
+                        <li><a href="#" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
                 </div>
             </div>
