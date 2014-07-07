@@ -13,11 +13,9 @@
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="css/glide-style.css" />
         <style>
-
             * {
                 font-size: 1em !important;
             }
-            
             div[data-role="navbar"] ul li a {
                 background-color: rgb(89, 196, 248) !important;
                 text-shadow: none !important;
@@ -483,9 +481,15 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
+                        <!--
                         <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
                         <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
                         <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
+                        -->
+                        <li><a href="#" data-icon="bars"><small>Notizie</small></a></li>
+                        <li><a href="#" data-icon="comment"><small>Following</small></a></li>
+                        <li><a href="#" data-icon="bullets"><small>Segnalazioni</small></a>
+                        <li><a href="#" data-icon="location"><small>QUI Vicino</small></a></li>
                     </ul>
                 </div>
             </div>
@@ -555,7 +559,7 @@
             <div data-role="header" data-position="fixed">
                 <h1>Following</h1>
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <!--<a href="#segnala" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a>-->                          
+                <a href="#" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Info QRCode</a>
             </div>
             <div data-role="main" class="ui-content">                
                 <ul data-role="listview" id="followingList"></ul>

@@ -47,7 +47,7 @@ var config = {
     URL_NEWS_SEARCH_LOCATION: '/web/index.php?mode=module&p=app_services&a=search_comune',
     // Elenco dei feed per zona geografica: id_comune, id_provincia, id_regione
     URL_NEWS_CHANNELS: '/web/index.php?mode=module&p=app_services&a=search_feed',
-    URL_NEWS_CHANNEL_INFO: '/web/index.php?mode=module&p=app_services&a=get_feeds',   // params -> feeds=id1;id2;id3;id4;
+    URL_NEWS_CHANNEL_INFO: '/web/index.php?mode=module&p=app_services&a=get_feeds',
     // Elenco dei feed sottoscritti dall'utente
     URL_NEWS_SUBSCRIBED_CHANNELS: '/web/index.php?mode=module&p=app_services&a=user_feed',
     URL_NEWS_SUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=add_feed',
@@ -55,9 +55,7 @@ var config = {
     URL_NEWS_LIST: '/web/index.php?mode=module&p=app_services&a=get_notizie',
     URL_NEWS_DETAIL: '/web/index.php?mode=module&p=app_services&a=get_notizia',
     
-    
-    //http://www.gretacity.com/test/web/index.php?p=qrcode&a=get&mode=module&qrcode=1000000769&session_id=b84e99c4ncmumgmmscueeg9m77
-    URL_QRCODE_GET_INFO: '/web/index.php?p=app_services&a=get&mode=module',   // qrcode=1000000769
+    URL_QRCODE_GET_INFO: '/web/index.php?p=app_services&a=get&mode=module',
     URL_QRCODE_SEND_COMMENT: '/web/index.php?mode=module&p=commenti&s=commenti&s_t=add_app',
     
     //params: qrcode

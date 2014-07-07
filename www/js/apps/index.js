@@ -182,6 +182,7 @@ console.log(result);
             else {
                 //$.mobile.changePage('index.html#homePage');
                 $.mobile.changePage('#homePage');
+                //$.mobile.changePage('#newsPage');
             }
         }, function(e) {
             $.mobile.loading('hide');
@@ -918,7 +919,6 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
             var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
             $('div[data-role="header"] h1', page).html(result.oggetto);
             $('#newsDate', page).html("Inserita il " + dateAdded.toDMY() + " alle " + dateAdded.toHM());
-            
             var text = $('<span class="temp">'+result.descrizione+'</span>');
             $('a', text).each(function() {
                 var href = $(this).attr('href');
