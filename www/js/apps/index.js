@@ -181,8 +181,8 @@ console.log(result);
             }
             else {
                 //$.mobile.changePage('index.html#homePage');
-                $.mobile.changePage('#homePage');
-                //$.mobile.changePage('#newsPage');
+                //$.mobile.changePage('#homePage');
+                $.mobile.changePage('#newsPage');
             }
         }, function(e) {
             $.mobile.loading('hide');

@@ -5,7 +5,7 @@ var pushNotificationHelper = {
         
         ix = ix || 0;
         
-        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE;
+        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL;
         var data = [
             /*/ Complex notification data
             {id: 12, tot: 3},       // group 12 has 3 new items
@@ -17,13 +17,15 @@ var pushNotificationHelper = {
             //{id: config.QR_CODE_TEST, tot: 2}
 
             // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
-            //{id: '25', tot: 2}
+            {id: '25', tot: 2},
+            {id: '28', tot: 4},
+            {id: '29', tot: 7},
 
             // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
             //{id: '172', tot: 1}
 
             // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
-            {id: '4', tot: 1}
+            //{id: '4', tot: 1}
         ];
         
         if(data.length == 0) {
@@ -137,7 +139,8 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
 console.log('pushNotificationService: received notification from GCM, regid is ' + e.regid);
                 if(e.regid.length > 0) {
                     // Send a notification to our server
-                    self.registerToPushServer(e.regid);
+                    //self.registerToPushServer(e.regid);
+                    pushNotificationHelper.registerToPushServer(e.regid);
                 }
                 break;
             case 'message':
@@ -155,10 +158,12 @@ console.log('pushNotificationService: received notification from GCM, regid is '
     
     
     registerToPushServer: function(devicePushId) {
-console.log('pushNotificationService: received notification from Apple server');
+console.log('pushNotificationService: received notification from GCM/Apple server');
         var url = config.URL_BASE + config.URL_NOTIFICATION_REGISTER;
         url += '&' + services.getRequestCommonParameters();
+//helper.alert(url);
         var params = 'key='+encodeURIComponent(devicePushId)+'&platform='+device.platform;
+//helper.alert(params);
         $.ajax(url, {
             type: 'POST',
             data: params
