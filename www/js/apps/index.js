@@ -46,6 +46,7 @@ var app = {
         $('#cityNameManual', channelSubscriptionPage).on('input', self.cityNameManualChanged);
         var newsChannelsPage = $('#newsChannelsPage');
         newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
+        $('#logoutButton', newsChannelsPage).on('click', self.logout);
         var newsPage = $('#newsPage');
         newsPage.on('pageinit', self.initNewsPage);
         newsPage.on('pagebeforeshow', self.beforeShowNewsPage);
@@ -62,9 +63,9 @@ var app = {
         
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', self.register);
-        var homePage = $('#homePage');
-        homePage.on('pageinit', self.initHome);
-        homePage.on('pagebeforeshow', self.showHome);
+        //var homePage = $('#homePage');
+        //homePage.on('pageinit', self.initHome);
+        //homePage.on('pagebeforeshow', self.showHome);
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
@@ -97,6 +98,8 @@ var app = {
         nearbyPlaceInfoPage.on('pageinit', self.initNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
+        
+        self.updateBalloonsInNavbar();
     },
     onResume: function() {
         pushNotificationHelper.updateApplicationIconBadgeNumber();
@@ -182,7 +185,7 @@ console.log(result);
             else {
                 //$.mobile.changePage('index.html#homePage');
                 //$.mobile.changePage('#homePage');
-                $.mobile.changePage('#newsPage');
+                $.mobile.changePage('#newsChannelsPage');
             }
         }, function(e) {
             $.mobile.loading('hide');
@@ -269,8 +272,8 @@ console.log(result);
     
     
     
-    initHome: function() {
-        $('#logoutButton', homePage).on('click', self.logout);
+    //initHome: function() {
+    //    $('#logoutButton', homePage).on('click', self.logout);
         /*services.getSummaryData(function(result) {
             // Success
             $('#reportingCount').html(result.reportingCount);
@@ -279,8 +282,8 @@ console.log(result);
         }, function(e) {
             // Error occurred
         });*/
-    },
-    showHome: function() {
+    //},
+    /*showHome: function() {
         if(!config.userProfileHasBeenSet()) {        
             $.mobile.loading('show');
             // Load profile from server
@@ -300,20 +303,23 @@ console.log(result);
         } else {
             self.updateBalloonsInHome();
         }
-    },
+    },*/
     
-    
-    
-    updateBalloonsInHome: function() {
-        var page = $('#homePage');
+        
+
+    //updateBalloonsInHome: function() {
+    updateBalloonsInNavbar: function() {
+        //var page = $('#homePage');
         var cfg = [
-            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount'},
-            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount'},
-            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, elementId: 'followingCount'}
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, elementId: 'followingCount', className: 'ui-li-count-following'}
         ];
         for(var i in cfg) {
             var unreadCount = pushNotificationHelper.getUnread(cfg[i].type);
-            var el = $('#'+cfg[i].elementId, page);
+            //var el = $('#'+cfg[i].elementId, $.mobile.activePage); //, page);
+            var el = $('.'+cfg[i].className); //, page);
+            if(el.length == 0) continue;
             el.html(unreadCount);
             if(unreadCount > 0) {
                 el.show();
@@ -692,6 +698,25 @@ console.log(result);
     
     
     beforeShowNewsChannelsPage: function() {
+        
+        if(!config.userProfileHasBeenSet()) {
+            $.mobile.loading('show');
+            // Load profile from server
+            services.getProfile({}, function(result) {
+                self.userProfile = result;
+                $.mobile.loading('hide');
+                // City is mandatory
+                if(self.userProfile.city.id == 0) {
+                    helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
+                        $.mobile.changePage('#profilePage');
+                    }, 'Profilo');
+                }
+            }, function(e) {
+                $.mobile.loading('hide');
+            });
+        }
+        
+        self.updateBalloonsInNews();
         services.getSubscribedChannels(function(result) {
             var html = '';
             for(var i in result) {

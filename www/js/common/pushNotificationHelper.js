@@ -17,9 +17,9 @@ var pushNotificationHelper = {
             //{id: config.QR_CODE_TEST, tot: 2}
 
             // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
-            {id: '25', tot: 2},
-            {id: '28', tot: 4},
-            {id: '29', tot: 7},
+            {id: '4', tot: 2},
+            {id: '48', tot: 4},
+            {id: '46', tot: 7},
 
             // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
             //{id: '172', tot: 1}
@@ -349,10 +349,11 @@ function PushNotificationMessage() {
             if(typeId == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE) {
                 app.showNewsChannelAvailable();
             } else {
+                app.updateBalloonsInNavbar();
                 switch($.mobile.activePage.attr('id')) {
-                    case 'homePage':
-                        app.updateBalloonsInHome();
-                        break;
+                    //case 'homePage':
+                        //app.updateBalloonsInHome();
+                        //break;
                     case 'followingListPage':
                         app.updateBalloonsInFollowing();
                         break;
@@ -427,7 +428,7 @@ PushNotificationMessage.fromGCM = function(e) {
 
 PushNotificationMessage.fromAPN = function(e) {
 
-helper.alert(JSON.stringify(e));
+//helper.alert(JSON.stringify(e));
     
     // TODO
     /*if(e.alert) {
