@@ -96,6 +96,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
                     }
                 );
             } else {
+                // iOS
                 pushNotificationHelper.pushNotification.register(
                     pushNotificationHelper.tokenCallback,
                     errorCallback, {
@@ -110,6 +111,9 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
     
     // iOS only
     tokenCallback: function(result) {
+
+helper.alert('token callback ' + result);
+            
         self.registerToPushServer(result);
     },
     
