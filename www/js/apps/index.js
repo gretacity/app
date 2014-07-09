@@ -173,7 +173,7 @@ var app = {
 //console.log(result);
             // Successfully loggedin, move forward
             pushNotificationHelper.register(function(res) {
-                console.log('Registered device on Apple/Google Push Server');
+                console.log('Registered device on Apple/Google Push Server', res);
             }, function(e) {
                 console.log('Error on registering device on Apple/Google Push Server', e);
             });
