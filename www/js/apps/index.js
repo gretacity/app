@@ -174,8 +174,10 @@ var app = {
             // Successfully loggedin, move forward
             pushNotificationHelper.register(function(res) {
                 console.log('Registered device on Apple/Google Push Server', res);
+                helper.alert('Registered device on Apple/Google Push Server\n' + res)
             }, function(e) {
                 console.log('Error on registering device on Apple/Google Push Server', e);
+                helper.alert('Error on registering device on Apple/Google Push Server\n' + e);
             });
             $('#username').removeClass('ui-disabled');
             $('#password').removeClass('ui-disabled').val('');
