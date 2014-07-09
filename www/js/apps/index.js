@@ -706,17 +706,18 @@ console.log(result);
                 self.userProfile = result;
                 $.mobile.loading('hide');
                 // City is mandatory
-                if(self.userProfile.city.id == 0) {
-                    helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
-                        $.mobile.changePage('#profilePage');
-                    }, 'Profilo');
+                if(self.userProfile.city.id > 0) {
+                    config.userProfileHasBeenSet(true);
+                    return;
                 }
+                helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
+                    $.mobile.changePage('#profilePage');
+                }, 'Profilo');
             }, function(e) {
                 $.mobile.loading('hide');
             });
         }
         
-        self.updateBalloonsInNews();
         services.getSubscribedChannels(function(result) {
             var html = '';
             for(var i in result) {
