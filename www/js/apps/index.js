@@ -313,9 +313,7 @@ var app = {
     
         
 
-    //updateBalloonsInHome: function() {
     updateBalloonsInNavbar: function() {
-        //var page = $('#homePage');
         var cfg = [
             //{type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},
@@ -1041,12 +1039,14 @@ console.log(newsChannelAvailableIds);
     
     // 
     initFollowingListPage: function() {
+        $('#followingListPage #readQrCodeButton').on('click', self.getInfoFromQrCode);
     },
     
     showFollowingListPage: function() {
         $.mobile.loading('show');
         services.getFollowings({}, function(result) {
             $.mobile.loading('hide');
+            //var html = '<li data-role="listdivider"><a href="">Leggi da QR Code</a></li>';
             var html = '';
             for(var i in result.follows) {
                 var row = result.follows[i];

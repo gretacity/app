@@ -78,8 +78,6 @@ var pushNotificationHelper = {
     
     
     
-    
-    self: this,
     pushNotification : null,
     
     register: function(successCallback, errorCallback) {
@@ -114,7 +112,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
 
 helper.alert('token callback ' + result);
             
-        self.registerToPushServer(result);
+        pushNotificationHelper.registerToPushServer(result);
     },
     
     // iOS only
@@ -132,7 +130,7 @@ helper.alert('token callback ' + result);
         var pnm = PushNotificationMessage.fromAPN(e);
         pnm.dispatchNotification();
         // Update the application badge number
-        self.updateApplicationBadgeNumber();
+        pushNotificationHelper.updateApplicationBadgeNumber();
     },
     
     
@@ -143,7 +141,6 @@ helper.alert('token callback ' + result);
 console.log('pushNotificationService: received notification from GCM, regid is ' + e.regid);
                 if(e.regid.length > 0) {
                     // Send a notification to our server
-                    //self.registerToPushServer(e.regid);
                     pushNotificationHelper.registerToPushServer(e.regid);
                 }
                 break;
