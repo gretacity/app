@@ -29,6 +29,7 @@ var app = {
         $('#loginButton', loginPage).on('click', self.login);
         var profilePage = $('#profilePage');
         profilePage.on('pageshow', self.showProfilePage);
+        $('#logoutButton', profilePage).on('click', self.logout);
         var profileNamePage = $('#profileNamePage');
         profileNamePage.on('pageinit', self.intiProfileNamePage);
         profileNamePage.on('pageshow', self.showProfileNamePage);
@@ -46,7 +47,6 @@ var app = {
         $('#cityNameManual', channelSubscriptionPage).on('input', self.cityNameManualChanged);
         var newsChannelsPage = $('#newsChannelsPage');
         newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
-        $('#logoutButton', newsChannelsPage).on('click', self.logout);
         var newsPage = $('#newsPage');
         newsPage.on('pageinit', self.initNewsPage);
         newsPage.on('pagebeforeshow', self.beforeShowNewsPage);
@@ -317,7 +317,7 @@ var app = {
     updateBalloonsInNavbar: function() {
         //var page = $('#homePage');
         var cfg = [
-            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
+            //{type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, elementId: 'followingCount', className: 'ui-li-count-following'}
         ];
