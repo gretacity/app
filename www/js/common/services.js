@@ -409,31 +409,31 @@ result.nuove = [
         var lng = params.coords.longitude;
         var distance = params.distance;
         
-        //var url = config.URL_BASE + config.URL_NEARBY_PLACES;
-        //url += '&' + services.getRequestCommonParameters();
-        var url = config.URL_NEARBY_PLACES;
+        var url = config.URL_BASE + config.URL_NEARBY_PLACES;
+        url += '&' + services.getRequestCommonParameters();
+        //var url = config.URL_NEARBY_PLACES;
         var data = 'types='+placeCatId+'&lat='+lat+'&lng='+lng+'&distance='+distance;
-//console.log(data);
+console.log(data);
         $.ajax(url, {
             type:'GET', 
             data:data,
             //timeout: 8000,  // 5 secs
             dataType: 'json'
         }).done(function(result) {
-//console.log("NEARBYPLACES SUCCESS", result);            
+console.log("NEARBYPLACES SUCCESS", result);            
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("NEARBYPLACES FAIL", jqXHR);
+console.log("NEARBYPLACES FAIL", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
     
     getNearbyPlaceInfo: function(params, success, fail) {
         // TODO
-        //var url = config.URL_BASE + config.URL_NEARBY_PLACE_INFO;
-        //url += '&' + services.getRequestCommonParameters();
-        var url = config.URL_NEARBY_PLACE_INFO;
-        var data = 'id=' + params.id;
+        var url = config.URL_BASE + config.URL_NEARBY_PLACE_INFO;
+        url += '&' + services.getRequestCommonParameters();
+        //var url = config.URL_NEARBY_PLACE_INFO;
+        var data = 'id=' + params.id + '&source=' + params.source
 //console.log(data);
         $.ajax(url, {
             type: 'GET',

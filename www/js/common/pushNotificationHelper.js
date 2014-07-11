@@ -109,9 +109,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
     
     // iOS only
     tokenCallback: function(result) {
-
-helper.alert('token callback ' + result);
-            
+//helper.alert('token callback ' + result);
         pushNotificationHelper.registerToPushServer(result);
     },
     
@@ -127,6 +125,7 @@ helper.alert('token callback ' + result);
 
     // iOS only
     onNotificationAPN: function(e) {
+helper.alert('onNotificationAPN !!!');
         var pnm = PushNotificationMessage.fromAPN(e);
         pnm.dispatchNotification();
         // Update the application badge number

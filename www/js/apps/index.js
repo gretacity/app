@@ -174,10 +174,8 @@ var app = {
             // Successfully loggedin, move forward
             pushNotificationHelper.register(function(res) {
                 console.log('Registered device on Apple/Google Push Server', res);
-                helper.alert('Registered device on Apple/Google Push Server\n' + res)
             }, function(e) {
                 console.log('Error on registering device on Apple/Google Push Server', e);
-                helper.alert('Error on registering device on Apple/Google Push Server\n' + e);
             });
             $('#username').removeClass('ui-disabled');
             $('#password').removeClass('ui-disabled').val('');
@@ -806,7 +804,7 @@ var app = {
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;">' +
+        html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;white-space:normal;">' +
                     '<span>' + item.oggetto + '</span>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
                     '<p><i>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
@@ -947,7 +945,8 @@ if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.lengt
         services.getChannelContentDetail({id: id}, function(result) {
             var page = $('#newsDetailPage');
             var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
-            $('div[data-role="header"] h1', page).html(result.oggetto);
+            //$('div[data-role="header"] h1', page).html(result.oggetto);
+            $('#newsTitle', page).html(result.oggetto);
             $('#newsDate', page).html("Inserita il " + dateAdded.toDMY() + " alle " + dateAdded.toHM());
             var text = $('<span class="temp">'+result.descrizione+'</span>');
             $('a', text).each(function() {
@@ -1752,7 +1751,7 @@ console.log(result);
             if(result.length > 0) {
                 for(var i in result) {
                     var row = result[i];
-                    html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.ref + '\')">' 
+                    html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.id + '\', \'' + row.source + '\')">' 
                                 + row.name + '<label><small>' 
                                 + (row.phoneNumber != null ? 'Tel. ' + row.phoneNumber : '') + '<br />'
                                 + row.address
@@ -1775,9 +1774,11 @@ console.log(result);
     },
     
     nearbyPlaceId: null,
-    showNearbyPlace: function(placeId) {
+    nearbyPlaceSource: null,
+    showNearbyPlace: function(placeId, source) {
         if(typeof(google) == 'undefined') return;
         self.nearbyPlaceId = placeId;
+        self.nearbyPlaceSource = source;
         $.mobile.changePage('#nearbyPlaceInfoPage');
     },
     
@@ -1818,7 +1819,7 @@ console.log(result);
             infowindow.open(map, startingMarker);
             $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
         }
-        services.getNearbyPlaceInfo({id: self.nearbyPlaceId}, function(result) {
+        services.getNearbyPlaceInfo({id: self.nearbyPlaceId, source: self.nearbyPlaceSource}, function(result) {
             if(showMap) {
                 var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
                 var endingMarker = new google.maps.Marker({
