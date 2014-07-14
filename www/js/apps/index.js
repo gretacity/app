@@ -1086,6 +1086,7 @@ console.log(newsChannelAvailableIds);
         services.getInfoFromQrCode(code, function(result) {
 
             pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, code);
+            self.updateBalloonsInNavbar();
             
             var canLeaveComment = (result.categoria.commenti == 1);
             var canFollow = (result.categoria.follows == 1);
