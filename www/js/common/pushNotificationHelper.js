@@ -109,7 +109,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
     
     // iOS only
     tokenCallback: function(result) {
-//helper.alert('token callback ' + result);
+helper.alert('token callback ' + result);
 console.log('iOS token callback ' + result);
         pushNotificationHelper.registerToPushServer(result);
     },
