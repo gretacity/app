@@ -120,7 +120,7 @@ var app = {
             self.language = navigator.language;
         } else {
             navigator.globalization.getPreferredLanguage(
-                function (language) {self.language = language.value},
+                function (language) {self.language = language.value;},
                 function () {}
             );
         }

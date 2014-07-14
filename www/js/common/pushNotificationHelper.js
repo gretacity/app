@@ -1,3 +1,212 @@
+function onNotificationAPNTest(e) {
+    helper.alert('onNotificationAPNTest!!!');
+}
+
+
+function PushNotificationMessage() {
+
+    
+    /*e.foreground) {
+        title = 'Inline notification';
+    } else if(e.coldstart) {
+        title = 'Coldstart notification';
+    } else {
+        title = 'Background notification';
+      */
+    
+    this._appState = null;
+    this._notificationType = null;
+    this._messageTitle = null;
+    this._messageText = null;
+    this._data = null;
+
+    this.setAppState = function(state) {
+        this._appState = state;
+        return this;
+    }
+    this.setNotificationType = function(notificationType) {
+        this._notificationType = parseInt(notificationType);
+        return this;
+    }
+    this.setMessageTitle = function(title) {
+        this._messageTitle = title;
+        return this;
+    }
+    this.setMessageText = function(text) {
+        this._messageText = text;
+        return this;
+    }
+    
+    this.setData = function(d) {
+        this._data = d;
+        return this;
+    }
+    
+    this.dispatchNotification = function() {
+        // Update unread data
+        typeId = this._notificationType;
+        for(var i in this._data) {
+            var row = this._data[i];
+            var groupId = row.id;
+            var totUnread = parseInt(row.tot);
+//console.log('type ' + typeId + ', group ' + groupId + ', unread ' + totUnread);
+            pushNotificationHelper.addUnread(
+                typeId, 
+                groupId, 
+                totUnread
+            );
+        }
+        // App can be in inline, background or coldstart mode
+        if(this._appState != PushNotificationMessage.APP_STATE_INLINE) {
+            // App is in BACKGROUND state:
+            // once in foreground, show the related page
+            var pageId = '';
+            switch(typeId) {
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING:
+                    pageId = 'followingListPage';
+                    break;
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL:
+                    pageId = 'newsChannelsPage';
+                    break;
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING:
+                    pageId = 'reportingListPage';
+                    break;
+                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE:
+                    pageId = 'channelInfoPage';
+                    break;
+                default:
+                    console.error('Undefined push message type *' + typeId + '*');
+                break;                    
+            }
+            if((pageId != '') && (pageId != $.mobile.activePage.attr('id'))) {
+                if(this._appState == PushNotificationMessage.APP_STATE_BACKGROUND) {
+                    $.mobile.changePage('#' + pageId);
+                } else { // PushNotificationMessage.APP_STATE_COLDSTART
+                    app.changePageAfterLogin(pageId);
+                }
+            }
+        } else {
+            // App is in ACTIVE state:
+            if(typeId == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE) {
+                app.showNewsChannelAvailable();
+            } else {
+                app.updateBalloonsInNavbar();
+                switch($.mobile.activePage.attr('id')) {
+                    //case 'homePage':
+                        //app.updateBalloonsInHome();
+                        //break;
+                    case 'followingListPage':
+                        app.updateBalloonsInFollowing();
+                        break;
+                    case 'newsChannelsPage':
+                        app.updateBalloonsInNews();
+                        break;
+                    case 'newsPage':
+                        if(pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, app.newsChannelId) > 0) {
+                            app.updateBalloonsInNewsContent();
+                        } else {
+                            app.updateBalloonsInNews();
+                        }
+                        break;
+                    case 'reportingListPage':
+                        app.updateBalloonsInReporting();
+                        break;
+                    //default:
+                        // Let's play a sound?
+                        //break;
+                }
+            }
+        }        
+    }
+}
+
+
+PushNotificationMessage.APP_STATE_UNDEFINED = 0;
+PushNotificationMessage.APP_STATE_INLINE = 1;
+PushNotificationMessage.APP_STATE_BACKGROUND = 2;
+PushNotificationMessage.APP_STATE_COLDSTART = 3;
+    
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING = 1;
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING = 2;
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL = 3;
+PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE = 4;
+
+PushNotificationMessage.fromGCM = function(e) {
+
+    var pnm = new PushNotificationMessage();
+    
+    /*var title = null;
+    if(e.foreground) {
+        title = 'Inline notification';
+    } else if(e.coldstart) {
+        title = 'Coldstart notification';
+    } else {
+        title = 'Background notification';
+    }
+    var messageText = e.payload.message;
+    var messageCount = e.payload.msgcnt;
+    var messageTest = e.payload.msgtest;
+    helper.alert(messageCount + '\n' + messageTest, null, title);*/
+
+    var appState = null;
+    if(e.foreground == true) {
+        appState = PushNotificationMessage.APP_STATE_INLINE;
+    } else if(e.coldstart == true) {
+        appState = PushNotificationMessage.APP_STATE_COLDSTART;
+    } else {
+        appState = PushNotificationMessage.APP_STATE_BACKGROUND;
+    } 
+
+    pnm.setNotificationType(e.payload.type)
+       .setAppState(appState)
+       .setMessageTitle(e.payload.title)
+       .setMessageText(e.payload.message)
+       .setData(e.payload.data);
+//alert('payload : ' + JSON.stringify(e.payload));
+//console.log(pnm);
+    return pnm;
+}
+
+PushNotificationMessage.fromAPN = function(e) {
+
+//helper.alert(JSON.stringify(e));
+    
+    // TODO
+    /*if(e.alert) {
+        navigator.notification.alert(e.alert);
+    }
+    if(e.sound) {
+        var snd = new Media(e.sound);
+        snd.play();
+    }
+    if(e.badge ) {
+        pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, e.badge);
+    }*/
+    
+    var appState = null;
+    if(e.foreground == true) {
+        appState = PushNotificationMessage.APP_STATE_INLINE;
+    } else if(e.coldstart == true) {
+        appState = PushNotificationMessage.APP_STATE_COLDSTART;
+    } else {
+        appState = PushNotificationMessage.APP_STATE_BACKGROUND;
+    } 
+
+    var pnm = new PushNotificationMessage();
+    pnm.setNotificationType(e.payload.type)
+       .setAppState(appState)
+       .setMessageTitle(e.payload.title)
+       .setMessageText(e.payload.message)
+       .setData(e.payload.data);
+    return pnm;
+}
+
+
+
+
+
+
+
 var pushNotificationHelper = {
 
     
@@ -264,206 +473,3 @@ console.log('pushNotificationService: received notification from GCM/Apple serve
 }
 
 
-function PushNotificationMessage() {
-
-    
-    /*e.foreground) {
-        title = 'Inline notification';
-    } else if(e.coldstart) {
-        title = 'Coldstart notification';
-    } else {
-        title = 'Background notification';
-      */
-    
-    this._appState = null;
-    this._notificationType = null;
-    this._messageTitle = null;
-    this._messageText = null;
-    this._data = null;
-
-    this.setAppState = function(state) {
-        this._appState = state;
-        return this;
-    }
-    this.setNotificationType = function(notificationType) {
-        this._notificationType = parseInt(notificationType);
-        return this;
-    }
-    this.setMessageTitle = function(title) {
-        this._messageTitle = title;
-        return this;
-    }
-    this.setMessageText = function(text) {
-        this._messageText = text;
-        return this;
-    }
-    
-    this.setData = function(d) {
-        this._data = d;
-        return this;
-    }
-    
-    this.dispatchNotification = function() {
-        // Update unread data
-        typeId = this._notificationType;
-        for(var i in this._data) {
-            var row = this._data[i];
-            var groupId = row.id;
-            var totUnread = parseInt(row.tot);
-//console.log('type ' + typeId + ', group ' + groupId + ', unread ' + totUnread);
-            pushNotificationHelper.addUnread(
-                typeId, 
-                groupId, 
-                totUnread
-            );
-        }
-        // App can be in inline, background or coldstart mode
-        if(this._appState != PushNotificationMessage.APP_STATE_INLINE) {
-            // App is in BACKGROUND state:
-            // once in foreground, show the related page
-            var pageId = '';
-            switch(typeId) {
-                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING:
-                    pageId = 'followingListPage';
-                    break;
-                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL:
-                    pageId = 'newsChannelsPage';
-                    break;
-                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING:
-                    pageId = 'reportingListPage';
-                    break;
-                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE:
-                    pageId = 'channelInfoPage';
-                    break;
-                default:
-                    console.error('Undefined push message type *' + typeId + '*');
-                break;                    
-            }
-            if((pageId != '') && (pageId != $.mobile.activePage.attr('id'))) {
-                if(this._appState == PushNotificationMessage.APP_STATE_BACKGROUND) {
-                    $.mobile.changePage('#' + pageId);
-                } else { // PushNotificationMessage.APP_STATE_COLDSTART
-                    app.changePageAfterLogin(pageId);
-                }
-            }
-        } else {
-            // App is in ACTIVE state:
-            if(typeId == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE) {
-                app.showNewsChannelAvailable();
-            } else {
-                app.updateBalloonsInNavbar();
-                switch($.mobile.activePage.attr('id')) {
-                    //case 'homePage':
-                        //app.updateBalloonsInHome();
-                        //break;
-                    case 'followingListPage':
-                        app.updateBalloonsInFollowing();
-                        break;
-                    case 'newsChannelsPage':
-                        app.updateBalloonsInNews();
-                        break;
-                    case 'newsPage':
-                        if(pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, app.newsChannelId) > 0) {
-                            app.updateBalloonsInNewsContent();
-                        } else {
-                            app.updateBalloonsInNews();
-                        }
-                        break;
-                    case 'reportingListPage':
-                        app.updateBalloonsInReporting();
-                        break;
-                    //default:
-                        // Let's play a sound?
-                        //break;
-                }
-            }
-        }        
-    }
-}
-
-
-PushNotificationMessage.APP_STATE_UNDEFINED = 0;
-PushNotificationMessage.APP_STATE_INLINE = 1;
-PushNotificationMessage.APP_STATE_BACKGROUND = 2;
-PushNotificationMessage.APP_STATE_COLDSTART = 3;
-    
-PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING = 1;
-PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING = 2;
-PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL = 3;
-PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE = 4;
-
-PushNotificationMessage.fromGCM = function(e) {
-
-    var pnm = new PushNotificationMessage();
-    
-    /*var title = null;
-    if(e.foreground) {
-        title = 'Inline notification';
-    } else if(e.coldstart) {
-        title = 'Coldstart notification';
-    } else {
-        title = 'Background notification';
-    }
-    var messageText = e.payload.message;
-    var messageCount = e.payload.msgcnt;
-    var messageTest = e.payload.msgtest;
-    helper.alert(messageCount + '\n' + messageTest, null, title);*/
-
-    var appState = null;
-    if(e.foreground == true) {
-        appState = PushNotificationMessage.APP_STATE_INLINE;
-    } else if(e.coldstart == true) {
-        appState = PushNotificationMessage.APP_STATE_COLDSTART;
-    } else {
-        appState = PushNotificationMessage.APP_STATE_BACKGROUND;
-    } 
-
-    pnm.setNotificationType(e.payload.type)
-       .setAppState(appState)
-       .setMessageTitle(e.payload.title)
-       .setMessageText(e.payload.message)
-       .setData(e.payload.data);
-//alert('payload : ' + JSON.stringify(e.payload));
-//console.log(pnm);
-    return pnm;
-}
-
-PushNotificationMessage.fromAPN = function(e) {
-
-//helper.alert(JSON.stringify(e));
-    
-    // TODO
-    /*if(e.alert) {
-        navigator.notification.alert(e.alert);
-    }
-    if(e.sound) {
-        var snd = new Media(e.sound);
-        snd.play();
-    }
-    if(e.badge ) {
-        pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, e.badge);
-    }*/
-    
-    var appState = null;
-    if(e.foreground == true) {
-        appState = PushNotificationMessage.APP_STATE_INLINE;
-    } else if(e.coldstart == true) {
-        appState = PushNotificationMessage.APP_STATE_COLDSTART;
-    } else {
-        appState = PushNotificationMessage.APP_STATE_BACKGROUND;
-    } 
-
-    var pnm = new PushNotificationMessage();
-    pnm.setNotificationType(e.payload.type)
-       .setAppState(appState)
-       .setMessageTitle(e.payload.title)
-       .setMessageText(e.payload.message)
-       .setData(e.payload.data);
-    return pnm;
-}
-
-
-
-function onNotificationAPNTest(e) {
-    helper.alert('onNotificationAPNTest!!!');
-}
