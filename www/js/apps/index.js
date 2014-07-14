@@ -102,7 +102,7 @@ var app = {
         self.updateBalloonsInNavbar();
     },
     onResume: function() {
-        pushNotificationHelper.updateApplicationIconBadgeNumber();
+        //pushNotificationHelper.updateApplicationIconBadgeNumber();
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
