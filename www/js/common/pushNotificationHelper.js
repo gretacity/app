@@ -127,10 +127,10 @@ console.log('iOS token callback ' + result);
     // iOS only
     onNotificationAPN: function(e) {
 helper.alert('onNotificationAPN !!!');
-        var pnm = PushNotificationMessage.fromAPN(e);
+        /*var pnm = PushNotificationMessage.fromAPN(e);
         pnm.dispatchNotification();
         // Update the application badge number
-        pushNotificationHelper.updateApplicationBadgeNumber();
+        pushNotificationHelper.updateApplicationBadgeNumber();*/
     },
     
     
