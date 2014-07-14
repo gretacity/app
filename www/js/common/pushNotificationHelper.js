@@ -1,8 +1,3 @@
-function onNotificationAPNTest(e) {
-    helper.alert('onNotificationAPNTest!!!');
-}
-
-
 function PushNotificationMessage() {
 
     
@@ -310,8 +305,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
                         "badge":"true",
                         "sound":"true",
                         "alert":"true",
-                        //"ecb":"pushNotificationHelper.onNotificationAPN"
-                        "ecb":"onNotificationAPNTest"
+                        "ecb":"pushNotificationHelper.onNotificationAPN"
                 });
             }
         }
@@ -336,7 +330,8 @@ console.log('iOS token callback ' + result);
 
     // iOS only
     onNotificationAPN: function(e) {
-helper.alert('onNotificationAPN!!!');
+helper.alert('onNotificationAPN event received!!!');
+console.log(e);
         /*var pnm = PushNotificationMessage.fromAPN(e);
         pnm.dispatchNotification();
         // Update the application badge number
