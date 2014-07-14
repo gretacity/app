@@ -188,11 +188,11 @@ PushNotificationMessage.fromAPN = function(e) {
     } 
 
     var pnm = new PushNotificationMessage();
-    pnm.setNotificationType(e.payload.type)
+    pnm.setNotificationType(e.type)
        .setAppState(appState)
-       .setMessageTitle(e.payload.title)
-       .setMessageText(e.payload.message)
-       .setData(JSON.parse(e.payload.data));
+       .setMessageTitle(e.alert)
+       //.setMessageText(e.payload.message)
+       .setData(JSON.parse(e.data));
     return pnm;
 }
 
