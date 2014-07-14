@@ -192,7 +192,7 @@ PushNotificationMessage.fromAPN = function(e) {
        .setAppState(appState)
        .setMessageTitle(e.payload.title)
        .setMessageText(e.payload.message)
-       .setData(e.payload.data);
+       .setData(JSON.parse(e.payload.data));
     return pnm;
 }
 
@@ -246,7 +246,7 @@ var pushNotificationHelper = {
                     type: notificationType,
                     title: 'titolo del messaggio', 
                     message: 'testo del messaggio',
-                    data: data
+                    data: JSON.stringify(data)
                 }
             })
             .dispatchNotification();
@@ -330,12 +330,12 @@ console.log('iOS token callback ' + result);
 
     // iOS only
     onNotificationAPN: function(e) {
-helper.alert('onNotificationAPN event received!!!');
+helper.alert('onNotificationAPN event received\n' + JSON.stringify(e));
 console.log(e);
-        /*var pnm = PushNotificationMessage.fromAPN(e);
+        var pnm = PushNotificationMessage.fromAPN(e);
         pnm.dispatchNotification();
         // Update the application badge number
-        pushNotificationHelper.updateApplicationBadgeNumber();*/
+        pushNotificationHelper.updateApplicationBadgeNumber();
     },
     
     
