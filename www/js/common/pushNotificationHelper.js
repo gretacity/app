@@ -190,7 +190,7 @@ PushNotificationMessage.fromAPN = function(e) {
     var pnm = new PushNotificationMessage();
     pnm.setNotificationType(e.type)
        .setAppState(appState)
-       .setMessageTitle(e.alert)
+       .setMessageTitle(e.title)
        //.setMessageText(e.payload.message)
        .setData(JSON.parse(e.data));
     return pnm;
