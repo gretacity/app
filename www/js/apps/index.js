@@ -320,6 +320,15 @@ var app = {
         for(var i in cfg) {
             var unreadCount = pushNotificationHelper.getUnread(cfg[i].type);
             //var el = $('#'+cfg[i].elementId, $.mobile.activePage); //, page);
+            
+            if(cfg[i].type == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING) {
+                if(unreadCount > 0) {
+                    $('#reportingMethodPage #reportingCount').html(unreadCount).show();
+                } else {
+                    $('#reportingMethodPage #reportingCount').html(unreadCount).hide();
+                }
+            }
+            
             var el = $('.'+cfg[i].className); //, page);
             if(el.length == 0) continue;
             el.html(unreadCount);
@@ -1246,6 +1255,7 @@ console.log(newsChannelAvailableIds);
     loadReportingItems: function() {
         $.mobile.loading('show');
         pushNotificationHelper.setAllAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING);
+        self.updateBalloonsInNavbar();
         services.getReportingList({}, function(result) {
             // Success
             var list = $('#reportingListPage #reportingList');
