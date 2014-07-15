@@ -19,6 +19,11 @@ var app = {
         
         if(config.EMULATE_ON_BROWSER) self.onDeviceReady();
         
+        //$(document).one('pagebeforecreate', function () {
+        //    alert('ok');
+        //});
+        
+        
         var loginPage = $('#loginPage');
         loginPage.on('pagebeforeshow', function() {
             $('#username', loginPage).val(config.userLastLoginUsername());
@@ -205,6 +210,7 @@ var app = {
     
     logout: function() {
         auth.setSessionId(null);
+        self.userProfile = null;
         $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
     },
     

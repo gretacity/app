@@ -61,6 +61,7 @@ function PushNotificationMessage() {
                     pageId = 'followingListPage';
                     break;
                 case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL:
+                    app.updateBalloonsInNews();
                     pageId = 'newsChannelsPage';
                     break;
                 case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING:

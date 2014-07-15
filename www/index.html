@@ -507,6 +507,7 @@
                 <!-- <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a> -->
                 <!-- <a href="#" id="refreshReportingListButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-refresh">Aggiorna</a> -->
                 <!-- <a href="#reportingMethodPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-plus">Report</a> -->
+                <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
                 <ul id="reportingList" data-role="listview" data-inset="false"></ul>
@@ -547,12 +548,33 @@
         
         <!-- newsChannelsPage -->
         <div data-role="page" id="newsChannelsPage">
+            <div data-role="panel" id="mypanel" data-display="overlay" data-position-fixed="true">
+                panel content goes here
+                <ul data-role="listview">
+                    <li>
+                        <a href="#">
+                            row 1
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            row 2
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            row 3
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
             <div data-role="header" data-position="fixed">
                 <h1>Canali Notizie</h1>
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 -->
-                <a href="#" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                <a href="#mypanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
                 <!--
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
