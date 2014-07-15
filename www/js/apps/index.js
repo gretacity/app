@@ -848,6 +848,7 @@ var app = {
     newChannelContentReceived: [],
     //newsContentTimeout: null,
     sideBarInitialized: false,
+    
     initNewsPage: function() {
         
         if(!self.sideBarInitialized) {
@@ -855,7 +856,7 @@ var app = {
         }
         
         var page = $('#newsPage');
-        $('#unsubscribeChannelButton', page).on('click', function() {
+        /*$('#unsubscribeChannelButton', page).on('click', function() {
             helper.confirm('Rimuovere la sottoscrizione al canale?', function(buttonIndex) {
                 if(buttonIndex == 1) {
                     $('#unsubscribeChannelButton', page).addClass('ui-disabled');
@@ -866,12 +867,12 @@ var app = {
                     });
                 }
             }, 'Notizie', ['Rimuovi', 'No']);
-        });
+        });*/
         $('#channelContent', page).empty();
     },
     beforeShowNewsPage: function() {
 
-conosole.log('before show news page');
+console.log('before show news page');
         
         // Setup newsChannelsPanel
         self.setSidePanelPage('newsPage');
