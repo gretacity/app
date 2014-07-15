@@ -270,7 +270,7 @@
                 <!--
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
                 -->
-                <a href="#newsChannelsPage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <a href="#newsPage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview">
@@ -546,39 +546,19 @@
         <!-- /photoDialog -->
         
         
-        <!-- newsChannelsPage -->
+        <!-- newsChannelsPage - - >
         <div data-role="page" id="newsChannelsPage">
-            <div data-role="panel" id="mypanel" data-display="overlay" data-position-fixed="true">
-                panel content goes here
-                <ul data-role="listview">
-                    <li>
-                        <a href="#">
-                            row 1
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            row 2
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            row 3
-                        </a>
-                    </li>
-                    
-                </ul>
-            </div>
+            
             <div data-role="header" data-position="fixed">
                 <h1>Canali Notizie</h1>
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                -->
-                <a href="#mypanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                -- >
+                <a href="#" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
                 <!--
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
-                -->
+                -- >
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="channelList">
@@ -594,7 +574,7 @@
                         -->
                         <!--
                         <li><a href="#" data-icon="bars" class="ui-state-persist" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
+                        -- >
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert" class="highlight" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -602,26 +582,39 @@
                 </div>
             </div>
         </div>
-        <!-- /newsChannelsPage -->
+        < !-- /newsChannelsPage -->
     
     
         <!-- newsPage -->
         <div data-role="page" id="newsPage">
+            
+            <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
+                <h1 style="margin-bottom:2em;">Canali notizie</h1>
+                <ul data-role="listview" id="channelList"></ul>
+            </div>
+            
             <div data-role="header" data-position="fixed">
                 <h1>Notizie</h1>
+                <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                <!--
                 <a href="#newsChannelsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                -->
                 <!--
                 <a href="#" id="unsubscribeChannelButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-delete">Unsubscribe</a>
                 -->
+                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
             </div>
+            <!--
+            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;top:3.5em;z-index:100;background:#fff;">
+                <label>Nome del canale corrente</label>
+            </div>
+            ul tag style="margin-top:2.5em;"
+            -->
             <div data-role="main" class="ui-content">
-            
                 <a href="#" id="newContentReceivedButton" class="ui-btn" 
                    style="width:83%;position:fixed;margin: 0 auto;z-index:1000;color:#FFF;background:#EE0000;display:none;">
-                </a>
-                
-                <ul id="channelContent" data-role="listview" data-inset="false">
-                </ul>
+                </a>            
+                <ul id="channelContent" data-role="listview" data-inset="false"></ul>
                 <a href="#" id="moreNewsButton" class="ui-btn" style="margin-top:25px;">Altre notizie</a>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -686,7 +679,7 @@
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 -->
-                <a href="#newsChannelsPage" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <a href="#" id="readQrCodeButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Info QRCode</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -721,7 +714,10 @@
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 -->
+                <!--
                 <a href="#newsChannelsPage" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                -->
+                <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="placeTypeList">
@@ -819,7 +815,10 @@
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 -->
+                <!--
                 <a href="#newsChannelsPage" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                -->
+                <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <!--
                 <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets" data-transition="slide" data-direction="reverse">Segnalazioni</a>
                 -->

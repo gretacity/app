@@ -19,9 +19,15 @@ var app = {
         
         if(config.EMULATE_ON_BROWSER) self.onDeviceReady();
         
-        //$(document).one('pagebeforecreate', function () {
-        //    alert('ok');
-        //});
+        /*
+         -newsPage                      TODO beforeShowNewsPage
+         -followingListPage             DONE showFollowingListPage
+         -reportingMethodPage           TODO beforeShowReportingMethodPage (doesn't exist)
+         -nearbyPage                    TODO beforeShowNearbyPage
+         */
+        
+        
+        
         
         
         var loginPage = $('#loginPage');
@@ -79,6 +85,7 @@ var app = {
         //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
         var reportingMethodPage = $('#reportingMethodPage');
         reportingMethodPage.on('pageinit', self.initReportingMethodPage);
+        reportingMethodPage.on('pagebeforeshow', self.beforeShowReportingMethodPage);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', self.initReportingPage);
         reportingPage.on('pagebeforeshow', self.showReportingPage);
@@ -182,6 +189,27 @@ var app = {
             }, function(e) {
                 console.log('Error on registering device on Apple/Google Push Server', e);
             });
+            
+            if(!config.userProfileHasBeenSet()) {
+                //$.mobile.loading('show');
+                // Load profile from server
+                services.getProfile({}, function(result) {
+                    self.userProfile = result;
+                    $.mobile.loading('hide');
+                    // City is mandatory
+                    if(self.userProfile.city.id > 0) {
+                        config.userProfileHasBeenSet(true);
+                        return;
+                    }
+                    helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
+                        $.mobile.changePage('#profilePage');
+                    }, 'Profilo');
+                }, function(e) {
+                    $.mobile.loading('hide');
+                });
+            }
+            
+            
             $('#username').removeClass('ui-disabled');
             $('#password').removeClass('ui-disabled').val('');
             $('#loginButton').removeClass('ui-disabled');
@@ -194,7 +222,8 @@ var app = {
             else {
                 //$.mobile.changePage('index.html#homePage');
                 //$.mobile.changePage('#homePage');
-                $.mobile.changePage('#newsChannelsPage');
+                //$.mobile.changePage('#newsChannelsPage');
+                $.mobile.changePage('#newsPage');
             }
         }, function(e) {
             $.mobile.loading('hide');
@@ -651,7 +680,6 @@ var app = {
         }
     },
     getAvailableChannels: function(cityName, cityId, provId, regionId) {
-//alert(cityName+','+cityId+', '+provId+', '+regionId);return;
         $.mobile.loading('show');
         $('#channelSubscriptionPage #availableChannelsContainer').show();
         $('#channelSubscriptionPage #availableChannelList').empty();
@@ -710,11 +738,48 @@ var app = {
     
     
     
+    initSidePanel: function() {
+        console.log('initializing side bar');
+        services.getSubscribedChannels(function(result) {
+            var html = '';
+            for(var i in result) {
+                var row = result[i];
+                html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
+                            + row.denominazione + '</span><label>' + row.nome_feed
+                            + '</label>'
+                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
+                            + '</a></li>';
+            }
+            //$('#newsChannelsPage #channelList').html(html).listview('refresh');
+            //html = '<li><a>Tutte</a></li>' + html;
+            $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
+            self.sideBarInitialized = true;
+            //$('#newsChannelsPanel').panel();
+            self.updateBalloonsInNews();
+            
+            console.log('side bar initialized');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            console.log('error on initializing side bar');
+            helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
+        });
+    },
+
+    setSidePanelPage: function(pageId) {
+        // Setup newsChannelsPanel
+        var panel = $('#newsChannelsPanel');
+        if(panel.parent().attr('id') != pageId) { //$.mobile.activePage.attr('id')) {
+            panel.prependTo('#'+pageId);
+        }
+    },
     
     
     
     
-    beforeShowNewsChannelsPage: function() {
+    /*beforeShowNewsChannelsPage: function() {
         
         if(!config.userProfileHasBeenSet()) {
             $.mobile.loading('show');
@@ -746,7 +811,9 @@ var app = {
                             + '</a></li>';
             }
             $('#newsChannelsPage #channelList').html(html).listview('refresh');
-            self.updateBalloonsInNews();
+            //html = '<li><a>Tutte</a></li>' + html;
+            $('#newsChannelsPanel #channelList').html(html).listview('refresh');
+            self.updateBalloonsInNews();            
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -754,16 +821,22 @@ var app = {
             }
             helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
         });
-    },
+    },*/
+    
     showNewsChannel: function(channelId) {
         if(self.newsChannelId != channelId) {
             self.newsChannelId = channelId;
             self.newsContentLastId = null;
-            self.newsContentFirstId = null;
+            self.newsContentFirstId = null;            
         } else {
             self.newsEmptyBeforeShow = false;
         }
-        $.mobile.changePage('#newsPage', {transition: 'slide'});
+        if($.mobile.activePage.attr('id') != 'newsPage') {
+            $.mobile.changePage('#newsPage', {transition: 'slide'});
+        } else {
+            self.beforeShowNewsPage();
+            $('#newsChannelsPanel').panel('close');
+        }
     },
     
     
@@ -774,7 +847,13 @@ var app = {
     newsContentFirstId: null,
     newChannelContentReceived: [],
     //newsContentTimeout: null,
+    sideBarInitialized: false,
     initNewsPage: function() {
+        
+        if(!self.sideBarInitialized) {
+            self.initSidePanel();
+        }
+        
         var page = $('#newsPage');
         $('#unsubscribeChannelButton', page).on('click', function() {
             helper.confirm('Rimuovere la sottoscrizione al canale?', function(buttonIndex) {
@@ -791,6 +870,15 @@ var app = {
         $('#channelContent', page).empty();
     },
     beforeShowNewsPage: function() {
+
+conosole.log('before show news page');
+        
+        // Setup newsChannelsPanel
+        self.setSidePanelPage('newsPage');
+        $('#newsChannelsPanel ul li a.ui-btn-active').removeClass('ui-btn-active');
+        $('#newsChannelsPanel ul li[data-channelid="' + self.newsChannelId + '"] a').addClass('ui-btn-active');
+
+        
         var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
             $('#newsPage #channelContent').empty();
@@ -874,6 +962,11 @@ var app = {
                 $('#newsPage #channelContent').html(html).listview('refresh');
             } else {
                 $('#newsPage #channelContent').append(html).listview('refresh');
+            }
+            if($('#newsPage #channelContent li').length == 0) {
+                $('#moreNewsButton').hide();
+            } else {
+                $('#moreNewsButton').show();
             }
             
             
@@ -1058,6 +1151,14 @@ console.log(newsChannelAvailableIds);
     
     showFollowingListPage: function() {
         $.mobile.loading('show');
+        
+        // Setup newsChannelsPanel
+        /*var panel = $('#newsChannelsPanel');
+        if(panel.parent().attr('id') != $.mobile.activePage.attr('id')) {
+            panel.prependTo('#followingListPage');
+        }*/
+        self.setSidePanelPage('followingListPage');
+        
         services.getFollowings({}, function(result) {
             $.mobile.loading('hide');
             //var html = '<li data-role="listdivider"><a href="">Leggi da QR Code</a></li>';
@@ -1396,6 +1497,10 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
         });
     },
     
+    beforeShowReportingMethodPage: function() {
+        self.setSidePanelPage('reportingMethodPage');
+    },
+    
     
     
     
@@ -1711,6 +1816,7 @@ console.log(result);
     },
     beforeShowNearbyPage: function() {
         $.mobile.loading('show');
+        self.setSidePanelPage('nearbyPage');
         geoLocation.acquireGeoCoordinates(function(result) {
             self.nearbyCurrentPos = result;
             $.mobile.loading('hide');
