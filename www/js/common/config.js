@@ -22,7 +22,7 @@ var config = {
     
     // To speed up development / testing
     // In release mode they must be empty
-    QR_CODE_TEST: '1000000769',
+    QR_CODE_TEST: '', //'1000000769',
     LOGIN_DEFAULT_USERNAME: '',
     LOGIN_DEFAULT_PASSWORD: '',
     

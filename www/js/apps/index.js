@@ -872,13 +872,12 @@ var app = {
     },
     beforeShowNewsPage: function() {
 
-console.log('before show news page');
+        console.log('beforeShowNewsPage: setting side panel');
         
         // Setup newsChannelsPanel
         self.setSidePanelPage('newsPage');
-        $('#newsChannelsPanel ul li a.ui-btn-active').removeClass('ui-btn-active');
-        $('#newsChannelsPanel ul li[data-channelid="' + self.newsChannelId + '"] a').addClass('ui-btn-active');
-
+        //$('#newsChannelsPanel ul li a.ui-btn-active').removeClass('ui-btn-active');
+        //$('#newsChannelsPanel ul li[data-channelid="' + self.newsChannelId + '"] a').addClass('ui-btn-active');
         
         var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
@@ -886,6 +885,9 @@ console.log('before show news page');
         } else {
             self.newsEmptyBeforeShow = true;
         }
+        
+        console.log('beforeShowNewsPage: onlyNew is ' + onlyNew);
+        
         /*if(self.newsContentTimeout == null) {
             setTimeout(function() {
                 self.retrieveChannelContent(onlyNew);
@@ -893,11 +895,12 @@ console.log('before show news page');
         }*/
         self.retrieveChannelContent(onlyNew);
         pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
-        if(self.newsChannelId > 0) {
+        
+        /*if(self.newsChannelId > 0) {
             $('#newsPage #unsubscribeChannelButton').removeClass('ui-disabled').show();
         } else {
             $('#newsPage #unsubscribeChannelButton').hide();
-        }
+        }*/
     },
     beforeHideNewsPage: function() {
         /*if(self.newsContentTimeout != null) {
@@ -942,9 +945,11 @@ console.log('before show news page');
             onlyNew: onlyNew
         };
         
-        services.getChannelContent(params, function(result) {            
+        console.log('retrieveChannelContent: getting channel content, params: ', params);
+        
+        services.getChannelContent(params, function(result) {
+            
             var html = '';
-                        
             if(typeof(result.vecchie) != 'undefined') {
                 if(result.vecchie.length > 0) {
                     for(var i in result.vecchie) {
@@ -966,19 +971,21 @@ console.log('before show news page');
             }
             if($('#newsPage #channelContent li').length == 0) {
                 $('#moreNewsButton').hide();
+                $('#noNews').show();
             } else {
                 $('#moreNewsButton').show();
+                $('#noNews').hide();
             }
             
             
             
             
-if(onlyNew === true) console.log('Checking for news updates...');
+//if(onlyNew === true) console.log('Checking for news updates...');
 
             if((typeof(result.nuove) != 'undefined') && (Array.isArray(result.nuove)) && (result.nuove.length > 0)) {
                 self.newChannelContentReceived = result.nuove;
 
-if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.length);
+//if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.length);
 
                 $('#newContentReceivedButton').html(
                     self.newChannelContentReceived.length + (self.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
@@ -1816,14 +1823,14 @@ console.log(result);
         });        
     },
     beforeShowNearbyPage: function() {
-        $.mobile.loading('show');
+        //$.mobile.loading('show');
         self.setSidePanelPage('nearbyPage');
         geoLocation.acquireGeoCoordinates(function(result) {
             self.nearbyCurrentPos = result;
-            $.mobile.loading('hide');
+            //$.mobile.loading('hide');
         }, function(e) {
             console.log(e);
-            $.mobile.loading('hide');
+            //$.mobile.loading('hide');
         });
     },
     showNearbyPlaces: function(catId, catName) {
@@ -1855,11 +1862,9 @@ console.log(result);
             $.mobile.changePage('#nearbyPage', {transition: 'slide', reverse: true});
             return;
         }
-        $.mobile.loading('show');
         self.searchNearbyPlaces(self.nearbyCategoryId);
     },
     searchNearbyPlaces: function() {
-        $.mobile.loading('show');
         var page = $('#nearbyResultsPage');
         self.nearbyDistance = $('#nearbySearchSlider', page).val();
         var options = {
@@ -1869,6 +1874,7 @@ console.log(result);
         };        
         $('#currentPlaceType', page).html(self.nearbyCategoryName.toUpperCase());
         $('#placesList', page).html('').listview('refresh');
+        $.mobile.loading('show');
         services.getNearbyPlaces(options, function(result) {
 //console.dir(result);
             var html = '';
