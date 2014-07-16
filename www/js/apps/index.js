@@ -376,7 +376,7 @@ var app = {
     },
     updateBalloonsInNews: function() {
         // Display a balloon for each feed that contains updates
-        var listEl = $('#newsChannelsPage #channelList');
+        var listEl = $('#newsChannelsPanel #channelList');
         $('li a span.ui-li-count', listEl).hide();
         var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, null, true);
         for(var i in unreadData) {
@@ -742,6 +742,7 @@ var app = {
         console.log('initializing side bar');
         services.getSubscribedChannels(function(result) {
             var html = '';
+            html += '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>';
             for(var i in result) {
                 var row = result[i];
                 html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
@@ -813,7 +814,7 @@ var app = {
             $('#newsChannelsPage #channelList').html(html).listview('refresh');
             //html = '<li><a>Tutte</a></li>' + html;
             $('#newsChannelsPanel #channelList').html(html).listview('refresh');
-            self.updateBalloonsInNews();            
+            self.updateBalloonsInNews();
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -895,6 +896,7 @@ var app = {
         }*/
         self.retrieveChannelContent(onlyNew);
         pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
+        self.updateBalloonsInNews();
         
         /*if(self.newsChannelId > 0) {
             $('#newsPage #unsubscribeChannelButton').removeClass('ui-disabled').show();

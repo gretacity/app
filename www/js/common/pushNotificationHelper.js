@@ -210,7 +210,7 @@ var pushNotificationHelper = {
         
         ix = ix || 0;
         
-        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING;
+        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL;
         var data = [
             /*/ Complex notification data
             {id: 12, tot: 3},       // group 12 has 3 new items
@@ -222,12 +222,12 @@ var pushNotificationHelper = {
             //{id: config.QR_CODE_TEST, tot: 2}
 
             // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
-            //{id: '4', tot: 2},
-            //{id: '48', tot: 4},
-            //{id: '46', tot: 7},
+            {id: '4', tot: 2},
+            {id: '48', tot: 4},
+            {id: '46', tot: 7},
 
             // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
-            {id: '172', tot: 1}
+            //{id: '172', tot: 1}
 
             // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
             //{id: '4', tot: 1}
