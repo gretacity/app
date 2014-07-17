@@ -937,10 +937,12 @@ var app = {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
         html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;white-space:normal;">' +
+                    //'<img src="img/imagetest.jpg" />' +
                     '<span>' + item.oggetto + '</span>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
                     '<p><i>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
                '</a></li>';
+        
         // First ID is the top of the list and has id more greater then others
         if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
         if((self.newsContentLastId == null) || (self.newsContentLastId > rowId)) self.newsContentLastId = rowId;

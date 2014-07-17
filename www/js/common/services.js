@@ -76,8 +76,10 @@ var services = {
         $.ajax(url, {
             type: 'GET',
         }).done(function(result) {
+            //console.log('services.checkSession: success ', result);
             completed(result == '1');
         }).fail(function(jqXHR, textStatus, errorThrown) {
+            //console.log('services.checkSession: fail ', jqXHR);
             completed(false);
         });
     },
