@@ -20,14 +20,14 @@ var app = {
         if(config.EMULATE_ON_BROWSER) self.onDeviceReady();
         
         // For android devices
-        /*document.addEventListener('backbutton', function(e) {
+        document.addEventListener('backbutton', function(e) {
             if($.mobile.activePage.is('#newsPage')) {
                 e.preventDefault();
                 navigator.app.exitApp();
             } else {
                 navigator.app.backHistory();
             }
-        }, false);*/
+        }, false);
         
         
         var loginPage = $('#loginPage');
@@ -222,14 +222,20 @@ var app = {
             $('#registerPageButton').removeClass('ui-disabled');
             config.userLastLoginUsername(username);
             if(self.pageId != null) {
-                $.mobile.changePage('#' + self.pageId, {reverse: false, changeHash: false});
+                //delete $.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 1];
+                $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
+                $.mobile.changePage('#' + self.pageId); //, {reverse: false, changeHash: false});
                 self.pageId = null;
             }
             else {
                 //$.mobile.changePage('index.html#homePage');
                 //$.mobile.changePage('#homePage');
                 //$.mobile.changePage('#newsChannelsPage');
-                $.mobile.changePage('#newsPage', {reverse: false, changeHash: false});
+                //console.log($.mobile.navigate.history.stack);
+                //delete $.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 1];
+                $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
+                //console.log($.mobile.navigate.history.stack);
+                $.mobile.changePage('#newsPage'); //, {reverse: false, changeHash: false});
             }
         }, function(e) {
             $.mobile.loading('hide');
@@ -941,7 +947,7 @@ var app = {
                     //'<div><img src="img/imagetest.jpg" ' +
                     //'style="width:100%;margin:0;padding:0;" /></div>' +
             
-                    '<div><img style="background:url(\'img/imagetest.jpg\') no-repeat center;width:100%;height:10em;margin:0;padding:0;" /></div>' +
+                    '<div><img class="news-list-image" style="background-image:url(\'img/imagetest.jpg\');" /></div>' +
             
                     '<div>' + item.oggetto + '</div>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
