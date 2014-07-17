@@ -936,11 +936,16 @@ var app = {
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        html = '<li><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;white-space:normal;">' +
-                    //'<img src="img/imagetest.jpg" />' +
-                    '<span>' + item.oggetto + '</span>' +
+        html = '<li data-icon="false"><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;white-space:normal;">' +
+                    
+                    //'<div><img src="img/imagetest.jpg" ' +
+                    //'style="width:100%;margin:0;padding:0;" /></div>' +
+            
+                    '<div><img style="background:url(\'img/imagetest.jpg\') no-repeat center;width:100%;height:10em;margin:0;padding:0;" /></div>' +
+            
+                    '<div>' + item.oggetto + '</div>' +
                     '<p style="white-space:normal;">' + item.descrizione + '</p>' +
-                    '<p><i>Inserito il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
+                    '<p><i>Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
                '</a></li>';
         
         // First ID is the top of the list and has id more greater then others
