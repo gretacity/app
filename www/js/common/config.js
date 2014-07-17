@@ -39,6 +39,8 @@ var config = {
     URL_USER_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     URL_USER_REGISTER: '/web/index.php?mode=module&p=login&s=add_user',
     
+    URL_USER_SESSION_CHECK: '/web/index.php?mode=module&p=app_services&a=check_session',
+    
     URL_PROFILE_LOAD: '/web/index.php?mode=module&p=login&s=get_user',
     URL_PROFILE_UPDATE: '/web/index.php?mode=module&p=login&s=update_user',
     

@@ -54,6 +54,7 @@ var services = {
     },
     
     
+    /*
     getSummaryData: function(successCallback, failCallback) {
         // TODO
         var result = {
@@ -62,6 +63,23 @@ var services = {
             commentsCount: '?'
         };
         successCallback(result);
+    },*/
+    
+    
+    checkSession: function(completed) {
+        if(auth.getSessionId() == '') {
+            completed(false);
+            return;
+        }
+        var url = config.URL_BASE + config.URL_USER_SESSION_CHECK;
+        url += '&' + services.getRequestCommonParameters(true) + '&session_key='+auth.getSessionId();
+        $.ajax(url, {
+            type: 'GET',
+        }).done(function(result) {
+            completed(result == '1');
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            completed(false);
+        });
     },
     
     

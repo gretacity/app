@@ -19,15 +19,15 @@ var app = {
         
         if(config.EMULATE_ON_BROWSER) self.onDeviceReady();
         
-        /*
-         -newsPage                      TODO beforeShowNewsPage
-         -followingListPage             DONE showFollowingListPage
-         -reportingMethodPage           TODO beforeShowReportingMethodPage (doesn't exist)
-         -nearbyPage                    TODO beforeShowNearbyPage
-         */
-        
-        
-        
+        // For android devices
+        /*document.addEventListener('backbutton', function(e) {
+            if($.mobile.activePage.is('#newsPage')) {
+                e.preventDefault();
+                navigator.app.exitApp();
+            } else {
+                navigator.app.backHistory();
+            }
+        }, false);*/
         
         
         var loginPage = $('#loginPage');
@@ -50,6 +50,7 @@ var app = {
         var profileChannelsPage = $('#profileChannelsPage');
         profileChannelsPage.on('pageinit', self.initProfileChannelPage);
         profileChannelsPage.on('pagebeforeshow', self.showProfileChannelsPage);
+        profileChannelsPage.on('pagebeforehide', self.beforeHideProfileChannelsPage);
         var channelSubscriptionPage = $('#channelSubscriptionPage');
         channelSubscriptionPage.on('pagebeforeshow', self.initChannelSubscriptionPageBeforeShow);
         channelSubscriptionPage.on('pageshow', self.initChannelSubscriptionPage);
@@ -136,6 +137,11 @@ var app = {
                 function () {}
             );
         }
+        services.checkSession(function(result) {
+            console.log('onDeviceReady: session check ' + result);
+            window.location.hash = (result ? 'newsPage' : 'loginPage');
+            $.mobile.initializePage();
+        });
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -216,14 +222,14 @@ var app = {
             $('#registerPageButton').removeClass('ui-disabled');
             config.userLastLoginUsername(username);
             if(self.pageId != null) {
-                $.mobile.changePage('#' + self.pageId);
+                $.mobile.changePage('#' + self.pageId, {reverse: false, changeHash: false});
                 self.pageId = null;
             }
             else {
                 //$.mobile.changePage('index.html#homePage');
                 //$.mobile.changePage('#homePage');
                 //$.mobile.changePage('#newsChannelsPage');
-                $.mobile.changePage('#newsPage');
+                $.mobile.changePage('#newsPage', {reverse: false, changeHash: false});
             }
         }, function(e) {
             $.mobile.loading('hide');
@@ -374,7 +380,7 @@ var app = {
             }
         }
     },
-    updateBalloonsInNews: function() {
+    updateBalloonsInNews: function(openSideBar) {
         // Display a balloon for each feed that contains updates
         var listEl = $('#newsChannelsPanel #channelList');
         $('li a span.ui-li-count', listEl).hide();
@@ -382,6 +388,9 @@ var app = {
         for(var i in unreadData) {
             if(unreadData[i] == 0) continue;
             $('li a #count_' + i, listEl).html(unreadData[i]).show();
+        }
+        if(openSideBar || false) {
+            $('#newsChannelsPage').panel('open');
         }
     },
     updateBalloonsInNewsContent: function() {
@@ -583,6 +592,11 @@ var app = {
         });
     },
     
+    beforeHideProfileChannelsPage: function(e, data) {
+        if(data.nextPage.attr('id') == 'profilePage') {
+            self.initSidePanel();
+        }
+    },
     
     
     initChannelSubscriptionPageBeforeShow: function() {
@@ -741,8 +755,7 @@ var app = {
     initSidePanel: function() {
         console.log('initializing side bar');
         services.getSubscribedChannels(function(result) {
-            var html = '';
-            html += '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>';
+            var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>';
             for(var i in result) {
                 var row = result[i];
                 html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
@@ -754,6 +767,15 @@ var app = {
             //$('#newsChannelsPage #channelList').html(html).listview('refresh');
             //html = '<li><a>Tutte</a></li>' + html;
             $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
+            
+            /*$('#newsChannelsPanel #channelList').panel({
+                beforeopen: function() {
+                    if(self.newsChannelId > 0) {
+                    //    $('#newsChannelsPanel ul').
+                    }
+                }
+            });*/
+            
             self.sideBarInitialized = true;
             //$('#newsChannelsPanel').panel();
             self.updateBalloonsInNews();
@@ -825,6 +847,7 @@ var app = {
     },*/
     
     showNewsChannel: function(channelId) {
+        $('#newsChannelsPanel').panel('close');
         if(self.newsChannelId != channelId) {
             self.newsChannelId = channelId;
             self.newsContentLastId = null;
