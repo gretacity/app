@@ -774,13 +774,14 @@ var app = {
             //html = '<li><a>Tutte</a></li>' + html;
             $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
             
-            /*$('#newsChannelsPanel #channelList').panel({
+            $('#newsChannelsPanel').panel({
                 beforeopen: function() {
-                    if(self.newsChannelId > 0) {
-                    //    $('#newsChannelsPanel ul').
+                    $('#newsChannelsPanel ul li.panel-item-selected').removeClass('panel-item-selected');
+                    if((self.newsChannelId > 0) && ($.mobile.activePage.is('#newsPage'))) {
+                        $('#newsChannelsPanel ul li[data-channelid="' + self.newsChannelId + '"]').addClass('panel-item-selected');
                     }
                 }
-            });*/
+            });
             
             self.sideBarInitialized = true;
             //$('#newsChannelsPanel').panel();
@@ -949,12 +950,12 @@ var app = {
                 //'<div><img src="img/imagetest.jpg" ' +
                 //'style="width:100%;margin:0;padding:0;" /></div>' +
         if(image != '') {
-            html += '<div class="news-list-image" style="wwwidth:200px;background-color:#cecece;background-image:url(\'' + image + '\');"></div>';
+            html += '<div class="news-list-image" style="background-color:#cecece;background-image:url(\'' + image + '\');"></div>';
         }
         
         html += '<div>' + item.oggetto + '</div>' +
                 //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
-                '<p><i>Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
+                '<p class="news-list-note">Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</p>' +
                 '</a></li>';
         
         // First ID is the top of the list and has id more greater then others
