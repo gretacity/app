@@ -1356,7 +1356,7 @@ console.log(newsChannelAvailableIds);
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
             } else {
-                helper.alert('Impossibile recuperare le informazioni', null, 'Ottieni info');
+                helper.alert('Nessuna informazione associata al QR code', null, 'Ottieni info');
             }
         });
 
