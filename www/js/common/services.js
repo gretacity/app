@@ -385,7 +385,7 @@ result.nuove = [
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json',
         }).done(function(result) {
-//console.log("SUCCESS", result);
+console.log("services.getChannelContetnDetail SUCCESS", result);
             if(Array.isArray(result) && (result.length == 1))
                 success(result[0]);
             else

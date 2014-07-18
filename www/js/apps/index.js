@@ -942,17 +942,20 @@ var app = {
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        html = '<li data-icon="false"><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;white-space:normal;">' +
-                    
-                    //'<div><img src="img/imagetest.jpg" ' +
-                    //'style="width:100%;margin:0;padding:0;" /></div>' +
-            
-                    '<div><img class="news-list-image" style="background-image:url(\'img/imagetest.jpg\');" /></div>' +
-            
-                    '<div>' + item.oggetto + '</div>' +
-                    '<p style="white-space:normal;">' + item.descrizione + '</p>' +
-                    '<p><i>Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
-               '</a></li>';
+        var image = (item.foto || '');
+        //image = 'img/imagetest.jpg';
+        html  = '<li data-icon="false"><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;white-space:normal;">';
+        
+                //'<div><img src="img/imagetest.jpg" ' +
+                //'style="width:100%;margin:0;padding:0;" /></div>' +
+        if(image != '') {
+            html += '<div class="news-list-image" style="wwwidth:200px;background-color:#cecece;background-image:url(\'' + image + '\');"></div>';
+        }
+        
+        html += '<div>' + item.oggetto + '</div>' +
+                //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
+                '<p><i>Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</i></p>' +
+                '</a></li>';
         
         // First ID is the top of the list and has id more greater then others
         if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
@@ -1099,7 +1102,13 @@ var app = {
         services.getChannelContentDetail({id: id}, function(result) {
             var page = $('#newsDetailPage');
             var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
-            //$('div[data-role="header"] h1', page).html(result.oggetto);
+            
+            var imgurl = (result.foto || '');
+            if(imgurl != '') {
+                $('#newsImage', page).css('background-image', 'url(\'' + imgurl + '\')').show();
+            } else {
+                $('#newsImage', page).css('background-image', '').hide();
+            }
             $('#newsTitle', page).html(result.oggetto);
             $('#newsDate', page).html("Inserita il " + dateAdded.toDMY() + " alle " + dateAdded.toHM());
             var text = $('<span class="temp">'+result.descrizione+'</span>');
