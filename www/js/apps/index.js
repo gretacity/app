@@ -116,12 +116,15 @@ var app = {
     },
     onResume: function() {
         //pushNotificationHelper.updateApplicationIconBadgeNumber();
+        helper.alert('resume');
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
+        helper.alert('online');
     },
     onOffline: function() {
         //$('#loginPage #loginButton').addClass('ui-disabled');
+        helper.alert('offline');
     },
     // deviceready Event Handler
     //
@@ -858,7 +861,7 @@ var app = {
         if(self.newsChannelId != channelId) {
             self.newsChannelId = channelId;
             self.newsContentLastId = null;
-            self.newsContentFirstId = null;            
+            self.newsContentFirstId = null;
         } else {
             self.newsEmptyBeforeShow = false;
         }
