@@ -18,6 +18,7 @@ var app = {
         document.addEventListener('offline', self.onOffline, false);
         
         if(config.EMULATE_ON_BROWSER) self.onDeviceReady();
+        if(config.EMULATE_ON_BROWSER) self.onResume();
         
         // For android devices
         document.addEventListener('backbutton', function(e) {
@@ -115,16 +116,29 @@ var app = {
         self.updateBalloonsInNavbar();
     },
     onResume: function() {
+        
+        if(config.EMULATE_ON_BROWSER) return;
+        
+        // TODO
         //pushNotificationHelper.updateApplicationIconBadgeNumber();
-        helper.alert('resume');
+        
+        var lastRegistrationDate = pushNotificationHelper.getLastRegistrationDate();
+        if((auth.getSessionId() != '') && ((lastRegistrationDate == null) || (lastRegistrationDate.getDiffInDays(new Date()) >= config.PUSH_REGISTRATION_MAX_DAYS))) {
+            console.log('onResume: registration to push server required');
+            // Update the registration to push server
+            pushNotificationHelper.register(function(res) {
+                console.log('Registered device on Apple/Google Push Server', res);
+                pushNotificationHelper.setLastRegistrationDate(new Date());
+            }, function(e) {
+                console.log('Error on registering device on Apple/Google Push Server', e);
+            });
+        }
     },
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
-        helper.alert('online');
     },
     onOffline: function() {
         //$('#loginPage #loginButton').addClass('ui-disabled');
-        helper.alert('offline');
     },
     // deviceready Event Handler
     //
@@ -195,6 +209,7 @@ var app = {
             // Successfully loggedin, move forward
             pushNotificationHelper.register(function(res) {
                 console.log('Registered device on Apple/Google Push Server', res);
+                pushNotificationHelper.setLastRegistrationDate(new Date());
             }, function(e) {
                 console.log('Error on registering device on Apple/Google Push Server', e);
             });
@@ -573,13 +588,16 @@ var app = {
                 var channelId = result[i].id_feed;
                 var channelName = result[i].nome_feed;
                 var channelOwner = result[i].denominazione;
-                html += '<li>'+
+                /*html += '<li style="margin:0;padding:0">'+
                             '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
                             '<label for="channel' + channelId + '">' + channelName + 
                             '<br /><small>' + channelOwner + '</small></label>'+
-                        '</li>';
+                        '</li>';*/
+                html += '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
+                        '<label for="channel' + channelId + '">' + channelName + 
+                        '<br /><small>' + channelOwner + '</small></label>';
             }
-            $('#subscribedChannels', page).html(html).listview('refresh');
+            $('#subscribedChannels', page).html(html).trigger('create');//.listview('refresh');
             $('#subscribedChannels li input[type="checkbox"]', page).checkboxradio().on('click', function(e) {
                 var removable = $(this).attr('data-removable') == '1';
                 if(!removable) {

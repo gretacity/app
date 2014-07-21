@@ -475,7 +475,7 @@ console.log("NEARBYPLACES FAIL", jqXHR);
     //////////////////////////////////////////////////////
     // REPORTING RELATED FUNCTIONS
     _reportingCategories: null,  // cache results
-    // TODO These are QR-code categories not reporting categories !!!
+    
     getReportingCategories: function(successCallbak, failCallback) {
         if(services._reportingCategories != null) {
             successCallbak(services._reportingCategories);

@@ -30,6 +30,9 @@ var config = {
     REPORTING_MAX_PHOTOS: 3,
     
     
+    PUSH_REGISTRATION_MAX_DAYS: 7,
+    
+    
     REQUEST_DEFAULT_TIMEOUT: 5000,  // 5 secs
     
     URL_BASE: 'http://www.gretacity.com/test',
@@ -254,6 +257,15 @@ Date.parseFromYMDHMS = function(dateText) {
     return new Date(dateParts[0], parseInt(dateParts[1])-1, 
                     dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
 }
+
+
+
+Date.prototype.getDiffInDays = function(dt) {
+    var t1 = this.getTime();
+    var t2 = dt.getTime();
+    return parseInt(Math.abs(t2-t1)/(24*3600*1000));
+}
+
 
 
 String.prototype.capitalize = function() {

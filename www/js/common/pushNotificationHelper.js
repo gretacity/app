@@ -279,7 +279,22 @@ var pushNotificationHelper = {
 
     
     
+    PUSHSERVER_LAST_REGISTRATION_LAST_KEY: 'gretacity_pushserverlastregistrationdate',
+    getLastRegistrationDate: function() {
+        var val = window.localStorage.getItem(pushNotificationHelper.PUSHSERVER_LAST_REGISTRATION_LAST_KEY);
+        if(val) {
+            val = Date.parseFromYMDHMS(val);
+        }
+        return val;
+    },
     
+    setLastRegistrationDate: function(registrationDate) {
+        var val = registrationDate.toYMDHMS();
+        window.localStorage.setItem(pushNotificationHelper.PUSHSERVER_LAST_REGISTRATION_LAST_KEY, val);
+    },
+            
+    
+
     pushNotification : null,
     
     register: function(successCallback, errorCallback) {
