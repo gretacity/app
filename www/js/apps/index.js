@@ -1488,6 +1488,9 @@ row.data_fine_lavorazione = '2014-05-07 12:00:00';
 row.data_chiusura = '2014-05-07 12:00:00';
 row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
 */
+                    
+                    
+                    
                     html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
                     if(row.indirizzo && row.indirizzo.length > 0) {
                         html += '<li>' + row.indirizzo + '</li>';
@@ -1497,6 +1500,7 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
                         html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';
                     html += '<li>';
                     
+                    /*
                     var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
                     var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
                     var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
@@ -1517,11 +1521,16 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
                         html += '<div><small>Terminata il ' + completionDate.toDMY() + '</small></div>';
                     else if(processingDate != null) 
                         html += '<div><small>In lavorazione dal ' + processingDate.toDMY() + '</small></div>';
+                    */
+                    
+                    for(var j in row.log) {
+                        html += '<div><small>' + row.log[j] + '</small></div>';
+                    }
                     
                     if(row.descrizione_chiusura != '') 
                         html += '<div><small>' + row.descrizione_chiusura + '</small></div>';
                     
-                    html +=  '<!--/a--></li>';
+                    html +=  '</li>';
                 }
             }
             list.html(html);

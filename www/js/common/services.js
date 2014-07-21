@@ -369,7 +369,7 @@ result.nuove = [
 ];*/
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("FAIL", textStatus);
+console.log("FAIL", textStatus);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
