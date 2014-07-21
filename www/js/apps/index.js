@@ -1238,6 +1238,10 @@ console.log(newsChannelAvailableIds);
         
         services.getFollowings({}, function(result) {
             $.mobile.loading('hide');
+            if(result.follows.length > 0) 
+                $('#followingListPage #startMessage').hide();
+            else
+                $('#followingListPage #startMessage').show();
             //var html = '<li data-role="listdivider"><a href="">Leggi da QR Code</a></li>';
             var html = '';
             for(var i in result.follows) {
