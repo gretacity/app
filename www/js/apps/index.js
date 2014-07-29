@@ -1794,11 +1794,14 @@ console.log(result);
             self.marker, 
             'dragend', 
             function() {
+                if(document.activeElement) {
+                    $(document.activeElement).blur();
+                }
                 self.latLng.lat = self.marker.getPosition().lat();
                 self.latLng.lng = self.marker.getPosition().lng();
         });
-        var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
-        infowindow.open(self.map, self.marker);
+        //var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
+        //infowindow.open(self.map, self.marker);
     },
     
     
@@ -1892,6 +1895,7 @@ console.log(result);
     },
     
     sendReporting: function() {
+//helper.alert(self.latLng.lat + ', ' + self.latLng.lng);return;
         // Validate report
         var page = $('#reportingPage');
         /*var description = $('#description', reportingPage).html().trim();
@@ -2075,6 +2079,13 @@ console.log(result);
         /*setTimeout(function() {
             $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
         }, 100);*/
+        $('#nearbyPlaceInfoPage #nearbyPlaceMap').css({
+            position: 'absolute', 
+            top: '3.5em', //$('div[data-role="header"]', $.mobile.activePage).height(),
+            bottom: 0,
+            left: 0,
+            right: 0
+        });
     },
     
     showNearbyPlaceInfo: function() {
@@ -2103,9 +2114,6 @@ console.log(result);
             map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
             var infowindow = new google.maps.InfoWindow({content: '<div>Tu</div>'});
             infowindow.open(map, startingMarker);
-            console.log($('#nearbyPlaceInfoPage #nearbyPlaceMap').height(), $.mobile.activePage.height());
-            $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
-            console.log($('#nearbyPlaceInfoPage #nearbyPlaceMap').height(), $.mobile.activePage.height());
         }
         $.mobile.loading('show');
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId, source: self.nearbyPlaceSource}, function(result) {
