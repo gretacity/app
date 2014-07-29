@@ -54,7 +54,7 @@
                 margin-bottom: 0.5em !important;
                 border: solid 1px #08c;
                 border-radius: 0.3em;
-                background-size: 100% !important;
+                background-size: auto 100% !important;
                 background-repeat: no-repeat;
                 background-position: center center;
                 width: 100%;
@@ -325,6 +325,9 @@
                         <a href="#" id="logoutButton"><label>Esci</label></a>
                     </li>
                 </ul>
+                <p style="position:absolute;bottom:6em;" class="news-note">
+                    Per richiedere supporto o inviare feedback manda una mail all'indirizzo supporto@gretacity.it
+                </p>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
@@ -425,7 +428,7 @@
                 <div data-role="controlgroup" id="subscribedChannels" style="padding:0;margin:0;"></div>
                 <!--<ul data-role="listview" id="subscribedChannels"></ul>-->
                 <br />
-                <a href="#channelSubscriptionPage" id="openChannelSubscriptionPageButton" class="ui-btn">Aggiungi canale</a>
+                <a href="#channelSubscriptionPage" id="openChannelSubscriptionPageButton" class="ui-btn">Aggiungi altra città</a>
                 
                 <!--
                 <br /><br /><br />
@@ -541,7 +544,10 @@
                 <!-- <a href="#reportingPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Segnala</a> -->
                 <!-- <a href="#" id="refreshReportingListButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-refresh">Aggiorna</a> -->
                 <!-- <a href="#reportingMethodPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-plus">Report</a> -->
+                <!--
                 <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                -->
+                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
             </div>
             <div data-role="main" class="ui-content">
                 <ul id="reportingList" data-role="listview" data-inset="false"></ul>
@@ -650,7 +656,7 @@
                 </a>            
                 <ul id="channelContent" data-role="listview" data-inset="false"></ul>
                 <a href="#" id="moreNewsButton" class="ui-btn" style="margin-top:25px;">Altre notizie</a>
-                <h1 id="noNews" style="display:none;">Nessuna notizia per il canale</h1>
+                <h1 id="noNews" style="display:none;">Nessuna notizia</h1>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
@@ -715,16 +721,24 @@
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 -->
+                <!--
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                -->
+                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                <!--
                 <a href="#" id="readQrCodeButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Info QRCode</a>
+                -->
             </div>
             <div data-role="main" class="ui-content">
+                <!--
                 <div id="startMessage" style="display:none;border:solid 1px #000;padding: 10px;text-align:center;position:relative;background-color:#fff">
                     <div style="background:url('img/carat-u-black.png');position:absolute;width:15px;height:15px;top:-9px;right:-1px;"></div>
                     Tocca qui per leggere il QR code
                 </div>
-
-                <ul data-role="listview" id="followingList"></ul>
+                -->
+                <a href="#" id="getInfoButton" class="ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
+                <ul data-role="listview" id="followingList" style="margin-top:1em;">
+                </ul>
             </div>
             <div data-role="footer" data-position="fixed">
                 <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
@@ -757,8 +771,9 @@
                 -->
                 <!--
                 <a href="#newsChannelsPage" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-                -->
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                -->
+                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="placeTypeList">
@@ -792,7 +807,7 @@
             </div>
             <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;top:4em;z-index:100;background:#fff;">
                 <label>Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
-                <input type="range" id="nearbySearchSlider" min="1" max="50" step="1" value="2" data-highlight="true" data-mini="true" />
+                <input type="range" id="nearbySearchSlider" min="1" max="20" step="1" value="2" data-highlight="true" data-mini="true" />
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;">
@@ -858,8 +873,9 @@
                 -->
                 <!--
                 <a href="#newsChannelsPage" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-                -->
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
+                -->
+                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <!--
                 <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets" data-transition="slide" data-direction="reverse">Segnalazioni</a>
                 -->
@@ -1068,7 +1084,7 @@
             <div data-role="main" class="ui-content">
                 <input type="hidden" id="qrCodeId" />
                 <!--<h2>Ottieni info</h2>-->
-                <a href="#" id="getInfoButton" class="ui-btn ui-btn-icon-left ui-icon-camera">Ottieni info</a>
+                <a href="#" id="getInfoButton" class="ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
                 <div id="infoResult" style="text-align:center;">
                     <p id="infoText" style="text-align:left;">
                         Clicca sopra e inquadra il QR code per ottenere informazioni.
@@ -1098,6 +1114,22 @@
         </div>
         <!-- /qrCodeInfoPage -->
         
+        <!-- qrCodeViewer -->
+        <div data-role="dialog" id="qrCodeViewerPage">
+            <div data-role="main" class="ui-content">
+                <div style="height:3.5em;">
+                    <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">close</a>
+                </div>
+                <ul id="qrCodeViewer" data-role="listview" data-inset="false">
+                    <!--<li data-role="list-divider" style="height:1em;">header</li>
+                    <li>row: row</li>
+                    <li>row: row</li>
+                    <li>row: row</li>-->
+                </ul>
+            </div>
+        </div>
+        <!-- /qrCodeViewer -->
+    
         <!-- QR Follow -->
         <!--
         <div data-role="page" id="qr-follow">

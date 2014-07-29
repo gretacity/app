@@ -22,7 +22,11 @@ var config = {
     
     // To speed up development / testing
     // In release mode they must be empty
-    QR_CODE_TEST: '', //'1000000769',
+    QR_CODE_BASE_URL: 'http://www.gretacity.com/code/',
+    QR_CODE_TEST: '',
+    //QR_CODE_TEST: 'http://www.gretacity.com/code/4000000000',
+    //QR_CODE_TEST: 'http://www.gretacity.com/code/1000000769',
+    //QR_CODE_TEST: 'http://www.gooogle.com',
     LOGIN_DEFAULT_USERNAME: '',
     LOGIN_DEFAULT_PASSWORD: '',
     
@@ -80,7 +84,8 @@ var config = {
     URL_NEARBY_PLACE_INFO: '/web/index.php?mode=module&p=app_services&a=info',
     
     
-    NEARBY_DEFAULT_DISTANCE: 2, // In KM
+    NEARBY_DEFAULT_DISTANCE: 2, // In Km
+    NEARBY_MAX_DISTANCE: 20,    // In Km
     
     
     GOOGLE_GCM_PROJECT_ID: '79537853092',

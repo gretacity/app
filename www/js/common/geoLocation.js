@@ -33,6 +33,7 @@ var geoLocation = {
             //errorCallback('errorino');return;
             if(successCallback) {
                 var lat = 38.858364, lng = 16.549469, accuracy = 15;
+                //lat = 38.810899; lng = 16.603324;
                 successCallback(
                     {coords: {longitude: lng, latitude: lat, accuracy: accuracy}}
                 );
@@ -111,6 +112,7 @@ console.log(firstResult);
         });
         // https://maps.googleapis.com/maps/api/geocode/json?language=it&latlng=38.858364,16.549469&sensor=false&location_type=ROOFTOP&result_type=street_address&key=AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ
     },
+    
     
     _osmReverseGeocoding: function(params, successCallBack) {
         // http://nominatim.openstreetmap.org/reverse?lat=38.858364&lon=16.549469&format=json&addressdetails=1&zoom=18
