@@ -349,8 +349,13 @@ console.log("FAIL", textStatus);
     getChannelContent: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_NEWS_LIST;
         url += '&' + services.getRequestCommonParameters();
-        var data = 'id_feed=' + params.channelId + '&f_id=' + params.firstId + '&l_id=' + params.lastId;
+        var data = 'id_feed=' + params.channelId + 
+                   '&f_id=' + (params.firstId || '')+ 
+                   '&f_date=' + encodeURIComponent(params.firstDate || '') +
+                   '&l_id=' + (params.lastId || '') +
+                   '&l_date=' + encodeURIComponent(params.lastDate || '');
         if(params.onlyNew === true) data += '&new=1';
+console.log(url);
 console.log(data);//return;
         $.ajax(url,{
             type:'GET',
@@ -359,14 +364,6 @@ console.log(data);//return;
             dataType: 'json',
         }).done(function(result) {
 console.log("SUCCESS", result);
-/*
-// Test
-result.nuove = [
-    {data_inserimento: "2014-06-06 14:13:44", descrizione: "Questa è una prova&nbsp;", id: "12", id_categoria: "25", oggetto: "Prova inserimento nuovi", stato: "1", sys_user_fk: "38"},
-    {data_inserimento: "2014-06-06 14:13:44", descrizione: "Questa è una prova&nbsp;", id: "12", id_categoria: "25", oggetto: "Prova inserimento nuovi", stato: "1", sys_user_fk: "38"},
-    {data_inserimento: "2014-06-06 14:13:44", descrizione: "Questa è una prova&nbsp;", id: "12", id_categoria: "25", oggetto: "Prova inserimento nuovi", stato: "1", sys_user_fk: "38"},
-    {data_inserimento: "2014-06-06 14:13:44", descrizione: "Questa è una prova&nbsp;", id: "12", id_categoria: "25", oggetto: "Prova inserimento nuovi", stato: "1", sys_user_fk: "38"},
-];*/
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
 console.log("FAIL", textStatus);
@@ -374,7 +371,7 @@ console.log("FAIL", textStatus);
         });
     },
     
-    
+
     getChannelContentDetail: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_NEWS_DETAIL;
         url += '&' + services.getRequestCommonParameters();

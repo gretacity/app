@@ -890,7 +890,9 @@ var app = {
         if(self.newsChannelId != channelId) {
             self.newsChannelId = channelId;
             self.newsContentLastId = null;
+            self.newsContentLastDate = null;
             self.newsContentFirstId = null;
+            self.newsContentFirstDate = null;
         } else {
             self.newsEmptyBeforeShow = false;
         }
@@ -906,8 +908,8 @@ var app = {
     //NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
     newsEmptyBeforeShow: true,
     newsChannelId: 0,
-    newsContentLastId: null,
-    newsContentFirstId: null,
+    newsContentLastId: null, newsContentLastDate: null,
+    newsContentFirstId: null, newsContentFirstDate: null,
     newChannelContentReceived: [],
     //newsContentTimeout: null,
     sideBarInitialized: false,
@@ -991,8 +993,23 @@ var app = {
                 '</a></li>';
         
         // First ID is the top of the list and has id more greater then others
-        if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
-        if((self.newsContentLastId == null) || (self.newsContentLastId > rowId)) self.newsContentLastId = rowId;
+        //if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
+        //if((self.newsContentLastId == null) || (self.newsContentLastId > rowId)) self.newsContentLastId = rowId;
+var dateText = item.data_inserimento;
+console.log(dateText + ' ' + rowId);
+        /*
+        
+        
+        if((self.newsContentFirstDate == null) || (self.newsContentFirstDate < dateText)) {
+            self.newsContentFirstDate = dateText;
+            self.newsContentFirstId = rowId;
+        }
+        if((self.newsContentLastDate == null) || (self.newsContentLastDate > dateText)) {
+            self.newsContentLastDate = dateText;
+            self.newsContentLastId = rowId;
+        }*/
+        
+        
         return html;
     },
     retrieveChannelContent: function(onlyNew) {
@@ -1015,7 +1032,9 @@ var app = {
         var params = {
             channelId: self.newsChannelId, 
             lastId: self.newsContentLastId,
+            lastDate: self.newsContentLastDate,
             firstId: self.newsContentFirstId,
+            firstDate: self.newsContentFirstDate,
             onlyNew: onlyNew
         };
         
@@ -1028,6 +1047,16 @@ var app = {
                 if(result.vecchie.length > 0) {
                     for(var i in result.vecchie) {
                         html += self.formatChannelContentItem(result.vecchie[i]);
+                        
+                        var lastRec = result.vecchie[result.vecchie.length-1];
+                        self.newsContentLastDate = lastRec.data_inserimento;
+                        self.newsContentLastId = lastRec.id;
+                        
+                        if(self.newsContentFirstDate == null) {
+                            var firstRec = result.vecchie[0];
+                            self.newsContentFirstDate = firstRec.data_inserimento;
+                            self.newsContentFirstId = firstRec.id;
+                        }
                     }
                 }
                 if(result.vecchie.length == 0) {
@@ -1061,6 +1090,10 @@ var app = {
 
 //if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.length);
 
+                var firstRec = result.nuove[0];
+                self.newsContentFirstDate = firstRec.data_inserimento;
+                self.newsContentFirstId = firstRec.id;
+                
                 $('#newContentReceivedButton').html(
                     self.newChannelContentReceived.length + (self.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
                 ).show('fast');
@@ -1148,7 +1181,7 @@ var app = {
             $('a', text).each(function() {
                 var href = $(this).attr('href');
                 $(this).attr('href', '#')
-                       .attr('onclick', 'javascript:window.open(\'' + href + '\', \'_blank\', \'location=no,closebuttoncaption=Indietro\');');
+                       .attr('onclick', 'javascript:window.open(\'' + href + '\', \'_blank\', \'location=no,closebuttoncaption=Indietro,enableViewportScale=yes\');');
             });
             $('#newsText', page).html(
                 text.html()
@@ -2150,7 +2183,10 @@ console.log(result);
                 // see:
                 // https://developers.google.com/maps/documentation/javascript/examples/directions-complex
                 /*
-                var directionsDisplay = new google.maps.DirectionsRenderer({preserveViewport: false});
+                var directionsDisplay = new google.maps.DirectionsRenderer({
+                    suppressInfoWindows: true,
+                    preserveViewport: false
+                });
                 var directionsService = new google.maps.DirectionsService();
                 directionsDisplay.setMap(map);
                 directionsService.route({
@@ -2160,7 +2196,16 @@ console.log(result);
                     travelMode: google.maps.TravelMode.DRIVING
                 }, function(result, status) {
                     if(status == google.maps.DirectionsStatus.OK) {
+                        console.log(result.routes);
+                        self.tmp = result.routes;
+                        //result.routes[0].legs[0].start_location.lat()
+                        //result.routes[0].legs[0].start_location.lng()
+                        //result.routes[0].legs[0].end_location.lat()
+                        //result.routes[0].legs[0].end_location.lng()
+                        console.log(endingMarkerPoint, result.routes[0].legs[0].end_location);
                         directionsDisplay.setDirections(result);
+                    } else {
+                        // Set markers at start and at end position
                     }
                 });*/
             }
