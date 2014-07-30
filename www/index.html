@@ -52,8 +52,10 @@
             .news-image,
             .news-list-image {
                 margin-bottom: 0.5em !important;
-                border: solid 1px #08c;
+                /*border: solid 1px #08c;*/
+                border: solid 1px #aeaece;
                 border-radius: 0.3em;
+                background-color: #FFF !important;
                 background-size: auto 100% !important;
                 background-repeat: no-repeat;
                 background-position: center center;
@@ -95,6 +97,14 @@
             }
             .fielderror {
                 color: #FF0000;
+            }
+            
+            
+            .ui-priority-button {
+                height:2em;
+                width:2em;
+                float:left;
+                margin-right:1.5em;
             }
             
             .replist-photo-container {
@@ -185,7 +195,7 @@
 
         <!-- loginPage -->
         <div data-role="page" id="loginPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>GretaCITY</h1>
                 <!--
                 <a href="#info" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>
@@ -208,7 +218,7 @@
 
         <!-- registrationPage -->
         <div data-role="page" id="registrationPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>GretaCITY</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
@@ -231,8 +241,9 @@
                 <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left">Registrati</a>
                 <p style="text-align:justify">
                     <small>Ti sara' notificata la password di accesso tramite SMS ai contatti inseriti.<br/>
-                        Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">www.gretacity.com</a> 
-                        oppure consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">NOTE LEGALI</a>.</small>
+                        Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">www.gretacity.com</a>.
+                        <br />
+                        Consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">note legali</a>.</small>
                 </p>
             </div>            
         </div>
@@ -297,7 +308,7 @@
         
         <!-- profilePage -->
         <div data-role="page" id="profilePage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Profilo</h1>
                 <!--
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
@@ -329,7 +340,7 @@
                     Per richiedere supporto o inviare feedback manda una mail all'indirizzo supporto@gretacity.it
                 </p>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -351,7 +362,7 @@
         
         <!-- profileNamePage -->
         <div data-role="page" id="profileNamePage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Nominativo</h1>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
@@ -363,7 +374,7 @@
                     <a href="#" id="saveProfileNameButton" class="ui-btn">Conferma</a>
                 </div>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -385,7 +396,7 @@
         
         <!-- profileCityPage -->
         <div data-role="page" id="profileCityPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Residenza</h1>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
@@ -416,7 +427,7 @@
             
         <!-- profileChannelsPage -->
         <div data-role="page" id="profileChannelsPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>I Tuoi Canali</h1>
                 <!--
                 <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
@@ -449,7 +460,7 @@
                 -->
                 
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -471,7 +482,7 @@
         
         <!-- channelSubscriptionPage -->
         <div data-role="page" id="channelSubscriptionPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Aggiungi Canale</h1>
                 <a href="#profileChannelsPage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>                
             </div>
@@ -496,7 +507,7 @@
                     </li>
                 </ul>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -536,7 +547,7 @@
         
         <!-- reportingListPage -->
         <div data-role="page" id="reportingListPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Segnalazioni</h1>
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
@@ -555,7 +566,7 @@
                 <a href="#" id="loadMoreReportingItemsButton" class="ui-btn ui-mini ui-icon-recycle ui-btn-icon-left ui-shadow-icon">Carica altri...</a>
                 -->
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -628,7 +639,7 @@
         <!-- newsPage -->
         <div data-role="page" id="newsPage">
             
-            <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
+            <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true" data-tap-toggle="false">
                 <!--<h1 style="margin-bottom:2em;">Canali notizie</h1>-->
                 <ul data-role="listview" id="channelList"></ul>
             </div>
@@ -658,7 +669,7 @@
                 <a href="#" id="moreNewsButton" class="ui-btn" style="margin-top:25px;">Altre notizie</a>
                 <h1 id="noNews" style="display:none;">Nessuna notizia</h1>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -681,7 +692,7 @@
     
         <!-- newsDetailPage -->
         <div data-role="page" id="newsDetailPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Notizie</h1>
                 <!--<a href="#newsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>-->
                 <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
@@ -692,7 +703,7 @@
                 <div id="newsDate" class="news-note"></div>
                 <p id="newsText" style="border:1px solid #DDD;padding:1em;white-space:normal;word-wrap:break-word;"></p>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
                 <div data-role="navbar">
                     <ul>
@@ -716,7 +727,7 @@
         
         <!-- followingListPage -->
         <div data-role="page" id="followingListPage" style="background:url('img/bg-qrcode.png')">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Following</h1>
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
@@ -740,7 +751,7 @@
                 <ul data-role="listview" id="followingList" style="margin-top:1em;">
                 </ul>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
                 <div data-role="navbar">
                     <ul>
@@ -764,7 +775,7 @@
         
         <!-- nearbyPage -->
         <div data-role="page" id="nearbyPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>QUI vicino</h1>
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
@@ -779,7 +790,7 @@
                 <ul data-role="listview" id="placeTypeList">
                 </ul>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -801,7 +812,7 @@
     
         <!-- nearbyResultsPage -->
         <div data-role="page" id="nearbyResultsPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>QUI vicino</h1>
                 <a href="#nearbyPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
             </div>
@@ -813,7 +824,7 @@
                 <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;">
                 </ul>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -836,7 +847,7 @@
     
         <!-- nearbyPlaceInfoPage -->
         <div data-role="page" id="nearbyPlaceInfoPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>QUI vicino</h1>
                 <a href="#nearbyResultsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
             </div>
@@ -868,7 +879,7 @@
         
         <!-- reportingMethodPage -->
         <div data-role="page" id="reportingMethodPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Segnala</h1>
                 <!--
                 <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
@@ -914,7 +925,7 @@
                     </li>
                 </ul>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -937,7 +948,7 @@
     
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Segnala</h1>
                 <a href="#reportingMethodPage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
                 <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets">Segnalazioni</a>
@@ -990,28 +1001,23 @@
                         </div>
                     </li>
                     <li>
-                        <div>
-                            <a href="#" class="ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#FFF;float:left;margin-right:1.5em;">1</a>
+                        <div id="prioritySet" style="margin-left:1em;">
+                            <a href="javascript:app.setPriority(0);" data-priority="0" class="ui-priority-button ui-btn ui-alt-icon ui-corner-all ui-btn-icon-notext"
+                               style="background-color:#FFF;">0</a>
                             &nbsp;
-                            <a href="#" class="ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#FAF200;float:left;margin-right:1.5em;">2</a>
+                            <a href="javascript:app.setPriority(1);" data-priority="1" class="ui-priority-button ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
+                               style="background-color:#0F0;">1</a>
                             &nbsp;
-                            <a href="#" class="ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#0F0;float:left;margin-right:1.5em;">3</a>
+                            <a href="javascript:app.setPriority(2);" data-priority="2" class="ui-priority-button ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
+                               style="background-color:#FAF200;">2</a>
                             &nbsp;
-                            <a href="#" class="ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#F00;float:left;margin-right:1.5em;">4</a>
+                            <a href="javascript:app.setPriority(3);"  data-priority="3" class="ui-priority-button ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
+                               style="background-color:#F00;">3</a>
                         </div>
-                        <div>
-                            <fieldset data-role="controlgroup" data-type="horizontal">
-                                <input name="radio-choice-h-2" id="radio-choice-h-2a" value="on" checked="checked" type="radio"/>
-                                <label for="radio-choice-h-2a">One</label>
-                                <input name="radio-choice-h-2" id="radio-choice-h-2b" value="off" type="radio"/>
-                                <label for="radio-choice-h-2b">Two</label>
-                                <input name="radio-choice-h-2" id="radio-choice-h-2c" value="other" type="radio"/>
-                                <label for="radio-choice-h-2c">Three</label>
-                            </fieldset>
+                    </li>
+                    <li>
+                        <div id="priorityText" style="margin-left:1em;">
+                            Segnalazione
                         </div>
                     </li>
                     <li data-role="list-divider" style="padding: 10px;">
@@ -1036,7 +1042,7 @@
                 </ul>
                 <p><a href="#" id="sendReportingButton" data-role="button" data-icon="action" data-iconpos="left">Invia segnalazione</a></p>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--
@@ -1058,7 +1064,7 @@
         
         <!-- reportingDescriptionPage -->
         <div data-role="page" id="reportingDescriptionPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
@@ -1073,7 +1079,7 @@
         
         <!-- reportingLocationPage -->
         <div data-role="page" id="reportingLocationPage">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>GretaCITY</h1>
             </div>
             <div data-role="main" class="ui-content">
@@ -1084,8 +1090,8 @@
                 <label>Indirizzo</label>
                 <textarea id="route" placeholder="Indirizzo"></textarea>
                 <p>
-                    Trascina il segnaposto nella mappa sulla posizione corretta<br />
-                    per consentirci di individuare con precisione<br />
+                    Trascina il segnaposto nella mappa sulla posizione corretta
+                    per consentirci di individuare con precisione
                     il punto della tua segnalazione.
                 </p>
                 <div id="map" style="width:100%;height:300px"></div>
@@ -1113,7 +1119,7 @@
         
         <!-- qrCodeInfoPage -->
         <div data-role="page" id="qrCodeInfoPage" style="background:url('img/bg-qrcode.png')">
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>GretaCITY</h1>
                 <!-- href="#followingListPage" or data-rel="back" -->
                 <a href="#followingListPage" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
@@ -1131,7 +1137,7 @@
                     -->
                 </div>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <!--

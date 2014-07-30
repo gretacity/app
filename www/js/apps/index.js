@@ -162,6 +162,7 @@ var app = {
                 function () {}
             );
         }
+        //$('[data-role="header"],[data-role="footer"]').fixedtoolbar({ tapToggle:false });
         services.checkSession(function(result) {
             console.log('onDeviceReady: session check ' + result);
             window.location.hash = (result ? 'newsPage' : 'loginPage');
@@ -1852,6 +1853,17 @@ console.log(result);
     
     
     
+    reportingPriority: 0,
+    setPriority: function(priority) {
+        var priorityTexts = ['Nessuna priorità', 'Bassa priorità', 'Media priorità', 'Alta priorità'];
+        var page = $('#reportingPage');
+        $('#prioritySet a:not(.ui-nodisc-icon)', page).addClass('ui-nodisc-icon');
+        $('#prioritySet a:nth-child('+(priority+1)+')', page).removeClass('ui-nodisc-icon');
+        $('#priorityText', page).html(priorityTexts[priority]);
+        self.reportingPriority = priority;
+    },
+    
+    
     
     acquireReportingPhoto: function() {
         if($('#photoList li a img[data-acquired="0"]').first().length == 0) {
@@ -1910,6 +1922,7 @@ console.log(result);
             city: $('#locationInfo span.city', reportingPage).html().trim(),
             prov: $('#locationInfo span.prov', reportingPage).html().trim(),
             description:  $('#description', reportingPage).html().trim(),
+            priority: self.reportingPriority,
             photos: []
         };
         $('#photoList li a img[data-acquired="1"]', reportingPage).each(function() {

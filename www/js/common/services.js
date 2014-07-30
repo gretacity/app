@@ -506,6 +506,7 @@ console.log("NEARBYPLACES FAIL", jqXHR);
                 comune: reporting.city,
                 prov: reporting.prov,
                 descrizione: reporting.description,
+                priorita: reporting.priority
             }
         };
         if(reporting.photos.length > 0) {
@@ -516,10 +517,8 @@ console.log("NEARBYPLACES FAIL", jqXHR);
         }
         $.ajax(url, {
             type: 'POST',
-            //async: false,
             url: url, 
             data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
-            //timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'text',
         }).done(function(result) {
             successCallback();
