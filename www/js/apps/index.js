@@ -978,15 +978,15 @@ var app = {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
         var image = (item.foto || '');
-        //image = 'img/imagetest.jpg';
-        html  = '<li data-icon="false"><a href="javascript:self.showNewsDetail(' + item.id + ')" style="background-color:#FFF;white-space:normal;">';
         
-                //'<div><img src="img/imagetest.jpg" ' +
-                //'style="width:100%;margin:0;padding:0;" /></div>' +
+        var href = (item.link == '') ? 
+                'javascript:self.showNewsDetail(' + item.id + ')' : 
+                'javascript:window.open(\'' + item.link + '\', \'_blank\', \'location=no,closebuttoncaption=Indietro,enableViewportScale=yes\');';        
+        html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
         if(image != '') {
-            html += '<div class="news-list-image" style="background-color:#cecece;background-image:url(\'' + image + '\');"></div>';
+            html += '<div class="news-list-image" style="background-image:url(\'' + image + '\');"></div>';
         }
-        
+
         html += '<div>' + item.oggetto + '</div>' +
                 //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
                 '<p class="news-list-note">Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</p>' +
@@ -995,8 +995,8 @@ var app = {
         // First ID is the top of the list and has id more greater then others
         //if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
         //if((self.newsContentLastId == null) || (self.newsContentLastId > rowId)) self.newsContentLastId = rowId;
-var dateText = item.data_inserimento;
-console.log(dateText + ' ' + rowId);
+//var dateText = item.data_inserimento;
+//console.log(dateText + ' ' + rowId);
         /*
         
         
@@ -1716,6 +1716,13 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
             }
             $('#reportingCategory', page).html(html);
             $('#reportingCategory', page).selectmenu('refresh');
+            
+            var priorityTexts = ['Nessuna priorità', 'Bassa priorità', 'Media priorità', 'Alta priorità'];
+            html = '';
+            for(var i in priorityTexts) {
+                html += '<option value="' + i + '">' + priorityTexts[i] + '</option>';
+            }
+            $('#priority', page).html(html).trigger('change');
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -1885,7 +1892,7 @@ console.log(result);
     },
     
     
-    
+    /*
     reportingPriority: 0,
     setPriority: function(priority) {
         var priorityTexts = ['Nessuna priorità', 'Bassa priorità', 'Media priorità', 'Alta priorità'];
@@ -1894,7 +1901,7 @@ console.log(result);
         $('#prioritySet a:nth-child('+(priority+1)+')', page).removeClass('ui-nodisc-icon');
         $('#priorityText', page).html(priorityTexts[priority]);
         self.reportingPriority = priority;
-    },
+    },*/
     
     
     
@@ -1955,9 +1962,11 @@ console.log(result);
             city: $('#locationInfo span.city', reportingPage).html().trim(),
             prov: $('#locationInfo span.prov', reportingPage).html().trim(),
             description:  $('#description', reportingPage).html().trim(),
-            priority: self.reportingPriority,
+            //priority: self.reportingPriority,
+            priority: $('#reportingPage #priority').val(),
             photos: []
         };
+
         $('#photoList li a img[data-acquired="1"]', reportingPage).each(function() {
             // remove 
             var src = $(this).attr('src');

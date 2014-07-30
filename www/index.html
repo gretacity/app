@@ -176,18 +176,16 @@
                 float:left;
                 padding-left:5px;
                 display: inline-block;
-                width: 90px;
+                width: 85px;
             }
-            /*#photoList li a {
-                display: block !important;
-            }*/
             .report-imagelist-missing {
                 /*background: url('img/camera-icon.png') center no-repeat;*/
-                width: 90px;
-                height: 90px;
+                width: 80px;
+                height: 80px;
             }
             .report-imagelist-done {
-                width: 90px;
+                width: 80px;
+                height: auto;
             }
         </style>
     </head>
@@ -965,7 +963,7 @@
                         </div>
                     </li>
                     <li id="qrCodeRow">
-                        <label id="qrCode" style="white-space:normal;">Q R - C O D E</label>
+                        <label id="qrCode" style="white-space:normal;"></label>
                     </li>
                     <li data-role="list-divider" style="padding: 10px;" id="locationHeader">
                         <div>
@@ -1000,6 +998,7 @@
                             <span style="float:left;padding-left:15px;">Gravità del problema</span>
                         </div>
                     </li>
+                    <!--
                     <li>
                         <div id="prioritySet" style="margin-left:1em;">
                             <a href="javascript:app.setPriority(0);" data-priority="0" class="ui-priority-button ui-btn ui-alt-icon ui-corner-all ui-btn-icon-notext"
@@ -1019,6 +1018,10 @@
                         <div id="priorityText" style="margin-left:1em;">
                             Segnalazione
                         </div>
+                    </li>
+                    -->
+                    <li>
+                        <select id="priority"></select>
                     </li>
                     <li data-role="list-divider" style="padding: 10px;">
                         <div>

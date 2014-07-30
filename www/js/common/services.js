@@ -512,6 +512,7 @@ console.log("NEARBYPLACES FAIL", jqXHR);
                 obj.pictures.push(reporting.photos[i]);
             }
         }
+console.log('services.sendReporting', obj);
         $.ajax(url, {
             type: 'POST',
             url: url, 
