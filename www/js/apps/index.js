@@ -1322,10 +1322,13 @@ console.log(newsChannelAvailableIds);
         }
         
         $.mobile.loading('show');
-        $('#qrCodeInfoPage #getInfoButton').addClass('ui-disabled');
+        //$('#qrCodeInfoPage #getInfoButton').addClass('ui-disabled');
+        $('#qrCodeInfoPage #infoText').html('Recupero informazioni...');
         
         services.getInfoFromQrCode(code, function(result) {
-
+            
+            $('#qrCodeInfoPage #infoText').html('');
+            
             pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, code);
             self.updateBalloonsInNavbar();
             
@@ -1420,12 +1423,13 @@ console.log(newsChannelAvailableIds);
 
         }, function(e, loginRequired) {
             $.mobile.loading('hide');
+            $('#qrCodeInfoPage #infoText').html('Nessuna informazione associata al QR Code');
             $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
             $('#qrCodeInfoPage #qrCodeId').val('');
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
             } else {
-                helper.alert('Nessuna informazione associata al QR code', null, 'Leggi QR Code');
+                //helper.alert('Nessuna informazione associata al QR code', null, 'Leggi QR Code');
             }
         });
 
@@ -2175,7 +2179,7 @@ console.log(result);
             };
             var map = new google.maps.Map(document.getElementById('nearbyPlaceMap'), options);
             var startingMarkerPoint = new google.maps.LatLng(lat, lng);
-            var startingMarker = new google.maps.Marker({
+            /*var startingMarker = new google.maps.Marker({
                 position: startingMarkerPoint,
                 map: map,
                 draggable: false,
@@ -2185,13 +2189,13 @@ console.log(result);
             map.panTo(startingMarkerPoint);
             map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
             var infowindow = new google.maps.InfoWindow({content: '<div>Tu</div>'});
-            infowindow.open(map, startingMarker);
+            infowindow.open(map, startingMarker);*/
         }
         $.mobile.loading('show');
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId, source: self.nearbyPlaceSource}, function(result) {
             if(showMap) {
                 var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
-                var endingMarker = new google.maps.Marker({
+                /*var endingMarker = new google.maps.Marker({
                     position: endingMarkerPoint,
                     map: map,
                     draggable: false,
@@ -2199,18 +2203,19 @@ console.log(result);
                     title: result.name
                 });
                 var infowindow2 = new google.maps.InfoWindow({content: '<div>' + result.name + '</div>'});
-                infowindow2.open(map, endingMarker);
-                var bounds = new google.maps.LatLngBounds();
+                infowindow2.open(map, endingMarker);*/
+                /*var bounds = new google.maps.LatLngBounds();
                 bounds.extend(startingMarker.position);
                 bounds.extend(endingMarker.position);
-                map.fitBounds(bounds);
+                map.fitBounds(bounds);*/
                 
-                // Display route                
+                // Display route
                 // see:
                 // https://developers.google.com/maps/documentation/javascript/examples/directions-complex
-                /*
+                
                 var directionsDisplay = new google.maps.DirectionsRenderer({
                     suppressInfoWindows: true,
+                    suppressMarkers: true,
                     preserveViewport: false
                 });
                 var directionsService = new google.maps.DirectionsService();
@@ -2220,20 +2225,47 @@ console.log(result);
                     destination: endingMarkerPoint,
                     optimizeWaypoints: true,
                     travelMode: google.maps.TravelMode.DRIVING
-                }, function(result, status) {
+                }, function(res, status) {
                     if(status == google.maps.DirectionsStatus.OK) {
-                        console.log(result.routes);
-                        self.tmp = result.routes;
-                        //result.routes[0].legs[0].start_location.lat()
-                        //result.routes[0].legs[0].start_location.lng()
-                        //result.routes[0].legs[0].end_location.lat()
-                        //result.routes[0].legs[0].end_location.lng()
-                        console.log(endingMarkerPoint, result.routes[0].legs[0].end_location);
-                        directionsDisplay.setDirections(result);
-                    } else {
-                        // Set markers at start and at end position
+                        console.log(res.routes);
+                        self.tmp = res.routes;
+                        //res.routes[0].legs[0].start_location.lat()
+                        //res.routes[0].legs[0].start_location.lng()
+                        startingMarkerPoint = res.routes[0].legs[0].start_location;
+                        //res.routes[0].legs[0].end_location.lat()
+                        //res.routes[0].legs[0].end_location.lng()
+                        endingMarkerPoint = res.routes[0].legs[0].end_location;
+                        //console.log(endingMarkerPoint, res.routes[0].legs[0].end_location);
+                        directionsDisplay.setDirections(res);
+                    }                     
+                    var startingMarker = new google.maps.Marker({
+                        position: startingMarkerPoint,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: 'Tu'
+                    });
+                    //map.panTo(startingMarkerPoint);
+                    //map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
+                    var infowindow = new google.maps.InfoWindow({content: '<div>Tu</div>'});
+                    infowindow.open(map, startingMarker);
+                    var endingMarker = new google.maps.Marker({
+                        position: endingMarkerPoint,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: result.name
+                    });
+                    var infowindow2 = new google.maps.InfoWindow({content: '<div>' + result.name + '</div>'});
+                    infowindow2.open(map, endingMarker);
+                    
+                    if(status != google.maps.DirectionsStatus.OK) {
+                        var bounds = new google.maps.LatLngBounds();
+                        bounds.extend(startingMarker.position);
+                        bounds.extend(endingMarker.position);
+                        map.fitBounds(bounds);
                     }
-                });*/
+                });
             }
             $.mobile.loading('hide');
             

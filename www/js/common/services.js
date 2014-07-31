@@ -175,7 +175,8 @@ console.log('SUCCESS', result);//return;
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
 console.log('FAIL', jqXHR);
-            fail(textStatus, services.isLoginRequired(jqXHR.status));
+            var loginRequired = services.isLoginRequired(jqXHR.status);
+            fail(textStatus, false);
         });
     },
     
