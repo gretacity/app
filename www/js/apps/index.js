@@ -1478,7 +1478,6 @@ console.log(newsChannelAvailableIds);
     openLink: function(url, target, opts) {
         target = target || '_system';
         var options = '';
-        opts = {'a' : true, 'b' : 1, 'c' : 'text'};
         if(opts != null) {
             if(typeof(opts) == 'object') {
                 var items = [];
@@ -1491,10 +1490,6 @@ console.log(newsChannelAvailableIds);
             }
         }
         var ref = window.open(url, target, options);
-        
-        ref.addEventListener('loadstart', function(e) {
-            alert(e.type + ' - ' + e.url);
-        });
     },
     
     openQrCodeInfoViewer: function(qrCodeData) {
@@ -1737,7 +1732,7 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
             $('#reportingCategory', page).html(html);
             $('#reportingCategory', page).selectmenu('refresh');
             
-            var priorityTexts = ['Nessuna priorità', 'Bassa priorità', 'Media priorità', 'Alta priorità'];
+            var priorityTexts = ['Nessuna', 'Bassa', 'Media', 'Alta'];
             html = '';
             for(var i in priorityTexts) {
                 html += '<option value="' + i + '">' + priorityTexts[i] + '</option>';
