@@ -74,6 +74,49 @@ var geoLocation = {
     },
 
     
+    
+    
+    
+    geocode: function(params, success) {
+        geoLocation._googleGeocode(params, success);
+    },
+    
+    _googleGeocode: function(params, success) {
+        var addressParts = [];
+        if(params) {
+            if(params.prov) addressParts.push(params.prov);
+            if(params.city) addressParts.push(params.city);
+            if(params.address) addressParts.push(params.address);
+        }
+//console.log('geoLocation._googleGeocode pars length: ' + addressParts.length);
+        if(addressParts.length == 0) return;
+        var address = 'Italia, ' + addressParts.join(', ');
+console.log('geoLocation._googleGeocode searching for: ' + address);
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'address': address}, function(results, status) {
+console.log('geoLocation._googleGeocode status: ' + status);
+            if (status == google.maps.GeocoderStatus.OK) {
+console.log('geoLocation._googleGeocode result: ', results[0]);
+                if(results[0] && results[0].formatted_address) {
+console.log('geoLocation._googleGeocode address: ' + results[0].formatted_address);
+                    if(results[0].formatted_address.toLowerCase().indexOf('italia') == -1) {
+                        return;
+                    }
+                } 
+                /*if(results[0].partial_match === true) {
+console.log('geoLocation._googleGeocode partial match');
+                    return;
+                }*/
+                if(results[0] && results[0].geometry && results[0].geometry.location) {
+console.log('geoLocation._googleGeocode result location: ' + results[0].geometry.location);
+                    if(success) success(results[0].geometry.location);
+                }
+            }
+        });
+    },
+    
+    
+    
     reverseGeocoding: function(params, successCallback) {
 //params.lat = 38.827707; params.lng = 16.628456; // Via Caprera 144
 //params.lat = 38.827512; params.lng = 16.627475; // Via Niccoloso da Recco 6

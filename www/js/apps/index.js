@@ -106,6 +106,7 @@ var app = {
         $('#reportingPhotoPage #removePhotoButton').on('click', self.removeReportingPhoto);
         $('#sendReportingButton', reportingPage).on('click', self.sendReporting);
         var reportingLocationPage = $('#reportingLocationPage');
+        reportingLocationPage.on('pageinit', self.initReportingLocationPage);
         reportingLocationPage.on('pageshow', self.mapsSetup);
         $('#confirmLocationButton', reportingLocationPage).on('click', self.confirmReportingLocation);
         var nearbyPage = $('#nearbyPage');
@@ -987,7 +988,7 @@ var app = {
                 'javascript:app.openLink(\'' + item.link + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
         html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
         if(image != '') {
-            html += '<div class="news-list-image" style="background-image:url(\'' + image + '\');"></div>';
+            html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + image + '\');"></div>';
         }
 
         html += '<div>' + item.oggetto + '</div>' +
@@ -1084,7 +1085,28 @@ var app = {
             }
             
             
-            
+            // Adjust image size
+            $(function() {
+                $('#newsPage #channelContent li a div.news-list-image.adjust-image').each(function() {
+                    var div = $(this);
+                    div.removeClass('adjust-image');
+                    var imageUrl = div.css('background-image').match(/^url\("?(.+?)"?\)$/);
+                    if(imageUrl[1]) {
+                        var img = new Image();
+                        $(img).load(function() {
+                            //console.log(img.width + 'x' + img.height);
+                            if(img.width > img.height) {
+                                div.css('background-size: auto 100% !important');
+                            } else {
+                                div.css('background-size: 100% auto !important');
+                            }
+                        });
+                        img.src = imageUrl[1];
+                    }
+                    //return false;
+                });
+            });
+
             
 //if(onlyNew === true) console.log('Checking for news updates...');
 
@@ -1886,17 +1908,38 @@ console.log(result);
         $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
     },
     
+    initReportingLocationPage: function() {
+        var page = $('#reportingLocationPage');
+        $('input#city', page).on('input', self.reportingLocationChanged);
+        $('input#prov', page).on('input', self.reportingLocationChanged);
+        $('textarea#route', page).on('input', self.reportingLocationChanged);
+    },
     editReportingLocation: function() {
-        $('#reportingLocationPage input#city').val(
+        var page = $('#reportingLocationPage');
+        $('input#city', page).val(
             $('#reportingPage #locationInfo span.city').html()
         );
-        $('#reportingLocationPage input#prov').val(
+        $('input#prov', page).val(
             $('#reportingPage #locationInfo span.prov').html()
         );
-        $('#reportingLocationPage textarea#route').val(
+        $('textarea#route', page).val(
             $('#reportingPage #locationInfo span.route').html()
         );
         $.mobile.changePage('#reportingLocationPage', {transition: 'slide'});
+    },
+    reportingLocationChanged: function() {
+        console.log('reportingLocationChanged');
+        var page = $('#reportingLocationPage');
+        var params = {
+            'city': $('input#city', page).val(),
+            'prov': $('input#prov', page).val(),
+            'address': $('textarea#route', page).val()
+        };
+        geoLocation.geocode(params, function(latLng) {
+            self.map.setCenter(latLng);
+            self.marker.position = latLng;
+            self.map.setZoom(15);
+        });
     },
     confirmReportingLocation: function() {
         $('#reportingPage #locationInfo span.city').html(

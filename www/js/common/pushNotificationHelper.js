@@ -345,7 +345,7 @@ console.log('iOS token callback ' + result);
 
     // iOS only
     onNotificationAPN: function(e) {
-helper.alert('onNotificationAPN event received\n' + JSON.stringify(e));
+//helper.alert('onNotificationAPN event received\n' + JSON.stringify(e));
 console.log(e);
         var pnm = PushNotificationMessage.fromAPN(e);
         pnm.dispatchNotification();
