@@ -981,7 +981,7 @@ var app = {
         
         var href = (item.link == '') ? 
                 'javascript:self.showNewsDetail(' + item.id + ')' : 
-                'javascript:window.open(\'' + item.link + '\', \'_blank\', \'location=no,closebuttoncaption=Indietro,enableViewportScale=yes\');';        
+                'javascript:window.open(\'' + item.link + '\', \'_blank\', \'toolbar=yes,location=no,closebuttoncaption=Indietro,enableViewportScale=yes\');';
         html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
         if(image != '') {
             html += '<div class="news-list-image" style="background-image:url(\'' + image + '\');"></div>';
