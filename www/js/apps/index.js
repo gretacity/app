@@ -210,7 +210,8 @@ var app = {
         $('#username', page).addClass('ui-disabled');
         $('#password', page).addClass('ui-disabled');
         var initialVal = $('#loginButton', page).html();
-        $('#loginButton', page).html('Accesso in corso...').addClass('ui-disabled');
+        //$('#loginButton', page).html('Accesso in corso...').addClass('ui-disabled');
+        $('#loginButton', page).val('Accesso in corso...').addClass('ui-disabled').button('refresh');
         $('#registerPageButton', page).addClass('ui-disabled');
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(result) {
@@ -245,7 +246,8 @@ var app = {
             
             $('#username').removeClass('ui-disabled');
             $('#password').removeClass('ui-disabled').val('');
-            $('#loginButton').removeClass('ui-disabled');
+            //$('#loginButton').removeClass('ui-disabled');
+            $('#loginButton').val('Login').removeClass('ui-disabled').button('refresh');
             $('#registerPageButton').removeClass('ui-disabled');
             config.userLastLoginUsername(username);
             if(self.pageId != null) {
@@ -270,7 +272,8 @@ var app = {
             helper.alert(e, function() {
                 $('#username').removeClass('ui-disabled');
                 $('#password').removeClass('ui-disabled');
-                $('#loginButton').removeClass('ui-disabled');
+                //$('#loginButton').removeClass('ui-disabled');
+                $('#loginButton').val('Login').removeClass('ui-disabled').button('refresh');
                 $('#registerPageButton').removeClass('ui-disabled');
             }, 'Login');
         });
