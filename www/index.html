@@ -330,6 +330,9 @@
                     <li>
                         <a href="#profileChannelsPage"><label>I tuoi canali</label></a>
                     </li>
+                    <li>
+                        <a href="#profileFollowingPage"><label>Following</label></a>
+                    </li>
                     <li data-icon="power">
                         <a href="#" id="logoutButton"><label>Esci</label></a>
                     </li>
@@ -422,7 +425,29 @@
             </div>
         </div>
         <!-- /profileCityPage -->
-            
+        
+        <!-- profileFollowingPage -->
+        <div data-role="page" id="profileFollowingPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
+                <h1>Following</h1>
+                <a href="#profilePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>                                
+            </div>
+            <div data-role="main" class="ui-content">
+                <div data-role="controlgroup" id="followingList" style="padding:0;margin:0;"></div>
+                <!--<ul data-role="listview" id="followingList" style="padding:0;margin:0;"></ul>-->
+            </div>
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /profileFollowingPage -->
+
         <!-- profileChannelsPage -->
         <div data-role="page" id="profileChannelsPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
@@ -476,7 +501,7 @@
                 </div>
             </div>
         </div>
-        <!-- /profileChannelsPage -->
+        <!-- /profileChannelsPage -->        
         
         <!-- channelSubscriptionPage -->
         <div data-role="page" id="channelSubscriptionPage">

@@ -65,6 +65,7 @@ var app = {
         $('#city', channelSubscriptionPage).change(self.subscriptionCityChanged);
         //$('#cityNameManual', channelSubscriptionPage).on('keyup', self.cityNameManualChanged);
         $('#cityNameManual', channelSubscriptionPage).on('input', self.cityNameManualChanged);
+        $('#profileFollowingPage').on('pagebeforeshow', self.beforeShowProfileFollowingPage);
         var newsChannelsPage = $('#newsChannelsPage');
         newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
         var newsPage = $('#newsPage');
@@ -226,7 +227,6 @@ var app = {
             });
             
             if(!config.userProfileHasBeenSet()) {
-                //$.mobile.loading('show');
                 // Load profile from server
                 services.getProfile({}, function(result) {
                     self.userProfile = result;
@@ -793,23 +793,51 @@ var app = {
     
     
     
+    beforeShowProfileFollowingPage: function() {
+        $.mobile.loading('show');
+        services.getFollowings({}, function(result) {
+            $.mobile.loading('hide');
+            var html = '';
+            for(var i in result.follows) {
+                var row = result.follows[i];
+                var name = row.denominazione || '';
+                //var description = row.descrizione || '';
+                //if(description.length > 40) description = description.substr(0, 40) + '...';
+                var qrCodeId = row.r_qrcode_id || '';                
+                html += '<input type="checkbox" id="following' + qrCodeId + '" data-id="' + qrCodeId + '" checked ' +
+                        'onclick="services.followQrCode(\'' + qrCodeId + '\', $(this).is(\':checked\'))"' +
+                        '/>'+
+                        '<label for="following' + qrCodeId + '">' + name + 
+                        '</label>';
+            }
+            $('#profileFollowingPage #followingList').html(html).trigger('create');//.listview('refresh');
+            self.updateBalloonsInFollowing();
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile recuperare il contenuto', null, 'Notizia');
+        });
+    },
+    
+    
+    
+    
+    
     initSidePanel: function() {
         console.log('initializing side bar');
         services.getSubscribedChannels(function(result) {
             var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>' +
                        '<li data-channelid="0"><a href="javascript:self.showNewsChannel(\'0\')"><span></span>Tutte</a></li>';
-            if(result.length > 0) {
-                //$('#newsPage #noSubscribedChannelsNotice').hide();
-                for(var i in result) {
-                    var row = result[i];
-                    html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
-                                + row.denominazione + '</span><label>' + row.nome_feed
-                                + '</label>'
-                                + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
-                                + '</a></li>';
-                }
-            } else {
-                //$('#newsPage #noSubscribedChannelsNotice').show();segui
+            for(var i in result) {
+                var row = result[i];
+                html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
+                            + row.denominazione + '</span><label>' + row.nome_feed
+                            + '</label>'
+                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
+                            + '</a></li>';
             }
             
             $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
@@ -897,6 +925,7 @@ var app = {
     
     showNewsChannel: function(channelId) {
         $('#newsChannelsPanel').panel('close');
+                
         if(self.newsChannelId != channelId) {
             self.newsChannelId = channelId;
             self.newsContentLastId = null;
@@ -976,7 +1005,7 @@ var app = {
             $('#newsPage #unsubscribeChannelButton').removeClass('ui-disabled').show();
         } else {
             $('#newsPage #unsubscribeChannelButton').hide();
-        }*/
+        }*/        
     },
     beforeHideNewsPage: function() {
         /*if(self.newsContentTimeout != null) {
@@ -1137,6 +1166,13 @@ var app = {
                     self.retrieveChannelContent(true);
                 }
             }, self.NEWS_UPDATE_CONTENT);*/
+            
+            if($('#newsChannelsPanel #channelList li').length > 2) {
+                $('#newsPage #noSubscribedChannelsNotice').hide();
+            } else {
+                $('#newsPage #noSubscribedChannelsNotice').show();
+                $('#newsPage #noNewsNotice').hide();
+            }
             
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
