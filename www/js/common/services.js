@@ -331,15 +331,17 @@ console.log("FAIL", textStatus);
         var url = config.URL_BASE + (params.subscribe ? config.URL_NEWS_SUBSCRIBE_CHANNEL : config.URL_NEWS_UNSUBSCRIBE_CHANNEL);
         url += '&' + services.getRequestCommonParameters();
         data = 'id_feed=' + params.channelId;
+console.log(url);
+console.log(data);
         $.ajax(url,{
             type:'GET',
             data:data,
             timeout: config.REQUEST_DEFAULT_TIMEOUT
         }).done(function(result) {
-//console.log("SUCCESS", result);
+console.log("SUCCESS", result);
             if(success) success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("FAIL", textStatus);
+console.log("FAIL", textStatus);
             if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },

@@ -611,7 +611,7 @@ var app = {
                         '<br /><small>' + channelOwner + '</small></label>';
             }
             $('#subscribedChannels', page).html(html).trigger('create');//.listview('refresh');
-            $('#subscribedChannels li input[type="checkbox"]', page).checkboxradio().on('click', function(e) {
+            $('#subscribedChannels input[type="checkbox"]', page).checkboxradio().on('click', function(e) {
                 var removable = $(this).attr('data-removable') == '1';
                 if(!removable) {
                     $(this).prop('checked', true);
@@ -623,6 +623,7 @@ var app = {
                     subscribe: $(this).is(':checked')
                 });
             });
+            
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -797,15 +798,20 @@ var app = {
         services.getSubscribedChannels(function(result) {
             var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>' +
                        '<li data-channelid="0"><a href="javascript:self.showNewsChannel(\'0\')"><span></span>Tutte</a></li>';
-            
-            for(var i in result) {
-                var row = result[i];
-                html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
-                            + row.denominazione + '</span><label>' + row.nome_feed
-                            + '</label>'
-                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
-                            + '</a></li>';
+            if(result.length > 0) {
+                //$('#newsPage #noSubscribedChannelsNotice').hide();
+                for(var i in result) {
+                    var row = result[i];
+                    html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
+                                + row.denominazione + '</span><label>' + row.nome_feed
+                                + '</label>'
+                                + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
+                                + '</a></li>';
+                }
+            } else {
+                //$('#newsPage #noSubscribedChannelsNotice').show();segui
             }
+            
             $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
             
             $('#newsChannelsPanel').panel({
@@ -1078,10 +1084,10 @@ var app = {
             }
             if($('#newsPage #channelContent li').length == 0) {
                 $('#moreNewsButton').hide();
-                $('#noNews').show();
+                $('#noNewsNotice').show();
             } else {
                 $('#moreNewsButton').show();
-                $('#noNews').hide();
+                $('#noNewsNotice').hide();
             }
             
             
@@ -1368,16 +1374,11 @@ console.log(newsChannelAvailableIds);
             // Format result
             var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
                        '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
-            if(canFollow) {
+            /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
-            }
+            }*/
+            
             // Extra Info related to the current QR-code
-            /*result.info.info_extra = [
-                "uno uno uno uno uno", 
-                "due due due due due",
-                "testo testo testo testo testo testo testo testo testo testo testo testo testo testo " +
-                "testo testo testo testo testo testo testo testo testo testo testo testo testo testo "
-            ];*/
             if((result.info.info_extra != null) && Array.isArray(result.info.info_extra) && (result.info.info_extra.length > 0)) {
                 html += '<div style="text-align:left;">';
                 for(var i in result.info.info_extra) {
@@ -1401,6 +1402,17 @@ console.log(newsChannelAvailableIds);
                 //$('div.slider').height($('div.slider ul li img').height());
                 //$('div.slider').width($('div.slider ul li img').width());
             }
+            
+            if(result.youtube.length > 0) {
+                html += '<ul id="videos" style="text-align:left;" data-inset="true">';
+                html += '<li data-role="list-divider">Video</li>';
+                for(var i in result.youtube) {
+                    var v = result.youtube[i];
+                    html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
+                }
+                html += '</ul>';
+            }
+            
             if(result.links.length > 0) {
                 html += '<ul id="links" style="text-align:left;" data-inset="true">';
                 html += '<li data-role="list-divider">Link</li>';
@@ -1434,6 +1446,7 @@ console.log(newsChannelAvailableIds);
             $('#qrCodeInfoPage #infoResult #following').checkboxradio();
             $('#qrCodeInfoPage #infoResult #commentList').listview();
             $('#qrCodeInfoPage #infoResult #links').listview();
+            $('#qrCodeInfoPage #infoResult #videos').listview();
             if(hasSlider) {
                 var glide = $('.slider').glide({
                     //autoplay: false, // or 4000
