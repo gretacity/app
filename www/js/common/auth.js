@@ -50,12 +50,13 @@ var auth = {
         $.ajax({
 			type : "GET",
             cache: false,
-            async: false,
+            //async: false,
             url : loginUrl,
             data: data,
             dataType: "json",
             crossDomain: true,
 		}).done(function(data, textStatus, jqXHR) {
+console.log(data);
 			if(data != '') {
                 auth.setSessionId(data.session.id);
                 auth.lastLoginTime = new Date();

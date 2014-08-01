@@ -80,7 +80,7 @@ var app = {
         
         var followingListPage = $('#followingListPage');
         followingListPage.on('pageinit', self.initFollowingListPage);
-        followingListPage.on('pageshow', self.showFollowingListPage);
+        followingListPage.on('pagebeforeshow', self.showFollowingListPage);
         $('#getInfoButton', followingListPage).on('click', self.getInfoFromQrCode);
         
         var registerPage = $('#registrationPage');

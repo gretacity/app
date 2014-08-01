@@ -318,7 +318,7 @@ console.log('pushNotificationHelper: Registering device ' + device.platform);
                     pushNotificationHelper.tokenCallback,
                     errorCallback, {
                         "badge":"true",
-                        "sound":"true",
+                        "sound":"false",
                         "alert":"true",
                         "ecb":"pushNotificationHelper.onNotificationAPN"
                 });
