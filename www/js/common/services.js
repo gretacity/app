@@ -16,7 +16,7 @@ var services = {
     
     
     getRequestCommonParameters: function(excludeSessionId) {
-        var commonParams = 'app=' + config.APP_NAME + '&api=' + config.API_V;
+        var commonParams = 'app=' + config.APP_NAME + '&api=' + config.API_V + '&appv=' + config.APP_VERSION;
         if(!(excludeSessionId || false)) {
             var sessionId = auth.getSessionId();
             //if((sessionId || '') != '') commonParams += '&session_id=' + sessionId;

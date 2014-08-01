@@ -3,6 +3,7 @@ var config = {
     EMULATE_ON_BROWSER: true,
     
     APP_NAME: "gretacity",
+    APP_VERSION: "0.9",
     API_V: "1.0",
     
     DB_FILENAME: "gretacity",       // Database file name

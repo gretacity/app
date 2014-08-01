@@ -1876,6 +1876,14 @@ console.log(result);
         self.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
         google.maps.event.addListener(
             self.marker, 
+            'click', 
+            function() {
+                if(document.activeElement) {
+                    $(document.activeElement).blur();
+                }
+        });
+        google.maps.event.addListener(
+            self.marker, 
             'dragend', 
             function() {
                 if(document.activeElement) {
@@ -1884,6 +1892,15 @@ console.log(result);
                 self.latLng.lat = self.marker.getPosition().lat();
                 self.latLng.lng = self.marker.getPosition().lng();
         });
+        google.maps.event.addListener(
+            self.marker, 
+            'dragstart', 
+            function() {
+                if(document.activeElement) {
+                    $(document.activeElement).blur();
+                }
+        });
+
         //var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
         //infowindow.open(self.map, self.marker);
     },
@@ -1905,7 +1922,8 @@ console.log(result);
             $('#reportingDescriptionPage textarea').val()
         );
         self.reportingUpdateLatLng = false;
-        $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
+        //$.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
+        $.mobile.back();
     },
     
     initReportingLocationPage: function() {
@@ -1952,7 +1970,8 @@ console.log(result);
             $('#reportingLocationPage textarea#route').val()
         );
         self.reportingUpdateLatLng = false;
-        $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
+        //$.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
+        $.mobile.back();
     },
     
     
