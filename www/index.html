@@ -690,12 +690,12 @@
         <!-- newsPage -->
         <div data-role="page" id="newsPage">
             
-            <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true" data-tap-toggle="false">
+            <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
                 <!--<h1 style="margin-bottom:2em;">Canali notizie</h1>-->
                 <ul data-role="listview" id="channelList"></ul>
             </div>
             
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Notizie</h1>
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <!--
@@ -728,17 +728,20 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" class="ui-state-persist" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" cclass="highlight" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
+                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>                        
+                        <!--
+                        <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;"><span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;"><span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;"></a></li>
+                        -->
+                        <!--
+                        <li><a href="#followingListPage" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#reportingMethodPage" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#nearbyPage" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
+                        -->
+
                     </ul>
                 </div>
             </div>
@@ -782,7 +785,7 @@
     
         
         <!-- followingListPage -->
-        <div data-role="page" id="followingListPage" style="background:url('img/bg-qrcode.png')">
+        <div data-role="page" id="followingListPage" __style="background:url('img/bg-qrcode.png')">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Following</h1>
                 <!--
@@ -811,14 +814,6 @@
                 <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -1179,7 +1174,7 @@
         
         
         <!-- qrCodeInfoPage -->
-        <div data-role="page" id="qrCodeInfoPage" style="background:url('img/bg-qrcode.png')">
+        <div data-role="page" id="qrCodeInfoPage" __style="background:url('img/bg-qrcode.png')">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>GretaCITY</h1>
                 <!-- href="#followingListPage" or data-rel="back" -->

@@ -1412,7 +1412,8 @@ console.log(newsChannelAvailableIds);
             }
             $('#qrCodeInfoPage #qrCodeId').val(code);
             // Format result
-            var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
+            //var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
+            var html = '<div class="ui-corner-all" data-form="ui-body-a" data-theme="a">' +
                        '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
@@ -1426,10 +1427,9 @@ console.log(newsChannelAvailableIds);
                         '<p>' + lastNews.annotazione + '</p>' +
                         '</div>';
                 if(result.notizie.length > 1) {
-                    html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-icon-right ui-icon-bars">Altre notizie</a>';
+                    html += '<a href="#qrCodeInfoNewsPage" data-transition="slide" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Altre notizie</a>';
                 }
             }
-            
             
             // Extra Info related to the current QR-code
             if((result.info.info_extra != null) && Array.isArray(result.info.info_extra) && (result.info.info_extra.length > 0)) {
@@ -1457,7 +1457,7 @@ console.log(newsChannelAvailableIds);
             }
             
             if(result.youtube.length > 0) {
-                html += '<ul id="videos" style="text-align:left;" data-inset="true">';
+                html += '<ul id="videos" style="text-align:left;margin-top:1.5em;" data-inset="false">';
                 html += '<li data-role="list-divider">Video</li>';
                 for(var i in result.youtube) {
                     var v = result.youtube[i];
@@ -1467,7 +1467,7 @@ console.log(newsChannelAvailableIds);
             }
             
             if(result.links.length > 0) {
-                html += '<ul id="links" style="text-align:left;" data-inset="true">';
+                html += '<ul id="links" style="text-align:left;margin-top:1.5em;" data-inset="false">';
                 html += '<li data-role="list-divider">Link</li>';
                 for(var i in result.links) {
                     var l = result.links[i];
@@ -1475,7 +1475,7 @@ console.log(newsChannelAvailableIds);
                 }
                 html += '</ul>';
             }
-            html += '<ul id="commentList" style="text-align:left;" data-inset="true">';
+            html += '<ul id="commentList" style="text-align:left;margin-top:1.5em;" data-inset="false">';
             if(result.commenti.length > 0) {
                 html += '<li data-role="list-divider">Commenti</li>';
                 for(var i in result.commenti) {
@@ -1489,10 +1489,10 @@ console.log(newsChannelAvailableIds);
             }
             html += '</ul>';
             if(result.commenti.length == 0) {
-                html += '<p id="noComments" style="text-align:left;">Nessun commento</p>';
+                html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
             }
             if(canLeaveComment) {
-                html += '<textarea id="comment" style="width:98%" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Invia</a>';
+                html += '<textarea id="comment" style="width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>';
             }
             html += '<div style="height:150px;"></div>';
             $('#qrCodeInfoPage #infoResult').html(html);
