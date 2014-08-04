@@ -842,6 +842,14 @@ var app = {
             
             $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
             
+            if($('#newsChannelsPanel #channelList li').length > 2) {
+                $('#newsPage #noSubscribedChannelsNotice').hide();
+            } else {
+                $('#newsPage #noSubscribedChannelsNotice').show();
+                $('#newsPage #noNewsNotice').hide();
+            }
+
+            
             $('#newsChannelsPanel').panel({
                 beforeopen: function() {
                     $('#newsChannelsPanel ul li.panel-item-selected').removeClass('panel-item-selected');
@@ -1166,14 +1174,7 @@ var app = {
                     self.retrieveChannelContent(true);
                 }
             }, self.NEWS_UPDATE_CONTENT);*/
-            
-            if($('#newsChannelsPanel #channelList li').length > 2) {
-                $('#newsPage #noSubscribedChannelsNotice').hide();
-            } else {
-                $('#newsPage #noSubscribedChannelsNotice').show();
-                $('#newsPage #noNewsNotice').hide();
-            }
-            
+                        
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
             $.mobile.loading('hide');
