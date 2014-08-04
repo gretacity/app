@@ -82,7 +82,7 @@ var app = {
         followingListPage.on('pageinit', self.initFollowingListPage);
         followingListPage.on('pagebeforeshow', self.showFollowingListPage);
         $('#getInfoButton', followingListPage).on('click', self.getInfoFromQrCode);
-        
+        $('#qrCodeInfoNewsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoNewsPage);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', self.register);
         //var homePage = $('#homePage');
@@ -1376,6 +1376,7 @@ console.log(newsChannelAvailableIds);
     },
     
     
+    currentQrCode: null,
     currentQrCodeInfo: null,
     getFollowingInfo: function(code) {
         
@@ -1390,6 +1391,8 @@ console.log(newsChannelAvailableIds);
         $('#qrCodeInfoPage #infoText').html('Recupero informazioni...');
         
         services.getInfoFromQrCode(code, function(result) {
+            
+            self.currentQrCodeInfo = result;
             
             $('#qrCodeInfoPage #infoText').html('');
             
@@ -1413,6 +1416,19 @@ console.log(newsChannelAvailableIds);
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
             }*/
+            
+            if(result.notizie && (result.notizie.length > 0)) {
+                // Last news
+                var lastNews = result.notizie[0]; //[result.notizie.length - 1];
+                html += '<div class="qrcode-info-lastnews">' +
+                        '<h3>' + lastNews.titolo + '</h3>' +
+                        '<p>' + lastNews.annotazione + '</p>' +
+                        '</div>';
+                if(result.notizie.length > 1) {
+                    html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-icon-right ui-icon-bars">Altre notizie</a>';
+                }
+            }
+            
             
             // Extra Info related to the current QR-code
             if((result.info.info_extra != null) && Array.isArray(result.info.info_extra) && (result.info.info_extra.length > 0)) {
@@ -1508,13 +1524,31 @@ console.log(newsChannelAvailableIds);
     },
     
     
+    beforeShowQrCodeInfoNewsPage: function() {
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeInfoNewsPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        for(var i in result.notizie) {
+            var news = result.notizie[i];
+            console.log(news);
+            html += '<li class="qrcode-info-news">' + 
+                    '<div>' + news.titolo + '</div>' +
+                    '<p>' + news.annotazione + '</p>' +
+                    '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
+                    '</li>';
+        }
+        $('#qrCodeNewsList', page).html(html).listview('refresh');
+    },
+    
+    
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(res) {
             if(res === '') return;
             /*if(res.text.toLowerCase().indexOf(config.QR_CODE_BASE_URL) == 0) {
                 var pos = res.text.lastIndexOf('/');
                 var code = (pos != -1) ? res.text.substr(pos + 1) : res.text;
-                self.currentQrCodeInfo = code;
+                self.currentQrCode = code;
                 self.getFollowingInfo(code);
             }*/
             /* else if(res.text.toLowerCase().indexOf('http://') == 0) {
@@ -1527,7 +1561,7 @@ console.log(newsChannelAvailableIds);
                 var qrCodeData = QrCodeData.fromText(res.text);
                 switch(qrCodeData.type) {
                     case QrCodeData.TYPE_GRETACITY:
-                        self.currentQrCodeInfo = qrCodeData.elements.code;
+                        self.currentQrCode = qrCodeData.elements.code;
                         self.getFollowingInfo(qrCodeData.elements.code);
                         break;
                     case QrCodeData.TYPE_URL:
@@ -1601,7 +1635,7 @@ console.log(newsChannelAvailableIds);
     
     followQrCode: function() {
         var follow = $('#qrCodeInfoPage #infoResult #following').is(':checked');
-        services.followQrCode(self.currentQrCodeInfo, follow);
+        services.followQrCode(self.currentQrCode, follow);
     },
     
     leaveCommentOnQrCode: function() {

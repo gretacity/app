@@ -122,6 +122,39 @@
             }
             
             
+            
+            .qrcode-info-lastnews {
+                color: #FFF;
+                background-color: rgb(89, 196, 248);
+                padding: 1em;
+                margin-top: .5em;
+            }
+            .qrcode-info-lastnews h3,
+            .qrcode-info-lastnews p {
+                margin: 0;
+            }
+            
+            
+            #qrCodeInfoNewsPage .title {
+                text-align: center;
+                font-size: 1.5em !important;
+                margin-top: 0;
+                /*color: #FFF;
+                background-color: rgb(89, 196, 248);*/
+            }
+            .qrcode-info-news div {
+                font-weight: bold;
+            }
+            .qrcode-info-news p {
+                /**/
+            }
+            .qrcode-info-news span {
+                font-weight: lighter;
+                font-style: italic;
+                color: #aeaece;
+            }
+            
+            
             .slider {
                 /*border: solid 4px #F00;*/
                 height: 280px;
@@ -1187,6 +1220,32 @@
         </div>
         <!-- /qrCodeInfoPage -->
         
+        <!-- qrCodeInfoNewsPage -->
+        <div data-role="page" id="qrCodeInfoNewsPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
+                <h1>GretaCITY</h1>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <h3 class="title">title</h3>
+                <ul data-role="listview" id="qrCodeNewsList">
+                </ul>
+            </div>
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /qrCodeInfoNewsPage -->
+    
+
+    
+    
         <!-- qrCodeViewer -->
         <div data-role="dialog" id="qrCodeViewerPage">
             <div data-role="main" class="ui-content">
