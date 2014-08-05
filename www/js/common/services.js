@@ -405,6 +405,9 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
     
     getNearbyPlaceTypes: function(success, fail) {
         var results = [
+            {name: 'news', key: 'news', icon: 'img/nearby/Info.png'},
+            {name: 'qrcode', key: 'qrcode', icon: 'img/nearby/QRCode.png'},
+            {name: 'segnalazioni', key: 'segnalazioni', icon: 'img/nearby/Segnalazioni.png'},
             {name: 'aeroporti', key: 'airport', icon: 'img/nearby/Aeroporto.png'},
             {name: 'autobus', key: 'bus_station', icon: 'img/nearby/Autobus.png'},
             {name: 'bancomat', key: 'atm', icon: 'img/nearby/Banca.png'},

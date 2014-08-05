@@ -65,6 +65,8 @@ console.log(data);
 				if(failCallback) failCallback("Login errato");
             }
 		}).fail(function(jqXHR, textStatus, errorThrown) {
+console.log(textStatus);
+console.log(jqXHR);
             auth.tmp = jqXHR;
             /*var errorMessage = (jqXHR.statusText.substr(0, 12).toLowerCase() == 'networkerror') ? 
                                                                                     'Errore di connessione' : 

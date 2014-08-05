@@ -70,9 +70,13 @@ var app = {
         newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
         var newsPage = $('#newsPage');
         newsPage.on('pageinit', self.initNewsPage);
-        newsPage.on('pagebeforeshow', self.beforeShowNewsPage);
+        newsPage.on('pageshow', self.beforeShowNewsPage);
         newsPage.on('pagebeforehide', self.beforeHideNewsPage);
         $('#subscribedChannels', newsPage).on('change', self.retrieveChannelContent);
+        $('#refreshNewsButton', newsPage).on('click', function() {
+            $.mobile.loading('show');
+            self.retrieveChannelContent(true);
+        });
         $('#moreNewsButton', newsPage).on('click', self.retrieveMoreChannelContent);
         $('#newContentReceivedButton', newsPage).on('click', self.showNewChannelContentReceived);
         var newsDetailPage = $('#newsDetailPage');
@@ -80,9 +84,12 @@ var app = {
         
         var followingListPage = $('#followingListPage');
         followingListPage.on('pageinit', self.initFollowingListPage);
-        followingListPage.on('pagebeforeshow', self.showFollowingListPage);
+        followingListPage.on('pageshow', self.showFollowingListPage);
         $('#getInfoButton', followingListPage).on('click', self.getInfoFromQrCode);
         $('#qrCodeInfoNewsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoNewsPage);
+        $('#qrCodeInfoCommentsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoCommentsPage);
+        $('#qrCodeInfoMultimediaPage').on('pagebeforeshow', self.beforeShowQrCodeInfoMultimediaPage);
+        $('#qrCodeInfoLinksPage').on('pagebeforeshow', self.beforeShowQrCodeInfoLinksPage);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', self.register);
         //var homePage = $('#homePage');
@@ -117,7 +124,7 @@ var app = {
         nearbyResultsPage.on('pageinit', function() {
             $('#nearbySearchSlider', nearbyResultsPage).on('slidestop', self.searchNearbyPlaces);
         });
-        nearbyResultsPage.on('pagebeforeshow', self.beforeShowNearbyResultsPage);        
+        nearbyResultsPage.on('pageshow', self.beforeShowNearbyResultsPage);
         var nearbyPlaceInfoPage = $('#nearbyPlaceInfoPage');
         nearbyPlaceInfoPage.on('pageinit', self.initNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
@@ -226,11 +233,12 @@ var app = {
                 console.log('Error on registering device on Apple/Google Push Server', e);
             });
             
-            if(!config.userProfileHasBeenSet()) {
-                // Load profile from server
-                services.getProfile({}, function(result) {
-                    self.userProfile = result;
-                    $.mobile.loading('hide');
+            // Load profile from server
+            services.getProfile({}, function(result) {
+                self.userProfile = result;
+                $.mobile.loading('hide');
+                    
+                if(!config.userProfileHasBeenSet()) {        
                     // City is mandatory
                     if(self.userProfile.city.id > 0) {
                         config.userProfileHasBeenSet(true);
@@ -239,10 +247,11 @@ var app = {
                     helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
                         $.mobile.changePage('#profilePage');
                     }, 'Profilo');
-                }, function(e) {
-                    $.mobile.loading('hide');
-                });
-            }
+               }     
+                    
+            }, function(e) {
+                $.mobile.loading('hide');
+            });
             
             
             $('#username').removeClass('ui-disabled');
@@ -871,7 +880,7 @@ var app = {
                 return;
             }
             console.log('error on initializing side bar');
-            helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
+            //helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
         });
     },
 
@@ -934,15 +943,15 @@ var app = {
     showNewsChannel: function(channelId) {
         $('#newsChannelsPanel').panel('close');
                 
-        if(self.newsChannelId != channelId) {
+        //if(self.newsChannelId != channelId) {
             self.newsChannelId = channelId;
             self.newsContentLastId = null;
             self.newsContentLastDate = null;
             self.newsContentFirstId = null;
             self.newsContentFirstDate = null;
-        } else {
+        /*} else {
             self.newsEmptyBeforeShow = false;
-        }
+        }*/
         if($.mobile.activePage.attr('id') != 'newsPage') {
             $.mobile.changePage('#newsPage', {transition: 'slide', reverse: true});
         } else {
@@ -984,13 +993,6 @@ var app = {
     },
     beforeShowNewsPage: function() {
 
-        console.log('beforeShowNewsPage: setting side panel');
-        
-        // Setup newsChannelsPanel
-        //self.setSidePanelPage('newsPage');
-        //$('#newsChannelsPanel ul li a.ui-btn-active').removeClass('ui-btn-active');
-        //$('#newsChannelsPanel ul li[data-channelid="' + self.newsChannelId + '"] a').addClass('ui-btn-active');
-        
         var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
             $('#newsPage #channelContent').empty();
@@ -1005,6 +1007,7 @@ var app = {
                 self.retrieveChannelContent(onlyNew);
             }, 100); // start immediatly
         }*/
+        $.mobile.loading('show');
         self.retrieveChannelContent(onlyNew);
         pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
         self.updateBalloonsInNews();
@@ -1062,7 +1065,6 @@ var app = {
     retrieveChannelContent: function(onlyNew) {
         
         onlyNew = onlyNew || false;
-//console.log('Retreiving news... ', onlyNew);
         
         if(!onlyNew) {
             $.mobile.loading('show');
@@ -1413,12 +1415,16 @@ console.log(newsChannelAvailableIds);
             $('#qrCodeInfoPage #qrCodeId').val(code);
             // Format result
             //var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
-            var html = '<div class="ui-corner-all" data-form="ui-body-a" data-theme="a">' +
-                       '<h3>' + result.info.nome + '</h3><p style="text-align:left;">' + result.info.descrizione + '</p></div>';
+            var html = '<div>' +
+                       '<h3 class="qrcode-info-title">' + result.info.nome + '</h3>' + 
+                       '<p style="text-align:justify;border:1px solid;padding:.5em;border-radius:.5em;">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>' +
+                       '</div>';
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
             }*/
             
+            
+/*** OLD CODE START
             if(result.notizie && (result.notizie.length > 0)) {
                 // Last news
                 var lastNews = result.notizie[0]; //[result.notizie.length - 1];
@@ -1495,7 +1501,7 @@ console.log(newsChannelAvailableIds);
                 html += '<textarea id="comment" style="width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>';
             }
             html += '<div style="height:150px;"></div>';
-            $('#qrCodeInfoPage #infoResult').html(html);
+            
             $('#qrCodeInfoPage #infoResult #following').checkboxradio();
             $('#qrCodeInfoPage #infoResult #commentList').listview();
             $('#qrCodeInfoPage #infoResult #links').listview();
@@ -1507,6 +1513,39 @@ console.log(newsChannelAvailableIds);
                     arrowRightText: ''
                 });
             }
+OLD CODE END ***/
+            
+/*result.links = [
+    {link: 'http://www.google.com', nome: 'Google'},
+    {link: 'http://it.wikipedia.com', nome: 'Wikipedia'}
+];*/
+            
+            
+            
+            html += '<ul data-role="listview" style="margin-top:1em;" data-inset="false">';
+            if(result.notizie && (result.notizie.length > 0)) {
+                html += '<li><a href="#qrCodeInfoNewsPage" data-transition="slide">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a></li>';
+            }
+            if(result.commenti && (result.commenti.length > 0)) {
+                html += '<li><a href="#qrCodeInfoCommentsPage" data-transition="slide">Commenti <span class="ui-li-count">' + result.commenti.length + '</span></a></li>';
+            }
+            if((result.foto && (result.foto.length > 0)) || (result.youtube && (result.youtube.length > 0))) {
+                var totEntries = (result.foto ? result.foto.length : 0) +
+                                 (result.youtube ? result.youtube.length : 0);
+                html += '<li><a href="#qrCodeInfoMultimediaPage" data-transition="slide">Foto e video <span class="ui-li-count">' + totEntries + '</span></li>';
+            }
+            if(result.links && (result.links.length > 0)) {
+                html += '<li><a href="#qrCodeInfoLinksPage" data-transition="slide">Link <span class="ui-li-count">' + result.links.length + '</span></a></li>';
+            }
+            html += '</ul>';
+            
+            /****
+            html += '<div style="margin-top:3em;" class="ui-grid-a"><div class="ui-block-a"><a href="#" class="ui-btn">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a></div><div class="ui-block-b"><a href="#" class="ui-btn">Commenti</a></div></div>';
+            html += '<div class="ui-grid-a"><div class="ui-block-a"><a href="#" class="ui-btn">Commenti <span class="ui-li-count">' + result.commenti.length + '</span></a></div><div class="ui-block-b"><a href="#" class="ui-btn">Multimedia</a></div></div>';
+            */
+            
+            $('#qrCodeInfoPage #infoResult').html(html);
+            $('#qrCodeInfoPage #infoResult ul').listview();
             $.mobile.loading('hide');
 
         }, function(e, loginRequired) {
@@ -1530,17 +1569,94 @@ console.log(newsChannelAvailableIds);
         var page = $('#qrCodeInfoNewsPage');
         $('h3', page).html(result.info.nome);
         var html = '';
-        for(var i in result.notizie) {
-            var news = result.notizie[i];
-            console.log(news);
-            html += '<li class="qrcode-info-news">' + 
-                    '<div>' + news.titolo + '</div>' +
-                    '<p>' + news.annotazione + '</p>' +
-                    '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
-                    '</li>';
+        if(result.notizie && (result.notizie.length > 0)) {
+            for(var i in result.notizie) {
+                var news = result.notizie[i];
+                html += '<li class="qrcode-info-news">' + 
+                        '<div>' + news.titolo + '</div>' +
+                        '<p>' + news.annotazione + '</p>' +
+                        '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
+                        '</li>';
+            }
         }
         $('#qrCodeNewsList', page).html(html).listview('refresh');
     },
+    
+    beforeShowQrCodeInfoCommentsPage: function() {
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeInfoCommentsPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.commenti && (result.commenti.length > 0)) {
+            for(var i in result.commenti) {
+                var c = result.commenti[i];
+                        var d = Date.parseFromYMDHMS(c.data_inserimento);
+                        html += '<li><p>' + c.descrizione + '</p>';
+                        html += '<small class="news-note">' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
+                        if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
+                        html += '</li>';
+            }
+        }
+        $('#qrCodeCommentsList', page).html(html).listview('refresh');
+    },
+    
+    beforeShowQrCodeInfoMultimediaPage: function() {
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeInfoMultimediaPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.foto && (result.foto.length > 0)) {
+            /*html += '<div class="slider"><ul class="slides">';
+            for(var i in result.foto) {
+                html += '<li class="slide">' +
+                            '<img src="' + result.foto[i] + '" />' +
+                        '</li>';
+            }
+            html += '</ul></div>';
+            var glide = $('.slider').glide({
+                //autoplay: false, // or 4000
+                arrowLeftText: '',
+                arrowRightText: ''
+            });*/
+            
+            for(var i in result.foto) {
+                html += '<img src="' + result.foto[i] + '" style="width:100%" />';
+                // Now only the first image
+                break;
+            }
+        }
+        if(result.youtube && (result.youtube.length > 0)) {
+            // TODO
+            html += '<ul id="videos" style="text-align:left;margin-top:1.5em;" data-inset="false">';
+            html += '<li data-role="list-divider">Video</li>';
+            for(var i in result.youtube) {
+                var v = result.youtube[i];
+                html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
+            }
+            html += '</ul>';
+        }
+        $('#qrCodeMultimediaContent', page).html(html);
+        $('#qrCodeMultimediaContent #videos', page).listview();
+    },
+    
+    beforeShowQrCodeInfoLinksPage: function() {
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeInfoLinksPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.links.length > 0) {
+            for(var i in result.links) {
+                var l = result.links[i];
+                html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "\\'") + '\')" target="_system">' + l.nome + '</a></li>';
+            }
+            html += '</ul>';
+        }
+        $('#qrCodeLinksList', page).html(html).listview('refresh');
+    },    
+    
+    
+    
+    
     
     
     getInfoFromQrCode: function() {
