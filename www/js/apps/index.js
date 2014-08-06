@@ -119,9 +119,7 @@ var app = {
         $('#confirmLocationButton', reportingLocationPage).on('click', self.confirmReportingLocation);
         var reportingMapPage = $('#reportingMapPage');
         reportingMapPage.on('pageshow', self.showReportingMapPage);
-        $('#confirmPositionButton', reportingMapPage).on('click', function() {
-            alert('TODO');
-        });
+        $('#confirmPositionButton', reportingMapPage).on('click', self.confirmReportingMap);
         var nearbyPage = $('#nearbyPage');
         nearbyPage.on('pageinit', self.initNearbyPage);
         nearbyPage.on('pagebeforeshow', self.beforeShowNearbyPage);
@@ -2218,7 +2216,7 @@ console.log(result);
         });
     },
     confirmReportingLocation: function() {
-        $('#reportingPage #locationInfo span.city').html(
+        /*$('#reportingPage #locationInfo span.city').html(
             $('#reportingLocationPage input#city').val()
         );
         $('#reportingPage #locationInfo span.prov').html(
@@ -2226,8 +2224,7 @@ console.log(result);
         );
         $('#reportingPage #locationInfo span.route').html(
             $('#reportingLocationPage textarea#route').val()
-        );
-        self.reportingUpdateLatLng = false;
+        );*/
         //$.mobile.back();
         $.mobile.changePage('#reportingMapPage', {transition: 'slide'});
     },
@@ -2252,6 +2249,24 @@ console.log(result);
             $('#reportingMapPage #map').height($.mobile.activePage.height());
         }, 200);
     },
+    
+    
+    confirmReportingMap: function() {
+        $('#reportingPage #locationInfo span.city').html(
+            $('#reportingLocationPage input#city').val()
+        );
+        $('#reportingPage #locationInfo span.prov').html(
+            $('#reportingLocationPage input#prov').val()
+        );
+        $('#reportingPage #locationInfo span.route').html(
+            $('#reportingLocationPage textarea#route').val()
+        );
+        self.reportingUpdateLatLng = false;
+        //$.mobile.back();
+        $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
+    },
+    
+    
     
     /*
     reportingPriority: 0,
