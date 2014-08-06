@@ -1605,8 +1605,11 @@ OLD CODE END ***/
         var page = $('#qrCodeInfoMultimediaPage');
         $('h3', page).html(result.info.nome);
         var html = '';
+        var hasGallery = false;
         if(result.foto && (result.foto.length > 0)) {
-            /*html += '<div class="slider"><ul class="slides">';
+            
+            /*** old gallery implementation
+            html += '<div class="slider"><ul class="slides">';
             for(var i in result.foto) {
                 html += '<li class="slide">' +
                             '<img src="' + result.foto[i] + '" />' +
@@ -1617,16 +1620,27 @@ OLD CODE END ***/
                 //autoplay: false, // or 4000
                 arrowLeftText: '',
                 arrowRightText: ''
-            });*/
+            });
+            */
             
+            //*** new gallery implementation
+            html += '<div id="gallery" style="margin:0 -1em">' + 
+                    '<div class="gallery-images" style="height:25em;text-align:center;">';
             for(var i in result.foto) {
-                html += '<img src="' + result.foto[i] + '" style="width:100%" />';
-                // Now only the first image
-                break;
+                html += '<img src="' + result.foto[i] + '" class="gallery-image" style="width:auto;height:100%;';
+                if(i > 0) {
+                    html += 'display:none;';
+                }
+                html += '" />';
             }
+            html += '</div>' +
+                    '<div class="gallery-indicator">n of n</div>' +
+                    '</div>'; 
+            
+            var hasGallery = true;
         }
+
         if(result.youtube && (result.youtube.length > 0)) {
-            // TODO
             html += '<ul id="videos" style="text-align:left;margin-top:1.5em;" data-inset="false">';
             html += '<li data-role="list-divider">Video</li>';
             for(var i in result.youtube) {
@@ -1637,6 +1651,43 @@ OLD CODE END ***/
         }
         $('#qrCodeMultimediaContent', page).html(html);
         $('#qrCodeMultimediaContent #videos', page).listview();
+        
+        if(hasGallery) {
+            //*** new gallery implementation
+            var currentImageIndex = 0;
+            var totImages = result.foto.length;
+            var gallery = $('#gallery');
+            $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
+            $('.gallery-image', gallery).on('click', function() {
+                currentImageIndex++;
+                if(currentImageIndex >= totImages) currentImageIndex = 0;
+                $('div.gallery-images img:visible', gallery).hide();
+                $('div.gallery-images img:nth-child(' + (currentImageIndex+1) + ')', gallery).show();
+                $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
+            });
+            /*.on('swipeleft', function(e) {
+helper.alert('swipe left');return;
+                currentImageIndex++;
+                if(currentImageIndex >= totImages) currentImageIndex = 0;
+                $('div.gallery-images img:visible', gallery).hide();
+                $('div.gallery-images img:nth-child(' + (currentImageIndex+1) + ')', gallery).show();
+                $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
+            }).on('swiperight', function(e) {
+helper.alert('swipe right');return;
+                currentImageIndex--;
+                if(currentImageIndex < 0) currentImageIndex = totImages - 1;
+                $('div.gallery-images img:visible', gallery).hide();
+                $('div.gallery-images img:nth-child(' + (currentImageIndex+1) +')', gallery).show();
+                $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
+            });*/
+            
+            /*
+            var glide = $('.slider').glide({
+                //autoplay: false, // or 4000
+                arrowLeftText: '',
+                arrowRightText: ''
+            });*/
+        }
     },
     
     beforeShowQrCodeInfoLinksPage: function() {
