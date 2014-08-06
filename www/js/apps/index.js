@@ -1625,7 +1625,7 @@ OLD CODE END ***/
             
             //*** new gallery implementation
             html += '<div id="gallery" style="margin:0 -1em">' + 
-                    '<div class="gallery-images" style="height:25em;text-align:center;">';
+                    '<div class="gallery-images" style="height:20em;text-align:center;">';
             for(var i in result.foto) {
                 html += '<img src="' + result.foto[i] + '" class="gallery-image" style="width:auto;height:100%;';
                 if(i > 0) {
