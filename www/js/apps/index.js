@@ -2237,8 +2237,20 @@ console.log(result);
         self.mapsSetup();
         setTimeout(function() {
             //$('#reportingMapPage #map').height($('#reportingMapPage div[data-role="main"]').height());
+            
+            /*var mapHeight = $.mobile.activePage.height();
+            if(device && device.platform == 'iOS') {
+                mapHeight -= 30;
+            }
+            $('#reportingMapPage #map').height(mapHeight);*/
+            
+            /*$('#reportingMapPage #map').height(
+                $.mobile.activePage.height() -
+                $('#reportingMapPage div[data-role="header"]').height()
+            );*/
+            
             $('#reportingMapPage #map').height($.mobile.activePage.height());
-        }, 100);
+        }, 200);
     },
     
     /*
