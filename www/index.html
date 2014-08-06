@@ -1205,7 +1205,7 @@
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Segnala</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
-                <a href="#" id="confirmLocationButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
+                <!--<a href="#" id="confirmLocationButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>-->
             </div>
             <div data-role="main" class="ui-content">
                 <p>
@@ -1217,6 +1217,12 @@
                 <input type="text" id="city" placeholder="Comune" />
                 <label>Indirizzo</label>
                 <textarea id="route" placeholder="Indirizzo"></textarea>
+                <p>
+                    Individua la posizione corretta trascinando il segnaposto nella mappa.
+                </p>
+                <a href="#" id="confirmLocationButton" class="ui-btn" style="white-space:normal;">
+                    Procedi
+                </a>
                 <!--
                 <p>
                     Trascina il segnaposto nella mappa sulla posizione corretta
@@ -1242,13 +1248,13 @@
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
                 <a href="#" id="confirmPositionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
             </div>
-            <div data-role="main" class="ui-content">
-                <p>
+            <div data-role="main" ccclass="ui-content">
+                <!--p>
                     Trascina il segnaposto nella mappa sulla posizione corretta
                     per consentirci di individuare con precisione
                     il punto della tua segnalazione.
-                </p>
-                <div id="map" style="width:100%;height:400px"></div>
+                </p-->
+                <div id="map" style="width:100%;height:30em;"></div>
             </div>
         </div>
         <!-- /reportingMapPage -->

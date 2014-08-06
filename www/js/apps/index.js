@@ -2235,6 +2235,9 @@ console.log(result);
     
     showReportingMapPage: function() {
         self.mapsSetup();
+        setTimeout(function() {
+            $('#reportingMapPage #map').height($('#reportingMapPage').height());
+        }, 100);
     },
     
     /*
