@@ -1173,51 +1173,86 @@
         <!-- reportingDescriptionPage -->
         <div data-role="page" id="reportingDescriptionPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
+                <h1>Segnala</h1>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
+                <a href="#" id="confirmDescriptionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
             </div>
             <div data-role="main" class="ui-content">
                 <textarea placeholder="Descrizione del problema" autofocus></textarea>
+                
+                <!--
                 <div data-role="controlgroup" data-type="horizontal" align="right">
                     <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
                     <a href="#" id="confirmDescriptionButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
                 </div>
+                -->
             </div>
             <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                < !--<div data-role="controlgroup" data-type="horizontal" align="right">-->
-                    <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
-                    <a href="#" id="confirmDescriptionButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
-                <!--</div>-- >
-            </div>-->
+            <div data-role="footer" dddata-position="fixed" data-tap-toggle="false">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a></li>
+                        <li><a href="#" id="confirmDescriptionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a></li>
+                    </ul>
+                </div>
+            </div>
+            -->
         </div>
         <!-- /reportingDescriptionPage -->
         
         <!-- reportingLocationPage -->
         <div data-role="page" id="reportingLocationPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
+                <h1>Segnala</h1>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
+                <a href="#" id="confirmLocationButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
             </div>
             <div data-role="main" class="ui-content">
+                <p>
+                    Specifica l'indirizzo relativo al luogo della segnalazione.
+                </p>
                 <label>Provincia</label>
                 <input type="text" id="prov" placeholder="Prov" maxlength="2" autofocus />
                 <label>Comune</label>
                 <input type="text" id="city" placeholder="Comune" />
                 <label>Indirizzo</label>
                 <textarea id="route" placeholder="Indirizzo"></textarea>
+                <!--
                 <p>
                     Trascina il segnaposto nella mappa sulla posizione corretta
                     per consentirci di individuare con precisione
                     il punto della tua segnalazione.
                 </p>
                 <div id="map" style="width:100%;height:400px"></div>
+                -->
+                <!--
                 <div data-role="controlgroup" data-type="horizontal" align="right">
                     <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
                     <a href="#" id="confirmLocationButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
                 </div>
+                -->
             </div>
         </div>
         <!-- /reportingLocationPage -->
         
+        <!-- reportingMapPage -->
+        <div data-role="page" id="reportingMapPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
+                <h1>Segnala</h1>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
+                <a href="#" id="confirmPositionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p>
+                    Trascina il segnaposto nella mappa sulla posizione corretta
+                    per consentirci di individuare con precisione
+                    il punto della tua segnalazione.
+                </p>
+                <div id="map" style="width:100%;height:400px"></div>
+            </div>
+        </div>
+        <!-- /reportingMapPage -->
+    
         <!-- reportingPhotoPage -->
         <div data-role="page" id="reportingPhotoPage">
             <div data-role="main" style="text-align:center">

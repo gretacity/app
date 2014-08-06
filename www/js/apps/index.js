@@ -115,8 +115,13 @@ var app = {
         $('#sendReportingButton', reportingPage).on('click', self.sendReporting);
         var reportingLocationPage = $('#reportingLocationPage');
         reportingLocationPage.on('pageinit', self.initReportingLocationPage);
-        reportingLocationPage.on('pageshow', self.mapsSetup);
+        //reportingLocationPage.on('pageshow', self.mapsSetup);
         $('#confirmLocationButton', reportingLocationPage).on('click', self.confirmReportingLocation);
+        var reportingMapPage = $('#reportingMapPage');
+        reportingMapPage.on('pageshow', self.showReportingMapPage);
+        $('#confirmPositionButton', reportingMapPage).on('click', function() {
+            alert('TODO');
+        });
         var nearbyPage = $('#nearbyPage');
         nearbyPage.on('pageinit', self.initNearbyPage);
         nearbyPage.on('pagebeforeshow', self.beforeShowNearbyPage);
@@ -2197,7 +2202,7 @@ console.log(result);
         $.mobile.changePage('#reportingLocationPage', {transition: 'slide'});
     },
     reportingLocationChanged: function() {
-        console.log('reportingLocationChanged');
+//console.log('reportingLocationChanged');
         var page = $('#reportingLocationPage');
         var params = {
             'city': $('input#city', page).val(),
@@ -2205,9 +2210,11 @@ console.log(result);
             'address': $('textarea#route', page).val()
         };
         geoLocation.geocode(params, function(latLng) {
-            self.map.setCenter(latLng);
-            self.marker.position = latLng;
-            self.map.setZoom(15);
+            //self.map.setCenter(latLng);
+            //self.marker.position = latLng;
+            //self.map.setZoom(15);
+            self.latLng.lat = latLng.lat();
+            self.latLng.lng = latLng.lng();
         });
     },
     confirmReportingLocation: function() {
@@ -2221,10 +2228,14 @@ console.log(result);
             $('#reportingLocationPage textarea#route').val()
         );
         self.reportingUpdateLatLng = false;
-        //$.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
-        $.mobile.back();
+        //$.mobile.back();
+        $.mobile.changePage('#reportingMapPage', {transition: 'slide'});
     },
     
+    
+    showReportingMapPage: function() {
+        self.mapsSetup();
+    },
     
     /*
     reportingPriority: 0,

@@ -94,7 +94,7 @@ var config = {
     
     GOOGLE_MAPS_API_KEY: "AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ",
     GOOGLE_MAPS_SENSOR: "true",
-    GOOGLE_MAPS_ZOOM: 19,
+    GOOGLE_MAPS_ZOOM: 18,
     GOOGLE_MAPS_TYPE_ID: 'google.maps.MapTypeId.SATELLITE',
     
     GEO_OPTS_MAXIMUM_AGE: 3000,
