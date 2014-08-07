@@ -25,7 +25,8 @@ var app = {
             /*if(barcodeReader.scanning) {
                 e.preventDefault();
             } else*/
-            if($.mobile.activePage.is('#newsPage')) {
+            if($.mobile.activePage.is('#newsPage') || 
+               $.mobile.activePage.is('#loginPage')) {
                 e.preventDefault();
                 navigator.app.exitApp();
             } else {
@@ -55,6 +56,9 @@ var app = {
         var profileCityPage = $('#profileCityPage');
         profileCityPage.on('pageinit', self.initProfileCityPage);
         profileCityPage.on('pageshow', self.showProfileCityPage);
+        var profileAddressPage = $('#profileAddressPage');
+        profileAddressPage.on('pagebeforeshow', self.showProfileAddressPage);
+        $('#saveProfileAddressButton', profileAddressPage).on('click', self.updateProfileAddress);
         var profileChannelsPage = $('#profileChannelsPage');
         profileChannelsPage.on('pageinit', self.initProfileChannelPage);
         profileChannelsPage.on('pagebeforeshow', self.showProfileChannelsPage);
@@ -99,7 +103,7 @@ var app = {
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
-        reportingListPage.on('pagebeforeshow', self.loadReportingItems);
+        reportingListPage.on('pageshow', self.loadReportingItems);
         $('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
         //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
         var reportingMethodPage = $('#reportingMethodPage');
@@ -178,6 +182,11 @@ var app = {
         //$('[data-role="header"],[data-role="footer"]').fixedtoolbar({ tapToggle:false });
         services.checkSession(function(result) {
             console.log('onDeviceReady: session check ' + result);
+            if(result) {
+                services.getProfile(null, function(result) {
+                    self.userProfile = result;
+                });
+            }
             window.location.hash = (result ? 'newsPage' : 'loginPage');
             $.mobile.initializePage();
         });
@@ -495,6 +504,7 @@ var app = {
         $('#profileCity', page).html((self.userProfile.city.name || '') == '' ? 
                                      'Comune non specificato' : 
                                      self.userProfile.city.name);
+        $('#profileAddress', page).html(self.userProfile.address || '');
     },
     
     
@@ -560,7 +570,9 @@ var app = {
             return;
         }
         var page = $('#profileCityPage');
-        $('#cityName', page).val('');
+        $('#cityName', page).val(
+            (self.userProfile ? (self.userProfile.city.name || '').trim() : '')
+        );
         $('#citySuggestions', page).empty();
     },
     
@@ -600,6 +612,33 @@ var app = {
         });
     },
     
+    
+    showProfileAddressPage: function() {
+        if(self.userProfile == null) {
+            $.mobile.changePage('#profilePage');
+            return;
+        }
+        var page = $('#profileAddressPage');
+        $('#address', page).val(
+            (self.userProfile ? (self.userProfile.address || '').trim() : '')
+        );
+    },
+    
+    
+    updateProfileAddress: function() {
+        var page = $('#profileAddressPage');
+        self.userProfile.address = $('#address', page).val().trim();
+        services.updateProfile({profile: self.userProfile}, function() {
+            // and navigate back
+            $.mobile.back();
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Si è verificato un errore durante il salvataggio', null, 'Il tuo profilo');
+        });
+    },
     
     
     initProfileChannelsPage: function() {
@@ -2032,7 +2071,12 @@ console.log(row);
     },
     
     beforeShowReportingMethodPage: function() {
-        //self.setSidePanelPage('reportingMethodPage');
+        if(((self.userProfile.city.id || 0) == 0) ||
+           ((self.userProfile.address || '') == '')) {
+            helper.alert('Prima di procedere con la segnalazione è necessario completare il profilo con il tuo comune e indirizzo di residenza', function() {
+                $.mobile.changePage('#profilePage');
+            }, 'Profilo incompleto');
+        }
     },
     
     

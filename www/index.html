@@ -48,7 +48,7 @@
                 text-shadow: none !important;
             }
             div[data-role="navbar"] ul li a.ui-btn-active {
-                background-color:rgb(255, 184, 0) !important;
+                background-color:rgb(255, 184, 0) !important;   /*#FFB800*/
             }
             
 
@@ -154,7 +154,8 @@
             
             
             .qrcode-info-title {
-                background-color: rgb(89, 196, 248);
+                /*background-color: #59C4F8;*/
+                background-color: #FFB800;
                 color:#FFF;
                 padding:.5em;
                 margin-top: 0;
@@ -359,63 +360,6 @@
         </div>
         <!-- /registrationPage -->
         
-        <!-- homePage 
-        <div data-role="page" id="homePage" data-theme="a">
-            <div data-role="header" data-position="fixed" data-fullscreen="true">
-                <h1>GretaCITY</h1>
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
-                <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <img style="width:90%;max-width:2048px;margin:1em auto;padding-top:2em;display:block;" _src="./img/splash.png" src="./img/logo-2.png" />
-                <div class="ui-content" style="margin:1em;border:solid #0088CC .2em;border-radius:1.2em;">
-                    <p>
-                        <a href="#newsChannelsPage" class="ui-btn ui-icon-bars ui-btn-icon-left" style="border:none;">
-                            Notizie<span id="newsCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
-                        </a>
-                    </p>
-                    <p>
-                        <a href="#reportingListPage" class="ui-btn ui-icon-bullets ui-btn-icon-left" style="border:none;">
-                            Le Tue Segnalazioni<span id="reportingCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
-                        </a>
-                    </p>
-                    <p>
-                        <a href="#followingListPage" class="ui-btn ui-icon-comment ui-btn-icon-left" style="border:none;">
-                            Following<span id="followingCount" class="ui-li-count ui-li-count-cust" style="display:none"></span>
-                        </a>
-                    </p>
-                </div>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        /homePage 
-        -->
-        
-        
-        <!-- infoPage -->
-        <!--
-        <div data-role="page" id="infoPage">
-            <div data-role="header" data-position="fixed">
-                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <h1>GretaCITY</h1>
-            </div>
-            <div data-role="main" class="ui-content">
-                <p><a href="#home" data-role="button" data-icon="home" data-iconpos="left">Home</a></p>
-            </div>
-            <div data-role="footer" data-position="fixed"></div>
-        </div>
-        -->
-        <!-- /infoPage -->
-
-        
         <!-- profilePage -->
         <div data-role="page" id="profilePage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
@@ -437,6 +381,12 @@
                         <a href="#profileCityPage">
                             <label>Comune di residenza</label>
                             <span id="profileCity"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profileAddressPage">
+                            <label>Indirizzo di residenza</label>
+                            <span id="profileAddress"></span>
                         </a>
                     </li>
                     <li>
@@ -509,21 +459,10 @@
                 <label for="cityName">Specifica il tuo comune e indirizzo di residenza</label>
                 <input id="cityName" placeholder="Cerca comune" autofocus />
                 <ul id="citySuggestions" data-role="listview" data-inset="true"></ul>
-                <!--
-                <input id="address" placeholder="Indirizzo" />
-                -->
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -532,6 +471,30 @@
             </div>
         </div>
         <!-- /profileCityPage -->
+        
+        <!-- profileAddressPage -->
+        <div data-role="page" id="profileAddressPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
+                <h1>Residenza</h1>
+                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div data-role="fieldcontain">
+                    <input type="text" id="address" placeholder="Indirizzo di residenza" />
+                    <a href="#" id="saveProfileAddressButton" class="ui-btn">Conferma</a>
+                </div>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /profileAddressPage -->
         
         <!-- profileFollowingPage -->
         <div data-role="page" id="profileFollowingPage">
@@ -863,19 +826,10 @@
     
         
         <!-- followingListPage -->
-        <div data-role="page" id="followingListPage" __style="background:url('img/bg-qrcode.png')">
+        <div data-role="page" id="followingListPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Following</h1>
-                <!--
-                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                -->
-                <!--
-                <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-                -->
                 <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-                <!--
-                <a href="#" id="readQrCodeButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-camera">Info QRCode</a>
-                -->
             </div>
             <div data-role="main" class="ui-content">
                 <!--

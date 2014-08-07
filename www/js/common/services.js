@@ -99,7 +99,7 @@ var services = {
             dataType:'json',
             timeout: config.REQUEST_DEFAULT_TIMEOUT
         }).done(function(result) {
-console.log('SUCCESS', result);//return;
+console.log('services.getProfile: SUCCESS', result);//return;
             var r = {
                 firstname : result.anagrafica[0].nome,
                 lastname : result.anagrafica[0].cognome,
@@ -107,13 +107,16 @@ console.log('SUCCESS', result);//return;
                 phone: result.anagrafica[0].telefono,
                 city: {
                     id: (result.anagrafica[0].dic_comune_id || 0),
-                    name: result.anagrafica[0].comune
-                }
+                    name: (result.anagrafica[0].comune || '').trim()
+                },
+                address: (result.anagrafica[0].indirizzo || '').trim()
             };
             success(r);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('FAIL', textStatus);
-            fail(textStatus, services.isLoginRequired(jqXHR.status));
+console.log('services.getProfile: FAIL', textStatus);
+            if(fail) {
+                fail(textStatus, services.isLoginRequired(jqXHR.status));
+            }
         });
     },
     
@@ -123,8 +126,9 @@ console.log('FAIL', textStatus);
         data = 'cognome=' + encodeURIComponent(params.profile.lastname) +
                '&nome=' + encodeURIComponent(params.profile.firstname) +
                '&email=' + encodeURIComponent(params.profile.email) +
-               '&id_comune=' + encodeURIComponent(params.profile.city.id);
-//console.log(url, data);
+               '&id_comune=' + encodeURIComponent(params.profile.city.id) +
+               '&indirizzo=' + encodeURIComponent(params.profile.address);
+console.log('services.updateProfile', url, data);
         $.ajax(url, {
             type: 'POST',
             data: data,
