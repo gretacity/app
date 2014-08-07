@@ -86,6 +86,7 @@ var app = {
         followingListPage.on('pageinit', self.initFollowingListPage);
         followingListPage.on('pageshow', self.showFollowingListPage);
         $('#getInfoButton', followingListPage).on('click', self.getInfoFromQrCode);
+        $('#qrCodeInfoPositionPage').on('pageshow', self.showQrCodeInfoPositionPage);
         $('#qrCodeInfoNewsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoNewsPage);
         $('#qrCodeInfoCommentsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoCommentsPage);
         $('#qrCodeInfoMultimediaPage').on('pagebeforeshow', self.beforeShowQrCodeInfoMultimediaPage);
@@ -1405,7 +1406,7 @@ console.log(newsChannelAvailableIds);
             pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, code);
             self.updateBalloonsInNavbar();
             
-            var canLeaveComment = (result.categoria.commenti == 1);
+            //var canLeaveComment = (result.categoria.commenti == 1);
             var canFollow = (result.categoria.follows == 1);
 
             $('#qrCodeInfoPage #getInfoButton').removeClass('ui-disabled');
@@ -1420,7 +1421,7 @@ console.log(newsChannelAvailableIds);
             //var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
             var html = '<div>' +
                        '<h3 class="qrcode-info-title">' + result.info.nome + '</h3>' + 
-                       '<p style="text-align:justify;border:1px solid;padding:.5em;border-radius:.5em;">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>' +
+                       '<p class="qrcode-info-description">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>' +
                        '</div>';
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
@@ -1524,7 +1525,7 @@ OLD CODE END ***/
 ];*/
             
             
-            
+            /*
             html += '<ul data-role="listview" style="margin-top:1em;" data-inset="false">';
             if(result.notizie && (result.notizie.length > 0)) {
                 html += '<li><a href="#qrCodeInfoNewsPage" data-transition="slide">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a></li>';
@@ -1541,16 +1542,62 @@ OLD CODE END ***/
                 html += '<li><a href="#qrCodeInfoLinksPage" data-transition="slide">Link <span class="ui-li-count">' + result.links.length + '</span></a></li>';
             }
             html += '</ul>';
-            
-            /****
-            html += '<div style="margin-top:3em;" class="ui-grid-a"><div class="ui-block-a"><a href="#" class="ui-btn">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a></div><div class="ui-block-b"><a href="#" class="ui-btn">Commenti</a></div></div>';
-            html += '<div class="ui-grid-a"><div class="ui-block-a"><a href="#" class="ui-btn">Commenti <span class="ui-li-count">' + result.commenti.length + '</span></a></div><div class="ui-block-b"><a href="#" class="ui-btn">Multimedia</a></div></div>';
             */
             
+            var hasGallery = false;
+            if(result.foto && (result.foto.length > 0)) {
+                hasGallery = true;
+                html += '<div class="slider"><ul class="slides">';
+                for(var i in result.foto) {
+                    html += '<li class="slide">' +
+                                '<img src="' + result.foto[i] + '" />' +
+                            '</li>';
+                }
+                html += '</ul></div>';            
+            }
+            
+            html += '<div style="margin-top:3em;" class="ui-grid-a">' +
+                    '<div class="ui-block-a">';
+            if(result.notizie && (result.notizie.length > 0)) {
+                //html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-style1">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a>';
+                html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-style1">Notizie</a>';
+            } else {
+                html += '<a href="#" class="ui-btn ui-btn-style1 ui-disabled">Notizie</a>';
+            }
+            html += '</div>' +
+                    '<div class="ui-block-b">';
+            if(result.censimento && (result.censimento.latitudine > 0) && (result.censimento.longitudine > 0)) {
+                html += '<a href="#qrCodeInfoPositionPage" class="ui-btn ui-btn-style1">Posizione</a>';
+            } else {
+                html += '<a href="#" class="ui-btn ui-btn-style1 ui-disabled">Localizzazione</a>';
+            }
+            html += '</div>' +
+                    '</div>' +
+                    '<div class="ui-grid-a">' +
+                    '<div class="ui-block-a">';
+            //var totComments = (result.commenti) ? result.commenti.length : 0;
+            var totComments = 0;
+            html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn ui-btn-style1">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a></div>';
+            html += '<div class="ui-block-b">';
+            if(result.youtube && (result.youtube.length > 0)) {
+                //html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-style1">Video <span class="ui-li-count">' + result.youtube.length + '</span></a>';
+                html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-style1">Video</a>';
+            } else {
+                html += '<a href="#" class="ui-btn ui-btn-style1 ui-disabled">Video</a>';
+            }
+            html += '</div></div>';
+            
+            
             $('#qrCodeInfoPage #infoResult').html(html);
-            $('#qrCodeInfoPage #infoResult ul').listview();
+            //$('#qrCodeInfoPage #infoResult ul').listview();
+            if(hasGallery) {
+                var glide = $('.slider').glide({
+                    //autoplay: false, // or 4000
+                    arrowLeftText: '',
+                    arrowRightText: ''
+                });                
+            }
             $.mobile.loading('hide');
-
         }, function(e, loginRequired) {
             $.mobile.loading('hide');
             $('#qrCodeInfoPage #infoText').html('Nessuna informazione associata al QR Code');
@@ -1564,6 +1611,37 @@ OLD CODE END ***/
         });
 
         
+    },
+    
+    
+    showQrCodeInfoPositionPage: function() {
+        $('#qrCodeInfoPositionPage #qrCodeInfoPlaceMap').css({
+            position: 'absolute', 
+            top: '3.5em', //$('div[data-role="header"]', $.mobile.activePage).height(),
+            bottom: 0,
+            left: 0,
+            right: 0
+        });
+        var result = self.currentQrCodeInfo;
+        var placeName = result.info.nome;
+        var lat = result.censimento.latitudine, lng = result.censimento.longitudine;
+        var options = {
+            zoom: config.GOOGLE_MAPS_ZOOM,
+            center: new google.maps.LatLng(lat, lng),
+            mapTypeId: google.maps.MapTypeId.ROADMAP //eval(config.GOOGLE_MAPS_TYPE_ID)
+        };
+        var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap'), options);
+        var point = new google.maps.LatLng(lat, lng);
+        var marker = new google.maps.Marker({
+            position: point,
+            map: map,
+            draggable: false,
+            animation: google.maps.Animation.DROP,
+            title: placeName
+        });
+        map.panTo(point);
+        var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
+        infowindow.open(map, marker);
     },
     
     
@@ -1587,6 +1665,7 @@ OLD CODE END ***/
     
     beforeShowQrCodeInfoCommentsPage: function() {
         var result = self.currentQrCodeInfo;
+        var canLeaveComment = (result.categoria.commenti == 1);
         var page = $('#qrCodeInfoCommentsPage');
         $('h3', page).html(result.info.nome);
         var html = '';
@@ -1599,7 +1678,13 @@ OLD CODE END ***/
                         if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
                         html += '</li>';
             }
+        } else {
+            html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
         }
+        if(canLeaveComment) {
+            html += '<textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>';
+        }
+        html += '<div style="height:150px;"></div>';
         $('#qrCodeCommentsList', page).html(html).listview('refresh');
     },
     
@@ -1608,8 +1693,10 @@ OLD CODE END ***/
         var page = $('#qrCodeInfoMultimediaPage');
         $('h3', page).html(result.info.nome);
         var html = '';
-        var hasGallery = false;
-        if(result.foto && (result.foto.length > 0)) {
+        
+        
+        //var hasGallery = false;
+        //if(result.foto && (result.foto.length > 0)) {
             
             /*** old gallery implementation
             html += '<div class="slider"><ul class="slides">';
@@ -1626,7 +1713,7 @@ OLD CODE END ***/
             });
             */
             
-            //*** new gallery implementation
+            /*** new gallery implementation
             html += '<div id="gallery" style="margin:0 -1em">' + 
                     '<div class="gallery-images" style="height:20em;text-align:center;">';
             for(var i in result.foto) {
@@ -1638,14 +1725,14 @@ OLD CODE END ***/
             }
             html += '</div>' +
                     '<div class="gallery-indicator">n of n</div>' +
-                    '</div>'; 
+                    '</div>'; */
             
-            var hasGallery = true;
-        }
+            //var hasGallery = true;
+        //}
 
         if(result.youtube && (result.youtube.length > 0)) {
             html += '<ul id="videos" style="text-align:left;margin-top:1.5em;" data-inset="false">';
-            html += '<li data-role="list-divider">Video</li>';
+            //html += '<li data-role="list-divider">Video</li>';
             for(var i in result.youtube) {
                 var v = result.youtube[i];
                 html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
@@ -1655,8 +1742,8 @@ OLD CODE END ***/
         $('#qrCodeMultimediaContent', page).html(html);
         $('#qrCodeMultimediaContent #videos', page).listview();
         
-        if(hasGallery) {
-            //*** new gallery implementation
+        //if(hasGallery) {
+            /*** new gallery implementation
             var currentImageIndex = 0;
             var totImages = result.foto.length;
             var gallery = $('#gallery');
@@ -1667,16 +1754,14 @@ OLD CODE END ***/
                 $('div.gallery-images img:visible', gallery).hide();
                 $('div.gallery-images img:nth-child(' + (currentImageIndex+1) + ')', gallery).show();
                 $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
-            });
+            });*/
             /*.on('swipeleft', function(e) {
-helper.alert('swipe left');return;
                 currentImageIndex++;
                 if(currentImageIndex >= totImages) currentImageIndex = 0;
                 $('div.gallery-images img:visible', gallery).hide();
                 $('div.gallery-images img:nth-child(' + (currentImageIndex+1) + ')', gallery).show();
                 $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
             }).on('swiperight', function(e) {
-helper.alert('swipe right');return;
                 currentImageIndex--;
                 if(currentImageIndex < 0) currentImageIndex = totImages - 1;
                 $('div.gallery-images img:visible', gallery).hide();
@@ -1690,7 +1775,7 @@ helper.alert('swipe right');return;
                 arrowLeftText: '',
                 arrowRightText: ''
             });*/
-        }
+        //}
     },
     
     beforeShowQrCodeInfoLinksPage: function() {
@@ -1810,7 +1895,7 @@ helper.alert('swipe right');return;
     },
     
     leaveCommentOnQrCode: function() {
-        var text = $('#qrCodeInfoPage #comment').val().trim();
+        var text = $('#qrCodeInfoCommentsPage #comment').val().trim();
         if(text == '') return;
         var params = {
             comment: text,
@@ -1820,10 +1905,10 @@ helper.alert('swipe right');return;
         services.leaveCommentOnQrCode(params, function() {
             // success
             var d = new Date();
-            $('#qrCodeInfoPage #infoResult #noComments').hide();
-            $('#qrCodeInfoPage #infoResult #commentList').append('<li><p>' + text + '</p><small>' + d.toDMY() + ' alle ' + d.toHM() + '</small></li>');
-            $('#qrCodeInfoPage #infoResult #commentList').listview('refresh');
-            $('#qrCodeInfoPage #comment').val('');
+            $('#qrCodeInfoCommentsPage #infoResult #noComments').hide();
+            $('#qrCodeInfoCommentsPage #infoResult #commentList').append('<li><p>' + text + '</p><small>' + d.toDMY() + ' alle ' + d.toHM() + '</small></li>');
+            $('#qrCodeInfoCommentsPage #infoResult #commentList').listview('refresh');
+            $('#qrCodeInfoCommentsPage #comment').val('');
             $.mobile.loading('hide');
         }, function(e) {
             $.mobile.loading('hide');
@@ -1849,52 +1934,11 @@ helper.alert('swipe right');return;
                 for(var i in result) {
                     var row = result[i];
 console.log(row);
-                    /*[{
-                        "id":"95",
-                        "descrizione_problema":"asdadasdsa",
-                        "descrizione_chiusura":"",
-                        "foto":"http:\/\/www.gretacity.com\/test\/Data\/Upload\/Segnalazioni\/thumbs\/600_800_95.jpg",
-                        "stato":"0",
-                        "r_qr_code_id":"0",
-                        "r_qr_categoria_id":"2",
-                        "data_inserimento":"2014-05-23 05:05:32",
-                        "data_lavorazione":"0000-00-00 00:00:00",
-                        "data_chiusura":"0000-00-00 00:00:00",
-                        "mittente_id":"38",
-                        "latitudine":"38.858364","longitudine":"16.549469",
-                        "foto_chiusura":"",
-                        "data_accettazione":"0000-00-00 00:00:00",
-                        "data_fine_lavorazione":"0000-00-00 00:00:00",
-                        "note_notifica":"",
-                        "note_chiusura":"",
-                        "id_ente":"0",
-                        "ente":"Nessun ente associato",
-                        "nome_categoria":"Beni"
-                    }]*/
-/***
-0:  da notificare all'ente          data_inserimento
-1:  notificata all'ente             data_accettazione
-2:  in lavorazione                  data_lavorazione
-3:  in lavorazione                      "
-4:  terminata                       data_fine_lavorazione
-5:  chiusa                          data_chiusura
-*/
-
-/*
-row.data_accettazione = '2014-05-07 12:00:00';
-row.data_lavorazione = '2014-05-07 12:00:00';
-row.data_fine_lavorazione = '2014-05-07 12:00:00';
-row.data_chiusura = '2014-05-07 12:00:00';
-row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
-*/
-                    
-                    
-                    
                     html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
                     if(row.indirizzo && row.indirizzo.length > 0) {
                         html += '<li>' + row.indirizzo + '</li>';
                     }
-                    html += '<li><strong>' + row.descrizione_problema + '</strong></li>';
+                    html += '<li style="white-space:normal;"><strong>' + row.descrizione_problema + '</strong></li>';
                     if(row.foto != '') 
                         html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';
                     html += '<li>';
@@ -1923,11 +1967,11 @@ row.descrizione_chiusura = 'Descrizione Descrizione Descrizione Descrizione';
                     */
                     
                     for(var j in row.log) {
-                        html += '<div><small>' + row.log[j] + '</small></div>';
+                        html += '<div style="white-space:normal;"><small>' + row.log[j] + '</small></div>';
                     }
                     
                     if(row.descrizione_chiusura != '') 
-                        html += '<div><small>' + row.descrizione_chiusura + '</small></div>';
+                        html += '<div style="white-space:normal;"><small>' + row.descrizione_chiusura + '</small></div>';
                     
                     html +=  '</li>';
                 }

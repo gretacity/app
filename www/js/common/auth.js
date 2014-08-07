@@ -56,7 +56,8 @@ var auth = {
             dataType: "json",
             crossDomain: true,
 		}).done(function(data, textStatus, jqXHR) {
-console.log(data);
+//console.log(data);
+//console.log(jqXHR);
 			if(data != '') {
                 auth.setSessionId(data.session.id);
                 auth.lastLoginTime = new Date();
@@ -65,7 +66,6 @@ console.log(data);
 				if(failCallback) failCallback("Login errato");
             }
 		}).fail(function(jqXHR, textStatus, errorThrown) {
-console.log(textStatus);
 console.log(jqXHR);
             auth.tmp = jqXHR;
             /*var errorMessage = (jqXHR.statusText.substr(0, 12).toLowerCase() == 'networkerror') ? 
