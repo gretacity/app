@@ -1599,16 +1599,16 @@ OLD CODE END ***/
                     '<div class="ui-block-a">';
             if(result.notizie && (result.notizie.length > 0)) {
                 //html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-style1">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a>';
-                html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-style1">Notizie</a>';
+                html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-news">Notizie</a>';
             } else {
-                html += '<a href="#" class="ui-btn ui-btn-style1 ui-disabled">Notizie</a>';
+                html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Notizie</a>';
             }
             html += '</div>' +
                     '<div class="ui-block-b">';
             if(result.censimento && (result.censimento.latitudine > 0) && (result.censimento.longitudine > 0)) {
-                html += '<a href="#qrCodeInfoPositionPage" class="ui-btn ui-btn-style1">Posizione</a>';
+                html += '<a href="#qrCodeInfoPositionPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-position">Posizione</a>';
             } else {
-                html += '<a href="#" class="ui-btn ui-btn-style1 ui-disabled">Localizzazione</a>';
+                html += '<a href="#" class="ui-btn ui-btn-qrcodeinfo ui-btn-position ui-disabled">Localizzazione</a>';
             }
             html += '</div>' +
                     '</div>' +
@@ -1616,13 +1616,13 @@ OLD CODE END ***/
                     '<div class="ui-block-a">';
             //var totComments = (result.commenti) ? result.commenti.length : 0;
             var totComments = 0;
-            html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn ui-btn-style1">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a></div>';
+            html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a></div>';
             html += '<div class="ui-block-b">';
             if(result.youtube && (result.youtube.length > 0)) {
                 //html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-style1">Video <span class="ui-li-count">' + result.youtube.length + '</span></a>';
-                html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-style1">Video</a>';
+                html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia">Video</a>';
             } else {
-                html += '<a href="#" class="ui-btn ui-btn-style1 ui-disabled">Video</a>';
+                html += '<a href="#" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia ui-disabled">Video</a>';
             }
             html += '</div></div>';
             

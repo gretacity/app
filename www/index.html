@@ -184,12 +184,13 @@
             
             .qrcode-info-description {
                 text-align: justify !important;
-                border:1px solid !important;
+                border-top: 2px solid !important;
+                border-bottom: 2px solid !important;
                 padding:.5em !important;
-                border-radius:.5em !important;
+                /*border-radius:.5em !important;*/
                 /*background-color: #FFEAB5 !important;
                 color: #FF8900 !important;*/
-                background-color: #B7E6FD !important;
+                /*background-color: #B7E6FD !important;*/
                 /*color: #0B9FE6 !important;*/
                 color: #08C !important;
             }
@@ -200,6 +201,28 @@
                 color: #FF8900 !important;
             }
             
+            
+            .ui-btn-qrcodeinfo {
+                border-radius: .5em !important;
+                background-color: #08C !important;
+                color: #FFF !important;
+                background-repeat: no-repeat !important;
+                background-position:  .5em center !important;
+                background-size: 2em !important;
+                padding-left: 2em !important;
+            }
+            .ui-btn-news {
+                background-image: url('img/news.png');
+            }
+            .ui-btn-position {
+                background-image: url('img/position.png');
+            }
+            .ui-btn-comments {
+                background-image: url('img/comments.png');
+            }
+            .ui-btn-multimedia {
+                background-image: url('img/video.png');
+            }
             
             .qrcode-info-news div {
                 font-weight: bold;
@@ -432,14 +455,6 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -535,8 +550,6 @@
                 <a href="#channelSubscriptionPage" id="openChannelSubscriptionPageButton" class="ui-btn">Aggiungi altra città</a>
                 
                 <!--
-                <br /><br /><br />
-                
                 <fieldset data-role="controlgroup">
                     <legend><small>Le tue preferenze:</small></legend>
                     <input name="checkbox-1a" id="checkbox-1a" checked="" type="checkbox">
@@ -556,14 +569,6 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -653,14 +658,6 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -738,12 +735,6 @@
                 <a href="#" id="refreshNewsButton" style="margin-right:3em;" class="ui-btn ui-shadow ui-btn-right ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Refresh</a>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
             </div>
-            <!--
-            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;top:3.5em;z-index:100;background:#fff;">
-                <label>Nome del canale corrente</label>
-            </div>
-            ul tag style="margin-top:2.5em;"
-            -->
             <div data-role="main" class="ui-content">
                 
                 <a href="#" id="newContentReceivedButton" class="ui-btn" 
@@ -764,16 +755,6 @@
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" cclass="highlight" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>                        
-                        <!--
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;"><span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;"><span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;"></a></li>
-                        -->
-                        <!--
-                        <li><a href="#followingListPage" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                        -->
                     </ul>
                 </div>
             </div>
@@ -798,14 +779,6 @@
                 <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" class="ui-state-persist" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -860,14 +833,6 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" class="ui-state-persist ui-btn-active"><small>QUI vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#" data-icon="location"  class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -1233,36 +1198,20 @@
         <!-- qrCodeInfoPage -->
         <div data-role="page" id="qrCodeInfoPage" __style="background:url('img/bg-qrcode.png')">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
-                <!-- href="#followingListPage" or data-rel="back" -->
+                <h1>Following</h1>
                 <a href="#followingListPage" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
                 <input type="hidden" id="qrCodeId" />
-                <!--<h2>Ottieni info</h2>-->
-                <!--
-                <a href="#" id="getInfoButton" class="ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
-                -->
                 <div id="infoResult" style="text-align:center;">
                     <p id="infoText" style="text-align:left;">
                         Clicca sopra e inquadra il QR code per ottenere informazioni.
                     </p>
-                    <!--
-                    <img src="img/qrcode.jpg" style="margin: 0 auto;" />
-                    -->
                 </div>
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera" class="ui-state-persist ui-btn-active"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -1287,7 +1236,7 @@
         <!-- qrCodeInfoNewsPage -->
         <div data-role="page" id="qrCodeInfoNewsPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
+                <h1>Following</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -1314,7 +1263,7 @@
         <!-- qrCodeInfoCommentsPage -->
         <div data-role="page" id="qrCodeInfoCommentsPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
+                <h1>Following</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -1340,7 +1289,7 @@
         <!-- qrCodeInfoMultimediaPage -->
         <div data-role="page" id="qrCodeInfoMultimediaPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
+                <h1>Following</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -1365,7 +1314,7 @@
         <!-- qrCodeInfoLinksPage -->
         <div data-role="page" id="qrCodeInfoLinksPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
+                <h1>Following</h1>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -1396,10 +1345,6 @@
                     <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">close</a>
                 </div>
                 <ul id="qrCodeViewer" data-role="listview" data-inset="false">
-                    <!--<li data-role="list-divider" style="height:1em;">header</li>
-                    <li>row: row</li>
-                    <li>row: row</li>
-                    <li>row: row</li>-->
                 </ul>
             </div>
         </div>
