@@ -468,10 +468,10 @@ console.log("NEARBYPLACES FAIL", jqXHR);
             //timeout: 8000, // 8 secs
             dataType: 'json'
         }).done(function(result) {
-//console.log("NEARBYPLACEINFO SUCCESS", result);
+console.log("services.getNearbyPlaceInfo SUCCESS", result);
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log("NEARBYPLACEINFO FAIL ", jqXHR);
+console.log("services.getNearbyPlaceInfo FAIL ", jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -513,7 +513,8 @@ console.log("NEARBYPLACES FAIL", jqXHR);
                 comune: reporting.city,
                 prov: reporting.prov,
                 descrizione: reporting.description,
-                priorita: reporting.priority
+                priorita: reporting.priority,
+                private: reporting.private
             }
         };
         if(reporting.photos.length > 0) {

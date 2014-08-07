@@ -111,7 +111,7 @@ var app = {
         reportingMethodPage.on('pagebeforeshow', self.beforeShowReportingMethodPage);
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', self.initReportingPage);
-        reportingPage.on('pagebeforeshow', self.showReportingPage);
+        reportingPage.on('pageshow', self.showReportingPage);
         $('#editDesciptionButton', reportingPage).on('click', self.editReportingDescription);
         $('#reportingDescriptionPage #confirmDescriptionButton').on('click', self.confirmReportingDescription);
         $('#editLocationButton', reportingPage).on('click', self.editReportingLocation);
@@ -1721,9 +1721,12 @@ OLD CODE END ***/
             html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
         }
         if(canLeaveComment) {
-            html += '<textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>';
+            $('#leaveCommentPanel').show();
+        } else {
+            $('#leaveCommentPanel').hide();
         }
-        html += '<div style="height:150px;"></div>';
+        //html += '<textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>';
+        //html += '<div style="height:150px;"></div>';
         $('#qrCodeCommentsList', page).html(html).listview('refresh');
     },
     
@@ -1944,9 +1947,9 @@ OLD CODE END ***/
         services.leaveCommentOnQrCode(params, function() {
             // success
             var d = new Date();
-            $('#qrCodeInfoCommentsPage #infoResult #noComments').hide();
-            $('#qrCodeInfoCommentsPage #infoResult #commentList').append('<li><p>' + text + '</p><small>' + d.toDMY() + ' alle ' + d.toHM() + '</small></li>');
-            $('#qrCodeInfoCommentsPage #infoResult #commentList').listview('refresh');
+            $('#qrCodeInfoCommentsPage #noComments').hide();
+            $('#qrCodeInfoCommentsPage #qrCodeCommentsList').append('<li><p>' + text + '</p><small>' + d.toDMY() + ' alle ' + d.toHM() + '</small></li>');
+            $('#qrCodeInfoCommentsPage #qrCodeCommentsList').listview('refresh');
             $('#qrCodeInfoCommentsPage #comment').val('');
             $.mobile.loading('hide');
         }, function(e) {
@@ -2102,7 +2105,7 @@ console.log(row);
             $('#reportingCategory', page).html(html);
             $('#reportingCategory', page).selectmenu('refresh');
             
-            var priorityTexts = ['Nessuna', 'Bassa', 'Media', 'Alta'];
+            var priorityTexts = ['Bassa', 'Media', 'Alta'];
             html = '';
             for(var i in priorityTexts) {
                 html += '<option value="' + i + '">' + priorityTexts[i] + '</option>';
@@ -2123,8 +2126,10 @@ console.log(row);
         }
         $('#photoList', page).html(html2);
     },
-    showReportingPage: function() {
+    showReportingPage: function(e, d) {
         var page = $('#reportingPage');
+        var positioningMessage = $('#getPositionMessage', page);
+        
         if(self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE) {
             // Use QR-code to set position
             $('#qrCode', page).html(self.reportingQrCode);
@@ -2139,8 +2144,13 @@ console.log(row);
             $('#locationHeader', page).show();
             $('#locationRow', page).show();
         }
-        if((self.latLng.lat > 0) && (!self.reportingUpdateLatLng)) return;
+        //if((self.latLng.lat > 0) && (!self.reportingUpdateLatLng)) return;
+        if(d.prevPage.attr('id') != 'reportingMethodPage') {
+            return;
+        }
+        positioningMessage.html('Acquisizione della tua posizione GPS in corso...').show();
         $('#loaderIndicator', page).show();
+        $.mobile.loading('show');
         geoLocation.acquireGeoCoordinates(function(pos) {
             self.latLng.lat = pos.coords.latitude;
             self.latLng.lng = pos.coords.longitude;
@@ -2157,13 +2167,17 @@ console.log(result);
                     provEl.html(result.prov);
                 });
             }
+            $.mobile.loading('hide');
             $('#loaderIndicator', page).hide();
+            positioningMessage.html('La tua posizione è stata acquisita ma è necessario confermarla.<br />Tocca sopra per procedere.');
             $('#sendReportingButton', page).removeClass('ui-disabled');
         }, function(e) {
             // If the device is unable to retrieve current geo coordinates,
             // set the default position to Rome and the map zoom to 
             //self.latLng = {lat: 0, lng: 0};
             //self.mapZoom = 5;
+            $.mobile.loading('hide');
+            positioningMessage.html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br />Tocca sopra per procedere.');
             $('#loaderIndicator', page).hide();
             $('#sendReportingButton', page).removeClass('ui-disabled');
             helper.alert(e, null, "Localizzazione GPS");
@@ -2260,9 +2274,16 @@ console.log(result);
     },
     
     confirmReportingDescription: function() {
+        var description = $('#reportingDescriptionPage textarea').val().trim();
         $('#reportingPage #description').html(
-            $('#reportingDescriptionPage textarea').val()
+            description
         );
+        if(description.length > 0) {
+            $('#reportingPage #desciptionMissing').hide();
+        } else {
+            $('#reportingPage #desciptionMissing').show();
+        }
+        
         self.reportingUpdateLatLng = false;
         //$.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
         $.mobile.back();
@@ -2304,16 +2325,6 @@ console.log(result);
         });
     },
     confirmReportingLocation: function() {
-        /*$('#reportingPage #locationInfo span.city').html(
-            $('#reportingLocationPage input#city').val()
-        );
-        $('#reportingPage #locationInfo span.prov').html(
-            $('#reportingLocationPage input#prov').val()
-        );
-        $('#reportingPage #locationInfo span.route').html(
-            $('#reportingLocationPage textarea#route').val()
-        );*/
-        //$.mobile.back();
         $.mobile.changePage('#reportingMapPage', {transition: 'slide'});
     },
     
@@ -2335,6 +2346,12 @@ console.log(result);
             );*/
             
             $('#reportingMapPage #map').height($.mobile.activePage.height());
+            
+            // TODO TODO TODO Display alert
+            $('#reportingMapPopup').popup('open');
+            setTimeout(function() {
+                $('#reportingMapPopup').popup('close');
+            }, 5000);
         }, 200);
     },
     
@@ -2427,7 +2444,8 @@ console.log(result);
             prov: $('#locationInfo span.prov', reportingPage).html().trim(),
             description:  $('#description', reportingPage).html().trim(),
             //priority: self.reportingPriority,
-            priority: $('#reportingPage #priority').val(),
+            priority: $('#priority', page).val(),
+            private: $('#private', page).is(':checked'),
             photos: []
         };
 
