@@ -975,7 +975,21 @@
         </div>
         <!-- /reportingMethodPage -->
         
-    
+<style>
+#reportingPositionPopup
+{
+    display: none;
+    z-index: 10000 !important;
+    /*border: solid 1px #F00 !important;*/
+    background: rgba(0,0,0,.1);
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+}
+</style>
+
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
@@ -983,8 +997,27 @@
                 <a href="#reportingMethodPage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
                 <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets">Segnalazioni</a>
             </div>
+            
             <div data-role="main" class="ui-content">
-                <!--<h2>Segnala</h2>-->
+
+                
+                <div id="reportingPositionPopup">
+                    <div style="position:absolute;left:5%;top:20%;width:90%;height:20%;margin:0 auto;background-color:#FFF;border-radius:.3em;">
+                        <div style="margin:1em;">
+                            <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
+                            <p id="reportingPositionPopupContent"></p>
+                        </div>
+                    </div>
+                </div>
+        
+        
+                <!--
+                <div data-role="popup" id="reportingPositionPopup" class="ui-content" style="border-radius:0;color:#F00;">
+                    <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
+                    <p style="white-space:normal;"></p>
+                </div>
+                -->
+                
                 
                 <select id="reportingCategory"></select>
                 <ul data-role="listview" data-inset="true">
@@ -1001,7 +1034,9 @@
                         <div>
                             <img src="js/jquery.mobile-1.4.2/images/icons-png/location-white.png" style="float:left;" />
                             <span style="float:left;padding-left:15px;">Specifica il luogo</span>
+                            <!--
                             <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
+                            -->
                         </div>
                     </li>
                     <li id="locationRow">
@@ -1136,9 +1171,9 @@
                 <!--<a href="#" id="confirmLocationButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>-->
             </div>
             <div data-role="main" class="ui-content">
-                <p>
+                <!--<p>
                     Specifica l'indirizzo relativo al luogo della segnalazione.
-                </p>
+                </p>-->
                 <div>
                     <label for="prov">Provincia</label>
                     <input type="text" id="prov" placeholder="Prov" maxlength="2" autofocus />
@@ -1147,12 +1182,14 @@
                     <label for="route">Indirizzo</label>
                     <textarea id="route" placeholder="Indirizzo"></textarea>
                 </div>
+                <!--
                 <p>
                     Individua la posizione corretta trascinando il segnaposto nella mappa.
-                </p>
+                </p>-->
                 <a href="#" id="confirmLocationButton" class="ui-btn ui-btn-icon-right ui-icon-check" style="white-space:normal;">
                     Procedi
                 </a>
+                <div style="height:150px"></div>
                 <!--
                 <p>
                     Trascina il segnaposto nella mappa sulla posizione corretta
@@ -1180,7 +1217,7 @@
             </div>
             <div data-role="main">
                 <div data-role="popup" id="reportingMapPopup" class="ui-content" style="border-radius:3em;">
-                    <p>Trascina il segnaposto nel punto preciso</p>
+                    <p>Trascina il cursore sulla mappa per indicare l'esatta posizione.</p>
                 </div>
                 <div id="map" style="width:100%;height:30em;"></div>
             </div>

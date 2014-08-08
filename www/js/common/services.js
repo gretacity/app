@@ -514,7 +514,7 @@ console.log("services.getNearbyPlaceInfo FAIL ", jqXHR);
                 prov: reporting.prov,
                 descrizione: reporting.description,
                 priorita: reporting.priority,
-                private: reporting.private
+                anonima: reporting.private ? 1 : 0
             }
         };
         if(reporting.photos.length > 0) {

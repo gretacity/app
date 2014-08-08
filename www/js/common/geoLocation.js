@@ -38,7 +38,7 @@ var geoLocation = {
                     successCallback(
                         {coords: {longitude: lng, latitude: lat, accuracy: accuracy}}
                     );
-                }, 1500);
+                }, 2000);
             }
             return;
         }

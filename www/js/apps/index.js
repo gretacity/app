@@ -2128,7 +2128,8 @@ console.log(row);
     },
     showReportingPage: function(e, d) {
         var page = $('#reportingPage');
-        var positioningMessage = $('#getPositionMessage', page);
+        //var positioningMessage = $('#getPositionMessage', page);
+        var positioningPopup = $('#reportingPositionPopup', page);
         
         if(self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE) {
             // Use QR-code to set position
@@ -2145,12 +2146,18 @@ console.log(row);
             $('#locationRow', page).show();
         }
         //if((self.latLng.lat > 0) && (!self.reportingUpdateLatLng)) return;
-        if(d.prevPage.attr('id') != 'reportingMethodPage') {
+        if((d.prevPage.attr('id') != 'reportingMethodPage') || (self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE)) {
             return;
         }
-        positioningMessage.html('Acquisizione della tua posizione GPS in corso...').show();
+        
+        //positioningMessage.html('Acquisizione della tua posizione GPS in corso...').show();
+        //$('p', positioningPopup).html('Acquisizione della tua posizione GPS in corso...');
+        //positioningPopup.popup('open');
+        $('#reportingPositionPopupContent', positioningPopup).html('Acquisizione della tua posizione GPS in corso...');
+        positioningPopup.show();
         $('#loaderIndicator', page).show();
-        $.mobile.loading('show');
+        //$.mobile.loading('show');
+        
         geoLocation.acquireGeoCoordinates(function(pos) {
             self.latLng.lat = pos.coords.latitude;
             self.latLng.lng = pos.coords.longitude;
@@ -2167,18 +2174,29 @@ console.log(result);
                     provEl.html(result.prov);
                 });
             }
-            $.mobile.loading('hide');
+            //$.mobile.loading('hide');
+            
             $('#loaderIndicator', page).hide();
-            positioningMessage.html('La tua posizione è stata acquisita ma è necessario confermarla.<br />Tocca sopra per procedere.');
+            //positioningMessage.html('La tua posizione è stata acquisita ma è necessario confermarla.<br />Tocca sopra per procedere.');
+            //$('p', positioningPopup).html('La tua posizione è stata acquisita ma è necessario confermarla.<br /><a href="javascript:app.editReportingLocation()" class="btn">Tocca qui per procedere</a>');
+            //$('p a', positioningPopup).button();
+            $('#reportingPositionPopupContent', positioningPopup).html('La tua posizione è stata acquisita ma è necessario confermarla.<br /><a href="javascript:app.editReportingLocation()" class="btn">Procedi</a>');
+            $('a', positioningPopup).button();
+            
             $('#sendReportingButton', page).removeClass('ui-disabled');
         }, function(e) {
             // If the device is unable to retrieve current geo coordinates,
             // set the default position to Rome and the map zoom to 
             //self.latLng = {lat: 0, lng: 0};
             //self.mapZoom = 5;
-            $.mobile.loading('hide');
-            positioningMessage.html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br />Tocca sopra per procedere.');
-            $('#loaderIndicator', page).hide();
+            //$.mobile.loading('hide');
+            //positioningMessage.html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br />Tocca sopra per procedere.');
+            //$('p', positioningPopup).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br /><a href="javascript:app.editReportingLocation()" class="btn">Tocca qui per procedere</a>');
+            //$('p a', positioningPopup).button();
+            //$('#loaderIndicator', page).hide();
+            $('#reportingPositionPopupContent', positioningPopup).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br /><a href="javascript:app.editReportingLocation()" class="btn">Procedi</a>');
+            $('a', positioningPopup).button();
+            
             $('#sendReportingButton', page).removeClass('ui-disabled');
             helper.alert(e, null, "Localizzazione GPS");
         });
@@ -2296,6 +2314,7 @@ console.log(result);
         $('textarea#route', page).on('input', self.reportingLocationChanged);
     },
     editReportingLocation: function() {
+        $('#reportingPositionPopup', page).hide();
         var page = $('#reportingLocationPage');
         $('input#city', page).val(
             $('#reportingPage #locationInfo span.city').html()
@@ -2463,7 +2482,7 @@ console.log(result);
             if((reporting.road == '') || (reporting.comune == '')) errors.push('- specifica l\'indirizzo');
         }
         if(reporting.description == '') errors.push('- descrivi il problema');
-        if(reporting.photos.length == 0) errors.push('- scatta almeno una foto');
+        //if(reporting.photos.length == 0) errors.push('- scatta almeno una foto');
         if(errors.length > 0) {
             helper.alert(errors.join('\n', null, 'Invia segnalazione'));
             return;
