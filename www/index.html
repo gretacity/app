@@ -149,6 +149,18 @@
             
             
             
+            #reportingPositionPopup {
+                display: none;
+                z-index: 10000 !important;
+                background: rgba(0,0,0,.1);
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+            }
+
+            
             .reporting-missing-message {
                 font-size: lighter !important;
                 font-style: italic !important;
@@ -388,12 +400,12 @@
                 <label for="disclaimerPolicyAccepted">ho preso visione delle note legali</label>
                 <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left">Registrati</a>
                 <p style="text-align:justify">
-                    <small>Ti sara' notificata la password di accesso tramite SMS ai contatti inseriti.<br/>
+                    <small>Ti sara' notificata la password di accesso tramite email.<br/>
                         Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">www.gretacity.com</a>.
                         <br />
                         Consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">note legali</a>.</small>
                         <br />
-                        Consulta l'informativa sul <a href="#" onclick="window.open('http://www.gretacity.com/datipersonali', '_system', 'location=yes')">trattamento dei dati personali</a>.</small>
+                        Consulta l'informativa sul <a href="#" onclick="window.open('http://www.gretacity.com/privacy', '_system', 'location=yes')">trattamento dei dati personali</a>.</small>
                 </p>
             </div>            
         </div>
@@ -439,13 +451,13 @@
                     </li>
                 </ul>
                 <p class="news-note" style="margin-top:3em;">
-                    Per richiedere supporto o inviare feedback manda una mail all'indirizzo supporto@gretacity.it
+                    Per richiedere supporto o inviare feedback manda una mail all'indirizzo supporto@gretacity.com
                 </p>
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -471,7 +483,7 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -494,7 +506,7 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -518,7 +530,7 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -540,7 +552,7 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -585,7 +597,7 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -632,7 +644,7 @@
                         <!--
                         <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         -->
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -674,7 +686,7 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" class="ui-navbar-item-selected" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -768,7 +780,7 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" cclass="highlight" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>                        
                     </ul>
@@ -791,16 +803,17 @@
                 <div id="newsDate" class="news-note"></div>
                 <p id="newsText" style="border:1px solid #DDD;padding:1em;white-space:normal;word-wrap:break-word;"></p>
             </div>
+            <!--
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
                 </div>
             </div>
+            -->
         </div>
         <!-- /newsDetailPage -->
     
@@ -826,7 +839,7 @@
                 <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" class="ui-navbar-item-selected">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" class="ui-navbar-item-selected">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -849,7 +862,7 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#" data-icon="location"  class="ui-navbar-item-selected">QUI Vicino</a></li>
                     </ul>
@@ -966,7 +979,7 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
+                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" class="ui-navbar-item-selected">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
                     </ul>
@@ -974,21 +987,6 @@
             </div>
         </div>
         <!-- /reportingMethodPage -->
-        
-<style>
-#reportingPositionPopup
-{
-    display: none;
-    z-index: 10000 !important;
-    /*border: solid 1px #F00 !important;*/
-    background: rgba(0,0,0,.1);
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-}
-</style>
 
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">

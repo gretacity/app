@@ -24,16 +24,16 @@ var config = {
     // To speed up development / testing
     // In release mode they must be empty
     QR_CODE_BASE_URL: 'http://www.gretacity.com/code/',
-    //QR_CODE_TEST: '',
+    QR_CODE_TEST: '',
     //QR_CODE_TEST: 'http://www.gretacity.com/code/4000000000',
-    QR_CODE_TEST: 'http://www.gretacity.com/code/4000000026',
+    //QR_CODE_TEST: 'http://www.gretacity.com/code/4000000026',
     //QR_CODE_TEST: 'http://www.gretacity.com/code/1000000769',
     //QR_CODE_TEST: 'http://www.gooogle.com',
     LOGIN_DEFAULT_USERNAME: '',
     LOGIN_DEFAULT_PASSWORD: '',
     
     
-    REPORTING_MAX_PHOTOS: 3,
+    REPORTING_MAX_PHOTOS: 1,
     
     
     PUSH_REGISTRATION_MAX_DAYS: 7,
@@ -41,7 +41,7 @@ var config = {
     
     REQUEST_DEFAULT_TIMEOUT: 5000,  // 5 secs
     
-    URL_BASE: 'http://www.gretacity.com/test',
+    URL_BASE: 'http://www.gretacity.com',
     
     URL_NOTIFICATION_REGISTER: '/web/index.php?mode=module&p=app_services&a=register_app',
     
