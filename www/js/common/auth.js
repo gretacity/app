@@ -44,7 +44,7 @@ var auth = {
         
         var loginUrl = config.URL_BASE + config.URL_USER_LOGIN;
         
-        var data = 'username=' + params.username + '&password=' + params.password +
+        var data = 'username=' + encodeURIComponent(params.username) + '&password=' + encodeURIComponent(params.password) +
                    '&' + services.getRequestCommonParameters(true);
         
         $.ajax({

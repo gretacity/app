@@ -23,14 +23,19 @@ var geoLocation = {
     },    
     
     
-    acquireGeoCoordinates: function(successCallback, errorCallback) {
-//setTimeout(errorCallback, 3000);return;
+    acquireGeoCoordinates: function(successCallback, errorCallback, options) {
+        var highAccuracy = config.GEO_OPTS_HIGH_ACCURACY;
+        if((options != null) && (options.enableHighAccuracy != null)) {
+            highAccuracy = options.enableHighAccuracy;
+        }
         var options = {maximumAge: config.GEO_OPTS_MAXIMUM_AGE,
                        timeout: config.GEO_OPTS_TIMEOUT, 
-                       enableHighAccuracy: config.GEO_OPTS_HIGH_ACCURACY};
+                       enableHighAccuracy: highAccuracy};
         
         if(config.EMULATE_ON_BROWSER) {
-            //errorCallback('errorino');return;
+if(options.enableHighAccuracy === true) {
+    errorCallback('Fake error message');return;
+}
             if(successCallback) {
                 var lat = 38.858364, lng = 16.549469, accuracy = 15;
                 //lat = 38.810899; lng = 16.603324;
@@ -38,7 +43,7 @@ var geoLocation = {
                     successCallback(
                         {coords: {longitude: lng, latitude: lat, accuracy: accuracy}}
                     );
-                }, 2000);
+                }, 1000);
             }
             return;
         }

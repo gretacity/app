@@ -357,9 +357,6 @@
         <div data-role="page" id="loginPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>GretaCITY</h1>
-                <!--
-                <a href="#info" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-info">info</a>
-                -->
             </div>
             <div data-role="main" class="ui-content">
                 <h2>Login</h2>
@@ -370,6 +367,8 @@
                     <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
                     <input id="loginButton" type="button" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" />
                 </form>
+                <p>Non ricordi la password?</p>
+                <p><a id="recoverPasswordButton" href="#" data-role="button" data-icon="recycle" data-iconpos="left">Recuperala</a></p>
                 <p>Non hai ancora un account?</p>
                 <p><a id="registerPageButton" href="#registrationPage" data-transition="slide" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
             </div>
@@ -445,6 +444,9 @@
                     </li>
                     <li>
                         <a href="#profileFollowingPage"><label>Following</label></a>
+                    </li>
+                    <li>
+                        <a href="#changePasswordPage"><label>Cambia password</label></a>
                     </li>
                     <li data-icon="power">
                         <a href="#" id="logoutButton"><label>Esci</label></a>
@@ -524,7 +526,7 @@
             <div data-role="main" class="ui-content">
                 <div data-role="fieldcontain">
                     <input type="text" id="address" placeholder="Indirizzo di residenza" />
-                    <a href="#" id="saveProfileAddressButton" class="ui-btn">Conferma</a>
+                    <a href="#" id="saveProfileAddressButton" class="ui-btn ui-icon-check ui-btn-icon-right">Conferma</a>
                 </div>
             </div>
             <div data-role="footer" data-position="fixed">
@@ -538,6 +540,30 @@
             </div>
         </div>
         <!-- /profileAddressPage -->
+
+
+        <div data-role="page" id="changePasswordPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false">
+                <h1>Cambia password</h1>
+                <a href="#profilePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>                                
+            </div>
+            <div data-role="main" class="ui-content">
+                <div data-role="main" class="iu-content">
+                    <fieldset data-role="fieldcontain">
+                        <!--
+                        <label for="oldPassword">Vecchia password</label>
+                        <input id="oldPassword" type="password" placeholder="Inserisci la vecchia password" autofocus />
+                        -->
+                        <label for="newPassword">Nuova password</label>
+                        <input id="newPassword" type="password" placeholder="Inserisci la nuova password" autofocus />
+                        <label for="passwordConfirm">Conferma password</label>
+                        <input id="passwordConfirm" type="password" placeholder="Ripeti la nuova password" />
+                    </fieldset>
+                    <a href="#" id="changePasswordButton" class="ui-btn ui-icon-check ui-btn-icon-right">Cambia</a>
+                </div>
+            </div>
+        </div>
+
         
         <!-- profileFollowingPage -->
         <div data-role="page" id="profileFollowingPage">
@@ -576,23 +602,6 @@
                 <!--<ul data-role="listview" id="subscribedChannels"></ul>-->
                 <br />
                 <a href="#channelSubscriptionPage" id="openChannelSubscriptionPageButton" class="ui-btn">Aggiungi altra città</a>
-                
-                <!--
-                <fieldset data-role="controlgroup">
-                    <legend><small>Le tue preferenze:</small></legend>
-                    <input name="checkbox-1a" id="checkbox-1a" checked="" type="checkbox">
-                    <label for="checkbox-1a">Cheetos</label>
-                    <input name="checkbox-2a" id="checkbox-2a" type="checkbox">
-                    <label for="checkbox-2a">Doritos</label>
-                    <input name="checkbox-3a" id="checkbox-3a" type="checkbox">
-                    <label for="checkbox-3a">Fritos</label>
-                    <input name="checkbox-4a" id="checkbox-4a" type="checkbox">
-                    <label for="checkbox-4a">Sun Chips</label>
-                </fieldset>
-                <br/>
-                <p><a href="#user-login" data-role="button" data-icon="check" data-iconpos="left">Salva</a></p>
-                -->
-                
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
@@ -636,14 +645,6 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -->
                         <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
                         <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
@@ -656,11 +657,6 @@
         
         <!-- channelInfoPage -->
         <div data-role="dialog" id="channelInfoPage">
-            <!--
-            <div data-role="header">
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            -->
             <div data-role="main" class="ui-content">
                 <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-delete">Back</a>
                 <p style="margin-top:2em;">info</p>
@@ -705,60 +701,16 @@
         </div>
         <!-- /photoDialog -->
         
-        
-        <!-- newsChannelsPage - - >
-        <div data-role="page" id="newsChannelsPage">
-            
-            <div data-role="header" data-position="fixed">
-                <h1>Canali Notizie</h1>
-                <!--
-                <a href="#homePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                -- >
-                <a href="#" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
-                <!--
-                <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Disconnetti</a>
-                -- >
-            </div>
-            <div data-role="main" class="ui-content">
-                <ul data-role="listview" id="channelList">
-                </ul>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <div data-role="navbar">
-                    <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"><small>QUI Vicino</small></a></li>
-                        -->
-                        <!--
-                        <li><a href="#" data-icon="bars" class="ui-state-persist" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -- >
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" class="highlight" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        < !-- /newsChannelsPage -->
-    
-    
     
         <!-- newsPage -->
         <div data-role="page" id="newsPage">
             
             <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
-                <!--<h1 style="margin-bottom:2em;">Canali notizie</h1>-->
                 <ul data-role="listview" id="channelList"></ul>
             </div>
             
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Notizie</h1>
-                <!--
-                <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-bars ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-                -->
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <a href="#" id="refreshNewsButton" style="margin-right:3em;" class="ui-btn ui-shadow ui-btn-right ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Refresh</a>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
@@ -803,17 +755,6 @@
                 <div id="newsDate" class="news-note"></div>
                 <p id="newsText" style="border:1px solid #DDD;padding:1em;white-space:normal;word-wrap:break-word;"></p>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /newsDetailPage -->
     
@@ -825,12 +766,6 @@
                 <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
             </div>
             <div data-role="main" class="ui-content">
-                <!--
-                <div id="startMessage" style="display:none;border:solid 1px #000;padding: 10px;text-align:center;position:relative;background-color:#fff">
-                    <div style="background:url('img/carat-u-black.png');position:absolute;width:15px;height:15px;top:-9px;right:-1px;"></div>
-                    Tocca qui per leggere il QR code
-                </div>
-                -->
                 <a href="#" id="getInfoButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
                 <ul data-role="listview" id="followingList" style="margin-top:1em;">
                 </ul>
@@ -885,17 +820,6 @@
                 <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;">
                 </ul>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"  class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /nearbyResultsPage -->
     
@@ -909,25 +833,6 @@
             <div data-role="main" class="ui-content" style="margin:0;padding:0;text.align:center;">
                 <div id="nearbyPlaceMap" style="margin:0;padding:0;">View in Map</div>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed">
-                <div data-role="navbar">
-                    <ul>
-                        <!--
-                        <li><a href="#qrCodeInfoPage" data-icon="camera"><small>Info QR code</small></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="tag"><small>Segnala</small></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" class="ui-state-persist ui-btn-active"><small>QUI vicino</small></a></li>
-                        -- >
-                        <!--
-                        <li><a href="#newsChannelsPage" data-icon="bars" style="font-weight:lighter;color:#FFF;">Notizie<span class="ui-li-count-news ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        -- >
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location"  class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /nearbyPlaceInfoPage -->
     
@@ -939,15 +844,7 @@
                 <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
             </div>
             <div data-role="main" class="ui-content">
-                <!--
-                <p>
-                    Breve descrizione servizio
-                </p>
-                -->
                 <ul data-role="listview">
-                    <!--<li data-role="list-divider">
-                        Acquisisci la posizione
-                    </li>-->
                     <li>
                         <a href="#" id="manualPositionButton">
                             Segnala manualmente
@@ -962,9 +859,6 @@
                     </li>
                     
                 </ul>
-                <!--
-                <div style="height:5em;margin:-1em;"></div>
-                -->
                 <ul data-role="listview">
                     <li data-role="list-divider">&nbsp;</li>
                     <li>
@@ -998,26 +892,15 @@
             
             <div data-role="main" class="ui-content">
 
-                
                 <div id="reportingPositionPopup">
-                    <div style="position:absolute;left:5%;top:20%;width:90%;height:20%;margin:0 auto;background-color:#FFF;border-radius:.3em;">
-                        <div style="margin:1em;">
+                    <div style="position:absolute;left:5%;top:10%;width:90%;height:50%;margin:0 auto;background-color:#FFF;border-radius:.3em;">
+                        <div style="margin:1em;padding-top:45%;">
                             <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
                             <p id="reportingPositionPopupContent"></p>
                         </div>
                     </div>
                 </div>
-        
-        
-                <!--
-                <div data-role="popup" id="reportingPositionPopup" class="ui-content" style="border-radius:0;color:#F00;">
-                    <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
-                    <p style="white-space:normal;"></p>
-                </div>
-                -->
                 
-                
-                <select id="reportingCategory"></select>
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider" style="padding: 10px;" id="qrCodeHeader">
                         <div>
@@ -1032,9 +915,6 @@
                         <div>
                             <img src="js/jquery.mobile-1.4.2/images/icons-png/location-white.png" style="float:left;" />
                             <span style="float:left;padding-left:15px;">Specifica il luogo</span>
-                            <!--
-                            <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
-                            -->
                         </div>
                     </li>
                     <li id="locationRow">
@@ -1047,6 +927,15 @@
                         </a>
                     </li>
                     <li id="getPositionMessage" style="font-weight:lighter;color:#aeaece;white-space:normal;">
+                    </li>
+                    <li data-role="list-divider" style="padding: 10px;">
+                        <div>
+                            <img src="js/jquery.mobile-1.4.2/images/icons-png/tag-white.png" style="float:left;" />
+                            <span style="float:left;padding-left:15px;">Categoria del problema</span>
+                        </div>
+                    </li>
+                    <li>
+                        <select id="reportingCategory"></select>
                     </li>
                     <li data-role="list-divider" style="padding: 10px;">
                         <div>
@@ -1066,28 +955,6 @@
                             <span style="float:left;padding-left:15px;">Gravità del disservizio</span>
                         </div>
                     </li>
-                    <!--
-                    <li>
-                        <div id="prioritySet" style="margin-left:1em;">
-                            <a href="javascript:app.setPriority(0);" data-priority="0" class="ui-priority-button ui-btn ui-alt-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#FFF;">0</a>
-                            &nbsp;
-                            <a href="javascript:app.setPriority(1);" data-priority="1" class="ui-priority-button ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#0F0;">1</a>
-                            &nbsp;
-                            <a href="javascript:app.setPriority(2);" data-priority="2" class="ui-priority-button ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#FAF200;">2</a>
-                            &nbsp;
-                            <a href="javascript:app.setPriority(3);"  data-priority="3" class="ui-priority-button ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext"
-                               style="background-color:#F00;">3</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div id="priorityText" style="margin-left:1em;">
-                            Segnalazione
-                        </div>
-                    </li>
-                    -->
                     <li>
                         <select id="priority"></select>
                     </li>
@@ -1109,25 +976,11 @@
                         </a>
                     </li>
                     <li style="margin:0;padding:0;text-align:center;">
-                        <!--div align="center" style="margin:0;padding:0;text-align:center;"-->
-                            <ul id="photoList">
-                            </ul>
-                        <!--/div-->
+                        <ul id="photoList"></ul>
                     </li>
                 </ul>
                 <p><a href="#" id="sendReportingButton" data-role="button" data-icon="action" data-iconpos="left">Invia segnalazione</a></p>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /reportingPage -->
         
@@ -1140,24 +993,7 @@
             </div>
             <div data-role="main" class="ui-content">
                 <textarea placeholder="Descrizione del problema" autofocus></textarea>
-                
-                <!--
-                <div data-role="controlgroup" data-type="horizontal" align="right">
-                    <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
-                    <a href="#" id="confirmDescriptionButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
-                </div>
-                -->
             </div>
-            <!--
-            <div data-role="footer" dddata-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a></li>
-                        <li><a href="#" id="confirmDescriptionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /reportingDescriptionPage -->
         
@@ -1169,9 +1005,6 @@
                 <!--<a href="#" id="confirmLocationButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>-->
             </div>
             <div data-role="main" class="ui-content">
-                <!--<p>
-                    Specifica l'indirizzo relativo al luogo della segnalazione.
-                </p>-->
                 <div>
                     <label for="prov">Provincia</label>
                     <input type="text" id="prov" placeholder="Prov" maxlength="2" autofocus />
@@ -1180,28 +1013,10 @@
                     <label for="route">Indirizzo</label>
                     <textarea id="route" placeholder="Indirizzo"></textarea>
                 </div>
-                <!--
-                <p>
-                    Individua la posizione corretta trascinando il segnaposto nella mappa.
-                </p>-->
                 <a href="#" id="confirmLocationButton" class="ui-btn ui-btn-icon-right ui-icon-check" style="white-space:normal;">
                     Procedi
                 </a>
                 <div style="height:150px"></div>
-                <!--
-                <p>
-                    Trascina il segnaposto nella mappa sulla posizione corretta
-                    per consentirci di individuare con precisione
-                    il punto della tua segnalazione.
-                </p>
-                <div id="map" style="width:100%;height:400px"></div>
-                -->
-                <!--
-                <div data-role="controlgroup" data-type="horizontal" align="right">
-                    <a href="#" data-rel="back" class="ui-btn ui-icon-back ui-btn-icon-left">Indietro</a>
-                    <a href="#" id="confirmLocationButton" class="ui-btn ui-icon-check ui-btn-icon-left">Conferma</a>
-                </div>
-                -->
             </div>
         </div>
         <!-- /reportingLocationPage -->
@@ -1214,9 +1029,6 @@
                 <a href="#" id="confirmPositionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
             </div>
             <div data-role="main">
-                <div data-role="popup" id="reportingMapPopup" class="ui-content" style="border-radius:3em;">
-                    <p>Trascina il cursore sulla mappa per indicare l'esatta posizione.</p>
-                </div>
                 <div id="map" style="width:100%;height:30em;"></div>
             </div>
         </div>
@@ -1250,17 +1062,6 @@
                     </p>
                 </div>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>	
-            -->
         </div>
         <!-- /qrCodeInfoPage -->
         
@@ -1290,17 +1091,6 @@
                 <ul data-role="listview" id="qrCodeNewsList">
                 </ul>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /qrCodeInfoNewsPage -->
     
@@ -1325,17 +1115,6 @@
                 </div>
                 <div style="height:150px;"></div>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /qrCodeInfoCommentsPage -->
     
@@ -1352,17 +1131,6 @@
                 </div>
                 <div id="qrCodeMultimediaContent"></div>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /qrCodeInfoMultimediaPage -->
 
@@ -1380,17 +1148,6 @@
                 <ul data-role="listview" id="qrCodeLinksList">
                 </ul>
             </div>
-            <!--
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" class="ui-state-persist" style="font-weight: lighter;color:#FFF;">QR Code<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
         <!-- /qrCodeInfoLinksPage -->
     
@@ -1407,31 +1164,6 @@
         </div>
         <!-- /qrCodeViewer -->
     
-        <!-- QR Follow -->
-        <!--
-        <div data-role="page" id="qr-follow">
-            <div data-role="header" data-position="fixed">
-                <h1>GretaCITY</h1>
-                <a href="#home" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">			
-                <p>FOLLOW QR</p>
-                <label for="textarea"><small>Commento:</small></label>
-                <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
-                <p><a href="#home"  data-role="button" data-icon="action" data-iconpos="left">Invia Segnalazione</a></p>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#qr-info" data-icon="tag"><small>Info</small></a></li>
-                        <li><a href="#qr-segnala" data-icon="camera"><small>Segnala</small></a></li>
-                        <li><a href="#qr-follow" data-icon="heart" class="ui-btn-active"><small>Follow QR</small></a></li>
-                    </ul>
-                </div>
-            </div>		
-        </div>
-        -->
-        
         <script src="js/jquery-2.1.0.min.js"></script>
         <script>
         $(document).on("mobileinit",function() {

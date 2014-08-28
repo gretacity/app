@@ -47,6 +47,10 @@ var app = {
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
         $('#loginButton', loginPage).on('click', self.login);
+        $('#recoverPasswordButton', loginPage).on('click', self.recoverPassword);
+        var changePasswordPage = $('#changePasswordPage');
+        changePasswordPage.on('pagebeforeshow', self.beforeShowChangePasswordPage);
+        $('#changePasswordButton', changePasswordPage).on('click', self.changePassword);
         var profilePage = $('#profilePage');
         profilePage.on('pageshow', self.showProfilePage);
         $('#logoutButton', profilePage).on('click', self.logout);
@@ -97,9 +101,6 @@ var app = {
         $('#qrCodeInfoLinksPage').on('pagebeforeshow', self.beforeShowQrCodeInfoLinksPage);
         var registerPage = $('#registrationPage');
         $('#registerButton', registerPage).on('click', self.register);
-        //var homePage = $('#homePage');
-        //homePage.on('pageinit', self.initHome);
-        //homePage.on('pagebeforeshow', self.showHome);
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
         var reportingListPage = $('#reportingListPage');
@@ -120,7 +121,6 @@ var app = {
         $('#sendReportingButton', reportingPage).on('click', self.sendReporting);
         var reportingLocationPage = $('#reportingLocationPage');
         reportingLocationPage.on('pageinit', self.initReportingLocationPage);
-        //reportingLocationPage.on('pageshow', self.mapsSetup);
         $('#confirmLocationButton', reportingLocationPage).on('click', self.confirmReportingLocation);
         var reportingMapPage = $('#reportingMapPage');
         reportingMapPage.on('pageshow', self.showReportingMapPage);
@@ -201,6 +201,23 @@ var app = {
         self.pageId = pageId;
     },
     
+    lockLoginUi: function(lock) {
+        var page = $('loginPage');
+        if(lock) {
+            $('#username').addClass('ui-disabled');
+            $('#password').addClass('ui-disabled');
+            $('#loginButton', page).addClass('ui-disabled');
+            $('#recoverPasswordButton', page).addClass('ui-disabled');
+            $('#registerPageButton', page).addClass('ui-disabled');
+        } else {
+            $('#username').removeClass('ui-disabled');
+            $('#password').removeClass('ui-disabled');
+            $('#loginButton', page).removeClass('ui-disabled');
+            $('#recoverPasswordButton', page).removeClass('ui-disabled');
+            $('#registerPageButton', page).removeClass('ui-disabled');
+        }
+    },
+    
     login: function() {
         var page = $('#loginPage');
         var usernameEl = $('#username', page);
@@ -232,12 +249,10 @@ var app = {
         $('#username', page).addClass('ui-disabled');
         $('#password', page).addClass('ui-disabled');
         var initialVal = $('#loginButton', page).html();
-        //$('#loginButton', page).html('Accesso in corso...').addClass('ui-disabled');
-        $('#loginButton', page).val('Accesso in corso...').addClass('ui-disabled').button('refresh');
-        $('#registerPageButton', page).addClass('ui-disabled');
+        $('#loginButton', page).html('Accesso in corso...').button('refresh');
+        self.lockLoginUi(true);
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(result) {
-//console.log(result);
             // Successfully loggedin, move forward
             pushNotificationHelper.register(function(res) {
                 console.log('Registered device on Apple/Google Push Server', res);
@@ -266,38 +281,24 @@ var app = {
                 $.mobile.loading('hide');
             });
             
-            
-            $('#username').removeClass('ui-disabled');
-            $('#password').removeClass('ui-disabled').val('');
-            //$('#loginButton').removeClass('ui-disabled');
-            $('#loginButton').val('Login').removeClass('ui-disabled').button('refresh');
-            $('#registerPageButton').removeClass('ui-disabled');
+            $('#password').val('');
+            $('#loginButton').val('Login').button('refresh');
+            self.lockLoginUi(false);
             config.userLastLoginUsername(username);
             if(self.pageId != null) {
-                //delete $.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 1];
                 $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
-                $.mobile.changePage('#' + self.pageId); //, {reverse: false, changeHash: false});
+                $.mobile.changePage('#' + self.pageId);
                 self.pageId = null;
-            }
-            else {
-                //$.mobile.changePage('index.html#homePage');
-                //$.mobile.changePage('#homePage');
-                //$.mobile.changePage('#newsChannelsPage');
-                //console.log($.mobile.navigate.history.stack);
-                //delete $.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 1];
+            } else {
                 $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
-                //console.log($.mobile.navigate.history.stack);
-                $.mobile.changePage('#newsPage'); //, {reverse: false, changeHash: false});
+                $.mobile.changePage('#newsPage');
             }
         }, function(e) {
             $.mobile.loading('hide');
             $('#loginButton', page).html(initialVal).removeClass('ui-disabled');
             helper.alert(e, function() {
-                $('#username').removeClass('ui-disabled');
-                $('#password').removeClass('ui-disabled');
-                //$('#loginButton').removeClass('ui-disabled');
-                $('#loginButton').val('Login').removeClass('ui-disabled').button('refresh');
-                $('#registerPageButton').removeClass('ui-disabled');
+                $('#loginButton').val('Login').button('refresh');
+                self.lockLoginUi(false);
             }, 'Login');
         });
     },
@@ -374,40 +375,72 @@ var app = {
     
     
     
-    
-    
-    //initHome: function() {
-    //    $('#logoutButton', homePage).on('click', self.logout);
-        /*services.getSummaryData(function(result) {
-            // Success
-            $('#reportingCount').html(result.reportingCount);
-            $('#newsCount').html(result.newsCount);
-            $('#commentsCount').html(result.commentsCount);
-        }, function(e) {
-            // Error occurred
-        });*/
-    //},
-    /*showHome: function() {
-        if(!config.userProfileHasBeenSet()) {        
-            $.mobile.loading('show');
-            // Load profile from server
-            services.getProfile({}, function(result) {
-                self.userProfile = result;
-                $.mobile.loading('hide');
-                // City is mandatory
-                if(self.userProfile.city.id == 0) {
-                    helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
-                        $.mobile.changePage('#profilePage');
-                    }, 'Profilo');
-                }
-            }, function(e) {
-                $.mobile.loading('hide');
-            });
-            
+    recoverPassword: function() {
+        var username = $('#loginPage #username').val().trim();
+        if(username == '') {
+            helper.alert('Per recuperare la password devi specificare il tuo indirizzo email', function() {
+                $('#loginPage #username').focus();
+            }, 'Recupera password');
+        } else if(!helper.isEmailValid(username)) {
+            helper.alert('Indirizzo email non valido', function() {
+                $('#loginPage #username').focus();
+            }, 'Recupera password');
         } else {
-            self.updateBalloonsInHome();
+            self.lockLoginUi(true);
+            services.recoverPassword({username:username}, function(r) {
+                self.lockLoginUi(false);
+                helper.alert('Ti è stata inviata una nuova password nella tua casella di posta elettronica', function() {
+                    self.lockLoginUi(false);
+                }, 'Recupera password');
+            }, function(e) {
+                helper.alert('Si sono verificati errori durante la richiesta di una nuova password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', function() {
+                    self.lockLoginUi(false);
+                }, 'Recupera password');
+            });
         }
-    },*/
+    },   
+    
+    
+    
+    beforeShowChangePasswordPage: function() {
+        //$('#oldPassword').val('');
+        $('#newPassword').val('');
+        $('#passwordConfirm').val('');
+    },
+    
+    changePassword: function() {
+        //var oldPassword = $('#oldPassword').val();
+        var newPassword = $('#newPassword').val();
+        var passwordConfirm = $('#passwordConfirm').val();
+
+        /*if(oldPassword == '') {
+            helper.alert('Inserisci la vecchia password', function() {
+                $('#oldPassword').focus();
+            }, 'Cambia password');
+        } else */
+        if(newPassword == '') {
+            helper.alert('Inserisci la nuova password', function() {
+                $('#newPassword').focus();
+            }, 'Nuova password');
+        } else if(newPassword != passwordConfirm) {
+            helper.alert('La nuova password e la sua conferma non coincidono', function() {
+                $('#newPassword').focus().select();
+            }, 'Cambia password');
+        } else if(newPassword.length < config.PASSWORD_MIN_LENGTH) {
+            helper.alert('La nuova password deve essere lunga almeno ' + config.PASSWORD_MIN_LENGTH + ' caratteri', function() {
+                $('#newPassword').focus().select();
+            }, 'Cambia password');
+        } else {
+            $.mobile.loading('show');
+            services.changePassword({/*oldPassword: oldPassword,*/ newPassword: newPassword}, function() {
+                $.mobile.loading('hide');
+                helper.alert('La password è stata modificata', null, 'Recupera password');
+            }, function() {
+                $.mobile.loading('hide');
+                helper.alert('Si sono verificati errori durante la richiesta di modifica password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', null, 'Recupera password');
+            });
+        }
+    },
     
         
 
@@ -459,8 +492,8 @@ var app = {
         self.retrieveChannelContent(true);
     },
     updateBalloonsInReporting: function() {
-        // TODO
         // Display a balloon for each item that contains updates
+        // TODO
     },
     updateBalloonsInFollowing: function() {
         var listEl = $('#followingListPage #followingList');
@@ -600,9 +633,10 @@ var app = {
         self.userProfile.city.id = cityId;
         self.userProfile.city.name = cityName;
         services.updateProfile({profile: self.userProfile}, function() {
+            services.invalidateSubscribedChannels();
+            self.initSidePanel();
             // and navigate back
             $.mobile.back();
-            //$.mobile.changePage('#profilePage');
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -927,61 +961,6 @@ var app = {
         });
     },
 
-    /*
-    setSidePanelPage: function(pageId) {
-        // Setup newsChannelsPanel
-        var panel = $('#newsChannelsPanel');
-        if(panel.parent().attr('id') != pageId) { //$.mobile.activePage.attr('id')) {
-            panel.prependTo('#'+pageId);
-        }
-    },*/
-    
-    
-    
-    
-    /*beforeShowNewsChannelsPage: function() {
-        
-        if(!config.userProfileHasBeenSet()) {
-            $.mobile.loading('show');
-            // Load profile from server
-            services.getProfile({}, function(result) {
-                self.userProfile = result;
-                $.mobile.loading('hide');
-                // City is mandatory
-                if(self.userProfile.city.id > 0) {
-                    config.userProfileHasBeenSet(true);
-                    return;
-                }
-                helper.alert('Prima di procedere è necessario impostare il tuo profilo', function() {
-                    $.mobile.changePage('#profilePage');
-                }, 'Profilo');
-            }, function(e) {
-                $.mobile.loading('hide');
-            });
-        }
-        
-        services.getSubscribedChannels(function(result) {
-            var html = '';
-            for(var i in result) {
-                var row = result[i];
-                html += '<li><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
-                            + row.denominazione + '</span><label>' + row.nome_feed
-                            + '</label>'
-                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust"></span>'
-                            + '</a></li>';
-            }
-            $('#newsChannelsPage #channelList').html(html).listview('refresh');
-            //html = '<li><a>Tutte</a></li>' + html;
-            $('#newsChannelsPanel #channelList').html(html).listview('refresh');
-            self.updateBalloonsInNews();
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
-        });
-    },*/
     
     showNewsChannel: function(channelId) {
         $('#newsChannelsPanel').panel('close');
@@ -1014,24 +993,10 @@ var app = {
     sideBarInitialized: false,
     
     initNewsPage: function() {
-        
         if(!self.sideBarInitialized) {
             self.initSidePanel();
-        }
-        
+        }        
         var page = $('#newsPage');
-        /*$('#unsubscribeChannelButton', page).on('click', function() {
-            helper.confirm('Rimuovere la sottoscrizione al canale?', function(buttonIndex) {
-                if(buttonIndex == 1) {
-                    $('#unsubscribeChannelButton', page).addClass('ui-disabled');
-                    services.subscribeToChannel({subscribe: false, channelId: self.newsChannelId}, function(result) {
-                        helper.alert('La sottoscrizione al canale è stata rimossa', null, 'Rimuovi sottoscrizione');
-                    }, function(e) {
-                        $('#unsubscribeChannelButton', page).removeClass('ui-disabled');
-                    });
-                }
-            }, 'Notizie', ['Rimuovi', 'No']);
-        });*/
         $('#channelContent', page).empty();
     },
     beforeShowNewsPage: function() {
@@ -1045,64 +1010,31 @@ var app = {
         
         console.log('beforeShowNewsPage: onlyNew is ' + onlyNew);
         
-        /*if(self.newsContentTimeout == null) {
-            setTimeout(function() {
-                self.retrieveChannelContent(onlyNew);
-            }, 100); // start immediatly
-        }*/
         $.mobile.loading('show');
         self.retrieveChannelContent(onlyNew);
         pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
-        self.updateBalloonsInNews();
-        
-        /*if(self.newsChannelId > 0) {
-            $('#newsPage #unsubscribeChannelButton').removeClass('ui-disabled').show();
-        } else {
-            $('#newsPage #unsubscribeChannelButton').hide();
-        }*/        
+        self.updateBalloonsInNews();        
     },
     beforeHideNewsPage: function() {
-        /*if(self.newsContentTimeout != null) {
-            clearTimeout(self.newsContentTimeout);
-            self.newsContentTimeout = null;
-        }*/
     },
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        var image = (item.foto || '');
-        
+        var image = encodeURIComponent(item.foto || '');
+
         var href = (item.link == '') ? 
                 'javascript:self.showNewsDetail(' + item.id + ')' : 
-                'javascript:app.openLink(\'' + item.link + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
+                'javascript:app.openLink(\'' + encodeURIComponent(item.link) + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
         html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
         if(image != '') {
-            html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + image + '\');"></div>';
+            html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + encodeURIComponent(image) + '\');"></div>';
         }
 
         html += '<div>' + item.oggetto + '</div>' +
                 //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
                 '<p class="news-list-note">Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</p>' +
                 '</a></li>';
-        
-        // First ID is the top of the list and has id more greater then others
-        //if((self.newsContentFirstId == null) || (self.newsContentFirstId < rowId)) self.newsContentFirstId = rowId;
-        //if((self.newsContentLastId == null) || (self.newsContentLastId > rowId)) self.newsContentLastId = rowId;
-//var dateText = item.data_inserimento;
-//console.log(dateText + ' ' + rowId);
-        /*
-        
-        
-        if((self.newsContentFirstDate == null) || (self.newsContentFirstDate < dateText)) {
-            self.newsContentFirstDate = dateText;
-            self.newsContentFirstId = rowId;
-        }
-        if((self.newsContentLastDate == null) || (self.newsContentLastDate > dateText)) {
-            self.newsContentLastDate = dateText;
-            self.newsContentLastId = rowId;
-        }*/
-        
-        
+
         return html;
     },
     retrieveChannelContent: function(onlyNew) {
@@ -1112,14 +1044,6 @@ var app = {
         if(!onlyNew) {
             $.mobile.loading('show');
         }
-        
-        //if(self.newsContentTimeout != null) clearTimeout(self.newsContentTimeout);
-        
-        /*var channelId = (this == self) ? self.newsChannelId : $(this).val();
-        if(channelId != self.newsChannelId) {
-            self.newsContentFirstId = null;
-            self.newsContentLastId = null;
-        }*/
         
         var params = {
             channelId: self.newsChannelId, 
@@ -1191,17 +1115,11 @@ var app = {
                         });
                         img.src = imageUrl[1];
                     }
-                    //return false;
                 });
             });
 
-            
-//if(onlyNew === true) console.log('Checking for news updates...');
-
             if((typeof(result.nuove) != 'undefined') && (Array.isArray(result.nuove)) && (result.nuove.length > 0)) {
                 self.newChannelContentReceived = result.nuove;
-
-//if(onlyNew === true) console.log('Found ' + self.newChannelContentReceived.length);
 
                 var firstRec = result.nuove[0];
                 self.newsContentFirstDate = firstRec.data_inserimento;
@@ -1211,14 +1129,6 @@ var app = {
                     self.newChannelContentReceived.length + (self.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
                 ).show('fast');
             }
-            
-            
-            //self.newsContentTimeout = setTimeout(self.retrieveChannelContent, 2000);
-            /*self.newsContentTimeout = setTimeout(function() {
-                if($.mobile.activePage.attr('id') == 'newsPage') {
-                    self.retrieveChannelContent(true);
-                }
-            }, self.NEWS_UPDATE_CONTENT);*/
                         
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
@@ -1229,15 +1139,9 @@ var app = {
             }
             if($.mobile.activePage.attr('id') != 'newsPage') return;
             if(onlyNew) {
-                /*self.newsContentTimeout = setTimeout(function() {
-                    self.retrieveChannelContent(true);
-                }, self.NEWS_UPDATE_CONTENT);*/
+                //
             } else {
-                helper.alert('Impossibile recuperare il contenuto', function() {
-                    /*self.newsContentTimeout = setTimeout(function() {
-                        self.retrieveChannelContent(true);
-                    }, self.NEWS_UPDATE_CONTENT);*/
-                }, 'Canale');
+                helper.alert('Impossibile recuperare il contenuto', null, 'Canale');
             }
         });
     },
@@ -1318,7 +1222,6 @@ var app = {
     
     
     showNewsChannelAvailable: function() {
-//return;
         var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
         if(newsChannelAvailableIds.length == 0) return;
         var page = $('#channelInfoPage');
@@ -1382,21 +1285,9 @@ console.log(newsChannelAvailableIds);
     
     showFollowingListPage: function() {
         $.mobile.loading('show');
-        
-        // Setup newsChannelsPanel
-        /*var panel = $('#newsChannelsPanel');
-        if(panel.parent().attr('id') != $.mobile.activePage.attr('id')) {
-            panel.prependTo('#followingListPage');
-        }*/
-        //self.setSidePanelPage('followingListPage');
-        
+                
         services.getFollowings({}, function(result) {
             $.mobile.loading('hide');
-            /*if(result.follows.length > 0) 
-                $('#followingListPage #startMessage').hide();
-            else
-                $('#followingListPage #startMessage').show();*/
-            //var html = '<li data-role="listdivider"><a href="">Leggi da QR Code</a></li>';
             var html = '';
             for(var i in result.follows) {
                 var row = result.follows[i];
@@ -1466,123 +1357,6 @@ console.log(newsChannelAvailableIds);
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
             }*/
             
-            
-/*** OLD CODE START
-            if(result.notizie && (result.notizie.length > 0)) {
-                // Last news
-                var lastNews = result.notizie[0]; //[result.notizie.length - 1];
-                html += '<div class="qrcode-info-lastnews">' +
-                        '<h3>' + lastNews.titolo + '</h3>' +
-                        '<p>' + lastNews.annotazione + '</p>' +
-                        '</div>';
-                if(result.notizie.length > 1) {
-                    html += '<a href="#qrCodeInfoNewsPage" data-transition="slide" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Altre notizie</a>';
-                }
-            }
-            
-            // Extra Info related to the current QR-code
-            if((result.info.info_extra != null) && Array.isArray(result.info.info_extra) && (result.info.info_extra.length > 0)) {
-                html += '<div style="text-align:left;">';
-                for(var i in result.info.info_extra) {
-                    html += '<p style="color:#FFF;background-color:rgb(89, 196, 248);text-shadow:none;border:solid 1px #0088cc;padding:1.3em;margin: 0.2em 0;">' +
-                            result.info.info_extra[i] +
-                            '</p>';
-                }
-                html += '</div>';
-            }
-            
-            var hasSlider = false;
-            if(result.foto.length > 0) {
-                var hasSlider = true;
-                html += '<div class="slider"><ul class="slides">';
-                for(var i in result.foto) {
-                    html += '<li class="slide">' +
-                                '<img src="' + result.foto[i] + '" />' +
-                            '</li>';
-                }
-                html += '</ul></div>';
-                //$('div.slider').height($('div.slider ul li img').height());
-                //$('div.slider').width($('div.slider ul li img').width());
-            }
-            
-            if(result.youtube.length > 0) {
-                html += '<ul id="videos" style="text-align:left;margin-top:1.5em;" data-inset="false">';
-                html += '<li data-role="list-divider">Video</li>';
-                for(var i in result.youtube) {
-                    var v = result.youtube[i];
-                    html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
-                }
-                html += '</ul>';
-            }
-            
-            if(result.links.length > 0) {
-                html += '<ul id="links" style="text-align:left;margin-top:1.5em;" data-inset="false">';
-                html += '<li data-role="list-divider">Link</li>';
-                for(var i in result.links) {
-                    var l = result.links[i];
-                    html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "\\'") + '\')" target="_system">' + l.nome + '</a></li>';
-                }
-                html += '</ul>';
-            }
-            html += '<ul id="commentList" style="text-align:left;margin-top:1.5em;" data-inset="false">';
-            if(result.commenti.length > 0) {
-                html += '<li data-role="list-divider">Commenti</li>';
-                for(var i in result.commenti) {
-                    var c = result.commenti[i];
-                    var d = Date.parseFromYMDHMS(c.data_inserimento);
-                    html += '<li><p>' + c.descrizione + '</p>';
-                    html += '<small>' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
-                    if(c.stato == 0) html += '<div><small><i>commento in attesa di approvazione</i></small></div>';
-                    html += '</li>';
-                }
-            }
-            html += '</ul>';
-            if(result.commenti.length == 0) {
-                html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
-            }
-            if(canLeaveComment) {
-                html += '<textarea id="comment" style="width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:self.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>';
-            }
-            html += '<div style="height:150px;"></div>';
-            
-            $('#qrCodeInfoPage #infoResult #following').checkboxradio();
-            $('#qrCodeInfoPage #infoResult #commentList').listview();
-            $('#qrCodeInfoPage #infoResult #links').listview();
-            $('#qrCodeInfoPage #infoResult #videos').listview();
-            if(hasSlider) {
-                var glide = $('.slider').glide({
-                    //autoplay: false, // or 4000
-                    arrowLeftText: '',
-                    arrowRightText: ''
-                });
-            }
-OLD CODE END ***/
-            
-/*result.links = [
-    {link: 'http://www.google.com', nome: 'Google'},
-    {link: 'http://it.wikipedia.com', nome: 'Wikipedia'}
-];*/
-            
-            
-            /*
-            html += '<ul data-role="listview" style="margin-top:1em;" data-inset="false">';
-            if(result.notizie && (result.notizie.length > 0)) {
-                html += '<li><a href="#qrCodeInfoNewsPage" data-transition="slide">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a></li>';
-            }
-            if(result.commenti && (result.commenti.length > 0)) {
-                html += '<li><a href="#qrCodeInfoCommentsPage" data-transition="slide">Commenti <span class="ui-li-count">' + result.commenti.length + '</span></a></li>';
-            }
-            if((result.foto && (result.foto.length > 0)) || (result.youtube && (result.youtube.length > 0))) {
-                var totEntries = (result.foto ? result.foto.length : 0) +
-                                 (result.youtube ? result.youtube.length : 0);
-                html += '<li><a href="#qrCodeInfoMultimediaPage" data-transition="slide">Foto e video <span class="ui-li-count">' + totEntries + '</span></li>';
-            }
-            if(result.links && (result.links.length > 0)) {
-                html += '<li><a href="#qrCodeInfoLinksPage" data-transition="slide">Link <span class="ui-li-count">' + result.links.length + '</span></a></li>';
-            }
-            html += '</ul>';
-            */
-            
             var hasGallery = false;
             if(result.foto && (result.foto.length > 0)) {
                 hasGallery = true;
@@ -1598,7 +1372,6 @@ OLD CODE END ***/
             html += '<div style="margin-top:3em;" class="ui-grid-a">' +
                     '<div class="ui-block-a">';
             if(result.notizie && (result.notizie.length > 0)) {
-                //html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-style1">Notizie <span class="ui-li-count">' + result.notizie.length + '</span></a>';
                 html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-news">Notizie</a>';
             } else {
                 html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Notizie</a>';
@@ -1614,7 +1387,6 @@ OLD CODE END ***/
                     '</div>' +
                     '<div class="ui-grid-a">' +
                     '<div class="ui-block-a">';
-            //var totComments = (result.commenti) ? result.commenti.length : 0;
             var totComments = 0;
             html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a></div>';
             html += '<div class="ui-block-b">';
@@ -1628,7 +1400,6 @@ OLD CODE END ***/
             
             
             $('#qrCodeInfoPage #infoResult').html(html);
-            //$('#qrCodeInfoPage #infoResult ul').listview();
             if(hasGallery) {
                 var glide = $('.slider').glide({
                     //autoplay: false, // or 4000
@@ -1725,8 +1496,6 @@ OLD CODE END ***/
         } else {
             $('#leaveCommentPanel').hide();
         }
-        //html += '<textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea><br /><a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>';
-        //html += '<div style="height:150px;"></div>';
         $('#qrCodeCommentsList', page).html(html).listview('refresh');
     },
     
@@ -1843,39 +1612,25 @@ OLD CODE END ***/
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(res) {
             if(res === '') return;
-            /*if(res.text.toLowerCase().indexOf(config.QR_CODE_BASE_URL) == 0) {
-                var pos = res.text.lastIndexOf('/');
-                var code = (pos != -1) ? res.text.substr(pos + 1) : res.text;
-                self.currentQrCode = code;
-                self.getFollowingInfo(code);
-            }*/
-            /* else if(res.text.toLowerCase().indexOf('http://') == 0) {
-                window.open(res.text, '_blank', 'location=no,closebuttoncaption=Indietro');
-            } else {
-                $('#qrCodeInfoPage #qrCodeId').val('');
-                helper.alert('Impossibile leggere il codice', null, 'Leggi QR Code');    
-            }*/
-            //else {
-                var qrCodeData = QrCodeData.fromText(res.text);
-                switch(qrCodeData.type) {
-                    case QrCodeData.TYPE_GRETACITY:
-                        self.currentQrCode = qrCodeData.elements.code;
-                        self.getFollowingInfo(qrCodeData.elements.code);
-                        break;
-                    case QrCodeData.TYPE_URL:
-                        window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
-                        break;
-                    case QrCodeData.TYPE_TEXT:
-                    case QrCodeData.TYPE_CONTACT:
-                    case QrCodeData.TYPE_PHONE_NUMBER:
-                    case QrCodeData.TYPE_SMS:
-                        self.openQrCodeInfoViewer(qrCodeData);
-                        break;
-                    default:
-                        helper.alert('Codifica non supportata', null, 'Leggi QR Code');
-                        break;
-                }
-            //}
+            var qrCodeData = QrCodeData.fromText(res.text);
+            switch(qrCodeData.type) {
+                case QrCodeData.TYPE_GRETACITY:
+                    self.currentQrCode = qrCodeData.elements.code;
+                    self.getFollowingInfo(qrCodeData.elements.code);
+                    break;
+                case QrCodeData.TYPE_URL:
+                    window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
+                    break;
+                case QrCodeData.TYPE_TEXT:
+                case QrCodeData.TYPE_CONTACT:
+                case QrCodeData.TYPE_PHONE_NUMBER:
+                case QrCodeData.TYPE_SMS:
+                    self.openQrCodeInfoViewer(qrCodeData);
+                    break;
+                default:
+                    helper.alert('Codifica non supportata', null, 'Leggi QR Code');
+                    break;
+            }
         }, function(e) {
             $('#qrCodeInfoPage #qrCodeId').val('');
             // errorCallback
@@ -1984,30 +1739,7 @@ console.log(row);
                     if(row.foto != '') 
                         html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';
                     html += '<li>';
-                    
-                    /*
-                    var insertDate = Date.parseFromYMDHMS(row.data_inserimento);
-                    var acceptanceDate = Date.parseFromYMDHMS(row.data_accettazione);
-                    var processingDate = Date.parseFromYMDHMS(row.data_lavorazione);
-                    var completionDate = Date.parseFromYMDHMS(row.data_fine_lavorazione);
-                    var closingDate = Date.parseFromYMDHMS(row.data_chiusura);
-                    
-                    if(insertDate != null) 
-                        html += '<div><small>Inviata il ' + insertDate.toDMY() + ' alle ' + insertDate.toHM() + '</small></div>';
-                    if(acceptanceDate != null) {
-                        html += '<div><small>Notificata il ' + acceptanceDate.toDMY();
-                        if(row.id_ente > 0) html += ' a ' + row.ente;
-                        html += '</small></div>';
-                    }
-                    
-                    if(closingDate != null) 
-                        html += '<div><small>Chiusa il ' + closingDate.toDMY() + '</small></div>';
-                    else if(completionDate != null) 
-                        html += '<div><small>Terminata il ' + completionDate.toDMY() + '</small></div>';
-                    else if(processingDate != null) 
-                        html += '<div><small>In lavorazione dal ' + processingDate.toDMY() + '</small></div>';
-                    */
-                    
+                                        
                     for(var j in row.log) {
                         html += '<div style="white-space:normal;"><small>' + row.log[j] + '</small></div>';
                     }
@@ -2020,10 +1752,6 @@ console.log(row);
             }
             list.html(html);
             list.listview('refresh');
-            //$('#test').collapsible();
-            /*$('div.replist-photo-container img', list).each(function(i, item) {
-                //helper.imageCropToFit(item);
-            });*/
             $.mobile.loading('hide');
             $.mobile.silentScroll();
         }, function(e, loginRequired) {
@@ -2128,7 +1856,6 @@ console.log(row);
     },
     showReportingPage: function(e, d) {
         var page = $('#reportingPage');
-        //var positioningMessage = $('#getPositionMessage', page);
         var positioningPopup = $('#reportingPositionPopup', page);
         
         if(self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE) {
@@ -2145,64 +1872,66 @@ console.log(row);
             $('#locationHeader', page).show();
             $('#locationRow', page).show();
         }
-        //if((self.latLng.lat > 0) && (!self.reportingUpdateLatLng)) return;
+        
         if((d.prevPage.attr('id') != 'reportingMethodPage') || (self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE)) {
             return;
         }
         
-        //positioningMessage.html('Acquisizione della tua posizione GPS in corso...').show();
-        //$('p', positioningPopup).html('Acquisizione della tua posizione GPS in corso...');
-        //positioningPopup.popup('open');
         $('#reportingPositionPopupContent', positioningPopup).html('Acquisizione della tua posizione GPS in corso...');
         positioningPopup.show();
         $('#loaderIndicator', page).show();
-        //$.mobile.loading('show');
+        $('html, body').css({
+            'overflow': 'hidden',
+            'height': '100%'
+        });
         
         geoLocation.acquireGeoCoordinates(function(pos) {
-            self.latLng.lat = pos.coords.latitude;
-            self.latLng.lng = pos.coords.longitude;
-            if((self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_MANUAL) || self.reportingUpdateLatLng) {
-                geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
-console.log(result);
-                    var routeEl = $('#locationInfo span.route', page);
-                    var cityEl =  $('#locationInfo span.city', page);
-                    var provEl =  $('#locationInfo span.prov', page);
-                    // Don't override data
-                    if((routeEl.html() != '') || (cityEl.html() != '') || (provEl.html() != '')) return;
-                    routeEl.html(result.road + " " + result.streetNumber);
-                    cityEl.html(result.city);
-                    provEl.html(result.prov);
-                });
-            }
-            //$.mobile.loading('hide');
+            self.reportingGeoCoordinatesAcquired(pos);
             
-            $('#loaderIndicator', page).hide();
-            //positioningMessage.html('La tua posizione è stata acquisita ma è necessario confermarla.<br />Tocca sopra per procedere.');
-            //$('p', positioningPopup).html('La tua posizione è stata acquisita ma è necessario confermarla.<br /><a href="javascript:app.editReportingLocation()" class="btn">Tocca qui per procedere</a>');
-            //$('p a', positioningPopup).button();
-            $('#reportingPositionPopupContent', positioningPopup).html('La tua posizione è stata acquisita ma è necessario confermarla.<br /><a href="javascript:app.editReportingLocation()" class="btn">Procedi</a>');
-            $('a', positioningPopup).button();
-            
-            $('#sendReportingButton', page).removeClass('ui-disabled');
         }, function(e) {
-            // If the device is unable to retrieve current geo coordinates,
-            // set the default position to Rome and the map zoom to 
-            //self.latLng = {lat: 0, lng: 0};
-            //self.mapZoom = 5;
-            //$.mobile.loading('hide');
-            //positioningMessage.html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br />Tocca sopra per procedere.');
-            //$('p', positioningPopup).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br /><a href="javascript:app.editReportingLocation()" class="btn">Tocca qui per procedere</a>');
-            //$('p a', positioningPopup).button();
-            //$('#loaderIndicator', page).hide();
-            $('#reportingPositionPopupContent', positioningPopup).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br /><a href="javascript:app.editReportingLocation()" class="btn">Procedi</a>');
-            $('a', positioningPopup).button();
-            
-            $('#sendReportingButton', page).removeClass('ui-disabled');
-            helper.alert(e, null, "Localizzazione GPS");
+            geoLocation.acquireGeoCoordinates(function(pos) {
+                self.reportingGeoCoordinatesAcquired(pos);
+            }, function(e) {
+                $('#loaderIndicator', page).hide();
+                $('#reportingPositionPopupContent', positioningPopup).html(
+                    'Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br />' +
+                    '<a href="javascript:app.editReportingLocation()" class="ui-btn ui-btn-icon-right ui-icon-check" style="border:0;padding:.2em;">Procedi</a>'
+                );
+                $('a', positioningPopup).button();
+                $('#sendReportingButton', page).removeClass('ui-disabled');
+            }, {enableHighAccuracy: false});
         });
     },
     mapsScriptLoaded: function() {
     },
+    
+    
+    reportingGeoCoordinatesAcquired: function(pos) {
+        var page = $('#reportingPage');
+        var positioningPopup = $('#reportingPositionPopup', page);
+        self.latLng.lat = pos.coords.latitude;
+        self.latLng.lng = pos.coords.longitude;
+        if((self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_MANUAL) || self.reportingUpdateLatLng) {
+            geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
+                var routeEl = $('#locationInfo span.route', page);
+                var cityEl =  $('#locationInfo span.city', page);
+                var provEl =  $('#locationInfo span.prov', page);
+                // Don't override data
+                if((routeEl.html() != '') || (cityEl.html() != '') || (provEl.html() != '')) return;
+                routeEl.html(result.road + " " + result.streetNumber);
+                cityEl.html(result.city);
+                provEl.html(result.prov);
+            });
+        }
+        $('#loaderIndicator', page).hide();
+        $('#reportingPositionPopupContent', positioningPopup).html(
+            'La tua posizione è stata acquisita ma è necessario confermarla.<br />'+
+            '<a href="javascript:app.editReportingLocation()" class="ui-btn ui-btn-icon-right ui-icon-check" style="border:0;padding:.2em;">Procedi</a>'
+        );
+        $('a', positioningPopup).button();
+        $('#sendReportingButton', page).removeClass('ui-disabled');
+    },
+    
     
     latLng: {lat: 0, lng: 0},
     map: null,
@@ -2221,7 +1950,8 @@ console.log(result);
         var options = {
             zoom: mapZoom,
             center: new google.maps.LatLng(lat, lng),
-            mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID)
+            mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID),
+            streetViewControl: false
         };
         self.map = new google.maps.Map(document.getElementById('map'), options);
         self.mapsSetMarker();
@@ -2275,8 +2005,8 @@ console.log(result);
                 }
         });
 
-        //var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
-        //infowindow.open(self.map, self.marker);
+        var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
+        infowindow.open(self.map, self.marker);
     },
     
     
@@ -2303,7 +2033,6 @@ console.log(result);
         }
         
         self.reportingUpdateLatLng = false;
-        //$.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
         $.mobile.back();
     },
     
@@ -2311,9 +2040,17 @@ console.log(result);
         var page = $('#reportingLocationPage');
         $('input#city', page).on('input', self.reportingLocationChanged);
         $('input#prov', page).on('input', self.reportingLocationChanged);
+        $('input#prov', page).parent('.ui-input-text').css('width', '3em')
+        $('input#prov', page).on('blur', function() {
+            this.value = this.value.toUpperCase();
+        });
         $('textarea#route', page).on('input', self.reportingLocationChanged);
     },
     editReportingLocation: function() {
+        $('html, body').css({
+            'overflow': 'auto',
+            'height': 'auto'
+        });
         $('#reportingPositionPopup', page).hide();
         var page = $('#reportingLocationPage');
         $('input#city', page).val(
@@ -2328,7 +2065,6 @@ console.log(result);
         $.mobile.changePage('#reportingLocationPage', {transition: 'slide'});
     },
     reportingLocationChanged: function() {
-//console.log('reportingLocationChanged');
         var page = $('#reportingLocationPage');
         var params = {
             'city': $('input#city', page).val(),
@@ -2336,9 +2072,6 @@ console.log(result);
             'address': $('textarea#route', page).val()
         };
         geoLocation.geocode(params, function(latLng) {
-            //self.map.setCenter(latLng);
-            //self.marker.position = latLng;
-            //self.map.setZoom(15);
             self.latLng.lat = latLng.lat();
             self.latLng.lng = latLng.lng();
         });
@@ -2351,26 +2084,7 @@ console.log(result);
     showReportingMapPage: function() {
         self.mapsSetup();
         setTimeout(function() {
-            //$('#reportingMapPage #map').height($('#reportingMapPage div[data-role="main"]').height());
-            
-            /*var mapHeight = $.mobile.activePage.height();
-            if(device && device.platform == 'iOS') {
-                mapHeight -= 30;
-            }
-            $('#reportingMapPage #map').height(mapHeight);*/
-            
-            /*$('#reportingMapPage #map').height(
-                $.mobile.activePage.height() -
-                $('#reportingMapPage div[data-role="header"]').height()
-            );*/
-            
             $('#reportingMapPage #map').height($.mobile.activePage.height());
-            
-            // TODO TODO TODO Display alert
-            $('#reportingMapPopup').popup('open');
-            setTimeout(function() {
-                $('#reportingMapPopup').popup('close');
-            }, 5000);
         }, 200);
     },
     
@@ -2389,20 +2103,6 @@ console.log(result);
         //$.mobile.back();
         $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
     },
-    
-    
-    
-    /*
-    reportingPriority: 0,
-    setPriority: function(priority) {
-        var priorityTexts = ['Nessuna priorità', 'Bassa priorità', 'Media priorità', 'Alta priorità'];
-        var page = $('#reportingPage');
-        $('#prioritySet a:not(.ui-nodisc-icon)', page).addClass('ui-nodisc-icon');
-        $('#prioritySet a:nth-child('+(priority+1)+')', page).removeClass('ui-nodisc-icon');
-        $('#priorityText', page).html(priorityTexts[priority]);
-        self.reportingPriority = priority;
-    },*/
-    
     
     
     acquireReportingPhoto: function() {
@@ -2447,13 +2147,8 @@ console.log(result);
     },
     
     sendReporting: function() {
-//helper.alert(self.latLng.lat + ', ' + self.latLng.lng);return;
         // Validate report
         var page = $('#reportingPage');
-        /*var description = $('#description', reportingPage).html().trim();
-        var route = $('#locationInfo span.route', reportingPage).html().trim();
-        var city = $('#locationInfo span.city', reportingPage).html().trim();
-        var hasPhoto = ($('#photoList li a img[data-acquired="1"]', reportingPage).length > 0);*/
         var reporting = {
             qrCode: $('#qrCode', page).html(),
             latLng: self.latLng,
@@ -2482,12 +2177,11 @@ console.log(result);
             if((reporting.road == '') || (reporting.comune == '')) errors.push('- specifica l\'indirizzo');
         }
         if(reporting.description == '') errors.push('- descrivi il problema');
-        //if(reporting.photos.length == 0) errors.push('- scatta almeno una foto');
         if(errors.length > 0) {
             helper.alert(errors.join('\n', null, 'Invia segnalazione'));
             return;
         }
-//console.log(reporting);return;
+
         var initialValue = $('#sendReportingButton', page).html();
         $('#sendReportingButton', page).html('Invio...').addClass('ui-disabled');
         $.mobile.loading('show');
@@ -2542,7 +2236,7 @@ console.log(result);
         }, function(e) {
             console.log(e);
             //$.mobile.loading('hide');
-        });
+        }, {enableHighAccuracy: false});
     },
     showNearbyPlaces: function(catId, catName) {
         if(self.nearbyCurrentPos == null) {
@@ -2587,7 +2281,6 @@ console.log(result);
         $('#placesList', page).html('').listview('refresh');
         $.mobile.loading('show');
         services.getNearbyPlaces(options, function(result) {
-//console.dir(result);
             var html = '';
             if(result.length > 0) {
                 for(var i in result) {
@@ -2632,9 +2325,6 @@ console.log(result);
             $.mobile.changePage('#nearbyResultsPage');
             return;
         }
-        /*setTimeout(function() {
-            $('#nearbyPlaceInfoPage #nearbyPlaceMap').height($.mobile.activePage.height()+'px');
-        }, 100);*/
         $('#nearbyPlaceInfoPage #nearbyPlaceMap').css({
             position: 'absolute', 
             top: '3.5em', //$('div[data-role="header"]', $.mobile.activePage).height(),
@@ -2659,35 +2349,11 @@ console.log(result);
             };
             var map = new google.maps.Map(document.getElementById('nearbyPlaceMap'), options);
             var startingMarkerPoint = new google.maps.LatLng(lat, lng);
-            /*var startingMarker = new google.maps.Marker({
-                position: startingMarkerPoint,
-                map: map,
-                draggable: false,
-                animation: google.maps.Animation.DROP,
-                title: 'Tu'
-            });
-            map.panTo(startingMarkerPoint);
-            map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
-            var infowindow = new google.maps.InfoWindow({content: '<div>Tu</div>'});
-            infowindow.open(map, startingMarker);*/
         }
         $.mobile.loading('show');
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId, source: self.nearbyPlaceSource}, function(result) {
             if(showMap) {
                 var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
-                /*var endingMarker = new google.maps.Marker({
-                    position: endingMarkerPoint,
-                    map: map,
-                    draggable: false,
-                    animation: google.maps.Animation.DROP,
-                    title: result.name
-                });
-                var infowindow2 = new google.maps.InfoWindow({content: '<div>' + result.name + '</div>'});
-                infowindow2.open(map, endingMarker);*/
-                /*var bounds = new google.maps.LatLngBounds();
-                bounds.extend(startingMarker.position);
-                bounds.extend(endingMarker.position);
-                map.fitBounds(bounds);*/
                 
                 // Display route
                 // see:

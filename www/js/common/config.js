@@ -32,6 +32,7 @@ var config = {
     LOGIN_DEFAULT_USERNAME: '',
     LOGIN_DEFAULT_PASSWORD: '',
     
+    PASSWORD_MIN_LENGTH: 5,
     
     REPORTING_MAX_PHOTOS: 1,
     
@@ -47,6 +48,8 @@ var config = {
     
     URL_USER_LOGIN: '/web/index.php?mode=module&p=login&t=login_app&s=app_login',
     URL_USER_REGISTER: '/web/index.php?mode=module&p=login&s=add_user',
+    URL_USER_RECOVER_PASSWORD: '/web/index.php?mode=module&p=utenti&s=utenti&s_t=send_new_password',
+    URL_USER_CHANGE_PASSWORD: '/web/index.php?mode=module&p=utenti&s=utenti&s_t=new_password_app',
     
     URL_USER_SESSION_CHECK: '/web/index.php?mode=module&p=app_services&a=check_session',
     
@@ -262,8 +265,8 @@ Date.parseFromYMDHMS = function(dateText) {
     var parts = dateText.split(' ');
     var dateParts = parts[0].split('-');
     var timeParts = parts[1].split(':');
-    return new Date(dateParts[0], parseInt(dateParts[1])-1, 
-                    dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
+    return new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]), 
+                    parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]));
 }
 
 

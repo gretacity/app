@@ -54,16 +54,40 @@ var services = {
     },
     
     
-    /*
-    getSummaryData: function(successCallback, failCallback) {
-        // TODO
-        var result = {
-            reportingCount: '?',
-            newsCount: '?',
-            commentsCount: '?'
-        };
-        successCallback(result);
-    },*/
+    recoverPassword: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_USER_RECOVER_PASSWORD;
+        var data = 'email='+encodeURIComponent(params.username) + '&' + services.getRequestCommonParameters(true);
+console.log(data);
+        $.ajax(url, {
+            type: 'POST',
+            data: data
+        }).done(function(result) {
+console.log('services.recoverPassword SUCCESS', result);
+            if(success) success();
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.recoverPassword FAIL', jqXHR);
+            if(fail) fail(textStatus);
+        });
+    },
+    
+    changePassword: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_USER_CHANGE_PASSWORD;        
+        // password, password_1
+        //var data = 'oldpass='+encodeURIComponent(params.oldPassword)+'&newpass='+encodeURIComponent(params.newPassword)
+        var data = 'password='+encodeURIComponent(params.newPassword)+'&password_1='+encodeURIComponent(params.newPassword)
+                   + '&' + services.getRequestCommonParameters();
+        $.ajax(url, {
+            type: 'POST',
+            data: data
+        }).done(function(result) {
+console.log('services.changePassword SUCCESS', result);
+            if(success) success();
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.changePassword FAIL', jqXHR);
+            if(fail) fail();
+        });
+        
+    },
     
     
     checkSession: function(completed) {
@@ -229,6 +253,9 @@ console.log('FAIL', jqXHR);
      *  Retrieve subscribed channel of the current user
      */
     _subscribedChannels: null,  // cache results
+    invalidateSubscribedChannels: function() {
+        self._subscribedChannels = null;
+    },
     getSubscribedChannels: function(success, fail) {
         if(self._subscribedChannels != null) {
 //console.log('FROM CACHE', self._subscribedChannels);
@@ -456,12 +483,9 @@ console.log("NEARBYPLACES FAIL", jqXHR);
     },
     
     getNearbyPlaceInfo: function(params, success, fail) {
-        // TODO
         var url = config.URL_BASE + config.URL_NEARBY_PLACE_INFO;
         url += '&' + services.getRequestCommonParameters();
-        //var url = config.URL_NEARBY_PLACE_INFO;
         var data = 'id=' + params.id + '&source=' + params.source
-//console.log(data);
         $.ajax(url, {
             type: 'GET',
             data: data, 
