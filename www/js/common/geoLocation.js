@@ -23,10 +23,10 @@ var geoLocation = {
     },    
     
     
-    acquireGeoCoordinates: function(successCallback, errorCallback, options) {
+    acquireGeoCoordinates: function(successCallback, errorCallback, opts) {
         var highAccuracy = config.GEO_OPTS_HIGH_ACCURACY;
-        if((options != null) && (options.enableHighAccuracy != null)) {
-            highAccuracy = options.enableHighAccuracy;
+        if((opts != null) && (opts.enableHighAccuracy != null)) {
+            highAccuracy = opts.enableHighAccuracy;
         }
         var options = {maximumAge: config.GEO_OPTS_MAXIMUM_AGE,
                        timeout: config.GEO_OPTS_TIMEOUT, 
@@ -34,7 +34,8 @@ var geoLocation = {
         
         if(config.EMULATE_ON_BROWSER) {
 if(options.enableHighAccuracy === true) {
-    errorCallback('Fake error message');return;
+    errorCallback('Fake error message');
+    return;
 }
             if(successCallback) {
                 var lat = 38.858364, lng = 16.549469, accuracy = 15;

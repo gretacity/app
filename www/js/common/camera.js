@@ -1,6 +1,6 @@
 var camera = {
     
-    getPicture: function(successCallback, errorCallback) {
+    getPicture: function(successCallback, errorCallback, opts) {
         
         if(config.EMULATE_ON_BROWSER) {
             //alert('La funzionalità non è dispinibile sul browser');
@@ -8,10 +8,20 @@ var camera = {
             if(successCallback) successCallback(imageData);
             return;
         }
+
+        var sourceType = null;
+        if((opts != null) && (opts.sourceType != null)) {
+            sourceType = opts.sourceType;
+        }
+        // Source type can be only camera or photolibrary
+        if((sourceType != Camera.PictureSourceType.CAMERA) && (sourceType != Camera.PictureSourceType.PHOTOLIBRARY)) {
+            sourceType = Camera.PictureSourceType.CAMERA;
+        }
         
         var cameraOptions = {quality: config.CAMERA_QUALITY,
                              destinationType: Camera.DestinationType.DATA_URL,
-                             sourceType: Camera.PictureSourceType.CAMERA,
+                             //sourceType: Camera.PictureSourceType.CAMERA,       //PHOTOLIBRARY
+                             sourceType: sourceType,
                              encodingType: Camera.EncodingType.JPEG,
                              mediaType: Camera.MediaType.PICTURE,
                              correctOrientation: config.CAMERA_CORRECT_ORIENTATION,

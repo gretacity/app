@@ -367,10 +367,14 @@
                     <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
                     <input id="loginButton" type="button" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" />
                 </form>
-                <p>Non ricordi la password?</p>
-                <p><a id="recoverPasswordButton" href="#" data-role="button" data-icon="recycle" data-iconpos="left">Recuperala</a></p>
-                <p>Non hai ancora un account?</p>
-                <p><a id="registerPageButton" href="#registrationPage" data-transition="slide" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
+                <div id="recoverPasswordPanel" style="display:none;">
+                    <p>Non ricordi la password?</p>
+                    <p><a id="recoverPasswordButton" href="#" data-role="button" data-icon="recycle" data-iconpos="left">Recuperala</a></p>
+                </div>
+                <div>
+                    <p>Non hai ancora un account?</p>
+                    <p><a id="registerPageButton" href="#registrationPage" data-transition="slide" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
+                </div>
             </div>
         </div>
         <!-- /loginPage -->
@@ -690,13 +694,19 @@
             </div>
         </div>
         <!-- /reportingListPage -->
-        
         <!-- photoDialog -->
-        <div dat-role="dialog" id="photoPage">
-            <div data-role="main" style="ui-content"></div>
-                <a href="#" data-rel="back">
-                    <img id="photo" />
-                </a>
+        <div data-roled="dialog" id="photoPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="true">
+                <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">+</a>
+                <a href="javascript:app.reportingListPageZoomOutPhoto()" class="ui-btn ui-btn-right ui-icon-minus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-right:3em;">-</a>
+                <h1>Foto Segnalazione</h1>
+            </div>
+            <div data-role="main">
+                <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">-->
+                <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;">
+                    <img id="photo" ssstyle="display:block;margin:0 auto;" />
+                </div>
             </div>
         </div>
         <!-- /photoDialog -->
@@ -892,6 +902,17 @@
             
             <div data-role="main" class="ui-content">
 
+                <div data-role="popup" id="acquirePhotoPopup">
+                    <ul data-role="listview" data-inset="true">
+                        <li data-icon="camera">
+                            <a href="#" id="shootPhotoButton">Scatta</a>
+                        </li>
+                        <li data-icon="grid">
+                            <a href="#" id="galleryPhotoButton">Galleria</a>
+                        </li>
+                    </ul>
+                </div>
+                
                 <div id="reportingPositionPopup">
                     <div style="position:absolute;left:5%;top:10%;width:90%;height:50%;margin:0 auto;background-color:#FFF;border-radius:.3em;">
                         <div style="margin:1em;padding-top:45%;">
@@ -900,7 +921,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider" style="padding: 10px;" id="qrCodeHeader">
                         <div>
@@ -965,13 +986,13 @@
                     <li data-role="list-divider" style="padding: 10px;">
                         <div>
                             <img src="js/jquery.mobile-1.4.2/images/icons-png/camera-white.png" style="float:left;" />
-                            <span style="float:left;padding-left:15px;">Aggiungi una foto</span>
+                            <span style="float:left;padding-left:15px;">Foto</span>
                         </div>
                     </li>
                     <li>
-                        <a href="#" id="acquirePhotoButton">
+                        <a href="#acquirePhotoPopup" data-rel="popup" _id="acquirePhotoButton">
                             <label style="display:block;padding:2px;">
-                                Scatta
+                                Aggiungi una foto
                             </label>
                         </a>
                     </li>

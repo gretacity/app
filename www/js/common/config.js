@@ -113,7 +113,7 @@ var config = {
     CAMERA_TARGET_WIDTH: null, //300,
     CAMERA_TARGET_HEIGHT: null, //400,
     CAMERA_SAVE_TO_PHOTO_ALBUM: false,
-    CAMERA_ALLOW_EDIT: false,
+    CAMERA_ALLOW_EDIT: true,
     
     
     USE_WIFI_ONLY_KEY: 'gretacity_usewifi',
@@ -184,6 +184,12 @@ if(config.EMULATE_ON_BROWSER) {
     PositionError = {PERMISSION_DENIED: 1,
                      POSITION_UNAVAILABLE: 2,
                      TIMEOUT: 3};
+    Camera = {
+        PictureSourceType : {
+            PHOTOLIBRARY : 0,
+            CAMERA : 1
+        }
+    };
     
     /*window.requestFileSystem = window.webkitRequestFileSystem;
     LocalFileSystem = {};

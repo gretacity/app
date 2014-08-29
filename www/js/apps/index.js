@@ -43,6 +43,7 @@ var app = {
         loginPage.on('pagebeforeshow', function() {
             $('#username', loginPage).val(config.userLastLoginUsername());
             $('#password', loginPage).val('');
+            $('#recoverPasswordPanel').hide();
         });
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
@@ -218,7 +219,7 @@ var app = {
         }
     },
     
-    login: function() {
+    login: function() {        
         var page = $('#loginPage');
         var usernameEl = $('#username', page);
         var username = usernameEl.val().trim();
@@ -298,7 +299,8 @@ var app = {
             $('#loginButton', page).html(initialVal).removeClass('ui-disabled');
             helper.alert(e, function() {
                 $('#loginButton').val('Login').button('refresh');
-                self.lockLoginUi(false);
+                self.lockLoginUi(false);        
+                $('#recoverPasswordPanel').show('fast');
             }, 'Login');
         });
     },
@@ -1020,14 +1022,14 @@ var app = {
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-        var image = encodeURIComponent(item.foto || '');
+        var image = (item.foto || '');
 
         var href = (item.link == '') ? 
                 'javascript:self.showNewsDetail(' + item.id + ')' : 
                 'javascript:app.openLink(\'' + encodeURIComponent(item.link) + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
         html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
         if(image != '') {
-            html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + encodeURIComponent(image) + '\');"></div>';
+            html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + image + '\');"></div>';
         }
 
         html += '<div>' + item.oggetto + '</div>' +
@@ -1730,24 +1732,24 @@ console.log(newsChannelAvailableIds);
             } else {
                 for(var i in result) {
                     var row = result[i];
-console.log(row);
-                    html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
+                    
+                    //html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
                     if(row.indirizzo && row.indirizzo.length > 0) {
-                        html += '<li>' + row.indirizzo + '</li>';
+                        html += '<li><b>' + row.indirizzo + '</b></li>';
                     }
-                    html += '<li style="white-space:normal;"><strong>' + row.descrizione_problema + '</strong></li>';
+                    //html += '<li style="white-space:normal;"><strong>' + row.descrizione_problema + '</strong></li>';
+                    html += '<li>' + row.nome_categoria + '</li>';
                     if(row.foto != '') 
                         html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';
-                    html += '<li>';
-                                        
+                    html += '<li>';                   
                     for(var j in row.log) {
                         html += '<div style="white-space:normal;"><small>' + row.log[j] + '</small></div>';
                     }
-                    
                     if(row.descrizione_chiusura != '') 
                         html += '<div style="white-space:normal;"><small>' + row.descrizione_chiusura + '</small></div>';
-                    
                     html +=  '</li>';
+                    // separator
+                    html += '<li style="padding:0;margin:0;height:1em;background-color:#59C4F8;"></li>';
                 }
             }
             list.html(html);
@@ -1767,8 +1769,20 @@ console.log(row);
         $('#photoPage #photo').attr('src', $(el).attr('src'));
         $.mobile.changePage('#photoPage');
     },
-    
-    
+    _currentPhotoScale: 1,
+    _scaleStep: .2,
+    _minScale: 1,
+    _maxScale: 3,
+    reportingListPageZoomInPhoto: function(el) {
+        self._currentPhotoScale += self._scaleStep;
+        if(self._currentPhotoScale > self._maxScale) self._currentPhotoScale = self._maxScale;
+        $('#photoPage #photo').css('transform', 'scale(' + self._currentPhotoScale + ')');
+    },
+    reportingListPageZoomOutPhoto: function(el) {
+        self._currentPhotoScale -= self._scaleStep;
+        if(self._currentPhotoScale < self._minScale) self._currentPhotoScale = self._minScale;
+        $('#photoPage #photo').css('transform', 'scale(' + self._currentPhotoScale + ')');
+    },
     
     
     
@@ -1823,6 +1837,10 @@ console.log(row);
     reportingUpdateLatLng: false,
     initReportingPage: function() {
         var page = $('#reportingPage');
+        
+        $('#shootPhotoButton').on('click', self.acquireReportingPhoto);
+        $('#galleryPhotoButton').on('click', self.acquireReportingPhoto);
+        
         $('#sendReportingButton', page).addClass('ui-disabled');
         services.getReportingCategories(function(result) {
             var html = '<option value="0" selected>Seleziona categoria</option>';
@@ -2105,26 +2123,33 @@ console.log(row);
     },
     
     
-    acquireReportingPhoto: function() {
+    acquireReportingPhoto: function(e) {        
         if($('#photoList li a img[data-acquired="0"]').first().length == 0) {
             helper.alert('Hai raggiunto il limite massimo', null, 'Scatta foto');
             return;
         }
-        $('#reportingPage #acquirePhotoButton label').html('Acquisizione foto...');
-        $('#reportingPage #acquirePhotoButton').addClass('ui-disabled');
+        var sourceType = (this.attributes['id'].value == 'shootPhotoButton') ?
+                                            Camera.PictureSourceType.CAMERA :
+                                            Camera.PictureSourceType.PHOTOLIBRARY;        
+
+        //$('#reportingPage #acquirePhotoButton label').html('Acquisizione foto...');
+        //$('#reportingPage #acquirePhotoButton').addClass('ui-disabled');
+        
+        $('#reportingPage #acquirePhotoPopup').popup('close');
+        
         camera.getPicture(function(imageData) {
             var imgEl = $('#photoList li a img[data-acquired="0"]').first();
             if(imgEl.length == 1) {
                 imgEl.attr('src', 'data:image/jpeg;base64,' + imageData).attr('data-acquired', '1');
                 imgEl.removeClass('report-imagelist-missing').addClass('report-imagelist-done');
             }
-            $('#reportingPage #acquirePhotoButton label').html('Scatta');
-            $('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
+            //$('#reportingPage #acquirePhotoButton label').html('Scatta');
+            //$('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
         }, function(e) {
             //helper.alert(e, null, 'Impossibile scattare la foto');
-            $('#reportingPage #acquirePhotoButton label').html('Scatta');
-            $('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
-        });
+            //$('#reportingPage #acquirePhotoButton label').html('Scatta');
+            //$('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
+        }, {sourceType: sourceType});
     },
     viewReportingPhoto: function(pos) {
         var imgEl = $('#reportingPage #photoList li a img[data-acquired="1"][data-pos="' + pos + '"]');
