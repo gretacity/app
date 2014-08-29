@@ -4,12 +4,12 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.gretacity.gretacity"
-        versionCode = "1"
-        version   = "0.9">
+        versionCode = "2"
+        version   = "0.9.5">
 
     <name>GretaCITY</name>
 
-    <description>La città diventa intelligente...</description>
+    <description>La città diventa intelligente</description>
 
     <author href="http://www.gretacity.com" email="info@gretacity.com">
         GretaCITY Team

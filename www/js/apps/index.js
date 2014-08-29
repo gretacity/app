@@ -1749,7 +1749,7 @@ console.log(newsChannelAvailableIds);
                         html += '<div style="white-space:normal;"><small>' + row.descrizione_chiusura + '</small></div>';
                     html +=  '</li>';
                     // separator
-                    html += '<li style="padding:0;margin:0;height:1em;background-color:#59C4F8;"></li>';
+                    html += '<li style="padding:0;margin:0;height:.5em;background-color:#59C4F8;"></li>';
                 }
             }
             list.html(html);
