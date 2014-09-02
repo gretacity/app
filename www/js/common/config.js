@@ -271,8 +271,9 @@ Date.parseFromYMDHMS = function(dateText) {
     var parts = dateText.split(' ');
     var dateParts = parts[0].split('-');
     var timeParts = parts[1].split(':');
-    return new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]), 
-                    parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]));
+    return new Date(2014, 8, 2, 10, 30, 0);
+    /*return new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]), 
+                    parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]));*/
 }
 
 

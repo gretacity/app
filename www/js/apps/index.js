@@ -1025,6 +1025,7 @@ var app = {
 var log = item.data_inserimento + '\n';
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
 log += dateAdded.toDateString() + '\n';
+log += dateAdded.toYMDHMS() + '\n';
 log += dateAdded.toYMD();
 helper.alert(log);
         var image = (item.foto || '');
