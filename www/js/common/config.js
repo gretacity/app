@@ -270,11 +270,11 @@ Date.parseFromYMDHMS = function(dateText) {
     if(dateText == '0000-00-00 00:00:00') return null;
     var parts = dateText.split(' ');
     var dateParts = parts[0].split('-');
-alert(dateParts.length + '\n' + dateParts[0]);
+alert(dateParts.length + '\n' + parseInt(dateParts[0]));
     
     var timeParts = parts[1].split(':');
     return new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]), 
-                    parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]));
+                    parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]), 0);
 }
 
 
