@@ -1022,10 +1022,11 @@ var app = {
     },
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
-console.log('LOGGGG ' + item.data_inserimento);
+var log = item.data_inserimento + '\n';
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-console.log('LOGGGG ' + dateAdded.toDateString());
-console.log('LOGGGG ' + dateAdded.toYMD());
+log += dateAdded.toDateString() + '\n';
+log += dateAdded.toYMD();
+helper.alert(log);
         var image = (item.foto || '');
 
         var href = (item.link == '') ? 
