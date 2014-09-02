@@ -1022,14 +1022,9 @@ var app = {
     },
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
-var log = item.data_inserimento + '\n';
-        var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
-log += dateAdded.toDateString() + '\n';
-log += dateAdded.toYMDHMS() + '\n';
-log += dateAdded.toYMD() + '\n';
-log += typeof(''.split);
-helper.alert(log);
-        
+        //var dateAddedTmp = Date.parseFromYMDHMS(item.data_inserimento);
+        //var dateAdded dateAddedTmp.toDMY() + ' alle ' + dateAddedTmp.toHM()
+        var dateAdded = item.data;
         var image = (item.foto || '');
 
         var href = (item.link == '') ? 
@@ -1042,7 +1037,7 @@ helper.alert(log);
 
         html += '<div>' + item.oggetto + '</div>' +
                 //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
-                '<p class="news-list-note">Inserita il ' + dateAdded.toDMY() + ' alle ' + dateAdded.toHM() + '</p>' +
+                '<p class="news-list-note">Inserita il ' + dateAdded + '</p>' +
                 '</a></li>';
 
         return html;
@@ -1083,7 +1078,6 @@ helper.alert(log);
                             self.newsContentFirstDate = firstRec.data_inserimento;
                             self.newsContentFirstId = firstRec.id;
                         }
-break;
                     }
                 }
                 if(result.vecchie.length == 0) {
