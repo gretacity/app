@@ -34,7 +34,6 @@ var app = {
             }
         }, false);
         
-        
         $('.newsPageToolbarButton').on('click', function() {
             self.showNewsChannel(self.newsChannelId);
         });
@@ -171,6 +170,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'self.receivedEvent(...);'
     onDeviceReady: function() {
+        
         self.receivedEvent('deviceready');
         if(typeof(navigator.language) == 'string') {
             self.language = navigator.language;
@@ -191,6 +191,7 @@ var app = {
             window.location.hash = (result ? 'newsPage' : 'loginPage');
             $.mobile.initializePage();
         });
+        
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -1021,7 +1022,10 @@ var app = {
     },
     formatChannelContentItem: function(item) {
         var rowId = parseInt(item.id);
+console.log('LOGGGG ' + item.data_inserimento);
         var dateAdded = Date.parseFromYMDHMS(item.data_inserimento);
+console.log('LOGGGG ' + dateAdded.toDateString());
+console.log('LOGGGG ' + dateAdded.toYMD());
         var image = (item.foto || '');
 
         var href = (item.link == '') ? 
@@ -1075,6 +1079,7 @@ var app = {
                             self.newsContentFirstDate = firstRec.data_inserimento;
                             self.newsContentFirstId = firstRec.id;
                         }
+break;
                     }
                 }
                 if(result.vecchie.length == 0) {

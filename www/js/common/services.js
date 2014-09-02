@@ -98,7 +98,8 @@ console.log('services.changePassword FAIL', jqXHR);
         var url = config.URL_BASE + config.URL_USER_SESSION_CHECK;
         url += '&' + services.getRequestCommonParameters(true) + '&session_key='+auth.getSessionId();
         $.ajax(url, {
-            type: 'GET',
+            type: 'GET'//,
+            //timeout: 2
         }).done(function(result) {
             console.log('services.checkSession: success ', result);
             completed(result == '1');
