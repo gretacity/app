@@ -99,7 +99,7 @@ console.log('services.changePassword FAIL', jqXHR);
         url += '&' + services.getRequestCommonParameters(true) + '&session_key='+auth.getSessionId();
         $.ajax(url, {
             type: 'GET',
-            timeout: 3
+            timeout: 3000
         }).done(function(result) {
             console.log('services.checkSession: success ', result);
             completed(result == '1');
