@@ -92,8 +92,8 @@
             /*.ui-disabled {background-color: #cecece !important;}*/
             
             .ui-navbar-item-cust {
-                font-weight: lighter !importat;
-                color: #FFF !importat;
+                font-weight: lighter !important;
+                color: #FFF !important;
             }
             
             
@@ -406,9 +406,10 @@
                     <small>Ti sara' notificata la password di accesso tramite email.<br/>
                         Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">www.gretacity.com</a>.
                         <br />
-                        Consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">note legali</a>.</small>
+                        Consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">note legali</a>.
                         <br />
-                        Consulta l'informativa sul <a href="#" onclick="window.open('http://www.gretacity.com/privacy', '_system', 'location=yes')">trattamento dei dati personali</a>.</small>
+                        Consulta l'informativa sul <a href="#" onclick="window.open('http://www.gretacity.com/privacy', '_system', 'location=yes')">trattamento dei dati personali</a>.
+                    </small>
                 </p>
             </div>            
         </div>
@@ -721,7 +722,10 @@
             </div>
             
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Notizie</h1>
+                <!--
+                <img src="img/greta.png" style="display:block;float:left;" />
+                -->
+                <h1 _style="margin:0;padding:0;">Notizie</h1>
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <a href="#" id="refreshNewsButton" style="margin-right:3em;" class="ui-btn ui-shadow ui-btn-right ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Refresh</a>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
@@ -841,7 +845,7 @@
                 <h1>QUI vicino</h1>
                 <a href="#nearbyResultsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
             </div>
-            <div data-role="main" class="ui-content" style="margin:0;padding:0;text.align:center;">
+            <div data-role="main" class="ui-content" style="margin:0;padding:0;text-align:center;">
                 <div id="nearbyPlaceMap" style="margin:0;padding:0;">View in Map</div>
             </div>
         </div>
@@ -1071,7 +1075,7 @@
         
         
         <!-- qrCodeInfoPage -->
-        <div data-role="page" id="qrCodeInfoPage" __style="background:url('img/bg-qrcode.png')">
+        <div data-role="page" id="qrCodeInfoPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Following</h1>
                 <a href="#followingListPage" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
