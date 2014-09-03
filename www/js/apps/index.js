@@ -1407,10 +1407,10 @@ console.log(newsChannelAvailableIds);
             $('#qrCodeInfoPage #infoResult').html(html);
             if(hasGallery) {
                 var glide = $('.slider').glide({
-                    //autoplay: false, // or 4000
+                    autoplay: false, // or 4000
                     arrowLeftText: '',
                     arrowRightText: ''
-                });                
+                });         
             }
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
