@@ -42,7 +42,6 @@ var app = {
         loginPage.on('pagebeforeshow', function() {
             $('#username', loginPage).val(config.userLastLoginUsername());
             $('#password', loginPage).val('');
-            $('#recoverPasswordPanel').hide();
         });
         $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
@@ -225,24 +224,24 @@ var app = {
         var usernameEl = $('#username', page);
         var username = usernameEl.val().trim();
         if(username == '') {
-            $('label[for="username"]', page).addClass('fielderror');
+            $('#username', page).addClass('input-error');
             helper.alert('Inserisci il nome utente', function() {
                 usernameEl.focus();
             }, 'Login');
             return;
         } else {
-            $('label[for="username"]', page).removeClass('fielderror');
+            $('#username', page).removeClass('input-error');
         }
         var passwordEl = $('#password', page);
         var password = passwordEl.val().trim();
         if(password == '') {
-            $('label[for="password"]', page).addClass('fielderror');
+            $('#password', page).addClass('input-error');
             helper.alert('Inserisci la password', function() {
                 passwordEl.focus();
             }, 'Login');
             return;
         } else {
-            $('label[for="password"]', page).removeClass('fielderror');
+            $('#password', page).removeClass('input-error');
         }
         if(!helper.isOnline()) {
             helper.alert('Nessuna connessione', null, 'Accesso a GretaCITY');
@@ -251,7 +250,7 @@ var app = {
         $('#username', page).addClass('ui-disabled');
         $('#password', page).addClass('ui-disabled');
         var initialVal = $('#loginButton', page).html();
-        $('#loginButton', page).html('Accesso in corso...').button('refresh');
+        $('#loginButton', page).html('Accesso in corso...');
         self.lockLoginUi(true);
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(result) {
@@ -299,7 +298,7 @@ var app = {
             $.mobile.loading('hide');
             $('#loginButton', page).html(initialVal).removeClass('ui-disabled');
             helper.alert(e, function() {
-                $('#loginButton').val('Login').button('refresh');
+                $('#loginButton').val('Login');
                 self.lockLoginUi(false);        
                 $('#recoverPasswordPanel').show('fast');
             }, 'Login');
@@ -389,6 +388,11 @@ var app = {
                 $('#loginPage #username').focus();
             }, 'Recupera password');
         } else {
+            
+            helper.confirm('Ti verrà inviata una nuova password alla tua email.', function(ix) {
+                alert(ix);
+            }, 'Recupera password', ['Procedi', 'Annulla']);
+            return;
             self.lockLoginUi(true);
             services.recoverPassword({username:username}, function(r) {
                 self.lockLoginUi(false);
