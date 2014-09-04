@@ -349,31 +349,59 @@
                 width: 80px;
                 height: auto;
             }
+            
+            .center-wrapper {
+                width:80%;
+                height: 3em;
+                line-height: 3em;
+                margin: 0 auto;
+                text-align: center;
+            }
+            .center-wrapper * {
+                margin: 0 auto;
+            }
+            .center-wrapper img {
+                vertical-align: middle;
+            }     
+            .center-wrapper span {
+                vertical-align: middle;
+            }
+            
+            .input-error {
+                border: solid 1px #F00 !important;
+            }
+            .margin-top {
+                margin-top: 1em !important;
+            }
+            .text-primary {
+                text-align: center;
+                color: #aeaece;
+                font-size: .8em !important;
+            }
         </style>
     </head>
     <body>
 
         <!-- loginPage -->
         <div data-role="page" id="loginPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <div class="center-wrapper">
+                    <img  src="img/greta.png" /> 
+                    <span>Login</span>
+                </div>
             </div>
             <div data-role="main" class="ui-content">
-                <h2>Login</h2>
+                <p class="text-primary">Registrati per accedere all'area riservata*</p>
                 <form id="loginForm">
-                    <label for="username">Email</label>
-                    <input type="text" name="username" id="username" placeholder="Email" autofocus />
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
-                    <input id="loginButton" type="button" data-role="button" data-icon="check" data-iconpos="left" value="Accedi" />
+                    <input type="text" name="username" id="username" placeholder="Email*" />
+                    <input type="password" name="password" id="password" autocomplete="off" placeholder="Password*">
+                    <a id="loginButton" data-role="button" class="margin-top">ACCEDI</a>
                 </form>
-                <div id="recoverPasswordPanel" style="display:none;">
-                    <p>Non ricordi la password?</p>
-                    <p><a id="recoverPasswordButton" href="#" data-role="button" data-icon="recycle" data-iconpos="left" class="ui-btn-primary" style="font-weight:normal;">Recuperala</a></p>
+                <div id="recoverPasswordPanel">
+                    <a id="recoverPasswordButton" href="#" data-role="button" class="margin-top">RECUPERA PASSWORD</a>
                 </div>
                 <div>
-                    <p>Non hai ancora un account?</p>
-                    <p><a id="registerPageButton" href="#registrationPage" data-transition="slide" data-role="button" data-icon="edit" data-iconpos="left">Registrati su GretaCITY</a></p>
+                    <a id="registerPageButton" href="#registrationPage" data-transition="slide" data-role="button" class="margin-top">REGISTRATI SU GRETACITY</a>
                 </div>
             </div>
         </div>
@@ -722,9 +750,9 @@
             </div>
             
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <!--
-                <img src="img/greta.png" style="display:block;float:left;" />
-                -->
+                
+                <img src="img/greta.png" style="display:block; float:left; padding:0 auto; " />
+                
                 <h1 _style="margin:0;padding:0;">Notizie</h1>
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <a href="#" id="refreshNewsButton" style="margin-right:3em;" class="ui-btn ui-shadow ui-btn-right ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Refresh</a>
