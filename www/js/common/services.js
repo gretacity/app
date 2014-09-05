@@ -19,8 +19,9 @@ var services = {
         var commonParams = 'app=' + config.APP_NAME + '&api=' + config.API_V + '&appv=' + config.APP_VERSION;
         if(!(excludeSessionId || false)) {
             var sessionId = auth.getSessionId();
-            //if((sessionId || '') != '') commonParams += '&session_id=' + sessionId;
-            commonParams += '&session_id=' + (sessionId || '');
+            if((sessionId || '') != '') {
+                commonParams += '&session_id=' + (sessionId || '');
+            }
         }
         if(typeof(device) != 'undefined') {
             commonParams += '&uuid=' + device.uuid;
@@ -40,8 +41,9 @@ var services = {
     
     registerUser: function(params, successCallback, failCallback) {
         var url = config.URL_BASE + config.URL_USER_REGISTER;
-        var data = 'cognome='+encodeURIComponent(params.lastname)+'&nome='+encodeURIComponent(params.firstname)+
-                   '&email='+encodeURIComponent(params.email) + '&' + services.getRequestCommonParameters(true);
+        var data = 'id_comune='+encodeURIComponent(params.city)+'&cognome='+encodeURIComponent(params.lastname)+'&nome='+encodeURIComponent(params.firstname)+
+                   '&cell=' + encodeURIComponent(params.phone) + '&email='+encodeURIComponent(params.email) + '&indirizzo=' + encodeURIComponent(params.address) +
+                   '&' + services.getRequestCommonParameters(true);
         $.ajax(url, {
             type: 'POST',
             data: data,

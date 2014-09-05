@@ -25,7 +25,7 @@ var app = {
             /*if(barcodeReader.scanning) {
                 e.preventDefault();
             } else*/
-            if($.mobile.activePage.is('#newsPage') || 
+            if($.mobile.activePage.is('#homePage') || 
                $.mobile.activePage.is('#loginPage')) {
                 e.preventDefault();
                 navigator.app.exitApp();
@@ -50,6 +50,14 @@ var app = {
         var changePasswordPage = $('#changePasswordPage');
         changePasswordPage.on('pagebeforeshow', self.beforeShowChangePasswordPage);
         $('#changePasswordButton', changePasswordPage).on('click', self.changePassword);
+        
+        var reporting1Page = $('#reporting1Page');
+        reporting1Page.on('pageinit', self.initReporting1Page);
+        reporting1Page.on('pageshow', self.showReporting1Page);
+        
+        var reporting2Page = $('#reporting2Page');
+        reporting2Page.on('pageshow', self.showReporting2Page);
+        
         var profilePage = $('#profilePage');
         profilePage.on('pageshow', self.showProfilePage);
         $('#logoutButton', profilePage).on('click', self.logout);
@@ -99,6 +107,7 @@ var app = {
         $('#qrCodeInfoMultimediaPage').on('pagebeforeshow', self.beforeShowQrCodeInfoMultimediaPage);
         $('#qrCodeInfoLinksPage').on('pagebeforeshow', self.beforeShowQrCodeInfoLinksPage);
         var registerPage = $('#registrationPage');
+        registerPage.on('pageinit', self.initRegisterPage);
         $('#registerButton', registerPage).on('click', self.register);
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
@@ -106,9 +115,11 @@ var app = {
         reportingListPage.on('pageshow', self.loadReportingItems);
         $('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
         //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
-        var reportingMethodPage = $('#reportingMethodPage');
+        
+        /*var reportingMethodPage = $('#reportingMethodPage');
         reportingMethodPage.on('pageinit', self.initReportingMethodPage);
-        reportingMethodPage.on('pagebeforeshow', self.beforeShowReportingMethodPage);
+        reportingMethodPage.on('pagebeforeshow', self.beforeShowReportingMethodPage);*/
+        
         var reportingPage = $('#reportingPage');
         reportingPage.on('pageinit', self.initReportingPage);
         reportingPage.on('pageshow', self.showReportingPage);
@@ -181,6 +192,8 @@ var app = {
         }
         //$('[data-role="header"],[data-role="footer"]').fixedtoolbar({ tapToggle:false });
         services.checkSession(function(result) {
+// TODO TODO TODO
+return;
             console.log('onDeviceReady: session check ' + result);
             if(result) {
                 services.getProfile(null, function(result) {
@@ -197,10 +210,109 @@ var app = {
         console.log('Received Event: ' + id);
     },
     
+    ////////////////////////////
+    // Common functions
+    fillCityList: function(val, listEl, targetElId) {
+        services.getLocationsByName({name:val}, function(result) {
+            var html = '';
+            var max_rows = 20;
+            var ix = 0;
+            for(var i in result) {
+                if(ix++ >= max_rows) {
+                    html += '<li>Altri risultati omessi</li>';
+                    break;
+                }
+                var row = result[i];
+                html += '<li><a href="javascript:self.setCity(\'' + targetElId + '\', \'' + row.nome.trim().replace(/'/g, "\\'") 
+                        + '\', '+row.id+', \'' + listEl.attr('id') + '\')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
+            }
+            listEl.html(html).listview("refresh");
+        });
+    },
+    setCity: function(targetElId, name, id, listElId) {
+        $('#' + targetElId, $.mobile.activePage).val(name).data('cityid',id).data('cityname', name);
+        $('#' + listElId, $.mobile.activePage).empty();
+    },
+    
+    updateBalloonsInNavbar: function() {
+        var cfg = [
+            //{type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, elementId: 'followingCount', className: 'ui-li-count-following'}
+        ];
+        for(var i in cfg) {
+            var unreadCount = pushNotificationHelper.getUnread(cfg[i].type);
+            //var el = $('#'+cfg[i].elementId, $.mobile.activePage); //, page);
+            
+            if(cfg[i].type == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING) {
+                if(unreadCount > 0) {
+                    $('#reportingMethodPage #reportingCount').html(unreadCount).show();
+                } else {
+                    $('#reportingMethodPage #reportingCount').html(unreadCount).hide();
+                }
+            }
+            
+            var el = $('.'+cfg[i].className); //, page);
+            if(el.length == 0) continue;
+            el.html(unreadCount);
+            if(unreadCount > 0) {
+                el.show();
+            } else {
+                el.hide();
+            }
+        }
+    },
+    updateBalloonsInNews: function(openSideBar) {
+        // Display a balloon for each feed that contains updates
+        var listEl = $('#newsChannelsPanel #channelList');
+        $('li a span.ui-li-count', listEl).hide();
+        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, null, true);
+        for(var i in unreadData) {
+            if(unreadData[i] == 0) continue;
+            $('li a #count_' + i, listEl).html(unreadData[i]).show();
+        }
+        if(openSideBar || false) {
+            $('#newsChannelsPage').panel('open');
+        }
+    },
+    updateBalloonsInNewsContent: function() {
+        // Don't display the balloon on top of the feed,
+        // but uses the old feed update system and display 
+        // a button on the top of the page to add new posts.
+        self.retrieveChannelContent(true);
+    },
+    updateBalloonsInReporting: function() {
+        // Display a balloon for each item that contains updates
+        // TODO
+    },
+    updateBalloonsInFollowing: function() {
+        var listEl = $('#followingListPage #followingList');
+        $('li a span.ui-li-count', listEl).hide();
+        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, null, true);
+        for(var i in unreadData) {
+            if(unreadData[i] == 0) continue;
+            $('li a #count_' + i, listEl).html(unreadData[i]).show();
+        }
+    },
+    
+    ////////////////////////////
+    // Common functions (end)
+    
+    
     pageId : null,
     changePageAfterLogin: function(pageId) {
         self.pageId = pageId;
     },
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     lockLoginUi: function(lock) {
         var page = $('loginPage');
@@ -283,7 +395,7 @@ var app = {
             });
             
             $('#password').val('');
-            $('#loginButton').val('Login').button('refresh');
+            $('#loginButton').val('Login');
             self.lockLoginUi(false);
             config.userLastLoginUsername(username);
             if(self.pageId != null) {
@@ -292,7 +404,7 @@ var app = {
                 self.pageId = null;
             } else {
                 $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
-                $.mobile.changePage('#newsPage');
+                $.mobile.changePage('#homePage');
             }
         }, function(e) {
             $.mobile.loading('hide');
@@ -306,50 +418,81 @@ var app = {
     },
     
     logout: function() {
-        auth.setSessionId(null);
+        auth.setSessionId('');
         self.userProfile = null;
         $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
     },
     
+    
+    
+    initRegisterPage: function() {
+        var page = $('#registrationPage');
+        $('#city', page).on('input', function() {
+            var val = $(this).val();
+            if($(this).data('cityname') != val) {
+                $(this).data('cityid', '');
+            }
+            if(val.length >= 4) {
+                self.fillCityList(val, $('#citySuggestion', page), 'city');
+            }
+        });
+    },
+    
+    
+    
+    
+    
+    
     register: function() {
         var page = $('#registrationPage');
-        var params = {lastname: '', firstname: '', phone: '', email: ''};
+        var params = {};
         // Validation
         var hasErrors = false;
-        var requiredFields = ['lastname', 'firstname', 
-                              'phone', 
-                              'email'];
-        for(var i in requiredFields) {
-            var fieldId = requiredFields[i];
-            var fieldVal = $('#' + fieldId, page).val().trim();
-            if(fieldVal == '') {
-                $('label[for="' + fieldId + '"]', page).addClass('fielderror');
+        var fields = ['city', 'lastname', 'firstname', 'email', 'phone', 'address'];
+        for(var i in fields) {
+            var fieldId = fields[i];
+            var required = null;
+            var fieldVal = null;
+            if(fieldId == 'city') {
+                required = true;
+                fieldVal = $('#' + fieldId, page).data('cityid') || '';
+            } else {
+                required = $('#' + fieldId + '[required]', page).length == 1;
+                fieldVal = $('#' + fieldId, page).val().trim();
+            }
+            if(required && (fieldVal == '')) {
+                $('#' + fieldId, page).addClass('input-error');
                 hasErrors = true;
             } else {
-                $('label[for="' + fieldId + '"]', page).removeClass('fielderror');
-                eval('params.'+fieldId+'="'+fieldVal+'"');
+                $('#' + fieldId, page).removeClass('input-error');
             }
+            eval('params.'+fieldId+'="'+fieldVal+'"');
         }
+
         if(hasErrors) {
-            helper.alert('Alcuni campi non sono stati compilati', null, 'Registrazione');
-            return;
-        }
-        // Specific validation for phone number
-        if(!helper.isPhoneNumberValid(params.phone)) {
-            $('label[for="phone"]').addClass('fielderror');
-            helper.alert('Inserisci un numero di telefono valido', function() {
-                $('#phone', page).focus();
+            helper.alert('Alcuni campi non sono stati compilati', function() {
+                $.mobile.silentScroll();
             }, 'Registrazione');
             return;
         }
+
         // Specific validation for email
         if(!helper.isEmailValid(params.email)) {
-            $('label[for="email"]', page).addClass('fielderror');
+            $('#email', page).addClass('input-error');
             helper.alert('Inserisci un indirizzo email valido', function() {
                 $('#email', page).focus();
             }, 'Registrazione');
             return;
         }
+        // Specific validation for phone number
+        if((params.phone != '') && !helper.isPhoneNumberValid(params.phone)) {
+            $('#phone').addClass('input-error');
+            helper.alert('Inserisci un numero di telefono valido', function() {
+                $('#phone', page).focus();
+            }, 'Registrazione');
+            return;
+        }
+        
         // Specific validation for 
         if(!$('#privacyPolicyAccepted', page).is(':checked') ||
            !$('#disclaimerPolicyAccepted', page).is(':checked')) {
@@ -361,7 +504,7 @@ var app = {
             helper.alert('Errore di connessione', null, 'Registrazione');
             return;
         }
-        
+
         // Registration
         services.registerUser(params, function() {
             helper.alert('La registrazione è stata completata con successo.\n' +
@@ -390,20 +533,20 @@ var app = {
         } else {
             
             helper.confirm('Ti verrà inviata una nuova password alla tua email.', function(ix) {
-                alert(ix);
+                if(ix == 1) {
+                    self.lockLoginUi(true);
+                    services.recoverPassword({username:username}, function(r) {
+                        self.lockLoginUi(false);
+                        helper.alert('Ti è stata inviata una nuova password nella tua email', function() {
+                            self.lockLoginUi(false);
+                        }, 'Recupera password');
+                    }, function(e) {
+                        helper.alert('Si sono verificati errori durante la richiesta di una nuova password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', function() {
+                            self.lockLoginUi(false);
+                        }, 'Recupera password');
+                    });
+                }
             }, 'Recupera password', ['Procedi', 'Annulla']);
-            return;
-            self.lockLoginUi(true);
-            services.recoverPassword({username:username}, function(r) {
-                self.lockLoginUi(false);
-                helper.alert('Ti è stata inviata una nuova password nella tua casella di posta elettronica', function() {
-                    self.lockLoginUi(false);
-                }, 'Recupera password');
-            }, function(e) {
-                helper.alert('Si sono verificati errori durante la richiesta di una nuova password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', function() {
-                    self.lockLoginUi(false);
-                }, 'Recupera password');
-            });
         }
     },   
     
@@ -449,68 +592,178 @@ var app = {
         }
     },
     
-        
-
-    updateBalloonsInNavbar: function() {
-        var cfg = [
-            //{type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
-            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},
-            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, elementId: 'followingCount', className: 'ui-li-count-following'}
-        ];
-        for(var i in cfg) {
-            var unreadCount = pushNotificationHelper.getUnread(cfg[i].type);
-            //var el = $('#'+cfg[i].elementId, $.mobile.activePage); //, page);
-            
-            if(cfg[i].type == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING) {
-                if(unreadCount > 0) {
-                    $('#reportingMethodPage #reportingCount').html(unreadCount).show();
-                } else {
-                    $('#reportingMethodPage #reportingCount').html(unreadCount).hide();
-                }
-            }
-            
-            var el = $('.'+cfg[i].className); //, page);
-            if(el.length == 0) continue;
-            el.html(unreadCount);
-            if(unreadCount > 0) {
-                el.show();
+    
+    
+    ////////////////////////////////////////
+    // reporting1Page
+    
+    initReporting1Page: function() {
+        $('#reporting1Page .button-next').on('click', self.validateReporting1Page);
+    },
+    showReporting1Page: function(event, ui) {
+        //
+        if(ui.prevPage.attr('id') == 'reportingHomePage') {
+            // Empty all reporting pages
+// TODO
+            $('#reporting1Popup').popup('open');
+            geoLocation.acquireGeoCoordinates(function(pos) {
+                $('#reporting1Popup').popup('close');
+                self.reportingGeoCoordinatesAcquired(pos);
+            }, function(e) {
+                geoLocation.acquireGeoCoordinates(function(pos) {
+                    $('#reporting1Popup').popup('close');
+                    self.reportingGeoCoordinatesAcquired(pos);
+                }, function(e) {
+                    $('#reporting1Popup').popup('close');
+                    $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
+                }, {enableHighAccuracy: false});
+            });
+        }
+    },
+    reportingGeoCoordinatesAcquired: function(pos) {
+        self.latLng.lat = pos.coords.latitude;
+        self.latLng.lng = pos.coords.longitude;
+        geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
+            $('#address', $.mobile.activePage).html(result.road + " " + result.streetNumber);
+            $('#city', $.mobile.activePage).val(result.city);
+            $('#prov', $.mobile.activePage).val(result.prov);
+        });
+        $('.info', $.mobile.activePage).html(
+            'La tua posizione è stata acquisita avanti per confermare.'
+        );
+    },
+    validateReporting1Page: function() {
+        var hasErrors = false;
+        var fields = ['city', 'address', 'prov'];
+        for(var i in fields) {
+            var fieldId = fields[i];
+            var fieldVal = $('#' + fieldId, $.mobile.activePage).val().trim();
+            if(fieldVal == '') {
+                $('#' + fieldId, $.mobile.activePage).addClass('input-error');
+                hasErrors = true;
             } else {
-                el.hide();
+                $('#' + fieldId, $.mobile.activePage).removeClass('input-error');
             }
         }
-    },
-    updateBalloonsInNews: function(openSideBar) {
-        // Display a balloon for each feed that contains updates
-        var listEl = $('#newsChannelsPanel #channelList');
-        $('li a span.ui-li-count', listEl).hide();
-        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, null, true);
-        for(var i in unreadData) {
-            if(unreadData[i] == 0) continue;
-            $('li a #count_' + i, listEl).html(unreadData[i]).show();
+        if(hasErrors) {
+            helper.alert('Alcuni campi non sono stati compilati', function() {
+                $.mobile.silentScroll();
+            }, 'Segnalazione manuale');
+            return;
         }
-        if(openSideBar || false) {
-            $('#newsChannelsPage').panel('open');
+        $.mobile.changePage('#reporting2Page', {transition: 'slide'});
+    },
+    
+    
+    ////////////////////////////////////////
+    // reporting2Page
+    showReporting2Page: function(e, ui) {
+        setTimeout(function() {
+            var pageHeight = $.mobile.activePage.height();
+            var headerHeight = $('div[data-role="header"]', $.mobile.activePage).outerHeight();
+            var footerHeight = $('div[data-role="footer"]', $.mobile.activePage).outerHeight();
+            var infoHeight = $('p.text-primary', $.mobile.activePage).outerHeight();
+
+            $('#map', $.mobile.activePage).height(
+                    pageHeight - headerHeight - footerHeight - infoHeight
+            );
+        }, 200);
+        //if(ui.prevPage.attr('id') == 'reporting1Page') {
+            self.reporting2MapsSetup();
+            
+        //}
+    },
+    _reporting2Map: null,
+    reporting2MapsSetup: function() {
+        if(typeof(google) == 'undefined') return;
+        if(self._reporting2Map != null) google.maps.event.clearListeners(self._reporting2Map);
+        var lat = self.latLng.lat || 0;
+        var lng = self.latLng.lng || 0;
+        var mapZoom = config.GOOGLE_MAPS_ZOOM;
+        if(lat == 0) {
+            // Set default lat lng is set to Rome
+            lat = 41.900046; lng = 12.477215;
+            mapZoom = 5;
         }
+        var options = {
+            zoom: mapZoom,
+            center: new google.maps.LatLng(lat, lng),
+            mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID),
+            streetViewControl: false
+        };
+        self._reporting2Map = new google.maps.Map(document.getElementById('map'), options);
+        //self.mapsSetMarker();
     },
-    updateBalloonsInNewsContent: function() {
-        // Don't display the balloon on top of the feed,
-        // but uses the old feed update system and display 
-        // a button on the top of the page to add new posts.
-        self.retrieveChannelContent(true);
-    },
-    updateBalloonsInReporting: function() {
-        // Display a balloon for each item that contains updates
-        // TODO
-    },
-    updateBalloonsInFollowing: function() {
-        var listEl = $('#followingListPage #followingList');
-        $('li a span.ui-li-count', listEl).hide();
-        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, null, true);
-        for(var i in unreadData) {
-            if(unreadData[i] == 0) continue;
-            $('li a #count_' + i, listEl).html(unreadData[i]).show();
+    _mapsSetMarker: function() {
+        if(self.map == null) return;
+//console.log("Setting map position to " + self.latLng.lat + " " + self.latLng.lng);
+        var lat = self.latLng.lat;
+        var lng = self.latLng.lng;
+        var mapZoom = config.GOOGLE_MAPS_ZOOM;
+        if(lat == 0) {
+            // Set default lat lng is set to Rome
+            lat = 41.900046; lng = 12.477215;
+            mapZoom = 5;
         }
+        
+        var markerPoint = new google.maps.LatLng(lat, lng);
+        self.marker = new google.maps.Marker({
+            position: markerPoint,
+            map: self.map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            title: 'Luogo della segnalazione'
+        });
+        self.map.panTo(markerPoint);
+        self.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
+        google.maps.event.addListener(
+            self.marker, 
+            'click', 
+            function() {
+                if(document.activeElement) {
+                    $(document.activeElement).blur();
+                }
+        });
+        google.maps.event.addListener(
+            self.marker, 
+            'dragend', 
+            function() {
+                if(document.activeElement) {
+                    $(document.activeElement).blur();
+                }
+                self.latLng.lat = self.marker.getPosition().lat();
+                self.latLng.lng = self.marker.getPosition().lng();
+        });
+        google.maps.event.addListener(
+            self.marker, 
+            'dragstart', 
+            function() {
+                if(document.activeElement) {
+                    $(document.activeElement).blur();
+                }
+        });
+
+        var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
+        infowindow.open(self.map, self.marker);
     },
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1798,7 +2051,7 @@ console.log(newsChannelAvailableIds);
     
     
     
-    
+    /*
     initReportingMethodPage: function() {
         var page = $('#reportingMethodPage');
         $('#positionFromQrCodeButton', page).on('click', function() {
@@ -1829,7 +2082,7 @@ console.log(newsChannelAvailableIds);
                 $.mobile.changePage('#profilePage');
             }, 'Profilo incompleto');
         }
-    },
+    },*/
     
     
     
@@ -1931,31 +2184,6 @@ console.log(newsChannelAvailableIds);
     },
     
     
-    reportingGeoCoordinatesAcquired: function(pos) {
-        var page = $('#reportingPage');
-        var positioningPopup = $('#reportingPositionPopup', page);
-        self.latLng.lat = pos.coords.latitude;
-        self.latLng.lng = pos.coords.longitude;
-        if((self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_MANUAL) || self.reportingUpdateLatLng) {
-            geoLocation.reverseGeocoding({lat: pos.coords.latitude, lng: pos.coords.longitude}, function(result) {
-                var routeEl = $('#locationInfo span.route', page);
-                var cityEl =  $('#locationInfo span.city', page);
-                var provEl =  $('#locationInfo span.prov', page);
-                // Don't override data
-                if((routeEl.html() != '') || (cityEl.html() != '') || (provEl.html() != '')) return;
-                routeEl.html(result.road + " " + result.streetNumber);
-                cityEl.html(result.city);
-                provEl.html(result.prov);
-            });
-        }
-        $('#loaderIndicator', page).hide();
-        $('#reportingPositionPopupContent', positioningPopup).html(
-            'La tua posizione è stata acquisita ma è necessario confermarla.<br />'+
-            '<a href="javascript:app.editReportingLocation()" class="ui-btn ui-btn-icon-right ui-icon-check" style="border:0;padding:.2em;">Procedi</a>'
-        );
-        $('a', positioningPopup).button();
-        $('#sendReportingButton', page).removeClass('ui-disabled');
-    },
     
     
     latLng: {lat: 0, lng: 0},

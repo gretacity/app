@@ -350,6 +350,8 @@
                 height: auto;
             }
             
+            
+            
             .center-wrapper {
                 width:80%;
                 height: 3em;
@@ -377,6 +379,11 @@
                 text-align: center;
                 color: #aeaece;
                 font-size: .8em !important;
+            }
+            .ui-btn-primary {
+                border-radius: .4em !important;
+                background-color: #08C !important;
+                color: #FFF !important;
             }
         </style>
     </head>
@@ -409,39 +416,190 @@
 
         <!-- registrationPage -->
         <div data-role="page" id="registrationPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <img  src="img/greta.png" /> 
+                    <span>Registrazione</span>
+                </div>
+                <a href="#" data-rel="back" data-reverse="true" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
-                <h2>Registrazione</h2>
-                <label for="lastname">Cognome</label>
-                <input type="text" id="lastname" placeholder="Cognome">
-                <label for="firstname">Nome</label>
-                <input type="text" id="firstname" placeholder="Nome">
-                <label for="phone">Telefono</label>
-                <input type="tel" id="phone" placeholder="Telefono">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Email">
+                <p class="text-primary">* campi obbligatori</p>
+                <input type="text" id="city" placeholder="Comune di residenza*" required />
+                <ul id="citySuggestion" data-role="listview" data-inset="true" data-theme="b"></ul>
+                <input type="text" id="lastname" placeholder="Cognome*" required />
+                <input type="text" id="firstname" placeholder="Nome*" required />
+                <input type="email" id="email" placeholder="Email*" required />
+                <p class="text-primary">Compila questi campi per essere contattato a seguito di una segnalazione</p>
+                <input type="text" id="address" placeholder="Indirizzo di residenza" />
+                <input type="tel" id="phone" placeholder="Cellulare" />
                 <!-- privacy policy accepted -->
-                <input type="checkbox" id="privacyPolicyAccepted" />
+                <input type="checkbox" id="privacyPolicyAccepted" data-theme="b" />
                 <label for="privacyPolicyAccepted">autorizzo il trattamento dei dati personali</label>
                 <!-- dislaimer policy accepted -->
-                <input type="checkbox" id="disclaimerPolicyAccepted" />
+                <input type="checkbox" id="disclaimerPolicyAccepted" data-theme="b" />
                 <label for="disclaimerPolicyAccepted">ho preso visione delle note legali</label>
-                <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left">Registrati</a>
+                <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left" data-theme="b">Registrati</a>
                 <p style="text-align:justify">
-                    <small>Ti sara' notificata la password di accesso tramite email.<br/>
-                        Per info visita il nostro sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">www.gretacity.com</a>.
-                        <br />
+                    <small>
+                        Ti sara' notificata la password di accesso tramite email.
+                    </small>
+                </p>
+                
+                <p>
+                    <small>
                         Consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">note legali</a>.
-                        <br />
-                        Consulta l'informativa sul <a href="#" onclick="window.open('http://www.gretacity.com/privacy', '_system', 'location=yes')">trattamento dei dati personali</a>.
+                        e l'informativa sul <a href="#" onclick="window.open('http://www.gretacity.com/privacy', '_system', 'location=yes')">trattamento dei dati personali</a>
+                        sul sito <a href="#" onclick="window.open('http://www.gretacity.com', '_system', 'location=yes')">www.gretacity.com</a>.
                     </small>
                 </p>
             </div>            
         </div>
         <!-- /registrationPage -->
+        
+        
+        
+        <!-- homePage -->
+        <div data-role="page" id="homePage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <div class="center-wrapper">
+                    <img  src="img/greta.png" /> 
+                    <span>Home</span>
+                </div>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">Segnala</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
+                    </div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Qui vicino</a>
+                    </div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">QrCode</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Impostazioni</a>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        <!-- /homePage -->
+        
+        <!-- reportingHomePage -->
+        <div data-role="page" id="reportingHomePage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <img  src="img/greta.png" /> 
+                    <span>Segnalazioni</span>
+                </div>
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala manualmente</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
+                    </div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifiche le mie segnalazioni</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /reportingHomePage -->
+
+        <!-- reporting1Page -->
+        <div data-role="page" id="reporting1Page">
+            <div id="reporting1Popup" data-role="popup" class="ui-content" data-position-to="window" data-dismissible="false">
+                <img src="img/ajax-loader.gif" />
+                Stiamo acquisendo la tua posizione...
+            </div>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <img  src="img/greta.png" /> 
+                    <span>Segnalazione manuale</span>
+                </div>
+                <!--
+                <h1 style="line-height:3em;height:3em;margin:0 20%;white-space:normal;background-image:url(img/greta.png);background-repeat: no-repeat;background-position:.5em center;background-size:2.6em;padding:0 0 0 2.5em;">
+                    <span style="display:block;vertical-align:middle;">Segnalazione manuale</span>
+                </h1>
+                -->
+                <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <fieldset data-role="fieldcontain">
+                    <input type="text" id="city" placeholder="Comune" />
+                    <input type="text" id="prov" placeholder="Prov" maxlength="2" />
+                    <textarea id="address" placeholder="Indirizzo"></textarea>
+                </fieldset>
+                <p class="info text-primary"></p>
+                <div style="background:#fff;color:#08c;text-align:center;">
+                    1 di 4
+                </div>
+            </div>            
+            <div data-role="footer" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                   style="text-align:center;width:82%;padding:0 auto;margin: 0 auto;">
+                    Avanti
+                </a>
+            </div>
+            
+        </div>
+        <!-- /reporting1Page -->
+        
+         <!-- reporting2Page -->
+        <div data-role="page" id="reporting2Page">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <img  src="img/greta.png" /> 
+                    <span>Posizione</span>
+                </div>
+                <a href="#reporting1Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" style="margin:0;">
+                <p class="text-primary" style="padding:0;margin:0;">
+                    Correggi la tua posizione mualmente trascinando il cursore sulla mappa.
+                </p>
+                <div id="map">Caricamento della mappa</div>
+            </div>            
+            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                   style="text-align:center;width:82%;padding:0 auto;margin: 0 auto;">
+                    Avanti
+                </a>
+            </div>
+            
+        </div>
+        <!-- /reporting2Page -->
+        
+        
+        
+        
+        
+        
+        
+        
         
         <!-- profilePage -->
         <div data-role="page" id="profilePage">
@@ -453,7 +611,7 @@
                 <a href="#newsPage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
-                <ul data-role="listview">
+                <ul data-role="listview" data-theme="b">
                     <li>
                         <a href="#profileNamePage">
                             <span id="profileFirstname"></span> <span id="profileLastname"></span>
@@ -735,13 +893,60 @@
             <div data-role="main">
                 <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">-->
                 <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;">
-                    <img id="photo" ssstyle="display:block;margin:0 auto;" />
+                    <img id="photo" />
                 </div>
             </div>
         </div>
         <!-- /photoDialog -->
         
-    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <!-- newsPage -->
         <div data-role="page" id="newsPage">
             
@@ -753,7 +958,7 @@
                 
                 <img src="img/greta.png" style="display:block; float:left; padding:0 auto; " />
                 
-                <h1 _style="margin:0;padding:0;">Notizie</h1>
+                <h1>Notizie</h1>
                 <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
                 <a href="#" id="refreshNewsButton" style="margin-right:3em;" class="ui-btn ui-shadow ui-btn-right ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Refresh</a>
                 <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
@@ -880,50 +1085,6 @@
         <!-- /nearbyPlaceInfoPage -->
     
         
-        <!-- reportingMethodPage -->
-        <div data-role="page" id="reportingMethodPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Segnala</h1>
-                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <ul data-role="listview">
-                    <li>
-                        <a href="#" id="manualPositionButton">
-                            Segnala manualmente
-                            <label style="white-space:normal">utilizzando automaticamente la mia posizione GPS</label>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" id="positionFromQrCodeButton">
-                            Segnala tramite QR-code
-                            <label style="white-space:normal">utilizzando un QR-code del censimento Gretacity se disponibile</label>
-                        </a>
-                    </li>
-                    
-                </ul>
-                <ul data-role="listview">
-                    <li data-role="list-divider">&nbsp;</li>
-                    <li>
-                        <a href="#reportingListPage">
-                            Le mie segnalazioni
-                            <label style="white-space:normal">Consulta lo stato delle segnalazioni inviate</label>
-                            <span id="reportingCount" class="ui-li-count ui-li-count-cust" style="display:none;"></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" class="ui-navbar-item-selected">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /reportingMethodPage -->
 
         <!-- reportingPage -->
         <div data-role="page" id="reportingPage">
@@ -1221,7 +1382,7 @@
         <script src="js/jquery-2.1.0.min.js"></script>
         <script>
         $(document).on("mobileinit",function() {
-            $.mobile.autoInitializePage = false;
+            //$.mobile.autoInitializePage = false;
         });        
         </script>
         <script src="js/jquery.mobile-1.4.2/jquery.mobile-1.4.2.js"></script>
