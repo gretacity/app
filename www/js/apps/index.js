@@ -659,17 +659,17 @@ return;
     // reporting2Page
     showReporting2Page: function(e, ui) {
         setTimeout(function() {
-            var pageHeight = $.mobile.activePage.height();
+            var pageHeight = $.mobile.activePage.outerHeight();
             var headerHeight = $('div[data-role="header"]', $.mobile.activePage).outerHeight();
             var footerHeight = $('div[data-role="footer"]', $.mobile.activePage).outerHeight();
             var infoHeight = $('p.text-primary', $.mobile.activePage).outerHeight();
-
+//headerHeight = 0;footerHeight = 0;infoHeight = 0;
             $('#map', $.mobile.activePage).height(
                     pageHeight - headerHeight - footerHeight - infoHeight
             );
+            self.reporting2MapsSetup();
         }, 200);
         //if(ui.prevPage.attr('id') == 'reporting1Page') {
-            self.reporting2MapsSetup();
             
         //}
     },
