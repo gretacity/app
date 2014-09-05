@@ -663,7 +663,7 @@ return;
             var headerHeight = $('div[data-role="header"]', $.mobile.activePage).outerHeight();
             var footerHeight = $('div[data-role="footer"]', $.mobile.activePage).outerHeight();
             var infoHeight = $('p.text-primary', $.mobile.activePage).outerHeight();
-//headerHeight = 0;footerHeight = 0;infoHeight = 0;
+headerHeight = 0;footerHeight = 0;infoHeight = 0;
             $('#map', $.mobile.activePage).height(
                     pageHeight - headerHeight - footerHeight - infoHeight
             );
