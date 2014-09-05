@@ -659,7 +659,7 @@ return;
     // reporting2Page
     showReporting2Page: function(e, ui) {
         setTimeout(function() {
-            var pageHeight = $.mobile.activePage.outerHeight();
+            var pageHeight = $.mobile.activePage.height();
             var headerHeight = $('div[data-role="header"]', $.mobile.activePage).outerHeight();
             var footerHeight = $('div[data-role="footer"]', $.mobile.activePage).outerHeight();
             var infoHeight = $('p.text-primary', $.mobile.activePage).outerHeight();
