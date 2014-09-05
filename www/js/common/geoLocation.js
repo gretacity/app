@@ -44,7 +44,7 @@ if(options.enableHighAccuracy === true) {
                     successCallback(
                         {coords: {longitude: lng, latitude: lat, accuracy: accuracy}}
                     );
-                }, 2000);
+                }, 500);
             }
             return;
         }

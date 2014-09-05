@@ -385,6 +385,13 @@
                 background-color: #08C !important;
                 color: #FFF !important;
             }
+            .ui-btn-priority {
+                height:1em;
+                width:60%;                
+            }
+            .ui-btn-priority-notset {
+                opacity: .3 !important;
+            }
         </style>
     </head>
     <body>
@@ -553,21 +560,22 @@
                     <textarea id="address" placeholder="Indirizzo"></textarea>
                 </fieldset>
                 <p class="info text-primary"></p>
+
+            </div>            
+            <div data-role="footer" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
                     1 di 4
                 </div>
-            </div>            
-            <div data-role="footer" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
                 <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
                    style="text-align:center;width:84%;padding:0 auto;margin: 0 auto;">
-                    Avanti
+                    AVANTI
                 </a>
             </div>
             
         </div>
         <!-- /reporting1Page -->
         
-         <!-- reporting2Page -->
+        <!-- reporting2Page -->
         <div data-role="page" id="reporting2Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
@@ -581,17 +589,112 @@
                 <p class="text-primary" style="padding:0;margin:0;">
                     Correggi la tua posizione mualmente trascinando il cursore sulla mappa.
                 </p>
-                <div id="map" style="border:solid 1px #f00">Caricamento della mappa..</div>
+                <div id="map">Caricamento della mappa..</div>
             </div>            
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                <a href="#reporting4Page" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
                    style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
                     CONFERMA POSIZIONE
                 </a>
             </div>
-            
         </div>
         <!-- /reporting2Page -->
+        
+        <!-- reporting3Page -->
+        <!-- TODO -->
+        <!-- /reporting3Page -->
+        
+        <!-- reporting4Page -->
+        <div data-role="page" id="reporting4Page">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <img  src="img/greta.png" /> 
+                    <span>Categoria</span>
+                </div>
+                <a href="#reporting2Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;top:4em;z-index:100;background:#fff;">
+                <p class="text-primary">
+                    Seleziona la categoria del problema.
+                </p>
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul id="categories" data-role="listview" data-theme="b" style="margin-top:3.6em;"></ul>
+            </div>
+            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <div style="background:#fff;color:#08c;text-align:center;">
+                    2 di 4
+                </div>
+                <div style="line-height:3em;">&nbsp;</div>
+            </div>
+        </div>
+        <!-- /reporting4Page -->
+        
+        <!-- reporting5Page -->
+        <div data-role="page" id="reporting5Page">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <img src="img/greta.png" /> 
+                    <span>Descrizione</span>
+                </div>
+                <a href="#reporting4Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <textarea id="description" placeholder="Descrivi brevemente il disservizio"></textarea>
+                <p class="text-primary">Clicca sulla gravità del disservizio</p>
+                <div id="prioritySet" class="ui-grid-b">
+                    <div class="ui-block-a" style="text-align:center;">
+                        <a href="#" data-priorityid="0" class="ui-btn ui-btn-priority" 
+                           style="background-color:#0F0">&nbsp;</a>
+                    </div>
+                    <div class="ui-block-b" style="text-align:center;">
+                        <a href="#" data-priorityid="1" class="ui-btn ui-btn-priority"
+                           style="background-color:#FAF200;">&nbsp;</a>
+                    </div>
+                    <div class="ui-block-c" style="text-align:center;">
+                        <a href="#" data-priorityid="2" class="ui-btn ui-btn-priority"
+                           style="background-color:#F00;height:1em;width:60%">&nbsp;</a>
+                    </div>
+                </div>
+                <div class="ui-grid-b">
+                    <div class="ui-block-a" style="text-align:center;">                        
+                        basso
+                    </div>
+                    <div class="ui-block-b" style="text-align:center;">
+                        medio
+                    </div>
+                    <div class="ui-block-c" style="text-align:center;">
+                        alto
+                    </div>
+                </div>
+                
+            </div>
+            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <div style="background:#fff;color:#08c;text-align:center;">
+                    3 di 4
+                </div>
+                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+                    AVANTI
+                </a>
+            </div>
+        </div>
+        <!-- /reporting5Page -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
