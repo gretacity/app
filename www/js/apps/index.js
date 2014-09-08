@@ -612,7 +612,7 @@ return;
     initReporting1Page: function() {
         $('#reporting1Page .button-next').on('click', self.validateReporting1Page);
     },
-    showReporting1Page: function(event, ui) {
+    showReporting1Page: function(e, ui) {
         //
         if(ui.prevPage.attr('id') == 'reportingHomePage') {
             
@@ -620,13 +620,17 @@ return;
 // TODO
             $('#reporting1Popup').popup('open');
             geoLocation.acquireGeoCoordinates(function(pos) {
+helper.alert('1 success');
                 $('#reporting1Popup').popup('close');
                 self.reportingGeoCoordinatesAcquired(pos);
             }, function(e) {
+helper.alert('2 fail');
                 geoLocation.acquireGeoCoordinates(function(pos) {
+helper.alert('3 success');
                     $('#reporting1Popup').popup('close');
                     self.reportingGeoCoordinatesAcquired(pos);
                 }, function(e) {
+helper.alert('4 fail');
                     $('#reporting1Popup').popup('close');
                     $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
                 }, {enableHighAccuracy: false});
