@@ -618,6 +618,10 @@ return;
     // reporting1Page
     
     initReporting1Page: function() {
+        $('#reporting1Page #prov').on('input', function() {
+            if(this.value.length > 2) this.value = this.value.substr(0, 2);
+            this.value = this.value.toUpperCase();
+        });
         $('#reporting1Page .button-next').on('click', self.validateReporting1Page);
     },
     showReporting1Page: function(e, ui) {
@@ -791,7 +795,6 @@ return;
     initReporting5Page: function() {
         $('#reporting5Page #prioritySet a').addClass('ui-btn-priority-notset');
         $('#reporting5Page a.ui-btn-priority').on('click', function(e) {
-            console.log('ookkk');
             $('#reporting5Page #prioritySet a').addClass('ui-btn-priority-notset');
             $(e.target).removeClass('ui-btn-priority-notset');
             var priority = $(e.target).data('priorityid');
@@ -852,6 +855,8 @@ return;
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
             photo.parent().next().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
+            
+            helper.imageCropToFit(photo);
         }, function(e) {
             helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});
