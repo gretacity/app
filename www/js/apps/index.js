@@ -624,13 +624,13 @@ helper.alert('1 success');
                 $('#reporting1Popup').popup('close');
                 self.reportingGeoCoordinatesAcquired(pos);
             }, function(e) {
-helper.alert('2 fail');
+helper.alert('2 fail ' + e);
                 geoLocation.acquireGeoCoordinates(function(pos) {
 helper.alert('3 success');
                     $('#reporting1Popup').popup('close');
                     self.reportingGeoCoordinatesAcquired(pos);
                 }, function(e) {
-helper.alert('4 fail');
+helper.alert('4 fail ' + e);
                     $('#reporting1Popup').popup('close');
                     $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
                 }, {enableHighAccuracy: false});
