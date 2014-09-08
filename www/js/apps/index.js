@@ -809,6 +809,7 @@ return;
             return;
         } else {
             descriptionEl.removeClass('input-error');
+            self.reporting.description = descriptionEl.val().trim();
         }
         var prioritySelected = $('#prioritySet a.ui-btn-priority.ui-btn-priority-notset', $.mobile.activePage).length < 3;
         if(!prioritySelected) {
@@ -819,14 +820,21 @@ return;
     },
     
     
+    ////////////////////////////////////////
+    // reporting6Page
     initReporting6Page: function() {
         $('#reporting6Page #shotPhoto').on('click', self.getPhoto);
         $('#reporting6Page #fromGallery').on('click', self.getPhoto);
+        $('#reporting6Page a.reporting-photo-shot').on('click', function(e) {
+            self.reportingCurrPhotoPos = $(e.target).closest('div.reporting-photo-item').data('photopos');
+            $('#sourceTypePopup', $.mobile.activePage).popup('open');
+        });
         $('#reporting6Page .reporting-photo-delete').on('click', function(e) {
             var container = $(e.target).closest('div.reporting-photo-item');
             $('a img', container).addClass('reporting-photo-missing').attr('src', '');
             $('a.reporting-photo-delete', container).hide();
         });
+        $('#reporting6Page .button-next').on('click', self.sendReporting);
     },
     
     getPhoto: function(e) {
@@ -840,12 +848,46 @@ return;
                 Camera.PictureSourceType.PHOTOLIBRARY;
         camera.getPicture(function(res) {
             // Success callback
-            var photo = $($('#photoSet div a img.reporting-photo-missing', $.mobile.activePage)[0]);
+            var photo = $($('#photoSet div[data-photopos="' + self.reportingCurrPhotoPos + '"] a img.reporting-photo-missing', $.mobile.activePage)[0]);
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
             photo.parent().next().show();
+            $('#sourceTypePopup', $.mobile.activePage).popup('close');
         }, function(e) {
             helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});
+    },
+    sendReporting: function() {
+        self.reporting.photos = [];
+        $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
+            var src = $(this).attr('src');
+            var pos = src.indexOf('base64,');
+            if(pos != -1) 
+                pos += 7;
+            else 
+                pos = 0;
+            self.reporting.photos.push(src.substr(pos));
+        });
+        console.log(self.reporting);
+        $.mobile.loading('show');
+        return;
+        services.sendReporting(self.reporting, function() {
+            /// Successfully sent
+            /*$('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
+            $.mobile.loading('hide');
+            reporting = null;
+            self.latLng.lat = 0;
+            self.latLng.lng = 0;
+            $('#description', page).html('');
+            self.removeAllReportingPhoto();
+            helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
+                $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
+            }, 'Invia segnalazione');*/
+        }, function(e) {
+            // An error occurred
+            /*$('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
+            $.mobile.loading('hide');
+            helper.alert(e, null, 'Invia segnalazione');*/
+        });
     },
     
     
@@ -2500,7 +2542,7 @@ console.log(newsChannelAvailableIds);
         $('#reportingPage #photoList li a img').attr('src', '').removeClass('report-imagelist-done').addClass('report-imagelist-missing').attr('data-acquired', '0');
     },
     
-    sendReporting: function() {
+    _old_sendReporting: function() {
         // Validate report
         var page = $('#reportingPage');
         var reporting = {

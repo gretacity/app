@@ -536,7 +536,7 @@ console.log("services.getNearbyPlaceInfo FAIL ", jqXHR);
                 lat: reporting.latLng.lat,
                 lon: reporting.latLng.lng,
                 id_categoria: reporting.categoryId,
-                indirizzo: reporting.road,
+                indirizzo: reporting.address,
                 comune: reporting.city,
                 prov: reporting.prov,
                 descrizione: reporting.description,

@@ -402,10 +402,24 @@
                 height:5em;
                 background: url('img/camera.png') no-repeat center center;
             }
+            
+            .ui-loader-background {
+                width:100%;
+                height:100%;
+                top:0;
+                margin:0;
+                background: rgba(0,136,204,0.1);
+                display:none;
+                position: absolute;
+                z-index:1500;
+            }
+            .ui-loading .ui-loader-background {
+                    display:block;
+            }
         </style>
     </head>
     <body>
-
+<div class="ui-loader-background"> </div>
         <!-- loginPage -->
         <div data-role="page" id="loginPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
@@ -697,6 +711,12 @@
         
         <!-- reporting6Page -->
         <div data-role="page" id="reporting6Page">
+            <div id="sourceTypePopup" data-role="popup" data-theme="b">
+                <div data-role="controlgroup">
+                    <a href="#" id="shotPhoto" data-mini="true"  data-role="button" class="ui-btn">Scatta foto</a>
+                    <a href="#" id="fromGallery" class="ui-btn">Da galleria</a>
+                </div>
+            </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
                     <img src="img/greta.png" /> 
@@ -706,27 +726,25 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                
-                <div data-role="controlgroup" data-theme="b">
-                    <a href="#" id="shotPhoto" data-mini="true"  data-role="button" class="ui-btn">Scatta foto</a>
-                    <a href="#" id="fromGallery" class="ui-btn">Da galleria</a>
-                </div>
-                
-                <div id="photoSet" class="ui-grid-b" data-theme="b">
+                <p class="text-primary">
+                    Per aiutarci a individuare con precisione il disservizio,
+                    invia almeno una foto.
+                </p>
+                <div id="photoSet" class="ui-grid-b">
                     <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;">
-                        <a href="#" >
+                        <a href="#" class="reporting-photo-shot">
                             <img src="" class="reporting-photo reporting-photo-missing" />
                         </a>
                         <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
                     <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
-                        <a href="#" >
+                        <a href="#" class="reporting-photo-shot">
                             <img src="" class="reporting-photo reporting-photo-missing" />
                         </a>
                         <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
                     <div class="reporting-photo-item ui-block-c" data-photopos="2" style="text-align:center;">
-                        <a href="#" >
+                        <a href="#" class="reporting-photo-shot">
                             <img src="" class="reporting-photo reporting-photo-missing" />
                         </a>
                         <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
