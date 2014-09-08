@@ -29,8 +29,8 @@ var config = {
     //QR_CODE_TEST: 'http://www.gretacity.com/code/4000000026',
     //QR_CODE_TEST: 'http://www.gretacity.com/code/1000000769',
     //QR_CODE_TEST: 'http://www.gooogle.com',
-    LOGIN_DEFAULT_USERNAME: '',
-    LOGIN_DEFAULT_PASSWORD: '',
+    LOGIN_DEFAULT_USERNAME: 'giuseppe@verdi.it',
+    LOGIN_DEFAULT_PASSWORD: 'verdi',
     
     PASSWORD_MIN_LENGTH: 5,
     
