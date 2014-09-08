@@ -99,14 +99,14 @@ if(options.enableHighAccuracy === true) {
 //console.log('geoLocation._googleGeocode pars length: ' + addressParts.length);
         if(addressParts.length == 0) return;
         var address = 'Italia, ' + addressParts.join(', ');
-console.log('geoLocation._googleGeocode searching for: ' + address);
+//console.log('geoLocation._googleGeocode searching for: ' + address);
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': address}, function(results, status) {
-console.log('geoLocation._googleGeocode status: ' + status);
+//console.log('geoLocation._googleGeocode status: ' + status);
             if (status == google.maps.GeocoderStatus.OK) {
-console.log('geoLocation._googleGeocode result: ', results[0]);
+//console.log('geoLocation._googleGeocode result: ', results[0]);
                 if(results[0] && results[0].formatted_address) {
-console.log('geoLocation._googleGeocode address: ' + results[0].formatted_address);
+//console.log('geoLocation._googleGeocode address: ' + results[0].formatted_address);
                     if(results[0].formatted_address.toLowerCase().indexOf('italia') == -1) {
                         return;
                     }
@@ -116,7 +116,7 @@ console.log('geoLocation._googleGeocode partial match');
                     return;
                 }*/
                 if(results[0] && results[0].geometry && results[0].geometry.location) {
-console.log('geoLocation._googleGeocode result location: ' + results[0].geometry.location);
+console.log('geoLocation._googleGeocode result location: ', results[0].geometry.location);
                     if(success) success(results[0].geometry.location);
                 }
             }

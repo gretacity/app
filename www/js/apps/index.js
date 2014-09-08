@@ -65,6 +65,9 @@ var app = {
         var reporting5Page = $('#reporting5Page');
         reporting5Page.on('pageinit', self.initReporting5Page);
         
+        var reporting6Page = $('#reporting6Page');
+        reporting6Page.on('pageinit', self.initReporting6Page);
+                
         var profilePage = $('#profilePage');
         profilePage.on('pageshow', self.showProfilePage);
         $('#logoutButton', profilePage).on('click', self.logout);
@@ -603,7 +606,10 @@ return;
     
     
     reporting : {
-        latLng: {}
+        latLng: {
+            lat: null,
+            lng: null
+        }
     },
     
     ////////////////////////////////////////
@@ -620,17 +626,13 @@ return;
 // TODO
             $('#reporting1Popup').popup('open');
             geoLocation.acquireGeoCoordinates(function(pos) {
-helper.alert('1 success');
                 $('#reporting1Popup').popup('close');
                 self.reportingGeoCoordinatesAcquired(pos);
             }, function(e) {
-helper.alert('2 fail ' + e);
                 geoLocation.acquireGeoCoordinates(function(pos) {
-helper.alert('3 success');
                     $('#reporting1Popup').popup('close');
                     self.reportingGeoCoordinatesAcquired(pos);
                 }, function(e) {
-helper.alert('4 fail ' + e);
                     $('#reporting1Popup').popup('close');
                     $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
                 }, {enableHighAccuracy: false});
@@ -669,7 +671,19 @@ helper.alert('4 fail ' + e);
             }, 'Segnalazione manuale');
             return;
         }
-        $.mobile.changePage('#reporting2Page', {transition: 'slide'});
+        self.reporting.latLng.lat = 0;
+        if((self.reporting.latLng.lat || 0) == 0) {
+            $.mobile.loading('show');
+            geoLocation.geocode({prov: self.reporting.prov, city: self.reporting.city, address: self.reporting.address}, function(pos) {
+                console.log(pos);
+                self.reporting.latLng.lat = pos.lat();
+                self.reporting.latLng.lng = pos.lng();
+                console.log(self.reporting);
+                $.mobile.changePage('#reporting2Page', {transition: 'slide'});
+            });
+        } else {
+            $.mobile.changePage('#reporting2Page', {transition: 'slide'});
+        }
     },
     
     
@@ -799,10 +813,26 @@ helper.alert('4 fail ' + e);
             helper.alert('Clicca sulla gravità dl servizio', null, 'Descrizione');
             return;
         }
-        alert('iamu avanti lunedì');
+        $.mobile.changePage('#reporting6Page', {transition: 'slide'});
     },
     
     
+    initReporting6Page: function() {
+        $('#reporting6Page #shotPhoto').on('click', self.getPhoto);
+        $('#reporting6Page #fromGallery').on('click', self.getPhoto);
+    },
+    
+    getPhoto: function(e) {
+        var source = $(e.target).attr('id') == 'shotPhoto' ? 
+                Camera.PictureSourceType.CAMERA :
+                Camera.PictureSourceType.PHOTOLIBRARY;
+        camera.getPicture(function(res) {
+            // Success callback
+            helper.alert('todo');
+        }, function(e) {
+            helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
+        }, {sourceType: source});
+    },
     
     
     
