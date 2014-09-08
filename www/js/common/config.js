@@ -34,7 +34,7 @@ var config = {
     
     PASSWORD_MIN_LENGTH: 5,
     
-    REPORTING_MAX_PHOTOS: 1,
+    REPORTING_MAX_PHOTOS: 3,
     
     
     PUSH_REGISTRATION_MAX_DAYS: 7,

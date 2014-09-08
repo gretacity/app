@@ -394,12 +394,19 @@
             }
             .reporting-photo-item {
                 padding: 0 .2em !important;
+                /*border: solid 1px #0f0 !important;*/
+                margin: 0 !important;
+                padding: 0 !important;
             }
             .reporting-photo {
-                width:100%;
+                width: 100%;
+                height: 7em;
+                /*border: solid 1px #f00 !important;*/
+                margin: 0 !important;
+                padding: 0 !important;
             }
             .reporting-photo-missing {
-                height:5em;
+                /*height:5em;*/
                 background: url('img/camera.png') no-repeat center center;
             }
             
@@ -543,7 +550,7 @@
                         <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala manualmente</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
+                        <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
@@ -580,11 +587,10 @@
             <div data-role="main" class="ui-content">
                 <fieldset data-role="fieldcontain">
                     <input type="text" id="city" placeholder="Comune" />
-                    <input type="text" id="prov" placeholder="Prov" maxlength="20" />
+                    <input type="text" id="prov" placeholder="Prov" maxlength="2" />
                     <textarea id="address" placeholder="Indirizzo"></textarea>
                 </fieldset>
                 <p class="info text-primary"></p>
-
             </div>            
             <div data-role="footer" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
@@ -730,12 +736,15 @@
                     Per aiutarci a individuare con precisione il disservizio,
                     invia almeno una foto.
                 </p>
+                
                 <div id="photoSet" class="ui-grid-b">
                     <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;">
                         <a href="#" class="reporting-photo-shot">
                             <img src="" class="reporting-photo reporting-photo-missing" />
                         </a>
+                        <!--
                         <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
+                        -->
                     </div>
                     <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
                         <a href="#" class="reporting-photo-shot">
@@ -750,6 +759,38 @@
                         <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
                 </div>
+                
+                <!--
+                <div id="photoSet2" class="ui-grid-b">
+                    <div id="item1" class="reporting-photo-item ui-block-a" data-photopos="0" style="height:4em;text-align:center;">
+                        <a id="item1_1" href="#" class="reporting-photo-shot">
+                            <img id="item1_1_1" src="" class="reporting-photo reporting-photo-missing" />
+                        </a>
+                    </div>
+                    <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
+                        <a href="#" class="reporting-photo-shot">
+                            <img src="" class="reporting-photo reporting-photo-missing" />
+                        </a>
+                    </div>
+                    <div class="reporting-photo-item ui-block-c" data-photopos="2" style="text-align:center;">
+                        <a href="#" class="reporting-photo-shot">
+                            <img src="" class="reporting-photo reporting-photo-missing" />
+                        </a>
+                    </div> 
+               </div>
+                -->
+                <div id="photoSet3" class="ui-grid-b">
+                    <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;">
+                        <a href="#" class="reporting-photo-delete" satyle="display:none;">elimina</a>
+                    </div>
+                    <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
+                        <a href="#" class="reporting-photo-delete" sstyle="display:none;">elimina</a>
+                    </div>
+                    <div class="reporting-photo-item ui-block-c" data-photopos="2" style="text-align:center;">
+                        <a href="#" class="reporting-photo-delete" sstyle="display:none;">elimina</a>
+                    </div> 
+               </div>
+               
                 
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
@@ -1299,7 +1340,7 @@
                 <ul data-role="listview" data-inset="true">
                     <li data-role="list-divider" style="padding: 10px;" id="qrCodeHeader">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/check-white.png" style="float:left;"/>
+                            <img src="js/jquery.mobile-1.4.3/images/icons-png/check-white.png" style="float:left;"/>
                             <span style="float:left;padding-left:15px;">QR-code</span>
                         </div>
                     </li>
@@ -1308,7 +1349,7 @@
                     </li>
                     <li data-role="list-divider" style="padding: 10px;" id="locationHeader">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/location-white.png" style="float:left;" />
+                            <img src="js/jquery.mobile-1.4.3/images/icons-png/location-white.png" style="float:left;" />
                             <span style="float:left;padding-left:15px;">Specifica il luogo</span>
                         </div>
                     </li>
@@ -1325,7 +1366,7 @@
                     </li>
                     <li data-role="list-divider" style="padding: 10px;">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/tag-white.png" style="float:left;" />
+                            <img src="js/jquery.mobile-1.4.3/images/icons-png/tag-white.png" style="float:left;" />
                             <span style="float:left;padding-left:15px;">Categoria del problema</span>
                         </div>
                     </li>
@@ -1334,7 +1375,7 @@
                     </li>
                     <li data-role="list-divider" style="padding: 10px;">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/edit-white.png" style="float:left;"/>
+                            <img src="js/jquery.mobile-1.4.3/images/icons-png/edit-white.png" style="float:left;"/>
                             <span style="float:left;padding-left:15px;">Descrivi il problema</span>
                         </div>
                     </li>
@@ -1346,7 +1387,7 @@
                     </li>
                     <li data-role="list-divider" style="padding: 10px;">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/alert-white.png" style="float:left;" />
+                            <img src="js/jquery.mobile-1.4.3/images/icons-png/alert-white.png" style="float:left;" />
                             <span style="float:left;padding-left:15px;">Gravità del disservizio</span>
                         </div>
                     </li>
@@ -1359,7 +1400,7 @@
                     </li>
                     <li data-role="list-divider" style="padding: 10px;">
                         <div>
-                            <img src="js/jquery.mobile-1.4.2/images/icons-png/camera-white.png" style="float:left;" />
+                            <img src="js/jquery.mobile-1.4.3/images/icons-png/camera-white.png" style="float:left;" />
                             <span style="float:left;padding-left:15px;">Foto</span>
                         </div>
                     </li>

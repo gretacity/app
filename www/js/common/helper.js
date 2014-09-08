@@ -61,20 +61,23 @@ var helper = {
     },
     
     imageCropToFit: function(item) {
-        var img_height = $(item).height();
-        var div_height = $(item).parent().height();
+        var img_height = $(item).outerHeight();
+        var div_height = $(item).closest('div').innerHeight();
         if(img_height<div_height){
+console.log(1);
             //INCREASE HEIGHT OF IMAGE TO MATCH CONTAINER
             $(item).css({'width': 'auto', 'height': div_height });
             //GET THE NEW WIDTH AFTER RESIZE
             var img_width = $(item).width();
             //GET THE PARENT WIDTH
-            var div_width = $(item).parent().width();
+            var div_width = $(item).closest('div').innerHeight();
             //GET THE NEW HORIZONTAL MARGIN
-            var newMargin = (div_width-img_width)/2+'px';
+            var newMargin = Math.floor((div_width-img_width)/2)+'px';
             //SET THE NEW HORIZONTAL MARGIN (EXCESS IMAGE WIDTH IS CROPPED)
             $(item).css({'margin-left': newMargin });
+console.log('ok', img_width, div_width, newMargin);
         }else{
+console.log(2);
             //CENTER IT VERTICALLY (EXCESS IMAGE HEIGHT IS CROPPED)
             var newMargin = (div_height-img_height)/2+'px';
             $(item).css({'margin-top': newMargin});
