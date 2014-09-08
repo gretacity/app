@@ -40,11 +40,13 @@ var app = {
         
         var loginPage = $('#loginPage');
         loginPage.on('pagebeforeshow', function() {
-            $('#username', loginPage).val(config.userLastLoginUsername());
-            $('#password', loginPage).val('');
+            if(config.userLastLoginUsername() != '') {
+                $('#username', loginPage).val(config.userLastLoginUsername());
+            } else {
+                $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
+                $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
+            }           
         });
-        $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
-        $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
         $('#loginButton', loginPage).on('click', self.login);
         $('#recoverPasswordButton', loginPage).on('click', self.recoverPassword);
         var changePasswordPage = $('#changePasswordPage');
@@ -158,7 +160,7 @@ var app = {
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
         
-        self.updateBalloonsInNavbar();
+        self.updateBalloonsInNavbar();        
     },
     onResume: function() {
         
@@ -820,15 +822,27 @@ return;
     initReporting6Page: function() {
         $('#reporting6Page #shotPhoto').on('click', self.getPhoto);
         $('#reporting6Page #fromGallery').on('click', self.getPhoto);
+        $('#reporting6Page .reporting-photo-delete').on('click', function(e) {
+            var container = $(e.target).closest('div.reporting-photo-item');
+            $('a img', container).addClass('reporting-photo-missing').attr('src', '');
+            $('a.reporting-photo-delete', container).hide();
+        });
     },
     
     getPhoto: function(e) {
+        var remainingPhoto = $('#photoSet div a img.reporting-photo-missing', $.mobile.activePage).length;
+        if(remainingPhoto == 0) {
+            helper.alert('Hai raggiunto il limite massimo di foto che puoi inviare');
+            return;
+        }
         var source = $(e.target).attr('id') == 'shotPhoto' ? 
                 Camera.PictureSourceType.CAMERA :
                 Camera.PictureSourceType.PHOTOLIBRARY;
         camera.getPicture(function(res) {
             // Success callback
-            helper.alert('todo');
+            var photo = $($('#photoSet div a img.reporting-photo-missing', $.mobile.activePage)[0]);
+            photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
+            photo.parent().next().show();
         }, function(e) {
             helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});

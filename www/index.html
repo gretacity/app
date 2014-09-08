@@ -387,10 +387,20 @@
             }
             .ui-btn-priority {
                 height:1em;
-                width:60%;                
+                width:60%;
             }
             .ui-btn-priority-notset {
                 opacity: .3 !important;
+            }
+            .reporting-photo-item {
+                padding: 0 .2em !important;
+            }
+            .reporting-photo {
+                width:100%;
+            }
+            .reporting-photo-missing {
+                height:5em;
+                background: url('img/camera.png') no-repeat center center;
             }
         </style>
     </head>
@@ -697,29 +707,40 @@
             </div>
             <div data-role="main" class="ui-content">
                 
-                <a href="#" id="shotPhoto" class="ui-btn ui-btn-primary">Scatta foto</a>
-                <a href="#" id="fromGallery" class="ui-btn ui-btn-primary">Da galleria</a>
+                <div data-role="controlgroup" data-theme="b">
+                    <a href="#" id="shotPhoto" data-mini="true"  data-role="button" class="ui-btn">Scatta foto</a>
+                    <a href="#" id="fromGallery" class="ui-btn">Da galleria</a>
+                </div>
                 
-                <div id="prioritySet" class="ui-grid-b">
-                    <div class="ui-block-a" style="text-align:center;">
-                        <a href="#" ></a>
+                <div id="photoSet" class="ui-grid-b" data-theme="b">
+                    <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;">
+                        <a href="#" >
+                            <img src="" class="reporting-photo reporting-photo-missing" />
+                        </a>
+                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
-                    <div class="ui-block-b" style="text-align:center;">
-                        <a href="#" ></a>
+                    <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
+                        <a href="#" >
+                            <img src="" class="reporting-photo reporting-photo-missing" />
+                        </a>
+                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
-                    <div class="ui-block-c" style="text-align:center;">
-                        <a href="#" ></a>
+                    <div class="reporting-photo-item ui-block-c" data-photopos="2" style="text-align:center;">
+                        <a href="#" >
+                            <img src="" class="reporting-photo reporting-photo-missing" />
+                        </a>
+                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
                 </div>
                 
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
-                    3 di 4
+                    4 di 4
                 </div>
-                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                <a href="#" class="button-next ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
                    style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
-                    AVANTI
+                    INVIA SEGNALAZIONE
                 </a>
             </div>
         </div>
