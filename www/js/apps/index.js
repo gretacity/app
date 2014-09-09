@@ -72,7 +72,13 @@ var app = {
         
         var reporting6Page = $('#reporting6Page');
         reporting6Page.on('pageinit', self.initReporting6Page);
-                
+        
+        //
+        var reportingListPage = $ ('#reportingListPage');
+        reportingListPage.on('pageint', self.initReportingListPage);
+        reportingListPage.on('pageshow', self.showReportinListPage);
+        
+        
         var profilePage = $('#profilePage');
         profilePage.on('pageshow', self.showProfilePage);
         $('#logoutButton', profilePage).on('click', self.logout);
@@ -130,26 +136,6 @@ var app = {
         reportingListPage.on('pageshow', self.loadReportingItems);
         $('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
         //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
-        
-        /*var reportingMethodPage = $('#reportingMethodPage');
-        reportingMethodPage.on('pageinit', self.initReportingMethodPage);
-        reportingMethodPage.on('pagebeforeshow', self.beforeShowReportingMethodPage);*/
-        
-        var reportingPage = $('#reportingPage');
-        reportingPage.on('pageinit', self.initReportingPage);
-        reportingPage.on('pageshow', self.showReportingPage);
-        $('#editDesciptionButton', reportingPage).on('click', self.editReportingDescription);
-        $('#reportingDescriptionPage #confirmDescriptionButton').on('click', self.confirmReportingDescription);
-        $('#editLocationButton', reportingPage).on('click', self.editReportingLocation);
-        $('#acquirePhotoButton', reportingPage).on('click', self.acquireReportingPhoto);
-        $('#reportingPhotoPage #removePhotoButton').on('click', self.removeReportingPhoto);
-        $('#sendReportingButton', reportingPage).on('click', self.sendReporting);
-        var reportingLocationPage = $('#reportingLocationPage');
-        reportingLocationPage.on('pageinit', self.initReportingLocationPage);
-        $('#confirmLocationButton', reportingLocationPage).on('click', self.confirmReportingLocation);
-        var reportingMapPage = $('#reportingMapPage');
-        reportingMapPage.on('pageshow', self.showReportingMapPage);
-        $('#confirmPositionButton', reportingMapPage).on('click', self.confirmReportingMap);
         var nearbyPage = $('#nearbyPage');
         nearbyPage.on('pageinit', self.initNearbyPage);
         nearbyPage.on('pagebeforeshow', self.beforeShowNearbyPage);
@@ -618,8 +604,8 @@ return;
     
     initReportingHomePage: function() {
         $('#reportingHomePage #reportByQrCodeButton').on('click', function() {
+            self.emptyReportingPages();
             barcodeReader.acquireQrCode(function(res) {
-                self.emptyReportingPages();
                 var qrCodeData = QrCodeData.fromText(res.text);
                 if(qrCodeData.type != QrCodeData.TYPE_GRETACITY) {
                     helper.alert('Il QrCode letto non è valido', null, 'Segnalazione con QrCode');
@@ -859,6 +845,7 @@ return;
             helper.alert('Clicca sulla gravità dl servizio', null, 'Descrizione');
             return;
         }
+        self.reporting.private = $('#private', $.mobile.activePage).is(':checked');
         $.mobile.changePage('#reporting6Page', {transition: 'slide'});
     },
     
@@ -901,20 +888,22 @@ return;
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
             photo.parent().next().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
-            
+            $('#photoSet2 div[data-photopos="' + self.reportingCurrPhotoPos + '"] a').show();
             helper.imageCropToFit(photo);
         }, function(e) {
-            helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
+            //helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});
     },
     removeReportingPhoto: function(par) {
         var container = null;
+        var pos = null;
         if(par.target) {
             container = $(par.target).closest('div.reporting-photo-item');
+            pos = container.data('photopos');
         } else {
-            container = $('#reporting6Page #photoSet div.reporting-photo-item[data-photopos="' + par + '"]');
+            pos = par;
         }
-        $('a img', container).attr('src', '').css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
+        $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img').attr('src', '').css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
         $('a.reporting-photo-delete', container).hide();
     },
     
@@ -931,24 +920,17 @@ return;
         });
         console.log(self.reporting);
         $.mobile.loading('show');
-        return;
         services.sendReporting(self.reporting, function() {
-            /// Successfully sent
-            /*$('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
+            // Successfully sent
+            self.emptyReportingPages();
             $.mobile.loading('hide');
-            reporting = null;
-            self.latLng.lat = 0;
-            self.latLng.lng = 0;
-            $('#description', page).html('');
-            self.removeAllReportingPhoto();
             helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
                 $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
-            }, 'Invia segnalazione');*/
+            }, 'Invia segnalazione');
         }, function(e) {
             // An error occurred
-            /*$('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
             $.mobile.loading('hide');
-            helper.alert(e, null, 'Invia segnalazione');*/
+            helper.alert('Si è verificato un errore durante l\'invio', null, 'Invia segnalazione');
         });
     },
     
@@ -2243,11 +2225,7 @@ console.log(newsChannelAvailableIds);
     },
     
     
-    
-    
-    
-    
-    
+
     
     /*
     initReportingMethodPage: function() {
@@ -2288,96 +2266,6 @@ console.log(newsChannelAvailableIds);
     
     
     
-    reportingQrCode : null,
-    reportingLocalizationMode: null,
-    REPORTING_LOCALIZATION_MODE_QRCODE: 1,
-    REPORTING_LOCALIZATION_MODE_MANUAL: 2,
-    reportingUpdateLatLng: false,
-    initReportingPage: function() {
-        var page = $('#reportingPage');
-        
-        $('#shootPhotoButton').on('click', self.acquireReportingPhoto);
-        $('#galleryPhotoButton').on('click', self.acquireReportingPhoto);
-        
-        $('#sendReportingButton', page).addClass('ui-disabled');
-        services.getReportingCategories(function(result) {
-            var html = '<option value="0" selected>Seleziona categoria</option>';
-            for(var i in result) {
-                var row = result[i];
-                html += '<option value="'+row.id+'">'+row.nome+'</option>';
-            }
-            $('#reportingCategory', page).html(html);
-            $('#reportingCategory', page).selectmenu('refresh');
-            
-            var priorityTexts = ['Bassa', 'Media', 'Alta'];
-            html = '';
-            for(var i in priorityTexts) {
-                html += '<option value="' + i + '">' + priorityTexts[i] + '</option>';
-            }
-            $('#priority', page).html(html).trigger('change');
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-            } else {
-                helper.alert(e, null, 'Invia segnalazione');
-            }
-        });
-        var html2 = '';
-        for(var i = 0; i < config.REPORTING_MAX_PHOTOS; i++) {
-            html2 += '<li><a href="#" onclick="self.viewReportingPhoto('+i+')">' +
-                        '<img src="" class="report-imagelist-missing" data-pos="'+i+'" data-acquired="0" />' +
-                    '</a></li>';
-        }
-        $('#photoList', page).html(html2);
-    },
-    showReportingPage: function(e, d) {
-        var page = $('#reportingPage');
-        var positioningPopup = $('#reportingPositionPopup', page);
-        
-        if(self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE) {
-            // Use QR-code to set position
-            $('#qrCode', page).html(self.reportingQrCode);
-            $('#qrCodeHeader', page).show();
-            $('#qrCodeRow', page).show();
-            $('#locationHeader', page).hide();
-            $('#locationRow', page).hide();
-        } else {
-            //self.REPORTING_LOCALIZATION_MODE_MANUAL
-            $('#qrCodeHeader', page).hide();
-            $('#qrCodeRow', page).hide();
-            $('#locationHeader', page).show();
-            $('#locationRow', page).show();
-        }
-        
-        if((d.prevPage.attr('id') != 'reportingMethodPage') || (self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_QRCODE)) {
-            return;
-        }
-        
-        $('#reportingPositionPopupContent', positioningPopup).html('Acquisizione della tua posizione GPS in corso...');
-        positioningPopup.show();
-        $('#loaderIndicator', page).show();
-        $('html, body').css({
-            'overflow': 'hidden',
-            'height': '100%'
-        });
-        
-        geoLocation.acquireGeoCoordinates(function(pos) {
-            self.reportingGeoCoordinatesAcquired(pos);
-            
-        }, function(e) {
-            geoLocation.acquireGeoCoordinates(function(pos) {
-                self.reportingGeoCoordinatesAcquired(pos);
-            }, function(e) {
-                $('#loaderIndicator', page).hide();
-                $('#reportingPositionPopupContent', positioningPopup).html(
-                    'Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.<br />' +
-                    '<a href="javascript:app.editReportingLocation()" class="ui-btn ui-btn-icon-right ui-icon-check" style="border:0;padding:.2em;">Procedi</a>'
-                );
-                $('a', positioningPopup).button();
-                $('#sendReportingButton', page).removeClass('ui-disabled');
-            }, {enableHighAccuracy: false});
-        });
-    },
     mapsScriptLoaded: function() {
     },
     
@@ -2387,7 +2275,7 @@ console.log(newsChannelAvailableIds);
     latLng: {lat: 0, lng: 0},
     map: null,
     marker: null,
-    mapsSetup: function() {
+    __mapsSetup: function() {
         if(typeof(google) == 'undefined') return;
         if(self.map != null) google.maps.event.clearListeners(self.map);
         var lat = self.latLng.lat;
@@ -2407,7 +2295,7 @@ console.log(newsChannelAvailableIds);
         self.map = new google.maps.Map(document.getElementById('map'), options);
         self.mapsSetMarker();
     },
-    mapsSetMarker: function() {
+    __mapsSetMarker: function() {
         if(self.map == null) return;
 //console.log("Setting map position to " + self.latLng.lat + " " + self.latLng.lng);
         var lat = self.latLng.lat;
@@ -2459,214 +2347,6 @@ console.log(newsChannelAvailableIds);
         var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
         infowindow.open(self.map, self.marker);
     },
-    
-    
-    
-    
-    
-    
-    editReportingDescription: function() {
-        $('#reportingDescriptionPage textarea').val(
-            $('#reportingPage #description').html()
-        );
-        $.mobile.changePage('#reportingDescriptionPage', {transition: 'slide'});
-    },
-    
-    confirmReportingDescription: function() {
-        var description = $('#reportingDescriptionPage textarea').val().trim();
-        $('#reportingPage #description').html(
-            description
-        );
-        if(description.length > 0) {
-            $('#reportingPage #desciptionMissing').hide();
-        } else {
-            $('#reportingPage #desciptionMissing').show();
-        }
-        
-        self.reportingUpdateLatLng = false;
-        $.mobile.back();
-    },
-    
-    initReportingLocationPage: function() {
-        var page = $('#reportingLocationPage');
-        $('input#city', page).on('input', self.reportingLocationChanged);
-        $('input#prov', page).on('input', self.reportingLocationChanged);
-        $('input#prov', page).parent('.ui-input-text').css('width', '3em')
-        $('input#prov', page).on('blur', function() {
-            this.value = this.value.toUpperCase();
-        });
-        $('textarea#route', page).on('input', self.reportingLocationChanged);
-    },
-    editReportingLocation: function() {
-        $('html, body').css({
-            'overflow': 'auto',
-            'height': 'auto'
-        });
-        $('#reportingPositionPopup', page).hide();
-        var page = $('#reportingLocationPage');
-        $('input#city', page).val(
-            $('#reportingPage #locationInfo span.city').html()
-        );
-        $('input#prov', page).val(
-            $('#reportingPage #locationInfo span.prov').html()
-        );
-        $('textarea#route', page).val(
-            $('#reportingPage #locationInfo span.route').html()
-        );
-        $.mobile.changePage('#reportingLocationPage', {transition: 'slide'});
-    },
-    reportingLocationChanged: function() {
-        var page = $('#reportingLocationPage');
-        var params = {
-            'city': $('input#city', page).val(),
-            'prov': $('input#prov', page).val(),
-            'address': $('textarea#route', page).val()
-        };
-        geoLocation.geocode(params, function(latLng) {
-            self.latLng.lat = latLng.lat();
-            self.latLng.lng = latLng.lng();
-        });
-    },
-    confirmReportingLocation: function() {
-        $.mobile.changePage('#reportingMapPage', {transition: 'slide'});
-    },
-    
-    
-    showReportingMapPage: function() {
-        self.mapsSetup();
-        setTimeout(function() {
-            $('#reportingMapPage #map').height($.mobile.activePage.height());
-        }, 200);
-    },
-    
-    
-    confirmReportingMap: function() {
-        $('#reportingPage #locationInfo span.city').html(
-            $('#reportingLocationPage input#city').val()
-        );
-        $('#reportingPage #locationInfo span.prov').html(
-            $('#reportingLocationPage input#prov').val()
-        );
-        $('#reportingPage #locationInfo span.route').html(
-            $('#reportingLocationPage textarea#route').val()
-        );
-        self.reportingUpdateLatLng = false;
-        //$.mobile.back();
-        $.mobile.changePage('#reportingPage', {transition: 'slide', reverse: true});
-    },
-    
-    
-    acquireReportingPhoto: function(e) {        
-        if($('#photoList li a img[data-acquired="0"]').first().length == 0) {
-            helper.alert('Hai raggiunto il limite massimo', null, 'Scatta foto');
-            return;
-        }
-        var sourceType = (this.attributes['id'].value == 'shootPhotoButton') ?
-                                            Camera.PictureSourceType.CAMERA :
-                                            Camera.PictureSourceType.PHOTOLIBRARY;        
-
-        //$('#reportingPage #acquirePhotoButton label').html('Acquisizione foto...');
-        //$('#reportingPage #acquirePhotoButton').addClass('ui-disabled');
-        
-        $('#reportingPage #acquirePhotoPopup').popup('close');
-        
-        camera.getPicture(function(imageData) {
-            var imgEl = $('#photoList li a img[data-acquired="0"]').first();
-            if(imgEl.length == 1) {
-                imgEl.attr('src', 'data:image/jpeg;base64,' + imageData).attr('data-acquired', '1');
-                imgEl.removeClass('report-imagelist-missing').addClass('report-imagelist-done');
-            }
-            //$('#reportingPage #acquirePhotoButton label').html('Scatta');
-            //$('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
-        }, function(e) {
-            //helper.alert(e, null, 'Impossibile scattare la foto');
-            //$('#reportingPage #acquirePhotoButton label').html('Scatta');
-            //$('#reportingPage #acquirePhotoButton').removeClass('ui-disabled');
-        }, {sourceType: sourceType});
-    },
-    viewReportingPhoto: function(pos) {
-        var imgEl = $('#reportingPage #photoList li a img[data-acquired="1"][data-pos="' + pos + '"]');
-        if(imgEl.length == 0) return;
-        $('#reportingPhotoPage img').attr('src', imgEl.attr('src')).attr('data-pos', imgEl.attr('data-pos'));
-        var width = $('#reportingPhotoPage').width();
-        $('#reportingPhotoPage img').css({'max-width' : width, 'height' : 'auto'});
-        $.mobile.changePage('#reportingPhotoPage', {transition: 'pop'});
-    },
-    _old_removeReportingPhoto: function() {
-        var imgEl = $('#reportingPhotoPage img');
-        imgEl.attr('src', '');
-        var pos = imgEl.attr('data-pos');
-        $('#reportingPage #photoList li a img[data-pos='+pos+']').attr('src', '').removeClass('report-imagelist-done').addClass('report-imagelist-missing').attr('data-acquired', '0');
-        self.reportingUpdateLatLng = false;
-        $.mobile.changePage('#reportingPage', {transition: 'pop', reverse: true});
-    },
-    removeAllReportingPhoto: function() {
-        $('#reportingPage #photoList li a img').attr('src', '').removeClass('report-imagelist-done').addClass('report-imagelist-missing').attr('data-acquired', '0');
-    },
-    
-    _old_sendReporting: function() {
-        // Validate report
-        var page = $('#reportingPage');
-        var reporting = {
-            qrCode: $('#qrCode', page).html(),
-            latLng: self.latLng,
-            categoryId: $('#reportingCategory', reportingPage).val(),
-            road: $('#locationInfo span.route', reportingPage).html().trim(),
-            city: $('#locationInfo span.city', reportingPage).html().trim(),
-            prov: $('#locationInfo span.prov', reportingPage).html().trim(),
-            description:  $('#description', reportingPage).html().trim(),
-            //priority: self.reportingPriority,
-            priority: $('#priority', page).val(),
-            private: $('#private', page).is(':checked'),
-            photos: []
-        };
-
-        $('#photoList li a img[data-acquired="1"]', reportingPage).each(function() {
-            // remove 
-            var src = $(this).attr('src');
-            var pos = src.indexOf('base64,');
-            reporting.photos.push(src.substr(pos+7));
-        });
-        
-        var errors = [];
-        if(reporting.categoryId == '0') errors.push('- seleziona la categoria');
-        if(self.reportingLocalizationMode == self.REPORTING_LOCALIZATION_MODE_MANUAL) {
-            if(reporting.prov == '') errors.push('- specifica la provincia');
-            if((reporting.road == '') || (reporting.comune == '')) errors.push('- specifica l\'indirizzo');
-        }
-        if(reporting.description == '') errors.push('- descrivi il problema');
-        if(errors.length > 0) {
-            helper.alert(errors.join('\n', null, 'Invia segnalazione'));
-            return;
-        }
-
-        var initialValue = $('#sendReportingButton', page).html();
-        $('#sendReportingButton', page).html('Invio...').addClass('ui-disabled');
-        $.mobile.loading('show');
-        
-        services.sendReporting(reporting, function() {
-            // Successfully sent
-            $('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
-            $.mobile.loading('hide');
-            reporting = null;
-            self.latLng.lat = 0;
-            self.latLng.lng = 0;
-            $('#description', page).html('');
-            self.removeAllReportingPhoto();
-            helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
-                $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
-            }, 'Invia segnalazione');
-        }, function(e) {
-            // An error occurred
-            $('#sendReportingButton', page).html(initialValue).removeClass('ui-disabled');
-            $.mobile.loading('hide');
-            helper.alert(e, null, 'Invia segnalazione');
-        });
-    },
-    
-    
-    
-    
     
     
     nearbyCategoryId: null,

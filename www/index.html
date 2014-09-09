@@ -556,7 +556,7 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifiche le mie segnalazioni</a>
+                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifica le mie segnalazioni</a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
@@ -712,7 +712,9 @@
                         alto
                     </div>
                 </div>
-                
+                <br /><br /><br />
+                <input type="checkbox" id="private" data-theme="b" />
+                <label style="white-space:normal;" for="private">Utilizza i dati personali solo per le comunicazioni con gli operatori della pubblica amministrazione</label>
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
@@ -753,56 +755,29 @@
                         <a href="#" class="reporting-photo-shot">
                             <img src="" class="reporting-photo reporting-photo-missing" />
                         </a>
-                        <!--
-                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
-                        -->
                     </div>
                     <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
                         <a href="#" class="reporting-photo-shot">
                             <img src="" class="reporting-photo reporting-photo-missing" />
                         </a>
-                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
                     <div class="reporting-photo-item ui-block-c" data-photopos="2" style="text-align:center;">
                         <a href="#" class="reporting-photo-shot">
                             <img src="" class="reporting-photo reporting-photo-missing" />
                         </a>
-                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
-                </div>
-                
-                <!--
+                </div>                
                 <div id="photoSet2" class="ui-grid-b">
-                    <div id="item1" class="reporting-photo-item ui-block-a" data-photopos="0" style="height:4em;text-align:center;">
-                        <a id="item1_1" href="#" class="reporting-photo-shot">
-                            <img id="item1_1_1" src="" class="reporting-photo reporting-photo-missing" />
-                        </a>
-                    </div>
-                    <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
-                        <a href="#" class="reporting-photo-shot">
-                            <img src="" class="reporting-photo reporting-photo-missing" />
-                        </a>
-                    </div>
-                    <div class="reporting-photo-item ui-block-c" data-photopos="2" style="text-align:center;">
-                        <a href="#" class="reporting-photo-shot">
-                            <img src="" class="reporting-photo reporting-photo-missing" />
-                        </a>
-                    </div> 
-               </div>
-                -->
-                <div id="photoSet3" class="ui-grid-b">
                     <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;">
-                        <a href="#" class="reporting-photo-delete" satyle="display:none;">elimina</a>
+                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
                     <div class="reporting-photo-item ui-block-b" data-photopos="1" style="text-align:center;">
-                        <a href="#" class="reporting-photo-delete" sstyle="display:none;">elimina</a>
+                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div>
                     <div class="reporting-photo-item ui-block-c" data-photopos="2" style="text-align:center;">
-                        <a href="#" class="reporting-photo-delete" sstyle="display:none;">elimina</a>
+                        <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div> 
                </div>
-               
-                
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
@@ -816,6 +791,27 @@
         </div>
         <!-- /reporting6Page -->
         
+        <!-- reportingListPage -->
+         <div data-role="page" id="reportingListPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <img src="img/greta.png" /> 
+                    <span>Segnalazioni</span>
+                </div>
+                <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                alsdfks
+            </div>
+            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" id="changeViewType" class="ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+                   VEDI SU MAPPA
+                </a>
+            </div>
+         </div>
+        <!-- /reportingListPage -->
         
         
         
@@ -1091,7 +1087,7 @@
         
         
         <!-- reportingListPage -->
-        <div data-role="page" id="reportingListPage">
+        <div data-role="page" id="__reportingListPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Segnalazioni</h1>
                 <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
@@ -1316,171 +1312,7 @@
         </div>
         <!-- /nearbyPlaceInfoPage -->
     
-        
-
-        <!-- reportingPage -->
-        <div data-role="page" id="reportingPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Segnala</h1>
-                <a href="#reportingMethodPage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
-                <a href="#reportingListPage" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bullets">Segnalazioni</a>
-            </div>
             
-            <div data-role="main" class="ui-content">
-
-                <div data-role="popup" id="acquirePhotoPopup">
-                    <ul data-role="listview" data-inset="true">
-                        <li data-icon="camera">
-                            <a href="#" id="shootPhotoButton">Scatta</a>
-                        </li>
-                        <li data-icon="grid">
-                            <a href="#" id="galleryPhotoButton">Galleria</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div id="reportingPositionPopup">
-                    <div style="position:absolute;left:5%;top:10%;width:90%;height:50%;margin:0 auto;background-color:#FFF;border-radius:.3em;">
-                        <div style="margin:1em;padding-top:45%;">
-                            <img src="img/ajax-loader.gif" id="loaderIndicator" style="float:right;display:none;" />
-                            <p id="reportingPositionPopupContent"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <ul data-role="listview" data-inset="true">
-                    <li data-role="list-divider" style="padding: 10px;" id="qrCodeHeader">
-                        <div>
-                            <img src="js/jquery.mobile-1.4.3/images/icons-png/check-white.png" style="float:left;"/>
-                            <span style="float:left;padding-left:15px;">QR-code</span>
-                        </div>
-                    </li>
-                    <li id="qrCodeRow">
-                        <label id="qrCode" style="white-space:normal;"></label>
-                    </li>
-                    <li data-role="list-divider" style="padding: 10px;" id="locationHeader">
-                        <div>
-                            <img src="js/jquery.mobile-1.4.3/images/icons-png/location-white.png" style="float:left;" />
-                            <span style="float:left;padding-left:15px;">Specifica il luogo</span>
-                        </div>
-                    </li>
-                    <li id="locationRow">
-                        <a href="#" id="editLocationButton">
-                            <label id="locationInfo" style="display:block;min-height:30px;padding:2px;white-space:normal;">
-                                <span class="route"></span>
-                                <span class="city"></span>
-                                <span class="prov"></span>
-                            </label>
-                        </a>
-                    </li>
-                    <li id="getPositionMessage" style="font-weight:lighter;color:#aeaece;white-space:normal;">
-                    </li>
-                    <li data-role="list-divider" style="padding: 10px;">
-                        <div>
-                            <img src="js/jquery.mobile-1.4.3/images/icons-png/tag-white.png" style="float:left;" />
-                            <span style="float:left;padding-left:15px;">Categoria del problema</span>
-                        </div>
-                    </li>
-                    <li>
-                        <select id="reportingCategory"></select>
-                    </li>
-                    <li data-role="list-divider" style="padding: 10px;">
-                        <div>
-                            <img src="js/jquery.mobile-1.4.3/images/icons-png/edit-white.png" style="float:left;"/>
-                            <span style="float:left;padding-left:15px;">Descrivi il problema</span>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" id="editDesciptionButton" style="display:block;min-height:40px;padding:10px;">
-                            <label id="description" style="white-space:normal;"></label>
-                            <label id="desciptionMissing" class="reporting-missing-message">Tocca qui per inserire la descrizione</label>
-                        </a>
-                    </li>
-                    <li data-role="list-divider" style="padding: 10px;">
-                        <div>
-                            <img src="js/jquery.mobile-1.4.3/images/icons-png/alert-white.png" style="float:left;" />
-                            <span style="float:left;padding-left:15px;">Gravità del disservizio</span>
-                        </div>
-                    </li>
-                    <li>
-                        <select id="priority"></select>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="private" />
-                        <label style="white-space:normal;" for="private">Utilizza i dati personali solo per le comunicazioni con gli operatori della pubblica amministrazione</label>
-                    </li>
-                    <li data-role="list-divider" style="padding: 10px;">
-                        <div>
-                            <img src="js/jquery.mobile-1.4.3/images/icons-png/camera-white.png" style="float:left;" />
-                            <span style="float:left;padding-left:15px;">Foto</span>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#acquirePhotoPopup" data-rel="popup" _id="acquirePhotoButton">
-                            <label style="display:block;padding:2px;">
-                                Aggiungi una foto
-                            </label>
-                        </a>
-                    </li>
-                    <li style="margin:0;padding:0;text-align:center;">
-                        <ul id="photoList"></ul>
-                    </li>
-                </ul>
-                <p><a href="#" id="sendReportingButton" data-role="button" data-icon="action" data-iconpos="left">Invia segnalazione</a></p>
-            </div>
-        </div>
-        <!-- /reportingPage -->
-        
-        <!-- reportingDescriptionPage -->
-        <div data-role="page" id="reportingDescriptionPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Segnala</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
-                <a href="#" id="confirmDescriptionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <textarea placeholder="Descrizione del problema" autofocus></textarea>
-            </div>
-        </div>
-        <!-- /reportingDescriptionPage -->
-        
-        <!-- reportingLocationPage -->
-        <div data-role="page" id="reportingLocationPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Segnala</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
-                <!--<a href="#" id="confirmLocationButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>-->
-            </div>
-            <div data-role="main" class="ui-content">
-                <div>
-                    <label for="prov">Provincia</label>
-                    <input type="text" id="prov" placeholder="Prov" maxlength="2" autofocus />
-                    <label for="city">Comune</label>
-                    <input type="text" id="city" placeholder="Comune" />
-                    <label for="route">Indirizzo</label>
-                    <textarea id="route" placeholder="Indirizzo"></textarea>
-                </div>
-                <a href="#" id="confirmLocationButton" class="ui-btn ui-btn-icon-right ui-icon-check" style="white-space:normal;">
-                    Procedi
-                </a>
-                <div style="height:150px"></div>
-            </div>
-        </div>
-        <!-- /reportingLocationPage -->
-        
-        <!-- reportingMapPage -->
-        <div data-role="page" id="reportingMapPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Segnala</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l" data-transition="slide" data-direction="reverse">Back</a>
-                <a href="#" id="confirmPositionButton" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">Confirm</a>
-            </div>
-            <div data-role="main">
-                <div id="map" style="width:100%;height:30em;"></div>
-            </div>
-        </div>
-        <!-- /reportingMapPage -->
-    
         <!-- reportingPhotoPage -->
         <div data-role="page" id="reportingPhotoPage">
             <div data-role="main" style="text-align:center">

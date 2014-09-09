@@ -64,7 +64,6 @@ var helper = {
         var img_height = $(item).innerHeight();
         var div_height = $(item).closest('div').innerHeight();
         if(img_height<div_height){
-console.log(1);
             //INCREASE HEIGHT OF IMAGE TO MATCH CONTAINER
             $(item).css({'width': 'auto', 'height': div_height });
             //GET THE NEW WIDTH AFTER RESIZE
@@ -75,9 +74,7 @@ console.log(1);
             var newMargin = Math.floor((div_width-img_width)/2)+'px';
             //SET THE NEW HORIZONTAL MARGIN (EXCESS IMAGE WIDTH IS CROPPED)
             $(item).css({'margin-left': newMargin });
-console.log('ok', img_width, div_width, newMargin);
         }else{
-console.log(2);
             //CENTER IT VERTICALLY (EXCESS IMAGE HEIGHT IS CROPPED)
             var newMargin = (div_height-img_height)/2+'px';
             $(item).css({'margin-top': newMargin});
