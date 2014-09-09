@@ -61,7 +61,7 @@ var helper = {
     },
     
     imageCropToFit: function(item) {
-        var img_height = $(item).outerHeight();
+        var img_height = $(item).innerHeight();
         var div_height = $(item).closest('div').innerHeight();
         if(img_height<div_height){
 console.log(1);
@@ -70,7 +70,7 @@ console.log(1);
             //GET THE NEW WIDTH AFTER RESIZE
             var img_width = $(item).width();
             //GET THE PARENT WIDTH
-            var div_width = $(item).closest('div').innerHeight();
+            var div_width = $(item).closest('div').innerWidth();
             //GET THE NEW HORIZONTAL MARGIN
             var newMargin = Math.floor((div_width-img_width)/2)+'px';
             //SET THE NEW HORIZONTAL MARGIN (EXCESS IMAGE WIDTH IS CROPPED)

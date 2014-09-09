@@ -610,12 +610,7 @@ return;
     
     
     
-    reporting : {
-        latLng: {
-            lat: null,
-            lng: null
-        }
-    },
+    reporting : null,
     
     
     ////////////////////////////////////////
@@ -641,6 +636,12 @@ return;
     
     
     emptyReportingPages: function() {
+        self.reporting = {
+            latLng: {
+                lat: null,
+                lng: null
+            }
+        };
         // Empty all reporting pages
         var page = $('#reporting1Page');
         $('#city', page).val('');
