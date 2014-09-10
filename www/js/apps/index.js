@@ -1028,8 +1028,9 @@ return;
                         '<div>luogo: <strong>' + payload.indirizzo + '</strong></div>' +
                         '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">descrizione: <strong>' + payload.descrizione_problema + '</strong></div>' +
                         '<div>stato: <strong>' + payload.stato + '</strong></div>' +
-                        '</div>'+
-                        '<a href="#" class="ui-btn">DETTAGLI</a>';
+                        '</div>' +
+                        '<a href="#" class="ui-btn">DETTAGLI</a>' +
+                        '<a href="javascript:$(\'#reportingListPopup\').popup(\'close\')" class="ui-btn">CHIUDI</a>';
                 var popup = $('#reportingListPopup', $.mobile.activePage);
                 $('div.ui-content', popup).html(content);
                 popup.popup('open');
