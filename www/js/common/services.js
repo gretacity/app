@@ -572,10 +572,11 @@ console.log('services.sendReporting', obj);
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
+console.log('services.getReportingList SUCCESS', result);
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('FAIL', jqXHR, textStatus);
-            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
+console.log('services.getReportingList FAIL', jqXHR, textStatus);
+            if(failCallback) failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     }
 }

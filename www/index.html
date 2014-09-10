@@ -793,6 +793,9 @@
         
         <!-- reportingListPage -->
          <div data-role="page" id="reportingListPage">
+             <div data-role="popup" id="reportingListPopup">
+                 <div class="ui-content">ok</div>
+             </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
                     <img src="img/greta.png" /> 
@@ -801,12 +804,15 @@
                 <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
-            <div data-role="main" class="ui-content">
-                alsdfks
+            <div data-role="main">
+                <div id="reportingListView">
+                    <ul data-role="listview" id="reportingList"></ul>
+                </div>
+                <div id="mapView" style="width: 100%;height:20em;">Caricamento in corso...</div>
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" id="changeViewType" class="ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
-                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+                <a href="#" id="changeViewType" class="ui-btn ui-shadow ui-corner-all"
+                   style="text-align:center;width:98%;padding:0 auto;margin: 0 auto; ">
                    VEDI SU MAPPA
                 </a>
             </div>
