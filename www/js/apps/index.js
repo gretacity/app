@@ -1089,14 +1089,39 @@ return;
         $.mobile.loading('show');
         var row = null;
         for(var i in self.reportingListData) {
-            if(self.reportingListData[i].id = id) {
+            if(self.reportingListData[i].id == id) {
                 row = self.reportingListData[i];
                 break;
             }
         }
         if(row) {
+            console.log(id, row.descrizione_problema, row);
             var page = $('#reportingListDetailPage');
-// TODO
+            $('#city', page).val(row.comune);
+            $('#prov', page).val(row.sigla);
+            $('#address', page).val(row.indirizzo);
+            $('#category', page).val(row.nome_categoria);
+            $('#description', page).val(row.descrizione_problema);
+            switch(parseInt(row.priorita)) {
+                case 0:
+                    $('#priority', page).html('BASSA GRAVIT&Agrave;').css({'background-color': '#0F0', 'color': '#222'});
+                    break;
+                case 1:
+                    $('#priority', page).html('MEDIA GRAVIT&Agrave;').css({'background-color': '#FAF200', 'color': '#222'});
+                    break;
+                case 2:
+                    $('#priority', page).html('ALTA GRAVIT&Agrave;').css({'background-color': '#F00', 'color': '#FFF'});
+                    break;
+            }
+            var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
+            $('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
+            //$('#photot2', page);
+            //$('#photot3', page);
+            var html = '';
+            for(var i in row.log) {
+                html += '<li style="white-space:normal;">' + row.log[i] + '</li>';
+            }
+            $('#log', page).html(html).listview().listview('refresh');
             $.mobile.changePage('#reportingListDetailPage', {transition: 'slide'});
         }
     },
