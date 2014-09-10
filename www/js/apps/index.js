@@ -1021,7 +1021,7 @@ return;
         for(var i in self.reportingListData) {
             var row = self.reportingListData[i];
             var marker = new google.maps.LatLng(row.latitudine, row.longitudine);
-            marker= new google.maps.Marker({
+            var markerOptions = {
                 position: marker,
                 map: self.reportingListMap,
                 animation: google.maps.Animation.DROP,
@@ -1034,7 +1034,11 @@ return;
                     stato: row.stato,
                     foto: row.foto
                 }
-            });
+            };
+            if(row.icona != '') {
+                markerOptions.icon = row.icona;
+            }
+            marker= new google.maps.Marker(markerOptions);
             google.maps.event.addListener(marker, 'click', function() {
                 var payload = this.get('payload');
                 var content = '<img src="" style="margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block;" />' +
@@ -1095,13 +1099,13 @@ return;
             }
         }
         if(row) {
-            console.log(id, row.descrizione_problema, row);
             var page = $('#reportingListDetailPage');
             $('#city', page).val(row.comune);
             $('#prov', page).val(row.sigla);
             $('#address', page).val(row.indirizzo);
             $('#category', page).val(row.nome_categoria);
             $('#description', page).val(row.descrizione_problema);
+            $('#status', page).val(row.stato);
             switch(parseInt(row.priorita)) {
                 case 0:
                     $('#priority', page).html('BASSA GRAVIT&Agrave;').css({'background-color': '#0F0', 'color': '#222'});
