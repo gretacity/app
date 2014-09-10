@@ -53,9 +53,13 @@ var app = {
         changePasswordPage.on('pagebeforeshow', self.beforeShowChangePasswordPage);
         $('#changePasswordButton', changePasswordPage).on('click', self.changePassword);
         
+        var homePage = $('#homePage');
+        homePage.on('pageshow', self.showHomePage);
+        
         var reportingHomePage = $('#reportingHomePage');
         reportingHomePage.on('pageinit', self.initReportingHomePage);
-        
+        reportingHomePage.on('pageshow', self.showReportingHomePage);
+         
         var reporting1Page = $('#reporting1Page');
         reporting1Page.on('pageinit', self.initReporting1Page);
         reporting1Page.on('pageshow', self.showReporting1Page);
@@ -600,6 +604,12 @@ return;
     
     
     ////////////////////////////////////////
+    // homePage
+    showHomePage: function() {
+        self.reportingListData = null;
+    },
+    
+    ////////////////////////////////////////
     // reportingHomePage
     
     initReportingHomePage: function() {
@@ -618,6 +628,9 @@ return;
                 console.log(e);
             });
         });
+    },
+    showReportingHomePage: function() {
+        self.reportingListData = null;
     },
     
     
@@ -941,6 +954,7 @@ return;
     
     ////////////////////////////////////////
     // reportingListPage
+    reportingListData: null,
     reportingListCurrentView: null,
     reportingListViewTypeList: 0,
     reportingListViewTypeMap: 1,
@@ -979,13 +993,14 @@ return;
             //self.toggleReportingListView();
             services.getReportingList({}, function(result) {
                 // Success
-                self.reportingListRenderList(result);
-                self.reportingListRenderMap(result);
+                self.reportingListData = result;
+                self.reportingListRenderList();
+                self.reportingListRenderMap();
                 $.mobile.loading('hide');
             });
         }
     },
-    reportingListRenderMap: function(data) {
+    reportingListRenderMap: function() {
         self.maximizeMap('#mapView');
         if(typeof(google) == 'undefined') return;
         if(self.reportingListMap != null) {
@@ -1003,8 +1018,8 @@ return;
         self.reportingListMap = new google.maps.Map($('#mapView', $.mobile.activePage).get(0), options);            
         
         var bounds = new google.maps.LatLngBounds();
-        for(var i in data) {
-            var row = data[i];
+        for(var i in self.reportingListData) {
+            var row = self.reportingListData[i];
             var marker = new google.maps.LatLng(row.latitudine, row.longitudine);
             marker= new google.maps.Marker({
                 position: marker,
@@ -1029,7 +1044,7 @@ return;
                         '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">descrizione: <strong>' + payload.descrizione_problema + '</strong></div>' +
                         '<div>stato: <strong>' + payload.stato + '</strong></div>' +
                         '</div>' +
-                        '<a href="#" class="ui-btn">DETTAGLI</a>' +
+                        '<a href="javascript:app.reportListShowDetail(\'' + payload.id + '\')" class="ui-btn">DETTAGLI</a>' +
                         '<a href="javascript:$(\'#reportingListPopup\').popup(\'close\')" class="ui-btn">CHIUDI</a>';
                 var popup = $('#reportingListPopup', $.mobile.activePage);
                 $('div.ui-content', popup).html(content);
@@ -1045,23 +1060,23 @@ return;
             //self.reportingListMap.setZoom(5);
         }
     },
-    reportingListRenderList: function(data) {   
+    reportingListRenderList: function() {
         var list = $('#reportingListPage #reportingList');
         var html = '';
-        if(data.length == 0) {
+        if(self.reportingListData.length == 0) {
             html += '<li data-role="list-divider">Non ci sono segnalazioni</li>';
         } else {
-            for(var i in data) {
-                var row = data[i];
+            for(var i in self.reportingListData) {
+                var row = self.reportingListData[i];
                 //console.log(row);
 //TODO onclick="self.reportingListPageViewPhoto(this)"
-                html += '<li><div style="padding: 0 0 0 0;overflow:hidden;">' +
+                html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
                         '<img src="" style="margin-right:1em;width:5em;height:5em;background:url(\'' + row.foto + '\') center center no-repeat;background-size: cover;display:block;float:left;" />' +
                         '<div>data e ora: <strong>' + row.data_inserimento + '</strong></div>' +
                         '<div>luogo: <strong>' + row.indirizzo + '</strong></div>' +
                         '<div style="width:70%;text-overflow: ellipsis;overflow:hidden;">descrizione: <strong>' + row.descrizione_problema + '</strong></div>' +
                         '<div>stato: <strong>' + row.stato + '</strong></div>' +
-                        '</div></li>';
+                        '</div></a></li>';
             }
         }
         list.html(html);
@@ -1070,6 +1085,25 @@ return;
         $.mobile.silentScroll();
     },
     
+    reportListShowDetail: function(id) {
+        $.mobile.loading('show');
+        var row = null;
+        for(var i in self.reportingListData) {
+            if(self.reportingListData[i].id = id) {
+                row = self.reportingListData[i];
+                break;
+            }
+        }
+        if(row) {
+            var page = $('#reportingListDetailPage');
+// TODO
+            $.mobile.changePage('#reportingListDetailPage', {transition: 'slide'});
+        }
+    },
+    
+    
+    ////////////////////////////////////////
+    // reportingListDetailPage
     
     
     
