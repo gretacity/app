@@ -1168,7 +1168,7 @@ return;
         console.log('initializing side bar');
         services.getSubscribedChannels(function(result) {
             var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>' +
-                       '<li data-channelid="0"><a href="javascript:self.showNewsChannel(\'0\')"><span></span>Tutte</a></li>';
+                       '<li data-channelid="0"><a href="javascript:self.loadNewsChannel(\'0\')"><span></span>Tutte</a></li>';
             for(var i in result) {
                 var row = result[i];
                 html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:app.loadNewsChannel(' + row.id_feed + ')"><span>' 
@@ -1221,7 +1221,7 @@ return;
 
         self.initNewsSidePanel();
 
-        self.loadNewsChannel();
+        //self.loadNewsChannel();
         
         /*var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
@@ -1261,6 +1261,8 @@ return;
     },
     loadNewsChannel: function(channelId, onlyNew) {
         $('#newsPage #newsChannelsPanel').panel('close');
+        
+        var channelChanged = self.newsChannelId != channelId; 
         
         self.newsChannelId = channelId;
         self.newsContentLastId = null;
@@ -1311,8 +1313,7 @@ return;
                 }
             }
             
-            if(self.newsChannelId != params.channelId) {
-                self.newsChannelId = params.channelId;
+            if(channelChanged) {
                 $('#newsPage #channelContent').html(html).listview('refresh');
             } else {
                 $('#newsPage #channelContent').append(html).listview('refresh');
