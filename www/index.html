@@ -53,8 +53,8 @@
                 /*padding: 1em 0 0 0;*/
             }
             .backgroundMap{
-                background: url(img/backgroundMap.png) no-repeat center center !important;
-                background-size: 120% !important;
+                background: url(img/backgroundMap.png) repeat-y center center !important;
+                background-size: 130% !important;
             }
             div[data-role="header"] a.ui-btn {
                 margin-top: 0.5em !important;
@@ -412,15 +412,16 @@
                 /*border: solid 1px #0f0 !important;*/
                 margin: 0 .3 !important;
                 padding: 0 .3 !important;
-                overflow: hidden;
+                overflow: hidden !important;
+                height: 7em !important;
             }
             .reporting-photo {
-                width: 100%;
-                height: 7em;
+                width: 100% !important;
+                height: 7em !important;
                 /*border: solid 1px #f00 !important;*/
                 margin: 0 .3 !important;
                 padding: 0 .3 !important;
-                overflow:hidden;
+                overflow: hidden !important;
             }
             .reporting-photo-missing {
                 /*height:5em;*/
@@ -445,6 +446,7 @@
                 height: 7em !important;
                 padding: 0 .3em 0 7.5em !important;
             }
+            
             #channelContent li a .img-container {
                 position: absolute;
                 left: 0; top: 0; bottom:0;
@@ -462,9 +464,14 @@
                 max-height: 7em;
             }
             #channelContent li a h1 {
-                white-space:normal;
-                text-overflow:ellipsis;
-                padding-top:.4em;
+                font-weight: normal;
+                white-space: normal;
+                text-overflow: ellipsis !important;
+                padding-top:.4em !important;
+                padding-right: .2em !important;
+                height: 3em !important;
+                line-height: 1em !important;
+                overflow: hidden;
             }
             #channelContent li a .news-list-note-bottom {
                 position: absolute;
@@ -606,7 +613,7 @@
                         <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifica le mie segnalazioni</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#reportingNearbyPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
                     </div>
                 </div>
             </div>
@@ -797,6 +804,17 @@
                     invia almeno una foto.
                 </p>
                 
+                <!--
+                <div class="ui-grid-b">
+                    <div class="reporting-photo-item ui-block-a" data-photopos="0" 
+                         style="height:7em;text-align:center;">
+                        <a href="#" class="reporting-photo-shot">
+                            <img src="img/backgroundHand.png" class="reporting-photo reporting-photo-missing" />
+                        </a>
+                    </div>
+                </div>
+                -->
+                
                 <div id="photoSet" class="ui-grid-b">
                     <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;">
                         <a href="#" class="reporting-photo-shot">
@@ -825,6 +843,7 @@
                         <a href="#" class="reporting-photo-delete" style="display:none;">elimina</a>
                     </div> 
                </div>
+            
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
