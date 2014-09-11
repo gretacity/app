@@ -83,6 +83,37 @@ var app = {
         reportingListPage.on('pageshow', self.showReportingListPage);
         
         
+        var reportingNearbyPage = $('#reportingNearbyPage');
+        reportingNearbyPage.on('pageinit', self.initReportingNearbyPage);
+        reportingNearbyPage.on('pageshow', self.showReportingNearbyPage);
+        
+        
+        var newsPage = $('#newsPage');
+        newsPage.on('pageinit', self.initNewsPage);
+        newsPage.on('pageshow', self.showNewsPage);
+       // newsPage.on('pagebeforehide', self.beforeHideNewsPage);
+        //$('#subscribedChannels', newsPage).on('change', self.retrieveChannelContent);
+        //$('#refreshNewsButton', newsPage).on('click', function() {
+        //    $.mobile.loading('show');
+        //    self.retrieveChannelContent(true);
+        //});
+        //$('#moreNewsButton', newsPage).on('click', self.retrieveMoreChannelContent);
+        //$('#newContentReceivedButton', newsPage).on('click', self.showNewChannelContentReceived);
+        //var newsDetailPage = $('#newsDetailPage');
+        //newsDetailPage.on('pagebeforeshow', self.initNewsDetailPage);
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         var profilePage = $('#profilePage');
         profilePage.on('pageshow', self.showProfilePage);
         $('#logoutButton', profilePage).on('click', self.logout);
@@ -108,19 +139,6 @@ var app = {
         $('#profileFollowingPage').on('pagebeforeshow', self.beforeShowProfileFollowingPage);
         var newsChannelsPage = $('#newsChannelsPage');
         newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
-        var newsPage = $('#newsPage');
-        newsPage.on('pageinit', self.initNewsPage);
-        newsPage.on('pageshow', self.beforeShowNewsPage);
-        newsPage.on('pagebeforehide', self.beforeHideNewsPage);
-        $('#subscribedChannels', newsPage).on('change', self.retrieveChannelContent);
-        $('#refreshNewsButton', newsPage).on('click', function() {
-            $.mobile.loading('show');
-            self.retrieveChannelContent(true);
-        });
-        $('#moreNewsButton', newsPage).on('click', self.retrieveMoreChannelContent);
-        $('#newContentReceivedButton', newsPage).on('click', self.showNewChannelContentReceived);
-        var newsDetailPage = $('#newsDetailPage');
-        newsDetailPage.on('pagebeforeshow', self.initNewsDetailPage);
         
         var followingListPage = $('#followingListPage');
         followingListPage.on('pageinit', self.initFollowingListPage);
@@ -428,8 +446,6 @@ return;
         $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
     },
     
-    
-    
     initRegisterPage: function() {
         var page = $('#registrationPage');
         $('#city', page).on('input', function() {
@@ -442,11 +458,6 @@ return;
             }
         });
     },
-    
-    
-    
-    
-    
     
     register: function() {
         var page = $('#registrationPage');
@@ -523,8 +534,6 @@ return;
         });
     },
     
-    
-    
     recoverPassword: function() {
         var username = $('#loginPage #username').val().trim();
         if(username == '') {
@@ -554,9 +563,7 @@ return;
             }, 'Recupera password', ['Procedi', 'Annulla']);
         }
     },   
-    
-    
-    
+   
     beforeShowChangePasswordPage: function() {
         //$('#oldPassword').val('');
         $('#newPassword').val('');
@@ -598,11 +605,6 @@ return;
     },
     
     
-    
-    
-    reporting : null,
-    
-    
     ////////////////////////////////////////
     // homePage
     showHomePage: function() {
@@ -611,6 +613,7 @@ return;
     
     ////////////////////////////////////////
     // reportingHomePage
+    reporting : null,
     
     initReportingHomePage: function() {
         $('#reportingHomePage #reportByQrCodeButton').on('click', function() {
@@ -1135,27 +1138,273 @@ return;
     // reportingListDetailPage
     
     
+    ////////////////////////////////////////
+    // reportingNearbyPage
+    initReportingNearbyPage: function() {
+        $('#reportingNearbyPage #searchCityButton').on('click', function() {
+            alert('ok');
+        });
+    },
+    
+    showReportingNearbyPage: function() {
+        $.mobile.loading('show');
+        geoLocation.acquireGeoCoordinates(function(pos) {
+            //$('#reporting1Popup').popup('close');
+            self.reportingGeoCoordinatesAcquired(pos);
+        }, function(e) {
+            geoLocation.acquireGeoCoordinates(function(pos) {
+                $('#reporting1Popup').popup('close');
+                self.reportingGeoCoordinatesAcquired(pos);
+            }, function(e) {
+                $('#reporting1Popup').popup('close');
+                $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
+            }, {enableHighAccuracy: false});
+        });
+    },
+    
+    ////////////////////////////////////////
+    // newsPage
+    initNewsSidePanel: function() {
+        console.log('initializing side bar');
+        services.getSubscribedChannels(function(result) {
+            var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>' +
+                       '<li data-channelid="0"><a href="javascript:self.showNewsChannel(\'0\')"><span></span>Tutte</a></li>';
+            for(var i in result) {
+                var row = result[i];
+                html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:app.loadNewsChannel(' + row.id_feed + ')"><span>' 
+                            + row.denominazione + '</span><label>' + row.nome_feed
+                            + '</label>'
+                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
+                            + '</a></li>';
+            }
+            
+            $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
+            
+            if($('#newsChannelsPanel #channelList li').length > 2) {
+                $('#newsPage #noSubscribedChannelsNotice').hide();
+            } else {
+                $('#newsPage #noSubscribedChannelsNotice').show();
+                $('#newsPage #noNewsNotice').hide();
+            }
+            
+            $('#newsChannelsPanel').panel({
+                beforeopen: function() {
+                    $('#newsChannelsPanel ul li.panel-item-selected').removeClass('panel-item-selected');
+                    //if((self.newsChannelId > 0) && ($.mobile.activePage.is('#newsPage'))) {
+                    if($.mobile.activePage.is('#newsPage')) {
+                        $('#newsChannelsPanel ul li[data-channelid="' + self.newsChannelId + '"]').addClass('panel-item-selected');
+                    }
+                }
+            });
+            
+            self.sideBarInitialized = true;
+            //$('#newsChannelsPanel').panel();
+            self.updateBalloonsInNews();
+            
+            console.log('side bar initialized');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            console.log('error on initializing side bar');
+            //helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
+        });
+    },
+    initNewsPage: function() {
+        $('#newsPage #channelsButton').on('click', function() {
+            $('#newsPage #newsChannelsPanel').panel('open');
+        });
+        $('#newsPage #refreshButton').on('click', function() {alert('refresh');});
+    },
+    showNewsPage: function() {
+
+        self.initNewsSidePanel();
+
+        self.loadNewsChannel();
+        
+        /*var onlyNew = !self.newsEmptyBeforeShow;
+        if(self.newsEmptyBeforeShow === true) {
+            $('#newsPage #channelContent').empty();
+        } else {
+            self.newsEmptyBeforeShow = true;
+        }
+        
+        console.log('beforeShowNewsPage: onlyNew is ' + onlyNew);
+        
+        $.mobile.loading('show');
+        self.retrieveChannelContent(onlyNew);
+        pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
+        self.updateBalloonsInNews();*/
+    },
+    formatChannelContentItem: function(item) {
+        var rowId = parseInt(item.id);
+        //var dateAddedTmp = Date.parseFromYMDHMS(item.data_inserimento);
+        //var dateAdded dateAddedTmp.toDMY() + ' alle ' + dateAddedTmp.toHM()
+        var dateAdded = item.data;
+        var image = (item.foto || '');
+
+        var href = (item.link == '') ? 
+                'javascript:self.showNewsDetail(' + item.id + ')' : 
+                'javascript:app.openLink(\'' + encodeURIComponent(item.link) + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
+        html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
+        if(image != '') {
+            html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + image + '\');"></div>';
+        }
+
+        html += '<div>' + item.oggetto + '</div>' +
+                //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
+                '<p class="news-list-note">Inserita il ' + dateAdded + '</p>' +
+                '</a></li>';
+
+        return html;
+    },
+    loadNewsChannel: function(channelId, onlyNew) {
+        $('#newsPage #newsChannelsPanel').panel('close');
+        
+        self.newsChannelId = channelId;
+        self.newsContentLastId = null;
+        self.newsContentLastDate = null;
+        self.newsContentFirstId = null;
+        self.newsContentFirstDate = null;
+        
+        onlyNew = onlyNew || false;
+        
+        if(!onlyNew) {
+            $.mobile.loading('show');
+        }
+        
+        var params = {
+            channelId: self.newsChannelId, 
+            lastId: self.newsContentLastId,
+            lastDate: self.newsContentLastDate,
+            firstId: self.newsContentFirstId,
+            firstDate: self.newsContentFirstDate,
+            onlyNew: onlyNew
+        };
+        
+        console.log('retrieveChannelContent: getting channel content, params: ', params);
+        
+        services.getChannelContent(params, function(result) {
+            
+            var html = '';
+            if(typeof(result.vecchie) != 'undefined') {
+                if(result.vecchie.length > 0) {
+                    for(var i in result.vecchie) {
+                        html += self.formatChannelContentItem(result.vecchie[i]);
+                        
+                        var lastRec = result.vecchie[result.vecchie.length-1];
+                        self.newsContentLastDate = lastRec.data_inserimento;
+                        self.newsContentLastId = lastRec.id;
+                        
+                        if(self.newsContentFirstDate == null) {
+                            var firstRec = result.vecchie[0];
+                            self.newsContentFirstDate = firstRec.data_inserimento;
+                            self.newsContentFirstId = firstRec.id;
+                        }
+                    }
+                }
+                if(result.vecchie.length == 0) {
+                    $('#moreNewsButton').addClass('ui-disabled');
+                } else {
+                    $('#moreNewsButton').removeClass('ui-disabled'); 
+                }
+            }
+            
+            if(self.newsChannelId != params.channelId) {
+                self.newsChannelId = params.channelId;
+                $('#newsPage #channelContent').html(html).listview('refresh');
+            } else {
+                $('#newsPage #channelContent').append(html).listview('refresh');
+            }
+            if($('#newsPage #channelContent li').length == 0) {
+                $('#moreNewsButton').hide();
+                $('#noNewsNotice').show();
+            } else {
+                $('#moreNewsButton').show();
+                $('#noNewsNotice').hide();
+            }
+            
+            
+            // Adjust image size
+            /*
+            $(function() {
+                $('#newsPage #channelContent li a div.news-list-image.adjust-image').each(function() {
+                    var div = $(this);
+                    div.removeClass('adjust-image');
+                    var imageUrl = div.css('background-image').match(/^url\("?(.+?)"?\)$/);
+                    if(imageUrl[1]) {
+                        var img = new Image();
+                        $(img).load(function() {
+                            //console.log(img.width + 'x' + img.height);
+                            if(img.width > img.height) {
+                                div.css('background-size: auto 100% !important');
+                            } else {
+                                div.css('background-size: 100% auto !important');
+                            }
+                        });
+                        img.src = imageUrl[1];
+                    }
+                });
+            });*/
+
+            if((typeof(result.nuove) != 'undefined') && (Array.isArray(result.nuove)) && (result.nuove.length > 0)) {
+                self.newChannelContentReceived = result.nuove;
+
+                var firstRec = result.nuove[0];
+                self.newsContentFirstDate = firstRec.data_inserimento;
+                self.newsContentFirstId = firstRec.id;
+                
+                $('#newContentReceivedButton').html(
+                    self.newChannelContentReceived.length + (self.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
+                ).show('fast');
+            }
+                        
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            if($.mobile.activePage.attr('id') != 'newsPage') return;
+            if(onlyNew) {
+                //
+            } else {
+                helper.alert('Impossibile recuperare il contenuto', null, 'Canale');
+            }
+        });
+    },
     
     
     
-    /*
-    if(row.indirizzo && row.indirizzo.length > 0) {
-        html += '<li><b>' + row.indirizzo + '</b></li>';
-    }
-    //html += '<li style="white-space:normal;"><strong>' + row.descrizione_problema + '</strong></li>';
-    html += '<li>' + row.nome_categoria + '</li>';
-    if(row.foto != '') 
-        html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';
-    html += '<li>';                   
-    for(var j in row.log) {
-        html += '<div style="white-space:normal;"><small>' + row.log[j] + '</small></div>';
-    }
-    if(row.descrizione_chiusura != '') 
-        html += '<div style="white-space:normal;"><small>' + row.descrizione_chiusura + '</small></div>';
-    html +=  '</li>';
-    // separator
-    html += '<li style="padding:0;margin:0;height:.5em;background-color:#59C4F8;"></li>';
-    */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1526,9 +1775,6 @@ return;
         });
     },
     
-    
-    
-    
     beforeShowProfileFollowingPage: function() {
         $.mobile.loading('show');
         services.getFollowings({}, function(result) {
@@ -1559,80 +1805,6 @@ return;
     },
     
     
-    
-    
-    
-    initSidePanel: function() {
-        console.log('initializing side bar');
-        services.getSubscribedChannels(function(result) {
-            var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>' +
-                       '<li data-channelid="0"><a href="javascript:self.showNewsChannel(\'0\')"><span></span>Tutte</a></li>';
-            for(var i in result) {
-                var row = result[i];
-                html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:self.showNewsChannel(' + row.id_feed + ')"><span>' 
-                            + row.denominazione + '</span><label>' + row.nome_feed
-                            + '</label>'
-                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
-                            + '</a></li>';
-            }
-            
-            $('#newsChannelsPanel #channelList').html(html).listview().listview('refresh');
-            
-            if($('#newsChannelsPanel #channelList li').length > 2) {
-                $('#newsPage #noSubscribedChannelsNotice').hide();
-            } else {
-                $('#newsPage #noSubscribedChannelsNotice').show();
-                $('#newsPage #noNewsNotice').hide();
-            }
-
-            
-            $('#newsChannelsPanel').panel({
-                beforeopen: function() {
-                    $('#newsChannelsPanel ul li.panel-item-selected').removeClass('panel-item-selected');
-                    //if((self.newsChannelId > 0) && ($.mobile.activePage.is('#newsPage'))) {
-                    if($.mobile.activePage.is('#newsPage')) {
-                        $('#newsChannelsPanel ul li[data-channelid="' + self.newsChannelId + '"]').addClass('panel-item-selected');
-                    }
-                }
-            });
-            
-            self.sideBarInitialized = true;
-            //$('#newsChannelsPanel').panel();
-            self.updateBalloonsInNews();
-            
-            console.log('side bar initialized');
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            console.log('error on initializing side bar');
-            //helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
-        });
-    },
-
-    
-    showNewsChannel: function(channelId) {
-        $('#newsChannelsPanel').panel('close');
-                
-        //if(self.newsChannelId != channelId) {
-            self.newsChannelId = channelId;
-            self.newsContentLastId = null;
-            self.newsContentLastDate = null;
-            self.newsContentFirstId = null;
-            self.newsContentFirstDate = null;
-        /*} else {
-            self.newsEmptyBeforeShow = false;
-        }*/
-        if($.mobile.activePage.attr('id') != 'newsPage') {
-            $.mobile.changePage('#newsPage', {transition: 'slide', reverse: true});
-        } else {
-            self.beforeShowNewsPage();
-            //$('#newsChannelsPanel').panel('close');
-        }
-    },
-    
-    
     //NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
     newsEmptyBeforeShow: true,
     newsChannelId: 0,
@@ -1642,14 +1814,14 @@ return;
     //newsContentTimeout: null,
     sideBarInitialized: false,
     
-    initNewsPage: function() {
+    _initNewsPage: function() {
         if(!self.sideBarInitialized) {
             self.initSidePanel();
         }        
         var page = $('#newsPage');
         $('#channelContent', page).empty();
     },
-    beforeShowNewsPage: function() {
+    _beforeShowNewsPage: function() {
 
         var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
@@ -1665,138 +1837,9 @@ return;
         pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
         self.updateBalloonsInNews();        
     },
-    beforeHideNewsPage: function() {
+    _beforeHideNewsPage: function() {
     },
-    formatChannelContentItem: function(item) {
-        var rowId = parseInt(item.id);
-        //var dateAddedTmp = Date.parseFromYMDHMS(item.data_inserimento);
-        //var dateAdded dateAddedTmp.toDMY() + ' alle ' + dateAddedTmp.toHM()
-        var dateAdded = item.data;
-        var image = (item.foto || '');
-
-        var href = (item.link == '') ? 
-                'javascript:self.showNewsDetail(' + item.id + ')' : 
-                'javascript:app.openLink(\'' + encodeURIComponent(item.link) + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
-        html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
-        if(image != '') {
-            html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + image + '\');"></div>';
-        }
-
-        html += '<div>' + item.oggetto + '</div>' +
-                //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
-                '<p class="news-list-note">Inserita il ' + dateAdded + '</p>' +
-                '</a></li>';
-
-        return html;
-    },
-    retrieveChannelContent: function(onlyNew) {
-        
-        onlyNew = onlyNew || false;
-        
-        if(!onlyNew) {
-            $.mobile.loading('show');
-        }
-        
-        var params = {
-            channelId: self.newsChannelId, 
-            lastId: self.newsContentLastId,
-            lastDate: self.newsContentLastDate,
-            firstId: self.newsContentFirstId,
-            firstDate: self.newsContentFirstDate,
-            onlyNew: onlyNew
-        };
-        
-        console.log('retrieveChannelContent: getting channel content, params: ', params);
-        
-        services.getChannelContent(params, function(result) {
-            
-            var html = '';
-            if(typeof(result.vecchie) != 'undefined') {
-                if(result.vecchie.length > 0) {
-                    for(var i in result.vecchie) {
-                        html += self.formatChannelContentItem(result.vecchie[i]);
-                        
-                        var lastRec = result.vecchie[result.vecchie.length-1];
-                        self.newsContentLastDate = lastRec.data_inserimento;
-                        self.newsContentLastId = lastRec.id;
-                        
-                        if(self.newsContentFirstDate == null) {
-                            var firstRec = result.vecchie[0];
-                            self.newsContentFirstDate = firstRec.data_inserimento;
-                            self.newsContentFirstId = firstRec.id;
-                        }
-                    }
-                }
-                if(result.vecchie.length == 0) {
-                    $('#moreNewsButton').addClass('ui-disabled');
-                } else {
-                    $('#moreNewsButton').removeClass('ui-disabled'); 
-                }
-            }
-            
-            if(self.newsChannelId != params.channelId) {
-                self.newsChannelId = params.channelId;
-                $('#newsPage #channelContent').html(html).listview('refresh');
-            } else {
-                $('#newsPage #channelContent').append(html).listview('refresh');
-            }
-            if($('#newsPage #channelContent li').length == 0) {
-                $('#moreNewsButton').hide();
-                $('#noNewsNotice').show();
-            } else {
-                $('#moreNewsButton').show();
-                $('#noNewsNotice').hide();
-            }
-            
-            
-            // Adjust image size
-            $(function() {
-                $('#newsPage #channelContent li a div.news-list-image.adjust-image').each(function() {
-                    var div = $(this);
-                    div.removeClass('adjust-image');
-                    var imageUrl = div.css('background-image').match(/^url\("?(.+?)"?\)$/);
-                    if(imageUrl[1]) {
-                        var img = new Image();
-                        $(img).load(function() {
-                            //console.log(img.width + 'x' + img.height);
-                            if(img.width > img.height) {
-                                div.css('background-size: auto 100% !important');
-                            } else {
-                                div.css('background-size: 100% auto !important');
-                            }
-                        });
-                        img.src = imageUrl[1];
-                    }
-                });
-            });
-
-            if((typeof(result.nuove) != 'undefined') && (Array.isArray(result.nuove)) && (result.nuove.length > 0)) {
-                self.newChannelContentReceived = result.nuove;
-
-                var firstRec = result.nuove[0];
-                self.newsContentFirstDate = firstRec.data_inserimento;
-                self.newsContentFirstId = firstRec.id;
-                
-                $('#newContentReceivedButton').html(
-                    self.newChannelContentReceived.length + (self.newChannelContentReceived.length > 1 ? ' nuove' : ' nuova')
-                ).show('fast');
-            }
-                        
-            $.mobile.loading('hide');
-        }, function(e, loginRequired) {
-            $.mobile.loading('hide');
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            if($.mobile.activePage.attr('id') != 'newsPage') return;
-            if(onlyNew) {
-                //
-            } else {
-                helper.alert('Impossibile recuperare il contenuto', null, 'Canale');
-            }
-        });
-    },
+    
     retrieveMoreChannelContent: function() {
         self.retrieveChannelContent(false);
     },
@@ -1866,12 +1909,6 @@ return;
         });
     },
     
-
-    
-    
-    
-    
-    
     
     showNewsChannelAvailable: function() {
         var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
@@ -1924,12 +1961,7 @@ console.log(newsChannelAvailableIds);
         });
     },
 
-    
-    
-    
-    
-    
-    
+
     // 
     initFollowingListPage: function() {
         $('#followingListPage #readQrCodeButton').on('click', self.getInfoFromQrCode);
@@ -2257,10 +2289,6 @@ console.log(newsChannelAvailableIds);
     },    
     
     
-    
-    
-    
-    
     getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(res) {
             if(res === '') return;
@@ -2368,57 +2396,6 @@ console.log(newsChannelAvailableIds);
     
     
     
-    
-    __loadReportingItems: function() {
-        $.mobile.loading('show');
-        pushNotificationHelper.setAllAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING);
-        self.updateBalloonsInNavbar();
-        services.getReportingList({}, function(result) {
-            // Success
-            var list = $('#reportingListPage #reportingList');
-            var html = '';
-            if(result.length == 0) {
-                html += '<li data-role="list-divider">Non ci sono segnalazioni</li><li><a href="#reportingMethodPage">Nuova segnalazione</a></li>';
-            } else {
-                for(var i in result) {
-                    var row = result[i];
-                    
-                    //html += '<li data-role="list-divider">' + row.nome_categoria + '</li>';
-                    if(row.indirizzo && row.indirizzo.length > 0) {
-                        html += '<li><b>' + row.indirizzo + '</b></li>';
-                    }
-                    //html += '<li style="white-space:normal;"><strong>' + row.descrizione_problema + '</strong></li>';
-                    html += '<li>' + row.nome_categoria + '</li>';
-                    if(row.foto != '') 
-                        html += '<li><div class="replist-photo-container"><img src="' + row.foto + '" onclick="self.reportingListPageViewPhoto(this)" /></div></li>';
-                    html += '<li>';                   
-                    for(var j in row.log) {
-                        html += '<div style="white-space:normal;"><small>' + row.log[j] + '</small></div>';
-                    }
-                    if(row.descrizione_chiusura != '') 
-                        html += '<div style="white-space:normal;"><small>' + row.descrizione_chiusura + '</small></div>';
-                    html +=  '</li>';
-                    // separator
-                    html += '<li style="padding:0;margin:0;height:.5em;background-color:#59C4F8;"></li>';
-                }
-            }
-            list.html(html);
-            list.listview('refresh');
-            $.mobile.loading('hide');
-            $.mobile.silentScroll();
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-            } else {
-                $.mobile.loading('hide');
-                helper.alert("Impossibile recuperare il contenuto", null, "Segnalazioni");
-            }
-        });
-    },
-    reportingListPageViewPhoto: function(el) {
-        $('#photoPage #photo').attr('src', $(el).attr('src'));
-        $.mobile.changePage('#photoPage');
-    },
     _currentPhotoScale: 1,
     _scaleStep: .2,
     _minScale: 1,
@@ -2436,41 +2413,6 @@ console.log(newsChannelAvailableIds);
     
     
 
-    
-    /*
-    initReportingMethodPage: function() {
-        var page = $('#reportingMethodPage');
-        $('#positionFromQrCodeButton', page).on('click', function() {
-            barcodeReader.acquireQrCode(function(res) {
-                var qrCodeData = QrCodeData.fromText(res.text);
-                if(qrCodeData.type != QrCodeData.TYPE_GRETACITY) {
-                    helper.alert('Il QR code inquadrato non fa parte del sistema GretaCITY', null, 'Leggi QR Code');
-                    return;
-                }
-                self.reportingQrCode = qrCodeData.elements.code;
-                self.reportingUpdateLatLng = true;
-                self.reportingLocalizationMode = self.REPORTING_LOCALIZATION_MODE_QRCODE;
-                $.mobile.changePage('#reportingPage', {transition: 'slide'});
-            });
-        });
-        $('#manualPositionButton', page).on('click', function() {
-            self.reportingQrCode = null;
-            self.reportingUpdateLatLng = true;
-            self.reportingLocalizationMode = self.REPORTING_LOCALIZATION_MODE_MANUAL;
-            $.mobile.changePage('#reportingPage', {transition: 'slide'});
-        });
-    },
-    
-    beforeShowReportingMethodPage: function() {
-        if(((self.userProfile.city.id || 0) == 0) ||
-           ((self.userProfile.address || '') == '')) {
-            helper.alert('Prima di procedere con la segnalazione è necessario completare il profilo con il tuo comune e indirizzo di residenza', function() {
-                $.mobile.changePage('#profilePage');
-            }, 'Profilo incompleto');
-        }
-    },*/
-    
-    
     
     
     

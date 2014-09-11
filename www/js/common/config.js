@@ -82,12 +82,13 @@ var config = {
     URL_REPORTING_SEND: '/web/index.php?mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
     URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',
     
-    // TODO
     //URL_NEARBY_PLACES: 'http://bitroad.it/google/places.php',
     URL_NEARBY_PLACES: '/web/index.php?mode=module&p=app_services&a=aroundme',
     //URL_NEARBY_PLACE_INFO: 'http://bitroad.it/google/info.php',
     URL_NEARBY_PLACE_INFO: '/web/index.php?mode=module&p=app_services&a=info',
     
+    // TODO
+    ///web/index.php?mode=module&p=app_services&a=aroundme&types=segnalazioni&lat=&lng=distance=',
     
     NEARBY_DEFAULT_DISTANCE: 2, // In Km
     NEARBY_MAX_DISTANCE: 20,    // In Km

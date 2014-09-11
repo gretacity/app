@@ -528,7 +528,7 @@
                         <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">Segnala</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
+                        <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
@@ -572,10 +572,10 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifica le mie segnalazioni</a>
+                        <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifica le mie segnalazioni</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
+                        <a href="#reportingNearbyPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
                     </div>
                 </div>
             </div>
@@ -808,7 +808,7 @@
         <!-- /reporting6Page -->
         
         <!-- reportingListPage -->
-         <div data-role="page" id="reportingListPage">
+        <div data-role="page" id="reportingListPage">
              <div data-role="popup" id="reportingListPopup" data-dismissible="false">
                  <div class="ui-content"></div>
              </div>
@@ -832,7 +832,7 @@
                    VEDI SU MAPPA
                 </a>
             </div>
-         </div>
+        </div>
         <!-- /reportingListPage -->
         
         <!-- reportingListDetailPage -->
@@ -874,6 +874,86 @@
             </div>
          </div>
         <!-- /reportingListDetailPage -->
+        
+        <!-- reportingNearbyPage -->
+        <div data-role="page" id="reportingNearbyPage">
+             <div data-role="popup" id="reportingNearbyPopup" data-dismissible="false">
+                 <div class="ui-content"></div>
+             </div>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <!-- <img src="img/greta.png" /> --> 
+                    <span>Segnalazioni vicine</span>
+                </div>
+                <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
+               <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main">
+                <div id="mapView" style="width: 100%;height:20em;">Caricamento in corso...</div>
+            </div>
+            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" id="searchCityButton" class="ui-btn" style="width:91%">Ricerca località</a>
+            </div>
+        </div>
+        <!-- /reportingNearbyPage -->
+        
+        <!-- newsPage -->
+        <div data-role="page" id="newsPage">
+            <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
+                <ul data-role="listview" id="channelList" data-theme="b"></ul>
+            </div>
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" id="channelsButton" class="ui-btn ui-shadow ui-btn-left ui-icon-bullets ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" id="refreshButton" style="margin-left:2.5em;" class="ui-btn ui-shadow ui-btn-left ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <!-- <img src="img/greta.png" /> --> 
+                    <span>News</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul id="channelContent" data-role="listview"></ul>
+            </div>
+        </div>
+        <!-- /newsPage -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1146,29 +1226,6 @@
         <!-- /channelInfoPage -->
         
         
-        <!-- reportingListPage -->
-        <div data-role="page" id="__reportingListPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Segnalazioni</h1>
-                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <ul id="reportingList" data-role="listview" data-inset="false"></ul>
-                <!--
-                <a href="#" id="loadMoreReportingItemsButton" class="ui-btn ui-mini ui-icon-recycle ui-btn-icon-left ui-shadow-icon">Carica altri...</a>
-                -->
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" class="ui-navbar-item-selected" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /reportingListPage -->
 
         <!-- photoDialog -->
         <div data-role="dialog" id="photoPage">
@@ -1188,55 +1245,8 @@
         <!-- /photoDialog -->
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         <!-- newsPage -->
-        <div data-role="page" id="newsPage">
+        <div data-role="page" id="_newsPage">
             
             <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
                 <ul data-role="listview" id="channelList"></ul>
