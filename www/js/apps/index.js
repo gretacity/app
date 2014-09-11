@@ -1220,8 +1220,7 @@ return;
     showNewsPage: function() {
 
         self.initNewsSidePanel();
-
-        //self.loadNewsChannel();
+        self.loadNewsChannel();
         
         /*var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
@@ -1247,7 +1246,7 @@ return;
         var href = (item.link == '') ? 
                 'javascript:self.showNewsDetail(' + item.id + ')' : 
                 'javascript:app.openLink(\'' + encodeURIComponent(item.link) + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
-        html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
+        /*html  = '<li data-icon="false"><a href="' + href + '" style="background-color:#FFF;white-space:normal;">';
         if(image != '') {
             html += '<div class="news-list-image adjust-image" style="background-image:url(\'' + image + '\');"></div>';
         }
@@ -1255,7 +1254,17 @@ return;
         html += '<div>' + item.oggetto + '</div>' +
                 //'<p style="white-space:normal;">' + item.descrizione + '</p>' +
                 '<p class="news-list-note">Inserita il ' + dateAdded + '</p>' +
-                '</a></li>';
+                '</a></li>';*/
+        
+        html =  '<li data-icon="false">' +
+                    '<a href="' + href + '">' +
+                        '<div class="img-container">' +
+                        '<div style="background:url(\'' + image + '\') center center no-repeat; background-size:cover;" class="img-container"/></div>' +
+                        '</div>' +
+                        '<h1>' + item.oggetto + '</h1>' +
+                        '<div class="news-list-note news-list-note-bottom">del ' + dateAdded + '</div>' +
+                    '</a>' +
+                '</li>';
 
         return html;
     },

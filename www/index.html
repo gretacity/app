@@ -440,6 +440,37 @@
             .ui-loading .ui-loader-background {
                     display:block;
             }
+            
+            #channelContent li a {
+                height: 7em !important;
+                padding: 0 .3em 0 7.5em !important;
+            }
+            #channelContent li a .img-container {
+                position: absolute;
+                left: 0; top: 0; bottom:0;
+                width: 7em;
+                height: 7em;
+                overflow:hidden;
+                background-size:cover;
+            }
+            img.img-image {
+                position: relative;
+                left: -50%;
+                margin-left: 50%;
+                display: block;
+                margin: auto;
+                max-height: 7em;
+            }
+            #channelContent li a h1 {
+                white-space:normal;
+                text-overflow:ellipsis;
+                padding-top:.4em;
+            }
+            #channelContent li a .news-list-note-bottom {
+                position: absolute;
+                right: 1em;
+                bottom: .3em;
+            }
         </style>
     </head>
     <body>
@@ -896,23 +927,7 @@
             </div>
         </div>
         <!-- /reportingNearbyPage -->
-        <style>
-            .test-container {
-                position: absolute;
-                left: 0; top: 0; bottom:0;
-                width: 7em;
-                height: 7em;
-                overflow:hidden;
-            }
-            img.test-image {
-                position:relative;
-                left: -50%;
-                margin-left: 50%;
-                display: block;
-                margin: auto;
-                max-height: 7em;
-            }
-        </style>
+
         <!-- newsPage -->
         <div data-role="page" id="newsPage">
             <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
@@ -928,27 +943,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <ul id="channelContent" data-role="listview" data-theme="b">
-                    <!--
-                    <li data-icon="false">
-                        <a href="#" style="padding:.2em .3em .2em 6em;">
-                            <img src=""  
-                                style="background-image:url('http://www.calabriaeconomia.it/images/images_catalogate/generiche/alimenti.jpg');background-size:cover;border:solid 1px #cecece;width:5em;height:100%;" />
-                            <h1 style="overflow:hidden;text-overflow: ellipsis;white-space:normal;height:2em;line-height:1em;">l Martina degli ex Tomi e De Risio spera di uscire indenne dal "Ceravolo"</h1>
-                            <div class="news-list-note">11/09/2014</div>
-                        </a>
-                    </li>-->
-                    <li data-icon="false">
-                        <a href="#" style="height:7em;padding:0 .3em 0 7.5em;">
-                            <div class="test-container">
-                                <img src="http://www.calabriaeconomia.it/images/images_catalogate/generiche/alimenti.jpg"  class="test-image" />
-                            </div>
-                            <h1 style="white-space:normal;text-overflow:ellipsis;padding-top:.4em">l Martina degli ex Tomi e De Risio spera di uscire indenne dal "Ceravolo"</h1>
-                            <div class="news-list-note" style="position:absolute;right:1em;bottom:.3em;">11/09/2014</div>
-                        </a>
-                    </li>
-                    
-				
+                <ul id="channelContent" data-role="listview" data-theme="b">				
                 </ul>
             </div>
         </div>
