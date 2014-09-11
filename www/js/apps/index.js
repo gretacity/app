@@ -97,7 +97,6 @@ var app = {
         //    $.mobile.loading('show');
         //    self.retrieveChannelContent(true);
         //});
-        //$('#moreNewsButton', newsPage).on('click', self.retrieveMoreChannelContent);
         //$('#newContentReceivedButton', newsPage).on('click', self.showNewChannelContentReceived);
         //var newsDetailPage = $('#newsDetailPage');
         //newsDetailPage.on('pagebeforeshow', self.initNewsDetailPage);
@@ -1212,11 +1211,15 @@ return;
         });
     },
     initNewsPage: function() {
-        $('#newsPage #channelsButton').on('click', function() {
-            $('#newsPage #newsChannelsPanel').panel('open');
+        var page = $('#newsPage');
+        $('#channelsButton', page).on('click', function() {
+            $('#newsChannelsPanel', page).panel('open');
         });
-        $('#newsPage #refreshButton').on('click', function() {
+        $('#refreshButton', page).on('click', function() {
             self.loadNewsChannel(self.newsChannelId, true);
+        });
+        $('#moreNewsButton', page).on('click', function() {
+            self.loadNewsChannel(self.newsChannelId, false);
         });
     },
     showNewsPage: function() {
