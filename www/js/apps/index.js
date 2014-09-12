@@ -53,6 +53,10 @@ var app = {
         changePasswordPage.on('pagebeforeshow', self.beforeShowChangePasswordPage);
         $('#changePasswordButton', changePasswordPage).on('click', self.changePassword);
         
+        var registerPage = $('#registrationPage');
+        registerPage.on('pageinit', self.initRegisterPage);
+        $('#registerButton', registerPage).on('click', self.register);
+
         var homePage = $('#homePage');
         homePage.on('pageinit', self.initHomePage);
         homePage.on('pageshow', self.showHomePage);
@@ -119,19 +123,20 @@ var app = {
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         var profilePage = $('#profilePage');
+        profilePage.on('pageinit', self.initProfilePage);
         profilePage.on('pageshow', self.showProfilePage);
-        $('#logoutButton', profilePage).on('click', self.logout);
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /*$('#logoutButton', profilePage).on('click', self.logout);
         var profileNamePage = $('#profileNamePage');
         profileNamePage.on('pageinit', self.intiProfileNamePage);
         profileNamePage.on('pageshow', self.showProfileNamePage);
@@ -155,10 +160,7 @@ var app = {
         var newsChannelsPage = $('#newsChannelsPage');
         newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
         $('#getInfoButton', followingListPage).on('click', self.getInfoFromQrCode);
-
-        var registerPage = $('#registrationPage');
-        registerPage.on('pageinit', self.initRegisterPage);
-        $('#registerButton', registerPage).on('click', self.register);
+        */
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
         //var reportingListPage = $('#reportingListPage');
@@ -558,7 +560,7 @@ return;
             if($(this).data('cityname') != val) {
                 $(this).data('cityid', '');
             }
-            if(val.length >= 4) {
+            if(val.length >= 3) {
                 self.fillCityList(val, $('#citySuggestion', page), 'city');
             }
         });
@@ -705,16 +707,15 @@ return;
     },
     
     changePassword: function() {
-        //var oldPassword = $('#oldPassword').val();
+        var oldPassword = $('#oldPassword').val();
         var newPassword = $('#newPassword').val();
         var passwordConfirm = $('#passwordConfirm').val();
 
-        /*if(oldPassword == '') {
+        if(oldPassword == '') {
             helper.alert('Inserisci la vecchia password', function() {
                 $('#oldPassword').focus();
             }, 'Cambia password');
-        } else */
-        if(newPassword == '') {
+        } else if(newPassword == '') {
             helper.alert('Inserisci la nuova password', function() {
                 $('#newPassword').focus();
             }, 'Nuova password');
@@ -1982,6 +1983,126 @@ return;
         });
     },
 
+    ////////////////////////////////////////
+    // profilePage
+    
+    userProfile: null,
+    initProfilePage: function() {
+        $('#profilePage #city').on('input', function() {
+            var val = $(this).val();
+            if($(this).data('cityname') != val) {
+                $(this).data('cityid', '');
+            }
+            if(val.length >= 3) {
+                self.fillCityList(val, $('#citySuggestion', $.mobile.activePage), 'city');
+            }
+        });
+        $('#profilePage #updateProfileButton').on('click', self.updateProfile);
+    },
+    
+    showProfilePage: function() {
+        if(self.userProfile != null) {
+            self.fillProfilePage();
+            return;
+        }
+        $.mobile.loading('show');
+        services.getProfile(null, function(result) {
+            self.userProfile = result;
+            self.fillProfilePage();
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Si è verificato un errore', null, 'Profilo')
+        });
+    },
+    fillProfilePage: function() {
+        var page = $('#profilePage');
+        $('#firstname', page).val(self.userProfile.firstname);
+        $('#lastname', page).val(self.userProfile.lastname);
+        $('#email', page).val(self.userProfile.email);
+        var cityName = (self.userProfile.city.name || '');
+        $('#city', page).val(cityName)
+                        .data('cityid', (self.userProfile.city.id || ''))
+                        .data('cityname', cityName);
+        $('#address', page).val(self.userProfile.address || '');
+        $('#phone', page).val(self.userProfile.phone || '');
+    },
+    updateProfile: function() {
+        var page = $($.mobile.activePage);
+        var profile = {};
+        // Validation
+        var hasErrors = false;
+        // city_id
+        var fields = ['city', 'lastname', 'firstname', 'email', 'phone', 'address'];
+        for(var i in fields) {
+            var fieldId = fields[i];
+            var required = $('#' + fieldId + '[required]', page).length == 1;
+            var fieldVal = $('#' + fieldId, page).val().trim();
+            if(required && (fieldVal == '')) {
+                $('#' + fieldId, page).addClass('input-error');
+                hasErrors = true;
+            } else {
+                $('#' + fieldId, page).removeClass('input-error');
+            }
+            eval('profile.'+fieldId+'="'+fieldVal+'"');
+        }
+
+        if(hasErrors) {
+            helper.alert('Compila i campi obbligatori', function() {
+                $.mobile.silentScroll();
+            }, 'Profilo');
+            return;
+        }
+
+        // Specific validation for city
+        if(($('#city', page).data('cityid') || '') == '') {
+            helper.alert('Seleziona il comune di residenza dall\'elenco', function() {
+                $('#city', page).focus();
+            }, 'Profilo');
+            return;
+        }
+        profile.city = {id : $('#city', page).data('cityid')};
+        
+        // Specific validation for email
+        if(!helper.isEmailValid(profile.email)) {
+            $('#email', page).addClass('input-error');
+            helper.alert('Inserisci un indirizzo email valido', function() {
+                $('#email', page).focus();
+            }, 'Registrazione');
+            return;
+        }
+        // Specific validation for phone number
+        if((profile.phone != '') && !helper.isPhoneNumberValid(profile.phone)) {
+            $('#phone').addClass('input-error');
+            helper.alert('Inserisci un numero di telefono valido', function() {
+                $('#phone', page).focus();
+            }, 'Registrazione');
+            return;
+        }
+        $.mobile.loading('show');
+        services.updateProfile({profile: profile}, function() {
+            self.userProfile = profile;
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            $.mobile.loading('hide');
+            helper.alert('Si è verificato un errore durante l\'aggiornamento', null, 'Profilo');
+        });
+    },
+    
+    
+    
+    
+    
+    
+    
     
 
     
@@ -2013,39 +2134,9 @@ return;
     
     
     
-    userProfile: null,
-    showProfilePage: function() {
-        if(self.userProfile != null) {
-            self.fillProfilePage();
-            return;
-        }
-        $.mobile.loading('show');
-        services.getProfile(null, function(result) {
-            self.userProfile = result;
-            self.fillProfilePage();
-            $.mobile.loading('hide');
-        }, function(e, loginRequired) {
-            $.mobile.loading('hide');
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert(e, null, 'An Error Occurred')
-        });
-    },
-    fillProfilePage: function() {
-        var page = $('#profilePage');
-        $('#profileFirstname', page).html(self.userProfile.firstname);
-        $('#profileLastname', page).html(self.userProfile.lastname);
-        $('#profileEmail', page).html(self.userProfile.email);
-        $('#profileCity', page).html((self.userProfile.city.name || '') == '' ? 
-                                     'Comune non specificato' : 
-                                     self.userProfile.city.name);
-        $('#profileAddress', page).html(self.userProfile.address || '');
-    },
     
     
-    
+    /*
     intiProfileNamePage: function() {
         $('#profileNamePage #saveProfileNameButton').on('click', self.updateProfileName);
     },
@@ -2116,7 +2207,7 @@ return;
     
     profileCityNameChanged: function() {
         var val = $(this).val();
-        if(val.length >= 4) {
+        if(val.length >= 2) {
             services.getLocationsByName({name:val}, function(result) {
                 var html = '';
                 var max_rows = 20;
@@ -2176,7 +2267,7 @@ return;
             }
             helper.alert('Si è verificato un errore durante il salvataggio', null, 'Il tuo profilo');
         });
-    },
+    },*/
     
     
     initProfileChannelsPage: function() {
@@ -2411,14 +2502,14 @@ return;
     
     
     //NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
-    newsEmptyBeforeShow: true,
+    /*newsEmptyBeforeShow: true,
     newsChannelId: 0,
     newsContentLastId: null, newsContentLastDate: null,
     newsContentFirstId: null, newsContentFirstDate: null,
     newChannelContentReceived: [],
     //newsContentTimeout: null,
     sideBarInitialized: false,
-    
+    */
     _initNewsPage: function() {
         if(!self.sideBarInitialized) {
             self.initSidePanel();
@@ -2445,10 +2536,10 @@ return;
     _beforeHideNewsPage: function() {
     },
     
-    retrieveMoreChannelContent: function() {
+    _retrieveMoreChannelContent: function() {
         self.retrieveChannelContent(false);
     },
-    showNewChannelContentReceived: function() {
+    _showNewChannelContentReceived: function() {
         $('#newContentReceivedButton').hide();
         // Insert new rows in the top
         var html = '';
@@ -2468,7 +2559,7 @@ return;
     
     
     
-    _newsDetailId: null,
+    /*_newsDetailId: null,
     showNewsDetail: function(id) {
         self._newsDetailId = id;
         self.newsEmptyBeforeShow = false;
@@ -2513,7 +2604,7 @@ return;
             helper.alert('Impossibile recuperare il contenuto', null, 'Notizia');
         });
     },
-    
+    */
     
     showNewsChannelAvailable: function() {
         var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
@@ -2603,11 +2694,12 @@ console.log(newsChannelAvailableIds);
     
     
     
-    followQrCode: function() {
+    _followQrCode: function() {
         var follow = $('#qrCodeInfoPage #infoResult #following').is(':checked');
         services.followQrCode(self.currentQrCode, follow);
     },
-    
+ 
+// TODO Move up
     leaveCommentOnQrCode: function() {
         var text = $('#qrCodeInfoCommentsPage #comment').val().trim();
         if(text == '') return;
@@ -2661,9 +2753,9 @@ console.log(newsChannelAvailableIds);
     
     
     
-    latLng: {lat: 0, lng: 0},
-    map: null,
-    marker: null,
+    /*latLng: {lat: 0, lng: 0},
+   _map: null,
+    marker: null,*/
     __mapsSetup: function() {
         if(typeof(google) == 'undefined') return;
         if(self.map != null) google.maps.event.clearListeners(self.map);

@@ -154,7 +154,8 @@ console.log('services.getProfile: FAIL', textStatus);
                '&nome=' + encodeURIComponent(params.profile.firstname) +
                '&email=' + encodeURIComponent(params.profile.email) +
                '&id_comune=' + encodeURIComponent(params.profile.city.id) +
-               '&indirizzo=' + encodeURIComponent(params.profile.address);
+               '&indirizzo=' + encodeURIComponent(params.profile.address) +
+               '&telefono=' + encodeURIComponent(params.profile.phone);
 console.log('services.updateProfile', url, data);
         $.ajax(url, {
             type: 'POST',
@@ -311,7 +312,7 @@ console.log('FAIL', jqXHR);
         }).done(function(result) {
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            fail(textStatus, services.isLoginRequired(jqXHR.status));
+            if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
     

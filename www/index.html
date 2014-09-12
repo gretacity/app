@@ -1232,37 +1232,13 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <!--
-                <ul data-role="listview" data-theme="b">
-                    <li>
-                        <a href="#profileNamePage">
-                            <span id="profileFirstname"></span> <span id="profileLastname"></span>
-                            <label id="profileEmail">email@email.com</label>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#profileCityPage">
-                            <label>Comune di residenza</label>
-                            <span id="profileCity"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#profileAddressPage">
-                            <label>Indirizzo di residenza</label>
-                            <span id="profileAddress"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#changePasswordPage"><label>Cambia password</label></a>
-                    </li>
-                </ul>
-                -->
                 <div class="ui-field-contain" style="padding-top:0;">
                     <p class="text-primary">* Campi obbligatori</p>
-                    <input id="city" placeholder="Comune di residenza" />
-                    <input id="lastname" placeholder="Cognome" />
-                    <input id="firstname" placeholder="Nome" />
-                    <input type="email" id="email" placeholder="Email" />
+                    <input id="city" placeholder="Comune di residenza" required />
+                    <ul id="citySuggestion" data-role="listview" data-inset="true" data-theme="b"></ul>
+                    <input id="lastname" placeholder="Cognome" required />
+                    <input id="firstname" placeholder="Nome" required />
+                    <input type="email" id="email" placeholder="Email" required />
                     <p class="text-primary">Compila i seguenti campi così il comune potrà contattarti in caso di segnalazione</p>
                     <input id="address" placeholder="Indirizzo di residenza" />
                     <input type="tel" id="phone" placeholder="Cellulare" />
@@ -1272,14 +1248,39 @@
                 </ul>
                 
             </div>
-            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" class="button-next ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+            <div data-role="footer" style="margin:0;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" id="updateProfileButton" class="ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
                    style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
                     SALVA
                 </a>
             </div>
         </div>
         <!-- /profilePage -->
+        
+        <!-- changePasswordPage -->
+        <div data-role="page" id="changePasswordPage">
+                <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Cambia Password</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div data-role="main" class="iu-content">
+                    <fieldset data-role="fieldcontain">
+                        <label for="oldPassword">Vecchia password</label>
+                        <input id="oldPassword" type="password" placeholder="Inserisci la vecchia password" />
+                        <label for="newPassword">Nuova password</label>
+                        <input id="newPassword" type="password" placeholder="Inserisci la nuova password" />
+                        <label for="passwordConfirm">Conferma password</label>
+                        <input id="passwordConfirm" type="password" placeholder="Ripeti la nuova password" />
+                    </fieldset>
+                    <a href="#" id="changePasswordButton" class="ui-btn ui-icon-check ui-btn-icon-right">Cambia</a>
+                </div>
+            </div>
+        </div>
+        <!-- /changePasswordPage -->
         
 
         
@@ -1326,7 +1327,7 @@
         
         
         
-        <!-- profileNamePage -->
+        <!-- profileNamePage 
         <div data-role="page" id="profileNamePage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Nominativo</h1>
@@ -1350,9 +1351,9 @@
                 </div>
             </div>
         </div>
-        <!-- /profileNamePage -->
+         /profileNamePage -->
         
-        <!-- profileCityPage -->
+        <!-- profileCityPage 
         <div data-role="page" id="profileCityPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Residenza</h1>
@@ -1373,9 +1374,9 @@
                 </div>
             </div>
         </div>
-        <!-- /profileCityPage -->
+         /profileCityPage -->
         
-        <!-- profileAddressPage -->
+        <!-- profileAddressPage 
         <div data-role="page" id="profileAddressPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Residenza</h1>
@@ -1397,30 +1398,8 @@
                 </div>
             </div>
         </div>
-        <!-- /profileAddressPage -->
+         /profileAddressPage -->
 
-
-        <div data-role="page" id="changePasswordPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Cambia password</h1>
-                <a href="#profilePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>                                
-            </div>
-            <div data-role="main" class="ui-content">
-                <div data-role="main" class="iu-content">
-                    <fieldset data-role="fieldcontain">
-                        <!--
-                        <label for="oldPassword">Vecchia password</label>
-                        <input id="oldPassword" type="password" placeholder="Inserisci la vecchia password" autofocus />
-                        -->
-                        <label for="newPassword">Nuova password</label>
-                        <input id="newPassword" type="password" placeholder="Inserisci la nuova password" autofocus />
-                        <label for="passwordConfirm">Conferma password</label>
-                        <input id="passwordConfirm" type="password" placeholder="Ripeti la nuova password" />
-                    </fieldset>
-                    <a href="#" id="changePasswordButton" class="ui-btn ui-icon-check ui-btn-icon-right">Cambia</a>
-                </div>
-            </div>
-        </div>
 
         
         <!-- profileFollowingPage -->
