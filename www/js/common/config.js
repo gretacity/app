@@ -24,11 +24,12 @@ var config = {
     // To speed up development / testing
     // In release mode they must be empty
     QR_CODE_BASE_URL: 'http://www.gretacity.com/code/',
-    QR_CODE_TEST: 'http://www.gretacity.com/code/4000000028',
+    //QR_CODE_TEST: 'http://www.gretacity.com/code/4000000028',
     //QR_CODE_TEST: 'http://www.gretacity.com/code/4000000000',
     //QR_CODE_TEST: 'http://www.gretacity.com/code/4000000026',
     //QR_CODE_TEST: 'http://www.gretacity.com/code/1000000769',
     //QR_CODE_TEST: 'http://www.gooogle.com',
+    QR_CODE_TEST: 'CIASOOOO',
     LOGIN_DEFAULT_USERNAME: 'giuseppe@verdi.it',
     LOGIN_DEFAULT_PASSWORD: 'verdi',
     

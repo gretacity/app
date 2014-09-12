@@ -450,8 +450,8 @@
             #channelContent li a .img-container {
                 position: absolute;
                 left: 0; top: 0; bottom:0;
-                width: 7em;
-                height: 7em;
+                width: 6em;
+                height: 6em;
                 overflow:hidden;
                 background-size:cover;
             }
@@ -571,7 +571,7 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
+                    <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Qui vicino</a>
@@ -579,7 +579,7 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">QrCode</a>
+                    <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">QrCode</a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Impostazioni</a>
@@ -907,14 +907,14 @@
                     <div id="priority" style="margin:0 auto;color:#eee;background:#F00;width:100%;height:2em;border-radius:.2em;border:.1em solid #333;padding:0.8em 0 0 0;font-weight:bold;font-size:-2em">ALTA GRAVIT&Agrave;</div>
                 </div>
                 <div class="ui-grid-b" style="margin:0;padding:0;">
-                    <div id="photot1" class="ui-block-a" onclick=""
+                    <div id="photot1" class="ui-block-a photo-preview"
                          style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;"
                          >
                     </div>
-                    <div id="photot2" class="ui-block-b" 
+                    <div id="photot2" class="ui-block-b photo-preview" 
                          style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;">
                     </div>
-                    <div id="photot3" class="ui-block-c" 
+                    <div id="photot3" class="ui-block-c photo-preview" 
                          style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;">
                     </div>
                 </div>
@@ -970,11 +970,96 @@
         <!-- /newsPage -->
         
         
+        <!-- photoPage -->
+        <div data-role="page" id="photoPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="true" data-theme="b">
+                <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+                <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">+</a>
+                <a href="javascript:app.reportingListPageZoomOutPhoto()" class="ui-btn ui-btn-right ui-icon-minus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-right:2.5em;">-</a>
+                <h1>Foto</h1>
+            </div>
+            <div data-role="main">
+                <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">-->
+                <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;height:100%;">
+                    <img id="photo" src="img/newyork.jpg" style="width:100%;" />
+                </div>
+            </div>
+        </div>
+        <!-- /photoPage -->
         
         
+        <!-- qrCodeViewerPage -->
+        <div data-role="page" id="qrCodeViewerPage">
+             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>QrCode</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <!--<div style="height:3.5em;">
+                    <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">close</a>
+                </div>-->
+                <ul id="qrCodeViewer" data-role="listview" data-inset="false">
+                </ul>
+            </div>
+        </div>
+        <!-- /qrCodeViewerPage -->
+
+        <!-- followingListPage -->
+        <div data-role="page" id="followingListPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Following</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <a href="#" id="readQrCodeButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
+                <a href="#" id="searchFollowginButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Trova Following</a>
+                <ul data-role="listview" id="followingList" style="margin-top:1em;" data-theme="b">
+                </ul>
+            </div>
+        </div>
+        <!-- /followingListPage -->
         
+        <!-- followingListDetailPage -->
+        <div data-role="page" id="followingListDetailPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Following</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <input type="hidden" id="qrCodeId" />
+                <div id="infoResult" style="text-align:center;">
+                    <p id="infoText" style="text-align:left;">
+                        Clicca sopra e inquadra il QR code per ottenere informazioni.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- /followingListDetailPage -->
         
-        
+        <!-- qrCodeInfoPositionPage -->
+        <div data-role="page" id="qrCodeInfoPositionPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Posizione</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main">
+                <div id="qrCodeInfoPlaceMap">View in map</div>
+            </div>
+        </div>
+        <!-- /qrCodeInfoPositionPage -->
+
         
         
         
@@ -1280,7 +1365,7 @@
         
 
         <!-- photoDialog -->
-        <div data-role="dialog" id="photoPage">
+        <div data-role="dialog" id="_photoPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="true">
                 <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
                 <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">+</a>
@@ -1297,7 +1382,7 @@
         <!-- /photoDialog -->
         
         
-        <!-- newsPage -->
+        <!-- newsPage 
         <div data-role="page" id="_newsPage">
             
             <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
@@ -1337,14 +1422,14 @@
                 </div>
             </div>
         </div>
-        <!-- /newsPage -->
+         /newsPage -->
         
     
-        <!-- newsDetailPage -->
+        <!-- newsDetailPage 
         <div data-role="page" id="newsDetailPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false">
                 <h1>Notizie</h1>
-                <!--<a href="#newsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>-->
+                <!--<a href="#newsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a> - - >
                 <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -1354,32 +1439,9 @@
                 <p id="newsText" style="border:1px solid #DDD;padding:1em;white-space:normal;word-wrap:break-word;"></p>
             </div>
         </div>
-        <!-- /newsDetailPage -->
+         /newsDetailPage -->
     
         
-        <!-- followingListPage -->
-        <div data-role="page" id="followingListPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Following</h1>
-                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <a href="#" id="getInfoButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
-                <ul data-role="listview" id="followingList" style="margin-top:1em;">
-                </ul>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <!--<a href="#" data-rel="back" data-reverse="true" class="ui-btn" style="width:100%;margin:0;" >Indietro</a>-->
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" class="ui-navbar-item-selected">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /followingListPage -->
     
         
         <!-- nearbyPage -->
@@ -1447,36 +1509,6 @@
             </div>
         </div>
         <!-- /reportingPhotoPage -->
-        
-        
-        <!-- qrCodeInfoPage -->
-        <div data-role="page" id="qrCodeInfoPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Following</h1>
-                <a href="#followingListPage" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <input type="hidden" id="qrCodeId" />
-                <div id="infoResult" style="text-align:center;">
-                    <p id="infoText" style="text-align:left;">
-                        Clicca sopra e inquadra il QR code per ottenere informazioni.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <!-- /qrCodeInfoPage -->
-        
-        <!-- qrCodeInfoPositionPage -->
-        <div data-role="page" id="qrCodeInfoPositionPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>GretaCITY</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main">
-                <div id="qrCodeInfoPlaceMap">View in map</div>
-            </div>
-        </div>
-        <!-- /qrCodeInfoPositionPage -->
     
         <!-- qrCodeInfoNewsPage -->
         <div data-role="page" id="qrCodeInfoNewsPage">
@@ -1553,17 +1585,6 @@
         <!-- /qrCodeInfoLinksPage -->
     
     
-        <!-- qrCodeViewer -->
-        <div data-role="dialog" id="qrCodeViewerPage">
-            <div data-role="main" class="ui-content">
-                <div style="height:3.5em;">
-                    <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">close</a>
-                </div>
-                <ul id="qrCodeViewer" data-role="listview" data-inset="false">
-                </ul>
-            </div>
-        </div>
-        <!-- /qrCodeViewer -->
     
         <script src="js/jquery-2.1.0.min.js"></script>
         <script>
