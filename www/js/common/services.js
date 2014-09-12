@@ -43,7 +43,7 @@ var services = {
         var url = config.URL_BASE + config.URL_USER_REGISTER;
         var data = 'id_comune='+encodeURIComponent(params.city)+'&cognome='+encodeURIComponent(params.lastname)+'&nome='+encodeURIComponent(params.firstname)+
                    '&cell=' + encodeURIComponent(params.phone) + '&email='+encodeURIComponent(params.email) + '&indirizzo=' + encodeURIComponent(params.address) +
-                   '&' + services.getRequestCommonParameters(true);
+                   '&password=' + encodeURIComponent(params.password) + '&' + services.getRequestCommonParameters(true);
         $.ajax(url, {
             type: 'POST',
             data: data,

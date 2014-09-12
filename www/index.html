@@ -394,7 +394,7 @@
             .text-primary {
                 text-align: center;
                 color: #aeaece;
-                font-size: .8em !important;
+                font-size: 1em !important;
             }
             .ui-btn-primary {
                 border-radius: .4em !important;
@@ -523,6 +523,8 @@
                 <input type="text" id="lastname" placeholder="Cognome*" required />
                 <input type="text" id="firstname" placeholder="Nome*" required />
                 <input type="email" id="email" placeholder="Email*" required />
+                <input type="password" id="password" placeholder="Password*" required />
+                <input type="password" id="passwordConfirm" placeholder="Conferma password*" required />
                 <p class="text-primary">Compila questi campi per essere contattato a seguito di una segnalazione</p>
                 <input type="text" id="address" placeholder="Indirizzo di residenza" />
                 <input type="tel" id="phone" placeholder="Cellulare" />
@@ -550,8 +552,6 @@
         </div>
         <!-- /registrationPage -->
         
-        
-        
         <!-- homePage -->
         <div data-role="page" id="homePage" class="backgroundMap">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
@@ -574,7 +574,7 @@
                     <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Qui vicino</a>
+                        <a href="#nearbyPage" data-transition="slide" class="ui-btn ui-btn-primary">Qui vicino</a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
@@ -582,7 +582,7 @@
                     <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">QrCode</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Impostazioni</a>
+                        <a href="#setupPage" data-transition="slide" class="ui-btn ui-btn-primary">Impostazioni</a>
                     </div>
                 </div>
             </div>
@@ -697,10 +697,6 @@
         </div>
         <!-- /reporting2Page -->
         
-        <!-- reporting3Page -->
-        <!-- TODO -->
-        <!-- /reporting3Page -->
-        
         <!-- reporting4Page -->
         <div data-role="page" id="reporting4Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -711,7 +707,7 @@
                 <a href="#reporting2Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
-            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;top:4em;z-index:100;background:#fff;">
+            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;z-index:100;background:#fff;">
                 <p class="text-primary">
                     Seleziona la categoria del problema.
                 </p>
@@ -744,31 +740,22 @@
                 <div id="prioritySet" class="ui-grid-b">
                     <div class="ui-block-a" style="text-align:center;">
                         <a href="#" data-priorityid="0" class="ui-btn ui-btn-priority" 
-                           style="background-color:#0F0">&nbsp;</a>
+                           style="background-color:#0F0;border-radius: 1em;">basso</a>
                     </div>
                     <div class="ui-block-b" style="text-align:center;">
                         <a href="#" data-priorityid="1" class="ui-btn ui-btn-priority"
-                           style="background-color:#FAF200;">&nbsp;</a>
+                           style="background-color:#FAF200;border-radius: 1em;">medio</a>
                     </div>
                     <div class="ui-block-c" style="text-align:center;">
                         <a href="#" data-priorityid="2" class="ui-btn ui-btn-priority"
-                           style="background-color:#F00;height:1em;width:60%">&nbsp;</a>
+                           style="background-color:#F00;height:1em;width:60%;border-radius: 1em;">alto</a>
                     </div>
                 </div>
-                <div class="ui-grid-b">
-                    <div class="ui-block-a" style="text-align:center;">                        
-                        basso
-                    </div>
-                    <div class="ui-block-b" style="text-align:center;">
-                        medio
-                    </div>
-                    <div class="ui-block-c" style="text-align:center;">
-                        alto
-                    </div>
-                </div>
+                <!--
                 <br /><br /><br />
                 <input type="checkbox" id="private" data-theme="b" />
-                <label style="white-space:normal;" for="private">Utilizza i dati personali solo per le comunicazioni con gli operatori della pubblica amministrazione</label>
+                <label style="white-space:normal;" for="private">Utilizza i dati personali solo per le comunicazioni con gli operatori della pubblica amministrazione</label> 
+                -->
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
@@ -1145,6 +1132,155 @@
         </div>
         <!-- /qrCodeInfoLinksPage -->
     
+        <!-- nearbyPage -->
+        <div data-role="page" id="nearbyPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Qui Vicino</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul data-role="listview" id="placeTypeList" data-theme="b">
+                </ul>
+            </div>
+        </div>
+        <!-- /nearbyPage -->
+    
+        <!-- nearbyResultsPage -->
+        <div data-role="page" id="nearbyResultsPage">
+             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Qui Vicino</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;z-index:100;background:#fff;">
+                <label>Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
+                <input type="range" id="nearbySearchSlider" min="1" max="20" step="1" value="2" data-highlight="true" data-mini="true" />
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;" data-theme="b">
+                </ul>
+            </div>
+        </div>
+        <!-- /nearbyResultsPage -->
+    
+    
+        <!-- nearbyPlaceInfoPage -->
+        <div data-role="page" id="nearbyPlaceInfoPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Qui Vicino</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content" style="margin:0;padding:0;text-align:center;">
+                <div id="nearbyPlaceMap" style="margin:0;padding:0;">Caricamento mappa...</div>
+            </div>
+        </div>
+        <!-- /nearbyPlaceInfoPage -->
+
+        <!-- setupPage -->
+        <div data-role="page" id="setupPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <span>Impostazioni</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary">Profilo</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
+                    </div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Privacy</a>
+                    </div>
+                </div>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Supporto</a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Esci</a>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        <!-- /setupPage -->
+        
+        <!-- profilePage -->
+        <div data-role="page" id="profilePage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Profilo</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <!--
+                <ul data-role="listview" data-theme="b">
+                    <li>
+                        <a href="#profileNamePage">
+                            <span id="profileFirstname"></span> <span id="profileLastname"></span>
+                            <label id="profileEmail">email@email.com</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profileCityPage">
+                            <label>Comune di residenza</label>
+                            <span id="profileCity"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profileAddressPage">
+                            <label>Indirizzo di residenza</label>
+                            <span id="profileAddress"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#changePasswordPage"><label>Cambia password</label></a>
+                    </li>
+                </ul>
+                -->
+                <div class="ui-field-contain" style="padding-top:0;">
+                    <p class="text-primary">* Campi obbligatori</p>
+                    <input id="city" placeholder="Comune di residenza" />
+                    <input id="lastname" placeholder="Cognome" />
+                    <input id="firstname" placeholder="Nome" />
+                    <input type="email" id="email" placeholder="Email" />
+                    <p class="text-primary">Compila i seguenti campi così il comune potrà contattarti in caso di segnalazione</p>
+                    <input id="address" placeholder="Indirizzo di residenza" />
+                    <input type="tel" id="phone" placeholder="Cellulare" />
+                </div>
+                <ul data-role="listview" data-theme="b" data-inset="true">
+                    <li><a href="#changePasswordPage"><label>Cambia password</label></a></li>
+                </ul>
+                
+            </div>
+            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" class="button-next ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+                    SALVA
+                </a>
+            </div>
+        </div>
+        <!-- /profilePage -->
+        
 
         
         
@@ -1189,66 +1325,6 @@
         
         
         
-        
-        
-        
-        <!-- profilePage -->
-        <div data-role="page" id="profilePage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Profilo</h1>
-                <!--
-                <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
-                -->
-                <a href="#newsPage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <ul data-role="listview" data-theme="b">
-                    <li>
-                        <a href="#profileNamePage">
-                            <span id="profileFirstname"></span> <span id="profileLastname"></span>
-                            <label id="profileEmail">email@email.com</label>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#profileCityPage">
-                            <label>Comune di residenza</label>
-                            <span id="profileCity"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#profileAddressPage">
-                            <label>Indirizzo di residenza</label>
-                            <span id="profileAddress"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#profileChannelsPage"><label>I tuoi canali</label></a>
-                    </li>
-                    <li>
-                        <a href="#profileFollowingPage"><label>Following</label></a>
-                    </li>
-                    <li>
-                        <a href="#changePasswordPage"><label>Cambia password</label></a>
-                    </li>
-                    <li data-icon="power">
-                        <a href="#" id="logoutButton"><label>Esci</label></a>
-                    </li>
-                </ul>
-                <p class="news-note" style="margin-top:3em;">
-                    Per richiedere supporto o inviare feedback manda una mail all'indirizzo supporto@gretacity.com
-                </p>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /profilePage -->
         
         <!-- profileNamePage -->
         <div data-role="page" id="profileNamePage">
@@ -1530,60 +1606,9 @@
         
     
         
-        <!-- nearbyPage -->
-        <div data-role="page" id="nearbyPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>QUI vicino</h1>
-                <a href="#" class="newsPageToolbarButton ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <ul data-role="listview" id="placeTypeList">
-                </ul>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#" data-icon="location"  class="ui-navbar-item-selected">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /nearbyPage -->
-    
-        <!-- nearbyResultsPage -->
-        <div data-role="page" id="nearbyResultsPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>QUI vicino</h1>
-                <a href="#nearbyPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
-            </div>
-            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;top:4em;z-index:100;background:#fff;">
-                <label>Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
-                <input type="range" id="nearbySearchSlider" min="1" max="20" step="1" value="2" data-highlight="true" data-mini="true" />
-            </div>
-            <div data-role="main" class="ui-content">
-                <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;">
-                </ul>
-            </div>
-        </div>
-        <!-- /nearbyResultsPage -->
-    
-    
-        <!-- nearbyPlaceInfoPage -->
-        <div data-role="page" id="nearbyPlaceInfoPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>QUI vicino</h1>
-                <a href="#nearbyResultsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">QUI vicino</a>
-            </div>
-            <div data-role="main" class="ui-content" style="margin:0;padding:0;text-align:center;">
-                <div id="nearbyPlaceMap" style="margin:0;padding:0;">View in Map</div>
-            </div>
-        </div>
-        <!-- /nearbyPlaceInfoPage -->
     
             
-        <!-- reportingPhotoPage -->
+        <!-- reportingPhotoPage 
         <div data-role="page" id="reportingPhotoPage">
             <div data-role="main" style="text-align:center">
                 <a href="#" data-rel="back" data-reverse="true">
@@ -1594,7 +1619,9 @@
                 <a href="#" id="removePhotoButton" class="ui-btn ui-btn-icon-left ui-icon-delete" style="text-align:left;width:85%">Rimuovi</a>
             </div>
         </div>
-        <!-- /reportingPhotoPage -->
+        /reportingPhotoPage -->
+        
+        
     
         <script src="js/jquery-2.1.0.min.js"></script>
         <script>

@@ -104,6 +104,20 @@ var app = {
         $('#qrCodeInfoMultimediaPage').on('pagebeforeshow', self.beforeShowQrCodeInfoMultimediaPage);
         $('#qrCodeInfoLinksPage').on('pagebeforeshow', self.beforeShowQrCodeInfoLinksPage);
 
+        var nearbyPage = $('#nearbyPage');
+        nearbyPage.on('pageinit', self.initNearbyPage);
+        nearbyPage.on('pagebeforeshow', self.beforeShowNearbyPage);
+        
+        var nearbyResultsPage = $('#nearbyResultsPage');
+        nearbyResultsPage.on('pageinit', function() {
+            $('#nearbySearchSlider', nearbyResultsPage).on('slidestop', self.searchNearbyPlaces);
+        });
+        nearbyResultsPage.on('pageshow', self.beforeShowNearbyResultsPage);
+        
+        var nearbyPlaceInfoPage = $('#nearbyPlaceInfoPage');
+        nearbyPlaceInfoPage.on('pageinit', self.initNearbyPlaceInfo);
+        nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
+        nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
         
         
         
@@ -147,22 +161,10 @@ var app = {
         $('#registerButton', registerPage).on('click', self.register);
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
-        var reportingListPage = $('#reportingListPage');
-        reportingListPage.on('pageshow', self.loadReportingItems);
-        $('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
+        //var reportingListPage = $('#reportingListPage');
+        //reportingListPage.on('pageshow', self.loadReportingItems);
+        //$('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
         //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
-        var nearbyPage = $('#nearbyPage');
-        nearbyPage.on('pageinit', self.initNearbyPage);
-        nearbyPage.on('pagebeforeshow', self.beforeShowNearbyPage);
-        var nearbyResultsPage = $('#nearbyResultsPage');
-        nearbyResultsPage.on('pageinit', function() {
-            $('#nearbySearchSlider', nearbyResultsPage).on('slidestop', self.searchNearbyPlaces);
-        });
-        nearbyResultsPage.on('pageshow', self.beforeShowNearbyResultsPage);
-        var nearbyPlaceInfoPage = $('#nearbyPlaceInfoPage');
-        nearbyPlaceInfoPage.on('pageinit', self.initNearbyPlaceInfo);
-        nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
-        nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
         
         self.updateBalloonsInNavbar();        
     },
@@ -567,18 +569,18 @@ return;
         var params = {};
         // Validation
         var hasErrors = false;
-        var fields = ['city', 'lastname', 'firstname', 'email', 'phone', 'address'];
+        var fields = ['city', 'lastname', 'firstname', 'email', 'phone', 'address', 'password'];
         for(var i in fields) {
             var fieldId = fields[i];
             var required = null;
             var fieldVal = null;
-            if(fieldId == 'city') {
+            /*if(fieldId == 'city') {
                 required = true;
                 fieldVal = $('#' + fieldId, page).data('cityid') || '';
-            } else {
+            } else {*/
                 required = $('#' + fieldId + '[required]', page).length == 1;
                 fieldVal = $('#' + fieldId, page).val().trim();
-            }
+            //}
             if(required && (fieldVal == '')) {
                 $('#' + fieldId, page).addClass('input-error');
                 hasErrors = true;
@@ -589,12 +591,20 @@ return;
         }
 
         if(hasErrors) {
-            helper.alert('Alcuni campi non sono stati compilati', function() {
+            helper.alert('Compila i campi obbligatori', function() {
                 $.mobile.silentScroll();
             }, 'Registrazione');
             return;
         }
 
+        // Specific validation for city
+        if(($('#city', page).data('cityid') || '') == '') {
+            helper.alert('Seleziona il comune di residenza dall\'elenco', function() {
+                $('#city', page).focus();
+            }, 'Registrazione');
+            return;
+        }
+        
         // Specific validation for email
         if(!helper.isEmailValid(params.email)) {
             $('#email', page).addClass('input-error');
@@ -608,6 +618,27 @@ return;
             $('#phone').addClass('input-error');
             helper.alert('Inserisci un numero di telefono valido', function() {
                 $('#phone', page).focus();
+            }, 'Registrazione');
+            return;
+        }
+        // Specific validation for password 
+        if(params.password.length < config.PASSWORD_MIN_LENGTH) {
+            $('#password').addClass('input-error');
+            helper.alert('La password deve essere lunga almeno ' + config.PASSWORD_MIN_LENGTH + ' caratteri', function() {
+                $('#password', page).focus();
+            }, 'Registrazione');
+            return;
+        }
+        // Specific validation for password confirm
+        var passwordConfirm = $('#passwordConfirm', $.mobile.activePage).val();
+        if(passwordConfirm.length == 0) {
+            helper.alert('Inserisci la conferma della password', function() {
+                $('#passwordConfirm', $.mobile.activePage).focus();
+            }, 'Registrazione');
+            return;
+        } else if(passwordConfirm != params.password) {
+            helper.alert('La password e la sua conferma non corrispondono', function() {
+                $('#password', $.mobile.activePage).focus();
             }, 'Registrazione');
             return;
         }
@@ -626,9 +657,9 @@ return;
 
         // Registration
         services.registerUser(params, function() {
-            helper.alert('La registrazione è stata completata con successo.\n' +
-                         'A breve riceverai nella tua casella di posta la password per accedere al sistema', function() {
-                $.mobile.changePage('index.html', {transition: 'slide', reverse: true});
+            helper.alert('Operazione completata con successo.\n' +
+                         'A breve riceverai una email per confermare la registrazione', function() {
+                $.mobile.changePage('#homePage', {transition: 'slide', reverse: true});
             }, 'Registrazione');
         }, function(e) {
             // error callback
@@ -961,7 +992,8 @@ return;
             helper.alert('Clicca sulla gravità dl servizio', null, 'Descrizione');
             return;
         }
-        self.reporting.private = $('#private', $.mobile.activePage).is(':checked');
+        //self.reporting.private = $('#private', $.mobile.activePage).is(':checked');
+        self.reporting.private = false;
         $.mobile.changePage('#reporting6Page', {transition: 'slide'});
     },
     
@@ -1727,7 +1759,229 @@ return;
             html += '</ul>';
         }
         $('#qrCodeLinksList', page).html(html).listview('refresh');
-    },    
+    },  
+    
+    
+    ////////////////////////////////////////
+    // nearbyPage
+    
+    nearbyCategoryId: null,
+    nearbyCategoryName: null,
+    nearbyCurrentPos: null,
+    nearbyDistance: config.NEARBY_DEFAULT_DISTANCE,
+    initNearbyPage: function() {
+        self.nearbyCurrentPos = null;
+        services.getNearbyPlaceTypes(function(placeTypes) {
+            var html = '';
+            for(var i in placeTypes) {
+                var place = placeTypes[i];
+                var img = place.icon || '';
+                html += '<li><a href="javascript:self.showNearbyPlaces(\'' + place.key + '\', \'' + place.name.replace(/'/g, "\\'") + '\')"><img src="' + img + '" style="padding:7px 0 0 5px;" />' + place.name.capitalize() + '</a></li>';
+            }
+            $('#nearbyPage #placeTypeList').html(html).listview('refresh');
+        });        
+    },
+    beforeShowNearbyPage: function() {
+        //$.mobile.loading('show');
+        //self.setSidePanelPage('nearbyPage');
+        geoLocation.acquireGeoCoordinates(function(result) {
+            self.nearbyCurrentPos = result;
+            //$.mobile.loading('hide');
+        }, function(e) {
+            console.log(e);
+            //$.mobile.loading('hide');
+        }, {enableHighAccuracy: false});
+    },
+    showNearbyPlaces: function(catId, catName) {
+        if(self.nearbyCurrentPos == null) {
+            helper.confirm('Impossibile recuperare la tua posizione GPS', function(choice) {
+                if(choice == 1) {
+                    $.mobile.loading('show');
+                    geoLocation.acquireGeoCoordinates(function(result) {
+                        self.nearbyCurrentPos = result;
+                        $.mobile.loading('hide');
+                        self.showNearbyPlaces(catId, catName);
+                    }, function(e) {
+                        console.log(e);
+                        $.mobile.loading('hide');
+                        self.showNearbyPlaces(catId, catName);
+                    });
+                }
+            }, 'Localizzazione GPS', ['Riprova', 'Annulla']);
+            return;
+        } else {
+            self.nearbyCategoryId = catId;
+            self.nearbyCategoryName = catName;
+            $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
+        }
+    },
+    beforeShowNearbyResultsPage: function() {
+        $('#nearbyResultsPage #nearbySearchSlider').parents('div.ui-slider').css({'padding-right': 10});
+        if(self.nearbyCategoryId == null) {
+            $.mobile.changePage('#nearbyPage', {transition: 'slide', reverse: true});
+            return;
+        }
+        self.searchNearbyPlaces(self.nearbyCategoryId);
+    },
+    searchNearbyPlaces: function() {
+        var page = $('#nearbyResultsPage');
+        self.nearbyDistance = $('#nearbySearchSlider', page).val();
+        var options = {
+            coords: self.nearbyCurrentPos.coords,
+            distance: self.nearbyDistance,
+            placeCatId: self.nearbyCategoryId
+        };        
+        $('#currentPlaceType', page).html(self.nearbyCategoryName.toUpperCase());
+        $('#placesList', page).html('').listview('refresh');
+        $.mobile.loading('show');
+        services.getNearbyPlaces(options, function(result) {
+            var html = '';
+            if(result.length > 0) {
+                for(var i in result) {
+                    var row = result[i];
+                    html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.id + '\', \'' + row.source + '\')">' 
+                                + row.name + '<label><small>' 
+                                + (row.phoneNumber != null ? 'Tel. ' + row.phoneNumber : '') + '<br />'
+                                + row.address
+                                + '</small><br /><b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b></label></a></li>';
+                }
+            } else {
+                html = '<li>Nessun risultato</li>';
+            }
+            $('#placesList', page).html(html).listview('refresh');
+            $.mobile.silentScroll();
+            $.mobile.loading('hide');
+        }, function(e, requireLogin) {
+            $.mobile.loading('hide');
+            if(requireLogin) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert("Si sono verificati errori", null, "QUI vicino");
+        });
+    },
+    
+    nearbyPlaceId: null,
+    nearbyPlaceSource: null,
+    showNearbyPlace: function(placeId, source) {
+        if(typeof(google) == 'undefined') return;
+        self.nearbyPlaceId = placeId;
+        self.nearbyPlaceSource = source;
+        $.mobile.changePage('#nearbyPlaceInfoPage');
+    },
+    
+    
+    initNearbyPlaceInfo: function() {        
+    },
+    
+    beforeShowNearbyPlaceInfo: function() {
+        if(self.nearbyPlaceId == null) {
+            $.mobile.changePage('#nearbyResultsPage');
+            return;
+        }
+        /*
+        $('#nearbyPlaceInfoPage #nearbyPlaceMap').css({
+            position: 'absolute', 
+            top: '3.5em', //$('div[data-role="header"]', $.mobile.activePage).height(),
+            bottom: 0,
+            left: 0,
+            right: 0
+        });*/
+    },
+    
+    showNearbyPlaceInfo: function() {
+        $.mobile.loading('show');
+        if(self.nearbyPlaceId == null) return;
+        var showMap = self.nearbyCurrentPos != null;
+        if(!showMap) return;
+        
+        self.maximizeMap($('#nearbyPlaceInfoPage #nearbyPlaceMap'));
+        
+        if(showMap) {
+            var lat = self.nearbyCurrentPos.coords.latitude, lng = self.nearbyCurrentPos.coords.longitude;
+            var options = {
+                zoom: config.GOOGLE_MAPS_ZOOM,
+                center: new google.maps.LatLng(lat, lng),
+                mapTypeId: google.maps.MapTypeId.ROADMAP //eval(config.GOOGLE_MAPS_TYPE_ID)
+            };
+            var map = new google.maps.Map(document.getElementById('nearbyPlaceMap'), options);
+            var startingMarkerPoint = new google.maps.LatLng(lat, lng);
+        }
+        $.mobile.loading('show');
+        services.getNearbyPlaceInfo({id: self.nearbyPlaceId, source: self.nearbyPlaceSource}, function(result) {
+            if(showMap) {
+                var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
+                
+                // Display route
+                // see:
+                // https://developers.google.com/maps/documentation/javascript/examples/directions-complex
+                
+                var directionsDisplay = new google.maps.DirectionsRenderer({
+                    suppressInfoWindows: true,
+                    suppressMarkers: true,
+                    preserveViewport: false
+                });
+                var directionsService = new google.maps.DirectionsService();
+                directionsDisplay.setMap(map);
+                directionsService.route({
+                    origin: startingMarkerPoint,
+                    destination: endingMarkerPoint,
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, function(res, status) {
+                    if(status == google.maps.DirectionsStatus.OK) {
+                        console.log(res.routes);
+                        self.tmp = res.routes;
+                        //res.routes[0].legs[0].start_location.lat()
+                        //res.routes[0].legs[0].start_location.lng()
+                        startingMarkerPoint = res.routes[0].legs[0].start_location;
+                        //res.routes[0].legs[0].end_location.lat()
+                        //res.routes[0].legs[0].end_location.lng()
+                        endingMarkerPoint = res.routes[0].legs[0].end_location;
+                        //console.log(endingMarkerPoint, res.routes[0].legs[0].end_location);
+                        directionsDisplay.setDirections(res);
+                    }                     
+                    var startingMarker = new google.maps.Marker({
+                        position: startingMarkerPoint,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: 'Tu'
+                    });
+                    //map.panTo(startingMarkerPoint);
+                    //map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
+                    var infowindow = new google.maps.InfoWindow({content: '<div>Tu</div>'});
+                    infowindow.open(map, startingMarker);
+                    var endingMarker = new google.maps.Marker({
+                        position: endingMarkerPoint,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: result.name
+                    });
+                    var infowindow2 = new google.maps.InfoWindow({content: '<div>' + result.name + '</div>'});
+                    infowindow2.open(map, endingMarker);
+                    
+                    if(status != google.maps.DirectionsStatus.OK) {
+                        var bounds = new google.maps.LatLngBounds();
+                        bounds.extend(startingMarker.position);
+                        bounds.extend(endingMarker.position);
+                        map.fitBounds(bounds);
+                    }
+                });
+            }
+            $.mobile.loading('hide');
+            
+        }, function(e, requireLogin) {
+            $.mobile.loading('hide');
+            if(requireLogin) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert("Si sono verificati errori", null, "QUI vicino");
+        });
+    },
+
     
 
     
@@ -2481,220 +2735,5 @@ console.log(newsChannelAvailableIds);
 
         var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
         infowindow.open(self.map, self.marker);
-    },
-    
-    
-    nearbyCategoryId: null,
-    nearbyCategoryName: null,
-    nearbyCurrentPos: null,
-    nearbyDistance: config.NEARBY_DEFAULT_DISTANCE,
-    initNearbyPage: function() {
-        self.nearbyCurrentPos = null;
-        services.getNearbyPlaceTypes(function(placeTypes) {
-            var html = '';
-            for(var i in placeTypes) {
-                var place = placeTypes[i];
-                var img = place.icon || '';
-                html += '<li><a href="javascript:self.showNearbyPlaces(\'' + place.key + '\', \'' + place.name.replace(/'/g, "\\'") + '\')"><img src="' + img + '" style="padding:7px 0 0 5px;" />' + place.name.capitalize() + '</a></li>';
-            }
-            $('#nearbyPage #placeTypeList').html(html).listview('refresh');
-        });        
-    },
-    beforeShowNearbyPage: function() {
-        //$.mobile.loading('show');
-        //self.setSidePanelPage('nearbyPage');
-        geoLocation.acquireGeoCoordinates(function(result) {
-            self.nearbyCurrentPos = result;
-            //$.mobile.loading('hide');
-        }, function(e) {
-            console.log(e);
-            //$.mobile.loading('hide');
-        }, {enableHighAccuracy: false});
-    },
-    showNearbyPlaces: function(catId, catName) {
-        if(self.nearbyCurrentPos == null) {
-            helper.confirm('Impossibile recuperare la tua posizione GPS', function(choice) {
-                if(choice == 1) {
-                    $.mobile.loading('show');
-                    geoLocation.acquireGeoCoordinates(function(result) {
-                        self.nearbyCurrentPos = result;
-                        $.mobile.loading('hide');
-                        self.showNearbyPlaces(catId, catName);
-                    }, function(e) {
-                        console.log(e);
-                        $.mobile.loading('hide');
-                        self.showNearbyPlaces(catId, catName);
-                    });
-                }
-            }, 'Localizzazione GPS', ['Riprova', 'Annulla']);
-            return;
-        } else {
-            self.nearbyCategoryId = catId;
-            self.nearbyCategoryName = catName;
-            $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
-        }
-    },
-    beforeShowNearbyResultsPage: function() {
-        $('#nearbyResultsPage #nearbySearchSlider').parents('div.ui-slider').css({'padding-right': 10});
-        if(self.nearbyCategoryId == null) {
-            $.mobile.changePage('#nearbyPage', {transition: 'slide', reverse: true});
-            return;
-        }
-        self.searchNearbyPlaces(self.nearbyCategoryId);
-    },
-    searchNearbyPlaces: function() {
-        var page = $('#nearbyResultsPage');
-        self.nearbyDistance = $('#nearbySearchSlider', page).val();
-        var options = {
-            coords: self.nearbyCurrentPos.coords,
-            distance: self.nearbyDistance,
-            placeCatId: self.nearbyCategoryId
-        };        
-        $('#currentPlaceType', page).html(self.nearbyCategoryName.toUpperCase());
-        $('#placesList', page).html('').listview('refresh');
-        $.mobile.loading('show');
-        services.getNearbyPlaces(options, function(result) {
-            var html = '';
-            if(result.length > 0) {
-                for(var i in result) {
-                    var row = result[i];
-                    html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.id + '\', \'' + row.source + '\')">' 
-                                + row.name + '<label><small>' 
-                                + (row.phoneNumber != null ? 'Tel. ' + row.phoneNumber : '') + '<br />'
-                                + row.address
-                                + '</small><br /><b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b></label></a></li>';
-                }
-            } else {
-                html = '<li>Nessun risultato</li>';
-            }
-            $('#placesList', page).html(html).listview('refresh');
-            $.mobile.silentScroll();
-            $.mobile.loading('hide');
-        }, function(e, requireLogin) {
-            $.mobile.loading('hide');
-            if(requireLogin) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert("Si sono verificati errori", null, "QUI vicino");
-        });
-    },
-    
-    nearbyPlaceId: null,
-    nearbyPlaceSource: null,
-    showNearbyPlace: function(placeId, source) {
-        if(typeof(google) == 'undefined') return;
-        self.nearbyPlaceId = placeId;
-        self.nearbyPlaceSource = source;
-        $.mobile.changePage('#nearbyPlaceInfoPage');
-    },
-    
-    
-    initNearbyPlaceInfo: function() {        
-    },
-    
-    beforeShowNearbyPlaceInfo: function() {
-        if(self.nearbyPlaceId == null) {
-            $.mobile.changePage('#nearbyResultsPage');
-            return;
-        }
-        $('#nearbyPlaceInfoPage #nearbyPlaceMap').css({
-            position: 'absolute', 
-            top: '3.5em', //$('div[data-role="header"]', $.mobile.activePage).height(),
-            bottom: 0,
-            left: 0,
-            right: 0
-        });
-    },
-    
-    showNearbyPlaceInfo: function() {
-        $.mobile.loading('show');
-        if(self.nearbyPlaceId == null) return;
-        var showMap = self.nearbyCurrentPos != null;
-        if(!showMap) return;
-        
-        if(showMap) {
-            var lat = self.nearbyCurrentPos.coords.latitude, lng = self.nearbyCurrentPos.coords.longitude;
-            var options = {
-                zoom: config.GOOGLE_MAPS_ZOOM,
-                center: new google.maps.LatLng(lat, lng),
-                mapTypeId: google.maps.MapTypeId.ROADMAP //eval(config.GOOGLE_MAPS_TYPE_ID)
-            };
-            var map = new google.maps.Map(document.getElementById('nearbyPlaceMap'), options);
-            var startingMarkerPoint = new google.maps.LatLng(lat, lng);
-        }
-        $.mobile.loading('show');
-        services.getNearbyPlaceInfo({id: self.nearbyPlaceId, source: self.nearbyPlaceSource}, function(result) {
-            if(showMap) {
-                var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
-                
-                // Display route
-                // see:
-                // https://developers.google.com/maps/documentation/javascript/examples/directions-complex
-                
-                var directionsDisplay = new google.maps.DirectionsRenderer({
-                    suppressInfoWindows: true,
-                    suppressMarkers: true,
-                    preserveViewport: false
-                });
-                var directionsService = new google.maps.DirectionsService();
-                directionsDisplay.setMap(map);
-                directionsService.route({
-                    origin: startingMarkerPoint,
-                    destination: endingMarkerPoint,
-                    optimizeWaypoints: true,
-                    travelMode: google.maps.TravelMode.DRIVING
-                }, function(res, status) {
-                    if(status == google.maps.DirectionsStatus.OK) {
-                        console.log(res.routes);
-                        self.tmp = res.routes;
-                        //res.routes[0].legs[0].start_location.lat()
-                        //res.routes[0].legs[0].start_location.lng()
-                        startingMarkerPoint = res.routes[0].legs[0].start_location;
-                        //res.routes[0].legs[0].end_location.lat()
-                        //res.routes[0].legs[0].end_location.lng()
-                        endingMarkerPoint = res.routes[0].legs[0].end_location;
-                        //console.log(endingMarkerPoint, res.routes[0].legs[0].end_location);
-                        directionsDisplay.setDirections(res);
-                    }                     
-                    var startingMarker = new google.maps.Marker({
-                        position: startingMarkerPoint,
-                        map: map,
-                        draggable: false,
-                        animation: google.maps.Animation.DROP,
-                        title: 'Tu'
-                    });
-                    //map.panTo(startingMarkerPoint);
-                    //map.setCenter(startingMarkerPoint, config.GOOGLE_MAPS_ZOOM);
-                    var infowindow = new google.maps.InfoWindow({content: '<div>Tu</div>'});
-                    infowindow.open(map, startingMarker);
-                    var endingMarker = new google.maps.Marker({
-                        position: endingMarkerPoint,
-                        map: map,
-                        draggable: false,
-                        animation: google.maps.Animation.DROP,
-                        title: result.name
-                    });
-                    var infowindow2 = new google.maps.InfoWindow({content: '<div>' + result.name + '</div>'});
-                    infowindow2.open(map, endingMarker);
-                    
-                    if(status != google.maps.DirectionsStatus.OK) {
-                        var bounds = new google.maps.LatLngBounds();
-                        bounds.extend(startingMarker.position);
-                        bounds.extend(endingMarker.position);
-                        map.fitBounds(bounds);
-                    }
-                });
-            }
-            $.mobile.loading('hide');
-            
-        }, function(e, requireLogin) {
-            $.mobile.loading('hide');
-            if(requireLogin) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert("Si sono verificati errori", null, "QUI vicino");
-        });
-    }
+    } 
 };
