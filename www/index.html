@@ -613,7 +613,7 @@
                         <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifica le mie segnalazioni</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary ui-disabled" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
                     </div>
                 </div>
             </div>
@@ -1018,7 +1018,7 @@
             </div>
             <div data-role="main" class="ui-content">
                 <a href="#" id="readQrCodeButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
-                <a href="#" id="searchFollowginButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Trova Following</a>
+                <a href="#" id="searchFollowginButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera ui-disabled">Trova Following</a>
                 <ul data-role="listview" id="followingList" style="margin-top:1em;" data-theme="b">
                 </ul>
             </div>
@@ -1055,10 +1055,96 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main">
-                <div id="qrCodeInfoPlaceMap">View in map</div>
+                <div id="qrCodeInfoPlaceMap">Caricamento mappa...</div>
             </div>
         </div>
         <!-- /qrCodeInfoPositionPage -->
+
+        <!-- qrCodeInfoNewsPage -->
+        <div data-role="page" id="qrCodeInfoNewsPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Notizie</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div>
+                    <h3 class="qrcode-info-title">title</h3>
+                    <!--<div class="qrcode-info-subtitle">Notizie</div>-->
+                </div>
+                <ul data-role="listview" id="qrCodeNewsList" style="margin-top:1em;">
+                </ul>
+            </div>
+        </div>
+        <!-- /qrCodeInfoNewsPage -->
+    
+        <!-- qrCodeInfoCommentsPage -->
+        <div data-role="page" id="qrCodeInfoCommentsPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Commenti</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div>
+                    <h3 class="qrcode-info-title">title</h3>
+                    <!--<div class="qrcode-info-subtitle">Commenti</div>-->
+                </div>
+                <ul data-role="listview" id="qrCodeCommentsList">
+                </ul>
+                <div id="leaveCommentPanel" style="display:none;">
+                    <textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea>
+                    <br />
+                    <a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>
+                </div>
+                <div style="height:150px;"></div>
+            </div>
+        </div>
+        <!-- /qrCodeInfoCommentsPage -->
+    
+        <!-- qrCodeInfoMultimediaPage -->
+        <div data-role="page" id="qrCodeInfoMultimediaPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Video</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div>
+                    <h3 class="qrcode-info-title">title</h3>
+                    <!--<div class="qrcode-info-subtitle">Video</div>-->
+                </div>
+                <div id="qrCodeMultimediaContent"></div>
+            </div>
+        </div>
+        <!-- /qrCodeInfoMultimediaPage -->
+
+        <!-- qrCodeInfoLinksPage -->
+        <div data-role="page" id="qrCodeInfoLinksPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Link</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div>
+                    <h3 class="qrcode-info-title">title</h3>
+                    <div class="qrcode-info-subtitle">Link</div>
+                </div>
+                <ul data-role="listview" id="qrCodeLinksList">
+                </ul>
+            </div>
+        </div>
+        <!-- /qrCodeInfoLinksPage -->
+    
 
         
         
@@ -1509,82 +1595,6 @@
             </div>
         </div>
         <!-- /reportingPhotoPage -->
-    
-        <!-- qrCodeInfoNewsPage -->
-        <div data-role="page" id="qrCodeInfoNewsPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Following</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <div>
-                    <h3 class="qrcode-info-title">title</h3>
-                    <div class="qrcode-info-subtitle">Notizie</div>
-                </div>
-                <ul data-role="listview" id="qrCodeNewsList">
-                </ul>
-            </div>
-        </div>
-        <!-- /qrCodeInfoNewsPage -->
-    
-    
-        <!-- qrCodeInfoCommentsPage -->
-        <div data-role="page" id="qrCodeInfoCommentsPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Following</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <div>
-                    <h3 class="qrcode-info-title">title</h3>
-                    <div class="qrcode-info-subtitle">Commenti</div>
-                </div>
-                <ul data-role="listview" id="qrCodeCommentsList">
-                </ul>
-                <div id="leaveCommentPanel" style="display:none;">
-                    <textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea>
-                    <br />
-                    <a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>
-                </div>
-                <div style="height:150px;"></div>
-            </div>
-        </div>
-        <!-- /qrCodeInfoCommentsPage -->
-    
-        <!-- qrCodeInfoMultimediaPage -->
-        <div data-role="page" id="qrCodeInfoMultimediaPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Following</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <div>
-                    <h3 class="qrcode-info-title">title</h3>
-                    <div class="qrcode-info-subtitle">Video</div>
-                </div>
-                <div id="qrCodeMultimediaContent"></div>
-            </div>
-        </div>
-        <!-- /qrCodeInfoMultimediaPage -->
-
-        <!-- qrCodeInfoLinksPage -->
-        <div data-role="page" id="qrCodeInfoLinksPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Following</h1>
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <div>
-                    <h3 class="qrcode-info-title">title</h3>
-                    <div class="qrcode-info-subtitle">Link</div>
-                </div>
-                <ul data-role="listview" id="qrCodeLinksList">
-                </ul>
-            </div>
-        </div>
-        <!-- /qrCodeInfoLinksPage -->
-    
-    
     
         <script src="js/jquery-2.1.0.min.js"></script>
         <script>

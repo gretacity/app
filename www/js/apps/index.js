@@ -307,7 +307,24 @@ return;
         $('#qrCodeViewerPage div[data-role="main"] #qrCodeViewer').html(html).listview().listview('refresh');
         $.mobile.changePage('#qrCodeViewerPage');
     },
-    
+        
+    openLink: function(url, target, opts) {
+        target = target || '_system';
+        var options = '';
+        if(opts != null) {
+            if(typeof(opts) == 'object') {
+                var items = [];
+                for(var k in opts) {
+                    items.push(k + '=' + opts[k]);
+                }
+                options = items.join(',');
+            } else {
+                options = opts;
+            }
+        }
+        var ref = window.open(url, target, options);
+    },
+
     openPhoto: function() {
         self.tmp = this;
         var imageUrl = $(this).css('background-image');
@@ -1558,7 +1575,6 @@ return;
             html += '<p class="qrcode-info-description">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>';
             html += '<div style="margin-top:3em;" class="ui-grid-a">' +
                     '<div class="ui-block-a">';
-            result.notizie = [''];
             if(result.notizie && (result.notizie.length > 0)) {
                 html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-news">Notizie</a>';
             } else {
@@ -1609,6 +1625,25 @@ return;
         });
     },
     
+    beforeShowQrCodeInfoNewsPage: function() {
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeInfoNewsPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.notizie && (result.notizie.length > 0)) {
+            for(var i in result.notizie) {
+                var news = result.notizie[i];
+                html += '<li class="qrcode-info-news">' + 
+                        '<div>' + news.titolo + '</div>' +
+                        '<p>' + news.annotazione + '</p>' +
+                        '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
+                        '</li>';
+            }
+        }
+        console.log(html);
+        $('#qrCodeNewsList', page).html(html).listview('refresh');
+    },
+    
     showQrCodeInfoPositionPage: function() {
         setTimeout(function() {
             self.maximizeMap($('#qrCodeInfoPositionPage #qrCodeInfoPlaceMap'));
@@ -1635,6 +1670,66 @@ return;
         }, 300);
     },
     
+    beforeShowQrCodeInfoCommentsPage: function() {
+        var result = self.currentQrCodeInfo;
+        var canLeaveComment = (result.categoria.commenti == 1);
+        var page = $('#qrCodeInfoCommentsPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.commenti && (result.commenti.length > 0)) {
+            for(var i in result.commenti) {
+                var c = result.commenti[i];
+                        var d = Date.parseFromYMDHMS(c.data_inserimento);
+                        html += '<li><p>' + c.descrizione + '</p>';
+                        html += '<small class="news-note">' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
+                        if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
+                        html += '</li>';
+            }
+        } else {
+            html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
+        }
+        if(canLeaveComment) {
+            $('#leaveCommentPanel').show();
+        } else {
+            $('#leaveCommentPanel').hide();
+        }
+        $('#qrCodeCommentsList', page).html(html).listview('refresh');
+    },
+    
+    beforeShowQrCodeInfoMultimediaPage: function() {
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeInfoMultimediaPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.youtube && (result.youtube.length > 0)) {
+            html += '<ul id="videos" style="text-align:left;margin-top:1.5em;" data-inset="false" data-theme="b">';
+            //html += '<li data-role="list-divider">Video</li>';
+            for(var i in result.youtube) {
+                var v = result.youtube[i];
+                html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
+            }
+            html += '</ul>';
+        }
+        $('#qrCodeMultimediaContent', page).html(html);
+        $('#qrCodeMultimediaContent #videos', page).listview();
+    },
+    
+    beforeShowQrCodeInfoLinksPage: function() {
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeInfoLinksPage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.links.length > 0) {
+            for(var i in result.links) {
+                var l = result.links[i];
+                html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "\\'") + '\')" target="_system">' + l.nome + '</a></li>';
+            }
+            html += '</ul>';
+        }
+        $('#qrCodeLinksList', page).html(html).listview('refresh');
+    },    
+    
+
     
     
     
@@ -2219,155 +2314,6 @@ console.log(newsChannelAvailableIds);
 
     
     
-    beforeShowQrCodeInfoNewsPage: function() {
-        var result = self.currentQrCodeInfo;
-        var page = $('#qrCodeInfoNewsPage');
-        $('h3', page).html(result.info.nome);
-        var html = '';
-        if(result.notizie && (result.notizie.length > 0)) {
-            for(var i in result.notizie) {
-                var news = result.notizie[i];
-                html += '<li class="qrcode-info-news">' + 
-                        '<div>' + news.titolo + '</div>' +
-                        '<p>' + news.annotazione + '</p>' +
-                        '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
-                        '</li>';
-            }
-        }
-        $('#qrCodeNewsList', page).html(html).listview('refresh');
-    },
-    
-    beforeShowQrCodeInfoCommentsPage: function() {
-        var result = self.currentQrCodeInfo;
-        var canLeaveComment = (result.categoria.commenti == 1);
-        var page = $('#qrCodeInfoCommentsPage');
-        $('h3', page).html(result.info.nome);
-        var html = '';
-        if(result.commenti && (result.commenti.length > 0)) {
-            for(var i in result.commenti) {
-                var c = result.commenti[i];
-                        var d = Date.parseFromYMDHMS(c.data_inserimento);
-                        html += '<li><p>' + c.descrizione + '</p>';
-                        html += '<small class="news-note">' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
-                        if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
-                        html += '</li>';
-            }
-        } else {
-            html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
-        }
-        if(canLeaveComment) {
-            $('#leaveCommentPanel').show();
-        } else {
-            $('#leaveCommentPanel').hide();
-        }
-        $('#qrCodeCommentsList', page).html(html).listview('refresh');
-    },
-    
-    beforeShowQrCodeInfoMultimediaPage: function() {
-        var result = self.currentQrCodeInfo;
-        var page = $('#qrCodeInfoMultimediaPage');
-        $('h3', page).html(result.info.nome);
-        var html = '';
-        
-        
-        //var hasGallery = false;
-        //if(result.foto && (result.foto.length > 0)) {
-            
-            /*** old gallery implementation
-            html += '<div class="slider"><ul class="slides">';
-            for(var i in result.foto) {
-                html += '<li class="slide">' +
-                            '<img src="' + result.foto[i] + '" />' +
-                        '</li>';
-            }
-            html += '</ul></div>';
-            var glide = $('.slider').glide({
-                //autoplay: false, // or 4000
-                arrowLeftText: '',
-                arrowRightText: ''
-            });
-            */
-            
-            /*** new gallery implementation
-            html += '<div id="gallery" style="margin:0 -1em">' + 
-                    '<div class="gallery-images" style="height:20em;text-align:center;">';
-            for(var i in result.foto) {
-                html += '<img src="' + result.foto[i] + '" class="gallery-image" style="width:auto;height:100%;';
-                if(i > 0) {
-                    html += 'display:none;';
-                }
-                html += '" />';
-            }
-            html += '</div>' +
-                    '<div class="gallery-indicator">n of n</div>' +
-                    '</div>'; */
-            
-            //var hasGallery = true;
-        //}
-
-        if(result.youtube && (result.youtube.length > 0)) {
-            html += '<ul id="videos" style="text-align:left;margin-top:1.5em;" data-inset="false">';
-            //html += '<li data-role="list-divider">Video</li>';
-            for(var i in result.youtube) {
-                var v = result.youtube[i];
-                html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
-            }
-            html += '</ul>';
-        }
-        $('#qrCodeMultimediaContent', page).html(html);
-        $('#qrCodeMultimediaContent #videos', page).listview();
-        
-        //if(hasGallery) {
-            /*** new gallery implementation
-            var currentImageIndex = 0;
-            var totImages = result.foto.length;
-            var gallery = $('#gallery');
-            $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
-            $('.gallery-image', gallery).on('click', function() {
-                currentImageIndex++;
-                if(currentImageIndex >= totImages) currentImageIndex = 0;
-                $('div.gallery-images img:visible', gallery).hide();
-                $('div.gallery-images img:nth-child(' + (currentImageIndex+1) + ')', gallery).show();
-                $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
-            });*/
-            /*.on('swipeleft', function(e) {
-                currentImageIndex++;
-                if(currentImageIndex >= totImages) currentImageIndex = 0;
-                $('div.gallery-images img:visible', gallery).hide();
-                $('div.gallery-images img:nth-child(' + (currentImageIndex+1) + ')', gallery).show();
-                $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
-            }).on('swiperight', function(e) {
-                currentImageIndex--;
-                if(currentImageIndex < 0) currentImageIndex = totImages - 1;
-                $('div.gallery-images img:visible', gallery).hide();
-                $('div.gallery-images img:nth-child(' + (currentImageIndex+1) +')', gallery).show();
-                $('div.gallery-indicator', gallery).html((currentImageIndex+1) + ' di ' + totImages);
-            });*/
-            
-            /*
-            var glide = $('.slider').glide({
-                //autoplay: false, // or 4000
-                arrowLeftText: '',
-                arrowRightText: ''
-            });*/
-        //}
-    },
-    
-    beforeShowQrCodeInfoLinksPage: function() {
-        var result = self.currentQrCodeInfo;
-        var page = $('#qrCodeInfoLinksPage');
-        $('h3', page).html(result.info.nome);
-        var html = '';
-        if(result.links.length > 0) {
-            for(var i in result.links) {
-                var l = result.links[i];
-                html += '<li><a href="#" onclick="javascript:self.openLink(\'' + l.link.replace(/'/g, "\\'") + '\')" target="_system">' + l.nome + '</a></li>';
-            }
-            html += '</ul>';
-        }
-        $('#qrCodeLinksList', page).html(html).listview('refresh');
-    },    
-    
     
     /*getInfoFromQrCode: function() {
         barcodeReader.acquireQrCode(function(res) {
@@ -2399,22 +2345,6 @@ console.log(newsChannelAvailableIds);
     },*/
     
     
-    openLink: function(url, target, opts) {
-        target = target || '_system';
-        var options = '';
-        if(opts != null) {
-            if(typeof(opts) == 'object') {
-                var items = [];
-                for(var k in opts) {
-                    items.push(k + '=' + opts[k]);
-                }
-                options = items.join(',');
-            } else {
-                options = opts;
-            }
-        }
-        var ref = window.open(url, target, options);
-    },
     
     
     

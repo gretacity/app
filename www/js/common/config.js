@@ -269,7 +269,7 @@ Date.prototype.toDMYHMS = function() {
     return this.toDMY() + " " + hh + ":" + mm + ":" + ss;
 }
 Date.parseFromYMDHMS = function(dateText) {
-    if(dateText == '0000-00-00 00:00:00') return null;
+    if(((dateText || '') == '') || (dateText == '0000-00-00 00:00:00')) return null;
     var parts = dateText.split(' ');
     var dateParts = parts[0].split('-');
     var timeParts = parts[1].split(':');
