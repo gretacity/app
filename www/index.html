@@ -1198,12 +1198,12 @@
                         <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary">Profilo</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
+                        <a href="#setupFollowingPage" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
+                    <a href="#setupChannelsPage" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Privacy</a>
@@ -1214,7 +1214,7 @@
                     <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Supporto</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">Esci</a>
+                        <a href="#" id="logoutButton" data-transition="slide" class="ui-btn ui-btn-primary">Esci</a>
                     </div>
                 </div>
             </div>
@@ -1244,7 +1244,7 @@
                     <input type="tel" id="phone" placeholder="Cellulare" />
                 </div>
                 <ul data-role="listview" data-theme="b" data-inset="true">
-                    <li><a href="#changePasswordPage"><label>Cambia password</label></a></li>
+                    <li><a href="#changePasswordPage" data-transition="slide"><label>Cambia password</label></a></li>
                 </ul>
                 
             </div>
@@ -1259,7 +1259,7 @@
         
         <!-- changePasswordPage -->
         <div data-role="page" id="changePasswordPage">
-                <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Cambia Password</span>
@@ -1269,21 +1269,103 @@
             <div data-role="main" class="ui-content">
                 <div data-role="main" class="iu-content">
                     <fieldset data-role="fieldcontain">
-                        <label for="oldPassword">Vecchia password</label>
+                        <!--<label for="oldPassword">Vecchia password</label>-->
                         <input id="oldPassword" type="password" placeholder="Inserisci la vecchia password" />
-                        <label for="newPassword">Nuova password</label>
+                        <!--<label for="newPassword">Nuova password</label>-->
                         <input id="newPassword" type="password" placeholder="Inserisci la nuova password" />
-                        <label for="passwordConfirm">Conferma password</label>
+                        <!--<label for="passwordConfirm">Conferma password</label>-->
                         <input id="passwordConfirm" type="password" placeholder="Ripeti la nuova password" />
                     </fieldset>
-                    <a href="#" id="changePasswordButton" class="ui-btn ui-icon-check ui-btn-icon-right">Cambia</a>
+                    
                 </div>
+            </div>
+            <div data-role="footer" style="margin:0;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" id="changePasswordButton" class="ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
+                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+                    CAMBIA
+                </a>
             </div>
         </div>
         <!-- /changePasswordPage -->
         
+        <!-- setupFollowingPage -->
+        <div data-role="page" id="setupFollowingPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Following</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p class="text-primary">Deseleziona il following se non vuoi più seguirlo</p>
+                <div data-role="controlgroup" id="followingList" style="padding:0;margin:0;" data-theme="b"></div>
+                <!--<ul data-role="listview" id="followingList" style="padding:0;margin:0;"></ul>-->
+            </div>
+        </div>
+        <!-- /setupFollowingPage -->
 
+        <!-- setupChannelsPage -->
+        <div data-role="page" id="setupChannelsPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>News</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">                
+                <a href="#setupChannelSubscriptionPage" class="ui-btn">Aggiungi altra città</a>
+                <p class="text-primary">Deseleziona l'RSS se non vuoi più seguirlo</p>
+                <div data-role="controlgroup" id="subscribedChannels" style="padding:0;margin:0;" data-theme="b"></div>
+                <!--<ul data-role="listview" id="subscribedChannels"></ul>-->
+            </div>
+        </div>
+        <!-- /setupChannelsPage -->        
         
+        <!-- setupChannelSubscriptionPage -->
+        <div data-role="page" id="setupChannelSubscriptionPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Aggiungi RSS</span>
+                </div>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p id="info" class="text-primary">INFO</p>
+                <div id="automaticSelectionPanel">
+                    <select id="city"></select>
+                </div>
+                <div id="manualSelectionPanel" style="display:none;">
+                    <input id="cityNameManual" placeholder="Cerca comune" />
+                    <ul id="citySuggestions" data-role="listview" data-inset="true" data-theme="b"></ul>
+                </div>
+                
+                <ul id="availableChannelsContainer" data-role="listview" data-inset="true" data-theme="b" style="display:none;">
+                    <li data-role="list-divider">
+                        <label>RSS associati al comune</label>
+                    </li>
+                    <li style="padding:0;">
+                        <fieldset data-role="controlgroup" style="padding:0;margin:0;" id="availableChannelList">
+                        </fieldset>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /setupChannelSubscriptionPage -->
+        
+        
+        <!-- channelInfoPage -->
+        <div data-role="dialog" id="channelInfoPage">
+            <div data-role="main" class="ui-content">
+                <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-delete">Back</a>
+                <p style="margin-top:2em;">info</p>
+                <div id="channelInfoContainer">
+                </div>
+            </div>
+        </div>
+        <!-- /channelInfoPage -->
         
         
         
@@ -1400,112 +1482,11 @@
         </div>
          /profileAddressPage -->
 
-
         
-        <!-- profileFollowingPage -->
-        <div data-role="page" id="profileFollowingPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Following</h1>
-                <a href="#profilePage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>                                
-            </div>
-            <div data-role="main" class="ui-content">
-                <div data-role="controlgroup" id="followingList" style="padding:0;margin:0;"></div>
-                <!--<ul data-role="listview" id="followingList" style="padding:0;margin:0;"></ul>-->
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /profileFollowingPage -->
-
-        <!-- profileChannelsPage -->
-        <div data-role="page" id="profileChannelsPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>I Tuoi Canali</h1>
-                <!--
-                <a href="#" id="logoutButton" class="ui-btn ui-shadow ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-power">Esci</a>
-                -->
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                
-                <div data-role="controlgroup" id="subscribedChannels" style="padding:0;margin:0;"></div>
-                <!--<ul data-role="listview" id="subscribedChannels"></ul>-->
-                <br />
-                <a href="#channelSubscriptionPage" id="openChannelSubscriptionPageButton" class="ui-btn">Aggiungi altra città</a>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /profileChannelsPage -->        
-        
-        <!-- channelSubscriptionPage -->
-        <div data-role="page" id="channelSubscriptionPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Aggiungi Canale</h1>
-                <a href="#profileChannelsPage" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>                
-            </div>
-            
-            <div data-role="main" class="ui-content">
-                <div id="automaticSelectionPanel">
-                    <label>Vicino a te</label>
-                    <select id="city"></select>
-                </div>
-                <div id="manualSelectionPanel" style="display:none;">
-                    <input id="cityNameManual" placeholder="Cerca comune" />
-                    <ul id="citySuggestions" data-role="listview" data-inset="true"></ul>
-                </div>
-                
-                <ul id="availableChannelsContainer" data-role="listview" data-inset="true" style="display:none;">
-                    <li data-role="list-divider">
-                        <label>Canali associati</label>
-                    </li>
-                    <li style="padding:0;">
-                        <fieldset data-role="controlgroup" style="padding:0;margin:0;" id="availableChannelList">
-                        </fieldset>
-                    </li>
-                </ul>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /channelSubscriptionPage -->
-        
-        
-        <!-- channelInfoPage -->
-        <div data-role="dialog" id="channelInfoPage">
-            <div data-role="main" class="ui-content">
-                <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-delete">Back</a>
-                <p style="margin-top:2em;">info</p>
-                <div id="channelInfoContainer">
-                </div>
-            </div>
-        </div>
-        <!-- /channelInfoPage -->
         
         
 
-        <!-- photoDialog -->
+        <!-- photoDialog 
         <div data-role="dialog" id="_photoPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="true">
                 <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
@@ -1514,13 +1495,14 @@
                 <h1>Foto Segnalazione</h1>
             </div>
             <div data-role="main">
-                <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">-->
+                <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">
+                - - >
                 <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;">
                     <img id="photo" />
                 </div>
             </div>
         </div>
-        <!-- /photoDialog -->
+         /photoDialog -->
         
         
         <!-- newsPage 

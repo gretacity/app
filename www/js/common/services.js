@@ -74,9 +74,8 @@ console.log('services.recoverPassword FAIL', jqXHR);
     
     changePassword: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_USER_CHANGE_PASSWORD;        
-        // password, password_1
-        //var data = 'oldpass='+encodeURIComponent(params.oldPassword)+'&newpass='+encodeURIComponent(params.newPassword)
-        var data = 'password='+encodeURIComponent(params.newPassword)+'&password_1='+encodeURIComponent(params.newPassword)
+        var data = 'oldpass='+encodeURIComponent(params.oldPassword)+'&password='+encodeURIComponent(params.newPassword)+
+                   '&password_1='+encodeURIComponent(params.newPassword)
                    + '&' + services.getRequestCommonParameters();
         $.ajax(url, {
             type: 'POST',

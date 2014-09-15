@@ -123,11 +123,24 @@ var app = {
         nearbyPlaceInfoPage.on('pagebeforeshow', self.beforeShowNearbyPlaceInfo);
         nearbyPlaceInfoPage.on('pageshow', self.showNearbyPlaceInfo);
         
+        var setupPage = $('#setupPage');
+        setupPage.on('pageinit', function() {
+            $('#setupPage #logoutButton').on('click', self.logout);        
+        });
         var profilePage = $('#profilePage');
         profilePage.on('pageinit', self.initProfilePage);
         profilePage.on('pageshow', self.showProfilePage);
 
+        var setupFollowingPage = $('#setupFollowingPage');
+        setupFollowingPage.on('pageshow', self.showSetupFollowingPage);
         
+        var setupChannelsPage = $('#setupChannelsPage');
+        setupChannelsPage.on('pageshow', self.showSetupChannelsPage);
+        
+        var setupChannelSubscriptionPage = $('#setupChannelSubscriptionPage');
+        setupChannelSubscriptionPage.on('pageinit', self.initSetupChannelSubscriptionPage);
+        setupChannelSubscriptionPage.on('pagebeforeshow', self.beforeshowSetupChannelSubscriptionPage);
+        setupChannelSubscriptionPage.on('pageshow', self.showSetupChannelSubscriptionPage);
         
         
         
@@ -146,16 +159,6 @@ var app = {
         var profileAddressPage = $('#profileAddressPage');
         profileAddressPage.on('pagebeforeshow', self.showProfileAddressPage);
         $('#saveProfileAddressButton', profileAddressPage).on('click', self.updateProfileAddress);
-        var profileChannelsPage = $('#profileChannelsPage');
-        profileChannelsPage.on('pageinit', self.initProfileChannelPage);
-        profileChannelsPage.on('pagebeforeshow', self.showProfileChannelsPage);
-        profileChannelsPage.on('pagebeforehide', self.beforeHideProfileChannelsPage);
-        var channelSubscriptionPage = $('#channelSubscriptionPage');
-        channelSubscriptionPage.on('pagebeforeshow', self.initChannelSubscriptionPageBeforeShow);
-        channelSubscriptionPage.on('pageshow', self.initChannelSubscriptionPage);
-        $('#city', channelSubscriptionPage).change(self.subscriptionCityChanged);
-        //$('#cityNameManual', channelSubscriptionPage).on('keyup', self.cityNameManualChanged);
-        $('#cityNameManual', channelSubscriptionPage).on('input', self.cityNameManualChanged);
         $('#profileFollowingPage').on('pagebeforeshow', self.beforeShowProfileFollowingPage);
         var newsChannelsPage = $('#newsChannelsPage');
         newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
@@ -342,7 +345,7 @@ return;
         $.mobile.changePage('#photoPage');
     },
     
-    fillCityList: function(val, listEl, targetElId) {
+    fillCityList: function(val, listEl, targetElId, customHRef) {
         services.getLocationsByName({name:val}, function(result) {
             var html = '';
             var max_rows = 20;
@@ -353,8 +356,15 @@ return;
                     break;
                 }
                 var row = result[i];
-                html += '<li><a href="javascript:self.setCity(\'' + targetElId + '\', \'' + row.nome.trim().replace(/'/g, "\\'") 
-                        + '\', '+row.id+', \'' + listEl.attr('id') + '\')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
+                var cityName = row.nome.trim().replace(/'/g, "\\'");
+                var onclick = null;
+                if(customHRef) {
+                    onclick = customHRef;
+                } else {
+                    onclick = 'app.setCity(\'' + targetElId + '\', \'' + cityName +
+                           '\', '+row.id+', \'' + listEl.attr('id') + '\')';
+                }
+                html += '<li><a href="#" onclick="' + onclick + '" data-regionid="' + row.id_regione + '" data-provid="' + row.id_provincia + '" data-cityid="'+row.id+'" data-cityname=\'' + cityName + '\'>' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
             }
             listEl.html(html).listview("refresh");
         });
@@ -701,37 +711,38 @@ return;
     },   
    
     beforeShowChangePasswordPage: function() {
-        //$('#oldPassword').val('');
-        $('#newPassword').val('');
-        $('#passwordConfirm').val('');
+        $('input[type="password"]', $.mobile.activePage).val('');
     },
     
     changePassword: function() {
-        var oldPassword = $('#oldPassword').val();
-        var newPassword = $('#newPassword').val();
-        var passwordConfirm = $('#passwordConfirm').val();
+        var oldPassword = $('#oldPassword', $.mobile.activePage).val();
+        var newPassword = $('#newPassword', $.mobile.activePage).val();
+        var passwordConfirm = $('#passwordConfirm', $.mobile.activePage).val();
 
+        $('input[type="password"].input-error').removeClass('input-error');
         if(oldPassword == '') {
             helper.alert('Inserisci la vecchia password', function() {
-                $('#oldPassword').focus();
+                $('#oldPassword', $.mobile.activePage).addClass('input-error').focus();
             }, 'Cambia password');
         } else if(newPassword == '') {
             helper.alert('Inserisci la nuova password', function() {
-                $('#newPassword').focus();
+                $('#newPassword', $.mobile.activePage).addClass('input-error').focus();
             }, 'Nuova password');
-        } else if(newPassword != passwordConfirm) {
-            helper.alert('La nuova password e la sua conferma non coincidono', function() {
-                $('#newPassword').focus().select();
-            }, 'Cambia password');
         } else if(newPassword.length < config.PASSWORD_MIN_LENGTH) {
             helper.alert('La nuova password deve essere lunga almeno ' + config.PASSWORD_MIN_LENGTH + ' caratteri', function() {
-                $('#newPassword').focus().select();
+                $('#newPassword', $.mobile.activePage).addClass('input-error').focus().select();
+            }, 'Cambia password');
+        } else if(newPassword != passwordConfirm) {
+            helper.alert('La nuova password e la sua conferma non coincidono', function() {
+                $('#newPassword', $.mobile.activePage).addClass('input-error').focus().select();
             }, 'Cambia password');
         } else {
             $.mobile.loading('show');
-            services.changePassword({/*oldPassword: oldPassword,*/ newPassword: newPassword}, function() {
+            services.changePassword({oldPassword: oldPassword, newPassword: newPassword}, function() {
                 $.mobile.loading('hide');
-                helper.alert('La password è stata modificata', null, 'Recupera password');
+                helper.alert('La password è stata modificata', function() {
+                    $.mobile.back({reverse: 'back'});
+                }, 'Recupera password');
             }, function() {
                 $.mobile.loading('hide');
                 helper.alert('Si sono verificati errori durante la richiesta di modifica password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', null, 'Recupera password');
@@ -1359,7 +1370,7 @@ return;
     showNewsPage: function() {
 
         self.initNewsSidePanel();
-        self.loadNewsChannel();
+        self.loadNewsChannel();            
         
         /*var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
@@ -2098,12 +2109,239 @@ return;
     },
     
     
+    ////////////////////////////////////////
+    // setupFollowingPage
     
+    showSetupFollowingPage: function() {
+        $.mobile.loading('show');
+        services.getFollowings({}, function(result) {
+            $.mobile.loading('hide');
+            var html = '';
+            for(var i in result.follows) {
+                var row = result.follows[i];
+                var name = row.denominazione || '';
+                //var description = row.descrizione || '';
+                //if(description.length > 40) description = description.substr(0, 40) + '...';
+                var qrCodeId = row.r_qrcode_id || '';                
+                html += '<input type="checkbox" id="following' + qrCodeId + '" data-id="' + qrCodeId + '" checked ' +
+                        'onclick="services.followQrCode(\'' + qrCodeId + '\', $(this).is(\':checked\'))"' +
+                        '/>'+
+                        '<label for="following' + qrCodeId + '">' + name + 
+                        '</label>';
+            }
+            $('#followingList', $.mobile.activePage).html(html).trigger('create');//.listview('refresh');
+            //self.updateBalloonsInFollowing();
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Impossibile recuperare il contenuto', null, 'Notizia');
+        });
+    },
     
+
+    ////////////////////////////////////////
+    // setupChannelsPage
     
+    showSetupChannelsPage: function() {
+        $.mobile.loading('show');
+        services.getSubscribedChannels(function(result) {
+            $.mobile.loading('hide');
+            var html = '';
+            for(var i in result) {
+                var channelId = result[i].id_feed;
+                var channelName = result[i].nome_feed;
+                var channelOwner = result[i].denominazione;
+                /*html += '<li style="margin:0;padding:0">'+
+                            '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
+                            '<label for="channel' + channelId + '">' + channelName + 
+                            '<br /><small>' + channelOwner + '</small></label>'+
+                        '</li>';*/
+                html += '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
+                        '<label for="channel' + channelId + '">' + channelName + 
+                        '<br /><small>' + channelOwner + '</small></label>';
+            }
+            $('#subscribedChannels', $.mobile.activePage).html(html).trigger('create');//.listview('refresh');
+            $('#subscribedChannels input[type="checkbox"]', $.mobile.activePage).checkboxradio().on('click', function(e) {
+                var removable = $(this).attr('data-removable') == '1';
+                if(!removable) {
+                    $(this).prop('checked', true);
+                    e.preventDefault();
+                    return;
+                }
+                services.subscribeToChannel({
+                    channelId: $(this).attr('data-id'), 
+                    subscribe: $(this).is(':checked')
+                });
+            });
+            
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            helper.alert('Si è verificato un errore durante il caricamento', null, 'I tuoi canali');
+        });
+    },
     
+    ////////////////////////////////////////
+    // setupChannelSubscriptionPage
+    initSetupChannelSubscriptionPage: function() {
+        $('#setupChannelSubscriptionPage #city').change(self.subscriptionCityChanged);
+        //$('#cityNameManual', channelSubscriptionPage).on('input', self.cityNameManualChanged);
+        $('#setupChannelSubscriptionPage #cityNameManual').on('input', function() {
+            var val = $(this).val();
+            if($(this).data('cityname') != val) {
+                $(this).data('cityid', '');
+            }
+            if(val.length >= 3) {
+                self.fillCityList(val, $('#setupChannelSubscriptionPage #citySuggestions'), 'cityNameManual', 'app.getAvailableChannels(this)');
+            }
+        });
+    },
+    beforeshowSetupChannelSubscriptionPage: function() {
+        self.showManualCitySearch(false);
+        $('#city', $.mobile.activePage).html('').selectmenu('refresh');
+        $('#availableChannelsContainer', $.mobile.activePage).hide();
+        $('#availableChannelList', $.mobile.activePage).html('');
+        $('#info', $.mobile.activePage).html('Stiamo acquisendo la tua posizione...');
+    },
+    showSetupChannelSubscriptionPage: function() {
+        $.mobile.loading('show');
+        geoLocation.acquireGeoCoordinates(function(pos) {
+            services.getNearbyLocations(pos, function(result) {
+                // Successfully retrieved nearby locations from GPS coordinates
+                self.setNearbyLocations(result);
+            }, function(e, loginRequired) {
+                // Unable to retrieve nearby locations
+                if(loginRequired) {
+                    $.mobile.changePage('#loginPage');
+                    return;
+                }
+                self.setNearbyLocations(null);
+            });
+        }, function(e) {
+            // Unable to retrieve GPS coordinates
+            self.setNearbyLocations(null);
+        }, {enableHighAccuracy: false});
+    },
     
+    setNearbyLocations: function(result) {
+        var html = '';
+        if(result != null) {
+            $('#info', $.mobile.activePage).html('Seleziona il comune di interesse dall\'elenco');
+            //html += '<optgroup label="Seleziona">';
+            for(var i in result) {
+                var l = result[i];
+                html += '<option data-regid="' + l.id_regione + '" data-provid="' + l.id_provincia + '" data-cityid="' + l.id + '">' + l.nome + '</option>';
+            }
+            html += '<option value="manual"><strong>RICERCA MANUALE</strong></option>';
+            //html += '</optgroup>';
+            $('#city', $.mobile.activePage).html(html);
+            self.showManualCitySearch(false);
+        } else {
+            self.showManualCitySearch(true);
+        }
+        $.mobile.loading('hide');
+    },
+    subscriptionCityChanged: function() {
+        if($(this).val() == 'manual') {
+            self.showManualCitySearch(true);
+        } else {
+            $('#manualSelectionPanel', $.mobile.activePage).hide('fast');
+            
+            var selectedItem = $('#city option:selected', $.mobile.activePage);
+            var cityName = selectedItem.html().trim();
+            var cityId = selectedItem.attr('data-cityid');
+            var provId = selectedItem.attr('data-provid');
+            var regionId = selectedItem.attr('data-regid');
+            
+            self.getAvailableChannels(cityName, cityId, provId, regionId);
+        }
+    },
+
+    showManualCitySearch: function(show) {
+        if(show === true) {
+            $('#info', $.mobile.activePage).html('Inserisci il nome del comune');
+            $('#automaticSelectionPanel', $.mobile.activePage).hide();
+            $('#manualSelectionPanel', $.mobile.activePage).show('fast', function() {
+                //$('#manualSelectionPanel #cityNameManual', $.mobile.activePage).focus();
+            });
+            $('#availableChannelsContainer', $.mobile.activePage).hide();
+        } else {
+            $('#automaticSelectionPanel', $.mobile.activePage).show();
+            $('#manualSelectionPanel', $.mobile.activePage).hide();
+        }
+    },
+
+    getAvailableChannels: function(cityName, cityId, provId, regionId) {
+        
+        if(typeof(cityName) == 'object') {
+            var el = $(cityName);
+            cityName = el.data('cityname');
+            cityId = el.data('cityid');
+            provId = el.data('provid');
+            regionId = el.data('regionid');
+            
+        }
+console.log(cityName, cityId, provId, regionId);
+        $.mobile.loading('show');
+        
+        
+        $('#availableChannelsContainer', $.mobile.activePage).show();
+        $('#availableChannelList', $.mobile.activePage).empty();
+        services.getAvailableChannels({cityId: cityId, provId: provId, regionId: regionId}, function(result) {
+            $('#availableChannelList', $.mobile.activePage).show()
+            var html = '';
+            if(result.length == 0) {
+                html = '<label style="white-space:normal;">Sei stato associato al comune di ' + cityName 
+                       + '.<br />Attualmente non ci sono canali disponibili, ma ti invieremo delle notifiche quando ce ne saranno.</label>';
+                $('#availableChannelList', $.mobile.activePage).html(html);
+            } else {
+//console.log(result);
+                for(var i in result) {
+                    var channelId = result[i].id;
+                    var channelName = result[i].nome;
+                    var subscribed = result[i].sottoscritto == '1';
+                    html += '<input type="checkbox" id="channel' + channelId + '" data-channelid="' + channelId + '" ' + 
+                            'data-channelname="' + channelName + '"' + (subscribed ? ' checked' : '') + '/>' +
+                            '<label for="channel' + channelId + '">' + channelName + '</label>';
+                }
+//console.log($('#availableChannelList', $.mobile.activePage).html());
+                $('#availableChannelList', $.mobile.activePage).html(html);
+                $('#availableChannelList input[type="checkbox"]', $.mobile.activePage).checkboxradio().on('click', self.subscribeToChannel);
+                $('#availableChannelList label:not(".ui-btn")', $.mobile.activePage).remove();
+//console.log($('#availableChannelList', $.mobile.activePage).html());
+            }
+            $.mobile.silentScroll($('#availableChannelsContainer', $.mobile.activePage).offset().top);
+            $.mobile.loading('hide');
+        }, function(e) {
+            $.mobile.loading('hide');
+        });
+    },
     
+    subscribeToChannel: function() {
+        $.mobile.loading('show');
+        var channelId = $(this).attr('data-channelid');
+        //var channelName = $(this).attr('data-channelname');
+        var subscribe = $(this).is(':checked');
+        services.subscribeToChannel({channelId: channelId, subscribe: subscribe}, function() {
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            if(subscribe) {
+                // Remove the check mark
+                $(this).removeAttr('checked').checkboxradio("refresh");
+            } else {
+                // Reset the check mark
+                $(this).prop('checked', true).checkboxradio("refresh");
+            }
+            $.mobile.loading('hide');
+        });
+    },
+
 
     
     
@@ -2270,63 +2508,14 @@ return;
     },*/
     
     
-    initProfileChannelsPage: function() {
-    },
     
     
-    showProfileChannelsPage: function() {
-        services.getSubscribedChannels(function(result) {
-            var page = $('#profileChannelsPage');
-            var html = '';
-            for(var i in result) {
-                var channelId = result[i].id_feed;
-                var channelName = result[i].nome_feed;
-                var channelOwner = result[i].denominazione;
-                /*html += '<li style="margin:0;padding:0">'+
-                            '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
-                            '<label for="channel' + channelId + '">' + channelName + 
-                            '<br /><small>' + channelOwner + '</small></label>'+
-                        '</li>';*/
-                html += '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
-                        '<label for="channel' + channelId + '">' + channelName + 
-                        '<br /><small>' + channelOwner + '</small></label>';
-            }
-            $('#subscribedChannels', page).html(html).trigger('create');//.listview('refresh');
-            $('#subscribedChannels input[type="checkbox"]', page).checkboxradio().on('click', function(e) {
-                var removable = $(this).attr('data-removable') == '1';
-                if(!removable) {
-                    $(this).prop('checked', true);
-                    e.preventDefault();
-                    return;
-                }
-                services.subscribeToChannel({
-                    channelId: $(this).attr('data-id'), 
-                    subscribe: $(this).is(':checked')
-                });
-            });
-            
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Si è verificato un errore durante il caricamento', null, 'I tuoi canali');
-        });
-    },
-    
-    beforeHideProfileChannelsPage: function(e, data) {
-        if(data.nextPage.attr('id') == 'profilePage') {
-            self.initSidePanel();
-        }
-    },
-    
-    
-    initChannelSubscriptionPageBeforeShow: function() {
+    _initChannelSubscriptionPageBeforeShow: function() {
         //$('#channelSubscriptionPage #city').parents('div.ui-select').addClass('ui-screen-hidden');
         $('#automaticSelectionPanel').hide();
         $('#manualSelectionPanel').hide();    
     },
-    initChannelSubscriptionPage: function() {
+    _initChannelSubscriptionPage: function() {
         $.mobile.loading('show');
         geoLocation.acquireGeoCoordinates(function(pos) {
             services.getNearbyLocations(pos, function(result) {
@@ -2345,7 +2534,7 @@ return;
             self.setNearbyLocations(null);
         });
     },
-    setNearbyLocations: function(result) {
+    _setNearbyLocations: function(result) {
         var page = $('#channelSubscriptionPage');
         var html = '';
         if(result != null) {
@@ -2368,7 +2557,7 @@ return;
         }
         $.mobile.loading('hide');
     },
-    subscriptionCityChanged: function() {
+    _subscriptionCityChanged: function() {
         var page = $('#channelSubscriptionPage');
         if($(this).val() == 'manual') {
             self.showManualCitySearch(true);
@@ -2383,7 +2572,7 @@ return;
             self.getAvailableChannels(cityName, cityId, provId, regionId);
         }
     },
-    showManualCitySearch: function(show) {
+    _showManualCitySearch: function(show) {
         var page = $('#channelSubscriptionPage');
         if(show === true) {
             $('#automaticSelectionPanel').hide();
@@ -2395,7 +2584,7 @@ return;
             $('#manualSelectionPanel', page).hide();
         }
     },
-    cityNameManualChanged: function() {
+    _cityNameManualChanged: function() {
         var val = $(this).val();
         if(val.length >= 4) {
             services.getLocationsByName({name:val}, function(result) {
@@ -2415,7 +2604,7 @@ return;
             });
         }
     },
-    getAvailableChannels: function(cityName, cityId, provId, regionId) {
+    _getAvailableChannels: function(cityName, cityId, provId, regionId) {
         $.mobile.loading('show');
         $('#channelSubscriptionPage #availableChannelsContainer').show();
         $('#channelSubscriptionPage #availableChannelList').empty();
@@ -2443,7 +2632,7 @@ return;
             $.mobile.loading('hide');
         });
     },
-    subscribeToChannel: function() {
+    _subscribeToChannel: function() {
         $.mobile.loading('show');
         var channelId = $(this).attr('data-channelid');
         var channelName = $(this).attr('data-channelname');
@@ -2468,35 +2657,6 @@ return;
                 $(this).prop('checked', true).checkboxradio("refresh");
             }
             $.mobile.loading('hide');
-        });
-    },
-    
-    beforeShowProfileFollowingPage: function() {
-        $.mobile.loading('show');
-        services.getFollowings({}, function(result) {
-            $.mobile.loading('hide');
-            var html = '';
-            for(var i in result.follows) {
-                var row = result.follows[i];
-                var name = row.denominazione || '';
-                //var description = row.descrizione || '';
-                //if(description.length > 40) description = description.substr(0, 40) + '...';
-                var qrCodeId = row.r_qrcode_id || '';                
-                html += '<input type="checkbox" id="following' + qrCodeId + '" data-id="' + qrCodeId + '" checked ' +
-                        'onclick="services.followQrCode(\'' + qrCodeId + '\', $(this).is(\':checked\'))"' +
-                        '/>'+
-                        '<label for="following' + qrCodeId + '">' + name + 
-                        '</label>';
-            }
-            $('#profileFollowingPage #followingList').html(html).trigger('create');//.listview('refresh');
-            self.updateBalloonsInFollowing();
-        }, function(e, loginRequired) {
-            $.mobile.loading('hide');
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Impossibile recuperare il contenuto', null, 'Notizia');
         });
     },
     
@@ -2606,7 +2766,7 @@ return;
     },
     */
     
-    showNewsChannelAvailable: function() {
+    _showNewsChannelAvailable: function() {
         var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
         if(newsChannelAvailableIds.length == 0) return;
         var page = $('#channelInfoPage');
@@ -2635,7 +2795,7 @@ console.log(newsChannelAvailableIds);
             helper.alert('Impossibile recuperare il contenuto', null, 'Canali disponibili');
         });
     },
-    subscribeToNewsChannelAvailable: function(id) {
+    _subscribeToNewsChannelAvailable: function(id) {
         var page = $('#channelInfoPage');
         var subscribeButton = $('#channelInfoContainer div[data-channelid="' + id + '"] a', page);
         subscribeButton.html('Sottoscrizione...').addClass('ui-disabled');
