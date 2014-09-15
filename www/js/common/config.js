@@ -20,6 +20,9 @@ var config = {
     MODE_RELEASE: 'R',
     RUNNING_MODE: 'D', //config.MODE_DEBUG,
     
+    PRIVACY_URL: 'http://www.gretacity.com/privacy',
+    POLICY_URL: 'http://www.gretacity.com/policy',
+    INFO_URL: 'http://www.gretacity.com/info',
     
     // To speed up development / testing
     // In release mode they must be empty

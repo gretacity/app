@@ -125,7 +125,7 @@ var app = {
         
         var setupPage = $('#setupPage');
         setupPage.on('pageinit', function() {
-            $('#setupPage #logoutButton').on('click', self.logout);        
+            $('#setupPage #logoutButton').on('click', self.logout);
         });
         var profilePage = $('#profilePage');
         profilePage.on('pageinit', self.initProfilePage);
@@ -142,9 +142,17 @@ var app = {
         setupChannelSubscriptionPage.on('pagebeforeshow', self.beforeshowSetupChannelSubscriptionPage);
         setupChannelSubscriptionPage.on('pageshow', self.showSetupChannelSubscriptionPage);
         
-        
-        
-        
+        $('#infoPage').on('pageinit', function() {
+            $('#infoPage #privacyButton').on('click', function() {
+                self.openLink(config.PRIVACY_URL);
+            });
+            $('#infoPage #policyButton').on('click', function() {
+                self.openLink(config.POLICY_URL);
+            });
+            $('#infoPage #infoButton').on('click', function() {
+                self.openLink(config.INFO_URL);
+            });
+        });
         
         
         
@@ -1365,7 +1373,7 @@ return;
         });
         $('#moreNewsButton', page).on('click', function() {
             self.loadNewsChannel(self.newsChannelId, false);
-        });
+        });        
     },
     showNewsPage: function() {
 
@@ -2205,6 +2213,7 @@ return;
     beforeshowSetupChannelSubscriptionPage: function() {
         self.showManualCitySearch(false);
         $('#city', $.mobile.activePage).html('').selectmenu('refresh');
+        $('#cityNameManual', $.mobile.activePage).val('');
         $('#availableChannelsContainer', $.mobile.activePage).hide();
         $('#availableChannelList', $.mobile.activePage).html('');
         $('#info', $.mobile.activePage).html('Stiamo acquisendo la tua posizione...');
@@ -2279,17 +2288,16 @@ return;
 
     getAvailableChannels: function(cityName, cityId, provId, regionId) {
         
+        $.mobile.loading('show');
+
         if(typeof(cityName) == 'object') {
             var el = $(cityName);
             cityName = el.data('cityname');
             cityId = el.data('cityid');
             provId = el.data('provid');
-            regionId = el.data('regionid');
-            
+            regionId = el.data('regionid');            
+            self.setCity('cityNameManual', cityName, cityId, 'citySuggestions');
         }
-console.log(cityName, cityId, provId, regionId);
-        $.mobile.loading('show');
-        
         
         $('#availableChannelsContainer', $.mobile.activePage).show();
         $('#availableChannelList', $.mobile.activePage).empty();
