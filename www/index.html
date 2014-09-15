@@ -641,8 +641,11 @@
             </div>
             <div data-role="main" class="ui-content">
                 <fieldset data-role="fieldcontain">
+                    <label for="city">Comune</label>
                     <input type="text" id="city" placeholder="Comune" />
+                    <label for="prov">Prov</label>
                     <input type="text" id="prov" placeholder="Prov" maxlength="2" />
+                    <label for="address">Indirizzo</label>
                     <textarea id="address" placeholder="Indirizzo"></textarea>
                 </fieldset>
                 <p class="info text-primary"></p>
@@ -949,6 +952,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
+                <p id="info" class="text-primary" style="display:none;"></p>
                 <ul id="channelContent" data-role="listview" data-theme="b">				
                 </ul>
                 <a href="#" id="moreNewsButton" class="ui-btn" style="margin-top:25px;">Altre notizie</a>
@@ -1086,7 +1090,7 @@
                 <div id="leaveCommentPanel" style="display:none;">
                     <textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea>
                     <br />
-                    <a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Commenta</a>
+                    <a href="javascript:app.leaveCommentOnQrCode()" class="ui-btn">Pubblica</a>
                 </div>
                 <div style="height:150px;"></div>
             </div>

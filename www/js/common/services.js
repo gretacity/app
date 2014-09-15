@@ -202,10 +202,10 @@ console.log('services.updateProfile', url, data);
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
-console.log('SUCCESS', result);//return;
+console.log('services.getInfoFromQrCode SUCCESS', result);//return;
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('FAIL', jqXHR);
+console.log('services.getInfoFromQrCode FAIL', jqXHR);
             var loginRequired = services.isLoginRequired(jqXHR.status);
             fail(textStatus, false);
         });
@@ -439,9 +439,10 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
     
     getNearbyPlaceTypes: function(success, fail) {
         var results = [
-            {name: 'news', key: 'news', icon: 'img/nearby/Info.png'},
-            {name: 'QR Code', key: 'qrcode', icon: 'img/nearby/QRCode.png'},
+            {name: 'news', key: 'notizie', icon: 'img/nearby/Info.png'},
+            {name: 'follow', key: 'qrcode', icon: 'img/nearby/QRCode.png'},
             {name: 'segnalazioni', key: 'segnalazioni', icon: 'img/nearby/Segnalazioni.png'},
+            //{name: 'punti d\interesse', key: 'itinerari', icon: ''},
             {name: 'aeroporti', key: 'airport', icon: 'img/nearby/Aeroporto.png'},
             {name: 'autobus', key: 'bus_station', icon: 'img/nearby/Autobus.png'},
             {name: 'bancomat', key: 'atm', icon: 'img/nearby/Banca.png'},

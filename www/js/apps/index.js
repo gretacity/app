@@ -924,7 +924,9 @@ return;
             streetViewControl: false
         };
         self._reporting2Map = new google.maps.Map($('#map', $.mobile.activePage).get(0), options);
-        self.reportingPage2SetMarkerOnMap();
+        setTimeout(function() {
+            self.reportingPage2SetMarkerOnMap();
+        }, 200);
     },
     reportingPage2SetMarkerOnMap: function() {
         if(self._reporting2Map == null) return;
@@ -942,8 +944,8 @@ return;
             title: 'Luogo della segnalazione'
         });
 
-        self._reporting2Map.panTo(markerPoint);
-        self._reporting2Map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
+        //self._reporting2Map.panTo(markerPoint);
+        //self._reporting2Map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
         google.maps.event.addListener(
             self._reporting2Marker, 
             'dragend', 
@@ -1099,21 +1101,24 @@ return;
     // reportingListPage
     reportingListData: null,
     reportingListCurrentView: null,
-    reportingListViewTypeList: 0,
-    reportingListViewTypeMap: 1,
+    reportingListViewTypeList: 1,
+    reportingListViewTypeMap: 2,
     reportingListMap: null,
     toggleReportingListView: function() {
         if(self.reportingListCurrentView == self.reportingListViewTypeMap) {
             $('#reportingListPage #reportingListView').show();
             $('#reportingListPage #mapView').hide();
-            $('#reportingListPage #changeViewType').html('VEDI SU MAPPA');
+            setTimeout(function() {
+                $('#reportingListPage #changeViewType').html('VEDI SU MAPPA');
+            }, 200);
             self.reportingListCurrentView = self.reportingListViewTypeList;
         } else {
             $('#reportingListPage #reportingListView').hide();
             $('#reportingListPage #mapView').show();
-            $('#reportingListPage #changeViewType').html('VEDI ELENCO');
+            setTimeout(function() {
+                $('#reportingListPage #changeViewType').html('VEDI ELENCO');
+            }, 200);
             self.reportingListCurrentView = self.reportingListViewTypeMap;
-            
         }
     },
     
@@ -1163,7 +1168,7 @@ return;
             zoom: 5, //config.GOOGLE_MAPS_ZOOM,
             center: new google.maps.LatLng(lat, lng),
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            streetViewControl: true
+            streetViewControl: false
         };
         self.reportingListMap = new google.maps.Map($('#mapView', $.mobile.activePage).get(0), options);            
         
@@ -1378,7 +1383,9 @@ return;
     showNewsPage: function() {
 
         self.initNewsSidePanel();
-        self.loadNewsChannel();            
+        setTimeout(function() {
+            self.loadNewsChannel();
+        }, 200);
         
         /*var onlyNew = !self.newsEmptyBeforeShow;
         if(self.newsEmptyBeforeShow === true) {
@@ -1449,6 +1456,7 @@ return;
         
         services.getChannelContent(params, function(result) {
             $.mobile.loading('hide');
+            $('#info', $.mobile.activePage).html('').hide();
             var html = '';
             if(typeof(result.vecchie) != 'undefined') {
                 if(result.vecchie.length > 0) {
@@ -1509,6 +1517,9 @@ return;
             
             if((onlyNew == true) || (channelChanged == true)) {
                 $.mobile.silentScroll();
+                if($('#newsPage #channelContent li').length == 0) {
+                    $('#info', $.mobile.activePage).html('Non ci sono news per l\'RSS selezionato').show();
+                }
             }
                         
             $.mobile.loading('hide');
@@ -1593,8 +1604,7 @@ return;
             pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, code);
             self.updateBalloonsInNavbar();
             
-            //var canLeaveComment = (result.categoria.commenti == 1);
-            var canFollow = (result.categoria.follows == 1);
+            //var canFollow = (result.categoria.follows == 1);
 
             $('#followingListDetailPage #getInfoButton').removeClass('ui-disabled');
 
@@ -1605,9 +1615,8 @@ return;
             }
             $('#followingListDetailPage #qrCodeId').val(code);
             // Format result
-            //var html = '<div class="ui-body ui-body-a ui-corner-all" data-form="ui-body-a" data-theme="a">' +
             var html = '<div>' +
-                       '<h3 class="qrcode-info-title">' + result.info.nome + '</h3>' + 
+                            '<h3 class="qrcode-info-title">' + result.info.nome + '</h3>' + 
                        '</div>';
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
@@ -1616,14 +1625,17 @@ return;
             var hasGallery = false;
             if(result.foto && (result.foto.length > 0)) {
                 hasGallery = true;
-                html += '<div class="slider"><ul class="slides">';
+                
+                /*html += '<div class="slider"><ul class="slides">';
                 for(var i in result.foto) {
                     html += '<li class="slide">' +
                                 '<img src="' + result.foto[i] + '" />' +
                             '</li>';
                 }
-                html += '</ul></div>';            
+                html += '</ul></div>';*/
+                html += '<div><img id="imgtest" src="' + result.foto[0] + '" style="width:100%" /></div>';
             }
+            
             html += '<p class="qrcode-info-description">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>';
             html += '<div style="margin-top:3em;" class="ui-grid-a">' +
                     '<div class="ui-block-a">';
@@ -1705,7 +1717,8 @@ return;
             var options = {
                 zoom: config.GOOGLE_MAPS_ZOOM,
                 center: new google.maps.LatLng(lat, lng),
-                mapTypeId: google.maps.MapTypeId.ROADMAP //eval(config.GOOGLE_MAPS_TYPE_ID)
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                streetViewControl: false
             };
             var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap'), options);
             var point = new google.maps.LatLng(lat, lng);
