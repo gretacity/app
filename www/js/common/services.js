@@ -442,7 +442,7 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
             {name: 'news', key: 'notizie', icon: 'img/nearby/Info.png'},
             {name: 'follow', key: 'qrcode', icon: 'img/nearby/QRCode.png'},
             {name: 'segnalazioni', key: 'segnalazioni', icon: 'img/nearby/Segnalazioni.png'},
-            //{name: 'punti d\interesse', key: 'itinerari', icon: ''},
+            {name: 'suggeriti', key: 'suggeriti', icon: ''},
             {name: 'aeroporti', key: 'airport', icon: 'img/nearby/Aeroporto.png'},
             {name: 'autobus', key: 'bus_station', icon: 'img/nearby/Autobus.png'},
             {name: 'bancomat', key: 'atm', icon: 'img/nearby/Banca.png'},
@@ -471,7 +471,7 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
         url += '&' + services.getRequestCommonParameters();
         //var url = config.URL_NEARBY_PLACES;
         var data = 'types='+placeCatId+'&lat='+lat+'&lng='+lng+'&distance='+distance;
-console.log(data);
+//console.log(data);
         $.ajax(url, {
             type:'GET', 
             data:data,

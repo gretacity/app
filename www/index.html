@@ -590,7 +590,7 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">QrCode</a>
+                    <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">QR Code</a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#setupPage" data-transition="slide" class="ui-btn ui-btn-primary">Impostazioni</a>
@@ -602,7 +602,7 @@
         <!-- /homePage -->
         
         <!-- reportingHomePage -->
-        <div data-role="page" id="reportingHomePage" class="backgroundMap">
+        <div data-role="page" id="reportingHomePage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
                     <!-- <img  src="img/greta.png" /> --> 
@@ -998,7 +998,7 @@
              <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
-                    <span>QrCode</span>
+                    <span>Leggi QR Code</span>
                 </div>                
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
@@ -1006,7 +1006,8 @@
                 <!--<div style="height:3.5em;">
                     <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">close</a>
                 </div>-->
-                <ul id="qrCodeViewer" data-role="listview" data-inset="false">
+                <h2 id="info" class="text-primary"></h2>
+                <ul id="qrCodeViewer" data-role="listview" data-inset="false" data-theme="b">
                 </ul>
             </div>
         </div>
@@ -1050,6 +1051,24 @@
         </div>
         <!-- /followingListDetailPage -->
         
+        <!-- qrCodeInfoGalleryPage -->
+        <div data-role="page" id="qrCodeInfoGalleryPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <div class="center-wrapper">
+                    <span>Galleria</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div>
+                    <h3 class="qrcode-info-title"></h3>
+                </div>
+                <div id="gallery" style="margin:.2em 0;padding:0;"></div>
+            </div>
+        </div>
+        <!-- /qrCodeInfoGalleryPage -->
+
         <!-- qrCodeInfoPositionPage -->
         <div data-role="page" id="qrCodeInfoPositionPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">

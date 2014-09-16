@@ -102,6 +102,7 @@ var app = {
         followingListPage.on('pageinit', self.initFollowingListPage);
         followingListPage.on('pageshow', self.showFollowingListPage);
         
+        $('#qrCodeInfoGalleryPage').on('pageshow', self.showQrCodeInfoGalleryPage);
         $('#qrCodeInfoPositionPage').on('pageshow', self.showQrCodeInfoPositionPage);
         $('#qrCodeInfoNewsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoNewsPage);
         $('#qrCodeInfoCommentsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoCommentsPage);
@@ -273,8 +274,8 @@ return;
                     alert('redirect to following page');
                     break;
                 case QrCodeData.TYPE_URL:
-                    window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
-                    break;
+                    //window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
+                    //break;
                 case QrCodeData.TYPE_TEXT:
                 case QrCodeData.TYPE_CONTACT:
                 case QrCodeData.TYPE_PHONE_NUMBER:
@@ -294,29 +295,40 @@ return;
     
     openQrCodeInfoViewer: function(qrCodeData) {
         var html = '';
+        var infoText = '';
         switch(qrCodeData.type) {
+            case QrCodeData.TYPE_URL:
+                infoText = 'Trovato URL';
+                html = '<li><a href="' + qrCodeData.elements.url + '">' + qrCodeData.elements.url + '</li>';
+                //window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
+                break;
             case QrCodeData.TYPE_TEXT:
-                html = '<li data-role="list-divider">Testo</li>' +
+                infoText = 'Testo';
+                html = //'<li data-role="list-divider">Testo</li>' +
                        '<li style="white-space:normal"><strong>' + qrCodeData.elements.text + '</strong></li>';
                 break;
             case QrCodeData.TYPE_CONTACT:
-                html = '<li data-role="list-divider">Contatto</li>';
+                infoText = 'Contatto';
+                html = ''; //<li data-role="list-divider">Contatto</li>';
                 for(var i in qrCodeData.elements) {
                     html += '<li style="white-space:normal">' + i + ': <strong>' + qrCodeData.elements[i] + '</strong></li>';
                 }
                 break;
             case QrCodeData.TYPE_PHONE_NUMBER:
-                html = '<li data-role="list-divider">Numero di telefono</li>' + 
+                infoText = 'Numero di telefono';
+                html = //'<li data-role="list-divider">Numero di telefono</li>' + 
                        '<li style="white-space:normal"><strong>' + qrCodeData.elements.phoneNumber + '</strong></li>';
                 break;
             case QrCodeData.TYPE_SMS:
-                html = '<li data-role="list-divider">Invia SMS</li>' +
+                infoText = 'SMS';
+                html = //'<li data-role="list-divider">Invia SMS</li>' +
                        '<li>al numero</li>' +
                        '<li style="white-space:normal"><strong>' + qrCodeData.elements.phoneNumber + '</strong></li>' +
                        '<li>testo del messaggio</li>' +
                        '<li style="white-space:normal"><strong>'+qrCodeData.elements.message + '</strong></li>';                
                 break;
         }
+        $('#qrCodeViewerPage div[data-role="main"] #info').html(infoText);
         $('#qrCodeViewerPage div[data-role="main"] #qrCodeViewer').html(html).listview().listview('refresh');
         $.mobile.changePage('#qrCodeViewerPage');
     },
@@ -338,14 +350,14 @@ return;
         var ref = window.open(url, target, options);
     },
 
-    openPhoto: function() {
-        self.tmp = this;
-        var imageUrl = $(this).css('background-image');
-        if(((imageUrl || '') == '') || (imageUrl.indexOf('url(file://') == 0)) return;
-        if(imageUrl.indexOf('url(') == 0) {
-            imageUrl = imageUrl.substr(4);
-            imageUrl = imageUrl.substr(0, imageUrl.length - 1);
-            console.log(imageUrl);
+    openPhoto: function(imageUrl) {
+        if(imageUrl == null) {
+            imageUrl = $(this).css('background-image');
+            if(((imageUrl || '') == '') || (imageUrl.indexOf('url(file://') == 0)) return;
+            if(imageUrl.indexOf('url(') == 0) {
+                imageUrl = imageUrl.substr(4);
+                imageUrl = imageUrl.substr(0, imageUrl.length - 1);
+            }
         }
         $('#photoPage #photo').attr('src', imageUrl);
         $.mobile.changePage('#photoPage');
@@ -1652,9 +1664,9 @@ return;
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
             }*/
             
-            var hasGallery = false;
+            //var hasGallery = false;
             if(result.foto && (result.foto.length > 0)) {
-                hasGallery = true;
+                //hasGallery = true;
                 
                 /*html += '<div class="slider"><ul class="slides">';
                 for(var i in result.foto) {
@@ -1663,7 +1675,10 @@ return;
                             '</li>';
                 }
                 html += '</ul></div>';*/
-                html += '<div><img id="imgtest" src="' + result.foto[0] + '" style="width:100%" /></div>';
+                html += '<a href="#qrCodeInfoGalleryPage"><div style="position:relative;">' +
+                        '<img src="" style="position:absolute;right:0;top:10%;z-index:100;background:url(\'img/glide-arrows.png\') no-repeat bottom right;width:17px;height:28px;" />' +
+                        '<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
+                        '</div></a>';
             }
             
             html += '<p class="qrcode-info-description">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>';
@@ -1698,13 +1713,13 @@ return;
             
             
             $('#followingListDetailPage #infoResult').html(html);
-            if(hasGallery) {
+            /*if(hasGallery) {
                 var glide = $('.slider').glide({
                     autoplay: false, // or 4000
                     arrowLeftText: '',
                     arrowRightText: ''
                 });         
-            }
+            }*/
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
             $.mobile.loading('hide');
@@ -1718,6 +1733,40 @@ return;
             }
         });
     },
+    
+    
+    showQrCodeInfoGalleryPage: function() {
+        var result = self.currentQrCodeInfo;
+/*result = {
+    info: {nome: 'beppe'},
+    foto: [
+        'http://www.gretacity.com//Data/Upload/Qrcode/thumbs/600_800_603-3.jpg',
+        'http://www.gretacity.com//Data/Upload/Qrcode/thumbs/600_800_603-3.jpg',
+        'http://www.gretacity.com//Data/Upload/Qrcode/thumbs/600_800_603-3.jpg',
+        'http://www.gretacity.com//Data/Upload/Qrcode/thumbs/600_800_603-3.jpg',
+        'http://www.gretacity.com//Data/Upload/Qrcode/thumbs/600_800_603-3.jpg'
+    ]
+};*/
+        $('div h3.qrcode-info-title', $.mobile.activePage).html(result.info.nome);
+            
+        var html = '';
+        for(var i = 0; i < result.foto.length; i += 2) {
+            var photo1 = result.foto[i];
+            var photo2 = (i + 1) < result.foto.length ? result.foto[i+1] : null;
+            html += '<div class="ui-grid-a" style="padding:0;margin:0">'+
+                        '<div class="ui-block-a" onclick="app.openPhoto(\'' + photo1 + '\')" style="margin:0;padding:.4em .3em 0 0;">'+
+                            '<img src="" style="background:url(\'' + photo1 + '\') no-repeat;background-size: cover;width:100%;height:10em;border-radius:.5em;" />'+
+                        '</div>';
+            if(photo2) {
+                html += '<div class="ui-block-b" onclick="app.openPhoto(\'' + photo2 + '\')" style="margin:0;padding:.4em 0 0 .3em;">'+
+                            '<img src="" style="background:url(\'' + photo2 + '\') no-repeat;background-size: cover;width:100%;height:10em;border-radius:.5em;" />'+
+                        '</div>';
+            }
+            html += '</div>';
+        }
+        $('#gallery', $.mobile.activePage).html(html);
+    },
+    
     
     beforeShowQrCodeInfoNewsPage: function() {
         var result = self.currentQrCodeInfo;
@@ -1774,11 +1823,17 @@ return;
         if(result.commenti && (result.commenti.length > 0)) {
             for(var i in result.commenti) {
                 var c = result.commenti[i];
-                        var d = Date.parseFromYMDHMS(c.data_inserimento);
-                        html += '<li><p>' + c.descrizione + '</p>';
-                        html += '<small class="news-note">' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
-                        if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
-                        html += '</li>';
+                var d = Date.parseFromYMDHMS(c.data_inserimento);
+                html += '<li>';
+                if((c.nome || '') != '') {
+                    html += '<small  class="news-note" display:block;>Commento di ' + c.nome + '</small>';
+                }
+                html += '<p>' + c.descrizione + '</p>';
+                html += '<small class="news-note">' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
+                
+                html
+                if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
+                html += '</li>';
             }
         } else {
             html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
