@@ -439,19 +439,20 @@ return;
         }
     },
 
-    /*updateBalloonsInNews: function(openSideBar) {
+    updateBalloonsInNews: function(openIfUnread) {
         // Display a balloon for each feed that contains updates
-        var listEl = $('#newsChannelsPanel #channelList');
+        var listEl = $('#newsPage #newsChannelsPanel #channelList');
         $('li a span.ui-li-count', listEl).hide();
         var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, null, true);
+        var hasUnread = false;
         for(var i in unreadData) {
-            if(unreadData[i] == 0) continue;
-            $('li a #count_' + i, listEl).html(unreadData[i]).show();
+            hasUnread = true;
+            $('li a #count_' + i, listEl).html('&nbsp;' + unreadData[i]).show();
         }
-        if(openSideBar || false) {
-            $('#newsChannelsPage').panel('open');
+        if((openIfUnread || false) && (hasUnread)) {
+            $('#newsPage #newsChannelsPanel').panel('open');
         }
-    },*/
+    },
     /*updateBalloonsInNewsContent: function() {
         // Don't display the balloon on top of the feed,
         // but uses the old feed update system and display 
@@ -1354,9 +1355,9 @@ return;
             for(var i in result) {
                 var row = result[i];
                 html += '<li data-icon="false" data-channelid="' + row.id_feed + '"><a href="javascript:app.loadNewsChannel(' + row.id_feed + ')"><span>' 
-                            + row.denominazione + '</span><span class="ui-li-count-cust">&nbsp;1&nbsp;</span><label>' + row.nome_feed
+                            + row.denominazione + '</span><span id="count_' + row.id_feed + '" class="ui-li-count-cust" style="display:none;"></span><label>' + row.nome_feed
                             + '</label>'
-                            + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
+                            //+ '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="dddisplay:none;"></span>'
                             + '</a></li>';
             }
             
@@ -1380,8 +1381,8 @@ return;
             });
             
             self.sideBarInitialized = true;
-            //$('#newsChannelsPanel').panel();
-            self.updateBalloonsInNews();
+            
+            self.updateBalloonsInNews(true);
             
             console.log('side bar initialized');
         }, function(e, loginRequired) {
@@ -1424,7 +1425,7 @@ return;
         $.mobile.loading('show');
         self.retrieveChannelContent(onlyNew);
         pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
-        self.updateBalloonsInNews();*/
+        */
     },
     formatChannelContentItem: function(item) {
         //var rowId = parseInt(item.id);
@@ -1451,6 +1452,11 @@ return;
     },
     loadNewsChannel: function(channelId, onlyNew) {
         $('#newsPage #newsChannelsPanel').panel('close');
+        
+        if(channelId) {
+            pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, channelId);
+            $('#newsPage #newsChannelsPanel #channelList li a #count_' + channelId).hide().html('');
+        }
         
         var channelChanged = self.newsChannelId != channelId; 
         
