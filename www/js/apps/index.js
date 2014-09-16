@@ -178,8 +178,6 @@ var app = {
         //reportingListPage.on('pageshow', self.loadReportingItems);
         //$('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
         //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
-        
-        self.updateBalloonsInNavbar();        
     },
     onResume: function() {
         
@@ -382,9 +380,9 @@ return;
         $('#' + listElId, $.mobile.activePage).empty();
     },
     
-    updateBalloonsInNavbar: function() {
+    updateBalloonsInHomePage: function() {
         var cfg = [
-            //{type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
+            {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, elementId: 'followingCount', className: 'ui-li-count-following'}
         ];
@@ -392,15 +390,16 @@ return;
             var unreadCount = pushNotificationHelper.getUnread(cfg[i].type);
             //var el = $('#'+cfg[i].elementId, $.mobile.activePage); //, page);
             
-            if(cfg[i].type == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING) {
+            /*if(cfg[i].type == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING) {
                 if(unreadCount > 0) {
                     $('#reportingMethodPage #reportingCount').html(unreadCount).show();
                 } else {
                     $('#reportingMethodPage #reportingCount').html(unreadCount).hide();
                 }
-            }
+            }*/
             
-            var el = $('.'+cfg[i].className); //, page);
+            //var el = $('.'+cfg[i].className); //, page);
+            var el = $('#homePage .'+cfg[i].className); //, page);
             if(el.length == 0) continue;
             el.html(unreadCount);
             if(unreadCount > 0) {
@@ -410,7 +409,37 @@ return;
             }
         }
     },
-    updateBalloonsInNews: function(openSideBar) {
+    updateBalloonsInReportingHome: function() {
+        // Display a balloon in the item that contains updates
+        var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING);
+        var el = $('#reportingHomePage .ui-li-count-reporting');
+        if(el.length == 0) return;
+        el.html(unreadCount);
+        if(unreadCount > 0) {
+            el.show();
+        } else {
+            el.hide();
+        }
+    },
+    updateBalloonsInReporting: function() {
+        // Display a balloon for each item that contains updates
+        var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, null, true);
+        $('#reportingListPage span.ui-li-count-cust').html('').hide();
+        for(var i in unreadCount) {
+            el = $('#reportingListPage #count_reporting_' + i).html('&nbsp;' + unreadCount[i]).show();
+        }
+    },
+    updateBalloonsInFollowing: function() {
+        var listEl = $('#followingListPage #followingList');
+        $('li a span.ui-li-count', listEl).hide().html('');
+        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, null, true);
+        for(var i in unreadData) {
+            //if(unreadData[i] == 0) continue;
+            $('li a #count_' + i, listEl).html('&nbsp;' + unreadData[i]).show();
+        }
+    },
+
+    /*updateBalloonsInNews: function(openSideBar) {
         // Display a balloon for each feed that contains updates
         var listEl = $('#newsChannelsPanel #channelList');
         $('li a span.ui-li-count', listEl).hide();
@@ -422,26 +451,13 @@ return;
         if(openSideBar || false) {
             $('#newsChannelsPage').panel('open');
         }
-    },
-    updateBalloonsInNewsContent: function() {
+    },*/
+    /*updateBalloonsInNewsContent: function() {
         // Don't display the balloon on top of the feed,
         // but uses the old feed update system and display 
         // a button on the top of the page to add new posts.
         self.retrieveChannelContent(true);
-    },
-    updateBalloonsInReporting: function() {
-        // Display a balloon for each item that contains updates
-        // TODO
-    },
-    updateBalloonsInFollowing: function() {
-        var listEl = $('#followingListPage #followingList');
-        $('li a span.ui-li-count', listEl).hide();
-        var unreadData = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, null, true);
-        for(var i in unreadData) {
-            if(unreadData[i] == 0) continue;
-            $('li a #count_' + i, listEl).html(unreadData[i]).show();
-        }
-    },
+    },*/
     
     ////////////////////////////
     // Common functions (end)
@@ -766,6 +782,7 @@ return;
     },
     showHomePage: function() {
         self.reportingListData = null;
+        self.updateBalloonsInHomePage();
     },
     
     ////////////////////////////////////////
@@ -791,6 +808,7 @@ return;
     },
     showReportingHomePage: function() {
         self.reportingListData = null;
+        self.updateBalloonsInReportingHome();
     },
     
     
@@ -1143,6 +1161,7 @@ return;
                 // Success
                 self.reportingListData = result;
                 self.reportingListRenderList();
+                self.updateBalloonsInReporting();
                 self.reportingListRenderMap();
                 $.mobile.loading('hide');
             }, function(e, loginRequired) {
@@ -1153,6 +1172,8 @@ return;
                 $.mobile.loading('hide');
                 helper.alert('Immpossibile recuperare i dati', null, 'Segnalazioni');
             });
+        } else {
+            self.updateBalloonsInReporting();
         }
     },
     reportingListRenderMap: function() {
@@ -1230,12 +1251,15 @@ return;
                 var row = self.reportingListData[i];
                 //console.log(row);
 //TODO onclick="self.reportingListPageViewPhoto(this)"
+                //var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
                 html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
                         '<img src="" style="margin-right:1em;width:5em;height:5em;background:url(\'' + row.foto + '\') center center no-repeat;background-size: cover;display:block;float:left;" />' +
                         '<div>data e ora: <strong>' + row.data_inserimento + '</strong></div>' +
                         '<div>luogo: <strong>' + row.indirizzo + '</strong></div>' +
                         '<div style="width:70%;text-overflow: ellipsis;overflow:hidden;">descrizione: <strong>' + row.descrizione_problema + '</strong></div>' +
-                        '<div>stato: <strong>' + row.stato + '</strong></div>' +
+                        '<div>stato: <strong>' + row.stato + '</strong>' +
+                        //'<span id="count_reporting_' + row.id + '" class="ui-li-count-cust"' + (unreadCount == 0 ? ' style="display:none"' : '') + '>&nbsp;' + unreadCount + '</span></div>' +
+                        '<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
                         '</div></a></li>';
             }
         }
@@ -1255,6 +1279,7 @@ return;
             }
         }
         if(row) {
+            pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
             var page = $('#reportingListDetailPage');
             $('#city', page).val(row.comune);
             $('#prov', page).val(row.sigla);
@@ -1325,11 +1350,11 @@ return;
         console.log('initializing side bar');
         services.getSubscribedChannels(function(result) {
             var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>' +
-                       '<li data-channelid="0"><a href="javascript:self.loadNewsChannel(\'0\')"><span></span>Tutte</a></li>';
+                       '<li data-icon="false" data-channelid="0"><a href="javascript:self.loadNewsChannel(\'0\')"><span></span>Tutte</a></li>';
             for(var i in result) {
                 var row = result[i];
-                html += '<li data-channelid="' + row.id_feed + '"><a href="javascript:app.loadNewsChannel(' + row.id_feed + ')"><span>' 
-                            + row.denominazione + '</span><label>' + row.nome_feed
+                html += '<li data-icon="false" data-channelid="' + row.id_feed + '"><a href="javascript:app.loadNewsChannel(' + row.id_feed + ')"><span>' 
+                            + row.denominazione + '</span><span class="ui-li-count-cust">&nbsp;1&nbsp;</span><label>' + row.nome_feed
                             + '</label>'
                             + '<span id="count_' + row.id_feed + '" class="ui-li-count ui-li-count-cust" style="display:none;"></span>'
                             + '</a></li>';
@@ -1565,8 +1590,8 @@ return;
                 if(description.length > 40) description = description.substr(0, 40) + '...';
                 var qrCodeId = row.r_qrcode_id || '';
                 
-                html += '<li><a href="javascript:self.getFollowingInfo(\'' + qrCodeId.replace(/'/g, "\\'") + '\')">' + name + 
-                        '<span id="count_' + qrCodeId + '" class="ui-li-count ui-li-count-cust"></span>' +
+                html += '<li data-icon="false"><a href="javascript:self.getFollowingInfo(\'' + qrCodeId.replace(/'/g, "\\'") + '\')">' + name + 
+                        '<span id="count_' + qrCodeId + '" class="ui-li-count-cust" style="display:none;"></span>' +
                         '<label>' + description +'</label></a></li>';
             }
             $('#followingListPage #followingList').html(html).listview('refresh');
@@ -1602,7 +1627,6 @@ return;
             $('#followingListDetailPage #infoText').html('');
             
             pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, code);
-            self.updateBalloonsInNavbar();
             
             //var canFollow = (result.categoria.follows == 1);
 

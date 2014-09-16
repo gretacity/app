@@ -84,9 +84,9 @@ function PushNotificationMessage() {
         } else {
             // App is in ACTIVE state:
             if(typeId == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE) {
-                app.showNewsChannelAvailable();
+                //app.showNewsChannelAvailable();
             } else {
-                app.updateBalloonsInNavbar();
+                app.updateBalloonsInHomePage();
                 switch($.mobile.activePage.attr('id')) {
                     //case 'homePage':
                         //app.updateBalloonsInHome();
@@ -210,7 +210,7 @@ var pushNotificationHelper = {
         
         ix = ix || 0;
         
-        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING;
+        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING;
         var data = [
             /*/ Complex notification data
             {id: 12, tot: 3},       // group 12 has 3 new items
@@ -220,6 +220,7 @@ var pushNotificationHelper = {
 
             // qrcode: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING
             //{id: config.QR_CODE_TEST, tot: 2}
+            {id: '4000000028', tot: 2}
 
             // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
             //{id: '4', tot: 2},
@@ -227,9 +228,9 @@ var pushNotificationHelper = {
             //{id: '46', tot: 7},
 
             // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
-            {id: '206', tot: 1},
-            {id: '204', tot: 1},
-            {id: '172', tot: 1}
+            //{id: '330', tot: 1},
+            //{id: '319', tot: 2},
+            //{id: '299', tot: 3}
 
             // new channel available: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE
             //{id: '4', tot: 1}
@@ -451,7 +452,7 @@ console.log('pushNotificationService: received notification from GCM/Apple serve
             return unreadData[typeId][groupId] == null ? 0 : unreadData[typeId][groupId];
         }
         grouped |= false;
-        if(grouped) {
+        if(grouped == true) {
             return unreadData[typeId];
         } 
         

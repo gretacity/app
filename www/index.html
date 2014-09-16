@@ -127,8 +127,10 @@
                 border-radius: 1em !important;
                 z-index: 100;
                 position: absolute;
-                top:1em;
-                right:0;
+                padding: .2em !important;
+                right: 0  !important;
+                margin-right: .4em !important;
+                font-size: .8em !important;
             }
             .fielderror {
                 color: #FF0000;
@@ -563,15 +565,24 @@
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">Segnala</a>
+                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            Segnala
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                        </a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
+                        <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            News
+                            <span id="newsCount" class="ui-li-count-cust ui-li-count-news" style="display:none;"></span>
+                        </a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
+                    <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
+                        Following
+                        <span id="followingCount" class="ui-li-count-cust ui-li-count-following" style="display:none;"></span>
+                    </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#nearbyPage" data-transition="slide" class="ui-btn ui-btn-primary">Qui vicino</a>
@@ -610,7 +621,10 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                        <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Verifica le mie segnalazioni</a>
+                        <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">
+                            Verifica le mie segnalazioni
+                            <span class="ui-li-count-cust ui-li-count-reporting">&nbsp;1&nbsp;</span>
+                        </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#" data-transition="slide" class="ui-btn ui-btn-primary ui-disabled" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
