@@ -79,7 +79,6 @@ var config = {
     //params: qrcode
     URL_QRCODE_FOLLOW: '/web/index.php?mode=module&p=app_services&a=follow',
     URL_QRCODE_UNFOLLOW: '/web/index.php?mode=module&p=app_services&a=unfollow',
-    
     URL_QRCODE_FOLLOWING : '/web/index.php?mode=module&p=app_services&a=get_follows',
     
     URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
