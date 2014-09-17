@@ -600,7 +600,24 @@
         
         </div>
         <!-- /homePage -->
-        
+        <style>
+        .ui-icon-toolbar-button {
+            margin: 0 !important;
+            padding: 0 !important;
+            color: rgba(0,0,0,0) !important;
+            border-color:  rgba(0,0,0,0) !important;
+            background-color: rgba(0,0,0,0) !important;
+            background-position: center center !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            width: 2.5em !important;
+            height: 2.5em !important;
+            top: -4px !important;
+        }
+        .toolbar-button-home {
+            background-image: url('img/prova.png') !important;
+        }
+        </style>
         <!-- reportingHomePage -->
         <div data-role="page" id="reportingHomePage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -608,7 +625,10 @@
                     <!-- <img  src="img/greta.png" /> --> 
                     <span>Segnalazioni</span>
                 </div>
+                <!--
                 <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                -->
+                <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext"></a>
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
@@ -623,7 +643,7 @@
                     <div class="ui-block-a">
                         <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">
                             Verifica le mie segnalazioni
-                            <span class="ui-li-count-cust ui-li-count-reporting">&nbsp;1&nbsp;</span>
+                            <span class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-b">
@@ -654,6 +674,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
+                <p class="info text-primary"></p>
                 <fieldset data-role="fieldcontain">
                     <label for="city">Comune</label>
                     <input type="text" id="city" placeholder="Comune" />
@@ -662,7 +683,6 @@
                     <label for="address">Indirizzo</label>
                     <textarea id="address" placeholder="Indirizzo"></textarea>
                 </fieldset>
-                <p class="info text-primary"></p>
             </div>            
            <div data-role="footer" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
