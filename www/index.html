@@ -641,26 +641,34 @@
                 #homeGrid .ui-block-a,
                 #homeGrid .ui-block-b {
                     height:25% !important;
+                    text-align :center !important;
                 }
                 #homeGrid .ui-block-a a,
                 #homeGrid .ui-block-b a {
+                    display:block !important;
                     margin-top: 0 !important;
                     padding-top: 0 !important;
                     color: rgba(0,0,0,0) !important;
                     border-color:  rgba(0,0,0,0) !important;
                     background: rgba(0,0,0,0) !important;
+                    max-width: 10em !important;
                 }
                 #homeGrid .ui-block-a a img,
                 #homeGrid .ui-block-b a img {
                     width: 100% !important;
-                    max-width: 10em !important;
+                    
+                }
+                .ui-li-count-home {
+                    bottom:39% !important;
+                    right: 13% !important;
                 }
                 </style>
                 <div id="homeGrid" class="ui-grid-a">
                     <div class="ui-block-a">
                         <a href="#reportingHomePage" data-transition="slide" class="ui-btn uui-btn-primary">
                             <img src="img/HomeReporting.png" style="width:100%" />
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="bottom:39% !important; right: 13% !important;display:none;">10</span>
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" 
+                                  style="ddisplay:none;">1</span>
                         </a>
                     </div>
                     <div class="ui-block-b">
@@ -669,25 +677,23 @@
                     <div class="ui-block-a">
                         <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">
                             <img src="img/HomeNews.png" />
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                            <span id="newsCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="sdisplay:none;">1</span>
                         </a>
                     </div>
                     <div class="ui-block-a">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">
+                        <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">
                             <img src="img/HomeQrScan.png" />
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-a">
                         <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
                             <img src="img/HomeFollowing.png" />
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                            <span id="followingCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="sdisplay:none;">1</span>
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#nearbyPage" data-transition="slide" class="ui-btn ui-btn-primary">
                             <img src="img/HomeNearby.png" />
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                         </a>
                     </div>
                 </div>
