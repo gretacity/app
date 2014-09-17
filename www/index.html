@@ -480,6 +480,33 @@
                 right: 1em;
                 bottom: .3em;
             }
+            
+            .ui-icon-toolbar-button {
+                margin: 0 !important;
+                padding: 0 !important;
+                color: rgba(0,0,0,0) !important;
+                border-color:  rgba(0,0,0,0) !important;
+                background-color: rgba(0,0,0,0) !important;
+                background-position: center center !important;
+                background-size: cover !important;
+                background-repeat: no-repeat !important;
+                width: 2.5em !important;
+                height: 2.5em !important;
+                top: -4px !important;
+            }
+            .toolbar-button-home {
+                background-image: url('img/HomeButton.png') !important;
+            }
+            .toolbar-button-back {
+                background-image: url('img/BackButton.png') !important;
+            }
+            .toolbar-button-refresh {
+                background-image: url('img/RefreshButton.png') !important;
+                margin-left:3em !important;
+            }
+            .toolbar-button-list {
+                background-image: url('img/ListButton.png') !important;
+            }
         </style>
     </head>
     <body>
@@ -600,24 +627,7 @@
         
         </div>
         <!-- /homePage -->
-        <style>
-        .ui-icon-toolbar-button {
-            margin: 0 !important;
-            padding: 0 !important;
-            color: rgba(0,0,0,0) !important;
-            border-color:  rgba(0,0,0,0) !important;
-            background-color: rgba(0,0,0,0) !important;
-            background-position: center center !important;
-            background-size: cover !important;
-            background-repeat: no-repeat !important;
-            width: 2.5em !important;
-            height: 2.5em !important;
-            top: -4px !important;
-        }
-        .toolbar-button-home {
-            background-image: url('img/prova.png') !important;
-        }
-        </style>
+
         <!-- reportingHomePage -->
         <div data-role="page" id="reportingHomePage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -626,7 +636,7 @@
                     <span>Segnalazioni</span>
                 </div>
                 <!--
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                < a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
                 -->
                 <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext"></a>
             </div>
@@ -670,8 +680,8 @@
                     <span style="display:block;vertical-align:middle;">Segnalazione manuale</span>
                 </h1>
                 -->
-                <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <p class="info text-primary"></p>
@@ -716,8 +726,8 @@
                     <!-- <img  src="img/greta.png" /> --> 
                     <span>Posizione</span>
                 </div>
-                <a href="#reporting1Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#reporting1Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" style="margin:0;">
                 <p class="text-primary" style="padding:0;margin:0;">
@@ -741,8 +751,8 @@
                     <!-- <img  src="img/greta.png" /> --> 
                     <span>Categoria</span>
                 </div>
-                <a href="#reporting2Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#reporting2Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;z-index:100;background:#fff;">
                 <p class="text-primary">
@@ -768,8 +778,8 @@
                     <!-- <img src="img/greta.png" /> --> 
                     <span>Descrizione</span>
                 </div>
-                <a href="#reporting4Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#reporting4Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <textarea id="description" placeholder="Descrivi brevemente il disservizio"></textarea>
@@ -820,8 +830,8 @@
                     <!-- <img src="img/greta.png" /> --> 
                     <span>Foto</span>
                 </div>
-                <a href="#reporting5Page" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#reporting5Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <p class="text-primary">
@@ -880,8 +890,8 @@
                     <!-- <img src="img/greta.png" /> --> 
                     <span>Segnalazioni</span>
                 </div>
-                <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main">
                 <div id="reportingListView">
@@ -905,8 +915,8 @@
                     <!-- <img src="img/greta.png" /> --> 
                     <span>Segnalazioni</span>
                 </div>
-                <a href="#reportingListPage" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#reportingListPage" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div data-role="fieldcontent">
@@ -948,8 +958,8 @@
                     <!-- <img src="img/greta.png" /> --> 
                     <span>Segnalazioni vicine</span>
                 </div>
-                <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Back</a>
-               <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+               <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main">
                 <div id="mapView" style="width: 100%;height:20em;">Caricamento in corso...</div>
@@ -966,13 +976,13 @@
                 <ul data-role="listview" id="channelList" data-theme="b"></ul>
             </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" id="channelsButton" class="ui-btn ui-shadow ui-btn-left ui-icon-bullets ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
-                <a href="#" id="refreshButton" style="margin-left:2.5em;" class="ui-btn ui-shadow ui-btn-left ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" id="channelsButton" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-list ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Canali</a>
+                <a href="#" id="refreshButton" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Refresh</a>
                 <div class="center-wrapper">
                     <!-- <img src="img/greta.png" /> --> 
                     <span>News</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <p id="info" class="text-primary" style="display:none;"></p>
@@ -1005,11 +1015,11 @@
         <!-- qrCodeViewerPage -->
         <div data-role="page" id="qrCodeViewerPage">
              <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Leggi QR Code</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <!--<div style="height:3.5em;">
@@ -1025,11 +1035,11 @@
         <!-- followingListPage -->
         <div data-role="page" id="followingListPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Following</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <a href="#" id="readQrCodeButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
@@ -1043,11 +1053,11 @@
         <!-- followingListDetailPage -->
         <div data-role="page" id="followingListDetailPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Following</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <input type="hidden" id="qrCodeId" />
@@ -1063,11 +1073,11 @@
         <!-- qrCodeInfoGalleryPage -->
         <div data-role="page" id="qrCodeInfoGalleryPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Galleria</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div>
@@ -1081,11 +1091,11 @@
         <!-- qrCodeInfoPositionPage -->
         <div data-role="page" id="qrCodeInfoPositionPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Posizione</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main">
                 <div id="qrCodeInfoPlaceMap">Caricamento mappa...</div>
@@ -1096,11 +1106,11 @@
         <!-- qrCodeInfoNewsPage -->
         <div data-role="page" id="qrCodeInfoNewsPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Notizie</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div>
@@ -1116,11 +1126,11 @@
         <!-- qrCodeInfoCommentsPage -->
         <div data-role="page" id="qrCodeInfoCommentsPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Commenti</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div>
@@ -1142,11 +1152,11 @@
         <!-- qrCodeInfoMultimediaPage -->
         <div data-role="page" id="qrCodeInfoMultimediaPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Video</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div>
@@ -1161,11 +1171,11 @@
         <!-- qrCodeInfoLinksPage -->
         <div data-role="page" id="qrCodeInfoLinksPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Link</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div>
@@ -1181,11 +1191,11 @@
         <!-- nearbyPage -->
         <div data-role="page" id="nearbyPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Qui Vicino</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="placeTypeList" data-theme="b">
@@ -1197,11 +1207,11 @@
         <!-- nearbyResultsPage -->
         <div data-role="page" id="nearbyResultsPage">
              <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Qui Vicino</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;z-index:100;background:#fff;">
                 <label style="white-space:nowrap;">Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
@@ -1218,11 +1228,11 @@
         <!-- nearbyPlaceInfoPage -->
         <div data-role="page" id="nearbyPlaceInfoPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Qui Vicino</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content" style="margin:0;padding:0;text-align:center;">
                 <div id="nearbyPlaceMap" style="margin:0;padding:0;">Caricamento mappa...</div>
@@ -1236,7 +1246,7 @@
                 <div class="center-wrapper">
                     <span>Impostazioni</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
@@ -1271,11 +1281,11 @@
         <!-- profilePage -->
         <div data-role="page" id="profilePage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Profilo</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-field-contain" style="padding-top:0;">
@@ -1306,11 +1316,11 @@
         <!-- changePasswordPage -->
         <div data-role="page" id="changePasswordPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Cambia Password</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div data-role="main" class="iu-content">
@@ -1337,11 +1347,11 @@
         <!-- setupFollowingPage -->
         <div data-role="page" id="setupFollowingPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Following</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <p class="text-primary">Deseleziona il following se non vuoi più seguirlo</p>
@@ -1354,11 +1364,11 @@
         <!-- setupChannelsPage -->
         <div data-role="page" id="setupChannelsPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>News</span>
                 </div>                
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">                
                 <a href="#setupChannelSubscriptionPage" class="ui-btn">Aggiungi altra città</a>
@@ -1372,11 +1382,11 @@
         <!-- setupChannelSubscriptionPage -->
         <div data-role="page" id="setupChannelSubscriptionPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Aggiungi RSS</span>
                 </div>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <p id="info" class="text-primary">INFO</p>
@@ -1417,11 +1427,11 @@
         <!-- infoPage -->
         <div data-role="page" id="infoPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" data-reverse="true" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" data-reverse="true" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Info</span>
                 </div>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div>
@@ -1437,11 +1447,11 @@
         <!-- supportPage -->
         <div data-role="page" id="supportPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" data-reverse="true" class="ui-btn ui-shadow ui-btn-left ui-icon-carat-l ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#" data-rel="back" data-reverse="true" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Supporto</span>
                 </div>
-                <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <p class="text-primary" style="margin-top: 5em;">
