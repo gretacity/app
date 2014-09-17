@@ -2013,7 +2013,9 @@ return;
         var showMap = self.nearbyCurrentPos != null;
         if(!showMap) return;
         
-        self.maximizeMap($('#nearbyPlaceInfoPage #nearbyPlaceMap'));
+        setTimeout(function() {
+            self.maximizeMap($('#nearbyPlaceInfoPage #nearbyPlaceMap'));
+        }, 300);
         
         if(showMap) {
             var lat = self.nearbyCurrentPos.coords.latitude, lng = self.nearbyCurrentPos.coords.longitude;
@@ -2027,6 +2029,11 @@ return;
         }
         $.mobile.loading('show');
         services.getNearbyPlaceInfo({id: self.nearbyPlaceId, source: self.nearbyPlaceSource}, function(result) {
+            if(result == null) {
+                $.mobile.loading('hide');
+                helper.alert('Impossibile recuperare le informazioni');
+                return;
+            }
             if(showMap) {
                 var endingMarkerPoint = new google.maps.LatLng(result.lat, result.lng);
                 
@@ -2048,8 +2055,8 @@ return;
                     travelMode: google.maps.TravelMode.DRIVING
                 }, function(res, status) {
                     if(status == google.maps.DirectionsStatus.OK) {
-                        console.log(res.routes);
-                        self.tmp = res.routes;
+console.log(res.routes);
+self.tmp = res.routes;
                         //res.routes[0].legs[0].start_location.lat()
                         //res.routes[0].legs[0].start_location.lng()
                         startingMarkerPoint = res.routes[0].legs[0].start_location;

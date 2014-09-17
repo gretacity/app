@@ -794,6 +794,7 @@
                     <a href="#" id="fromGallery" class="ui-btn">Da galleria</a>
                 </div>
             </div>
+            
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
                     <!-- <img src="img/greta.png" /> --> 
@@ -806,19 +807,7 @@
                 <p class="text-primary">
                     Per aiutarci a individuare con precisione il disservizio,
                     invia almeno una foto.
-                </p>
-                
-                <!--
-                <div class="ui-grid-b">
-                    <div class="reporting-photo-item ui-block-a" data-photopos="0" 
-                         style="height:7em;text-align:center;">
-                        <a href="#" class="reporting-photo-shot">
-                            <img src="img/backgroundHand.png" class="reporting-photo reporting-photo-missing" />
-                        </a>
-                    </div>
-                </div>
-                -->
-                
+                </p>                
                 <div id="photoSet" class="ui-grid-b">
                     <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;">
                         <a href="#" class="reporting-photo-shot">
@@ -1195,7 +1184,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;z-index:100;background:#fff;">
-                <label>Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
+                <label style="white-space:nowrap;">Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
                 <input type="range" id="nearbySearchSlider" min="1" max="20" step="1" value="2" data-highlight="true" data-mini="true" />
             </div>
             <div data-role="main" class="ui-content">
