@@ -403,6 +403,15 @@
                 background-color: #08C !important;
                 color: #FFF !important;
             }
+            .ui-btn-primary-background {
+                margin-top: 0 !important;
+                border-color:  rgba(0,0,0,0) !important;
+                background-color: rgba(0,0,0,0) !important;
+                background: url('img/button.png') no-repeat;
+                background-position: center 0;
+                background-size: 100% 4em !important;
+                height: 2.5em !important;
+            }
             .ui-btn-priority {
                 height:1em;
                 width:60%;
@@ -510,6 +519,39 @@
             .toolbar-button-list {
                 background-image: url('img/ListButton.png') !important;
             }
+            
+            #homeGrid {
+                margin-top: 5em !important;
+                height: 75% !important;
+            }
+            #homeGrid .ui-block-a {
+
+            }
+            #homeGrid .ui-block-a,
+            #homeGrid .ui-block-b {
+                height:25% !important;
+                text-align :center !important;
+            }
+            #homeGrid .ui-block-a a,
+            #homeGrid .ui-block-b a {
+                display:block !important;
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+                color: rgba(0,0,0,0) !important;
+                border-color:  rgba(0,0,0,0) !important;
+                background: rgba(0,0,0,0) !important;
+                max-width: 10em !important;
+            }
+            #homeGrid .ui-block-a a img,
+            #homeGrid .ui-block-b a img {
+                width: 100% !important;
+
+            }
+            .ui-li-count-home {
+                bottom:39% !important;
+                right: 13% !important;
+            }
+                
         </style>
     </head>
     <body>
@@ -594,81 +636,11 @@
                 <a href="#setupPage" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-option ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext"></a>
             </div>
             <div data-role="main" style="position: absolute;top:0;left:0;bottom:0;right:0;">
-                <!--
-                <div class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            Segnala
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
-                        </a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            News
-                            <span id="newsCount" class="ui-li-count-cust ui-li-count-news" style="display:none;"></span>
-                        </a>
-                    </div>
-                </div>
-                <div class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            Following
-                            <span id="followingCount" class="ui-li-count-cust ui-li-count-following" style="display:none;"></span>
-                        </a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="#nearbyPage" data-transition="slide" class="ui-btn ui-btn-primary">Qui vicino</a>
-                    </div>
-                </div>
-                <div class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">QR Code</a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="#setupPage" data-transition="slide" class="ui-btn ui-btn-primary">Impostazioni</a>
-                    </div>
-                </div>
-                -->
-                
-                <style>
-                #homeGrid {
-                    margin-top: 5em !important;
-                    height: 75% !important;
-                }
-                #homeGrid .ui-block-a {
-                
-                }
-                #homeGrid .ui-block-a,
-                #homeGrid .ui-block-b {
-                    height:25% !important;
-                    text-align :center !important;
-                }
-                #homeGrid .ui-block-a a,
-                #homeGrid .ui-block-b a {
-                    display:block !important;
-                    margin-top: 0 !important;
-                    padding-top: 0 !important;
-                    color: rgba(0,0,0,0) !important;
-                    border-color:  rgba(0,0,0,0) !important;
-                    background: rgba(0,0,0,0) !important;
-                    max-width: 10em !important;
-                }
-                #homeGrid .ui-block-a a img,
-                #homeGrid .ui-block-b a img {
-                    width: 100% !important;
-                    
-                }
-                .ui-li-count-home {
-                    bottom:39% !important;
-                    right: 13% !important;
-                }
-                </style>
                 <div id="homeGrid" class="ui-grid-a">
                     <div class="ui-block-a">
                         <a href="#reportingHomePage" data-transition="slide" class="ui-btn uui-btn-primary">
                             <img src="img/HomeReporting.png" style="width:100%" />
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" 
-                                  style="ddisplay:none;">1</span>
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-b">
@@ -677,7 +649,7 @@
                     <div class="ui-block-a">
                         <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">
                             <img src="img/HomeNews.png" />
-                            <span id="newsCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="sdisplay:none;">1</span>
+                            <span id="newsCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-a">
@@ -688,7 +660,7 @@
                     <div class="ui-block-a">
                         <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
                             <img src="img/HomeFollowing.png" />
-                            <span id="followingCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="sdisplay:none;">1</span>
+                            <span id="followingCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-b">
@@ -697,9 +669,6 @@
                         </a>
                     </div>
                 </div>
-                
-                
-                
             </div>
         </div>
         <!-- /homePage -->
@@ -1317,6 +1286,7 @@
         </div>
         <!-- /nearbyPlaceInfoPage -->
 
+
         <!-- setupPage -->
         <div data-role="page" id="setupPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -1326,28 +1296,28 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <div class="ui-grid-a">
+                <div class="ui-grid-a" style="margin-top: 2em;">
                     <div class="ui-block-a">
-                        <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary">Profilo</a>
+                        <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Profilo</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#setupFollowingPage" data-transition="slide" class="ui-btn ui-btn-primary">Following</a>
+                        <a href="#setupFollowingPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Following</a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#setupChannelsPage" data-transition="slide" class="ui-btn ui-btn-primary">News</a>
+                    <a href="#setupChannelsPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">News</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#infoPage" data-transition="slide" class="ui-btn ui-btn-primary">Info</a>
+                        <a href="#infoPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Info</a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#supportPage" data-transition="slide" class="ui-btn ui-btn-primary">Supporto</a>
+                    <a href="#supportPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Supporto</a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" id="logoutButton" data-transition="slide" class="ui-btn ui-btn-primary">Esci</a>
+                        <a href="#" id="logoutButton" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Esci</a>
                     </div>
                 </div>
             </div>
