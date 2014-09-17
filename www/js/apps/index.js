@@ -393,6 +393,7 @@ return;
     },
     
     updateBalloonsInHomePage: function() {
+return;
         var cfg = [
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},
@@ -1997,14 +1998,6 @@ return;
             $.mobile.changePage('#nearbyResultsPage');
             return;
         }
-        /*
-        $('#nearbyPlaceInfoPage #nearbyPlaceMap').css({
-            position: 'absolute', 
-            top: '3.5em', //$('div[data-role="header"]', $.mobile.activePage).height(),
-            bottom: 0,
-            left: 0,
-            right: 0
-        });*/
     },
     
     showNearbyPlaceInfo: function() {

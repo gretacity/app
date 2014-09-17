@@ -589,7 +589,8 @@
                     <span>Home</span>
                 </div>
             </div>
-            <div data-role="main" class="ui-content">
+            <div data-role="main" style="position: absolute;top:0;left:0;bottom:0;right:0;">
+                <!--
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
                         <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
@@ -606,10 +607,10 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
-                        Following
-                        <span id="followingCount" class="ui-li-count-cust ui-li-count-following" style="display:none;"></span>
-                    </a>
+                        <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            Following
+                            <span id="followingCount" class="ui-li-count-cust ui-li-count-following" style="display:none;"></span>
+                        </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#nearbyPage" data-transition="slide" class="ui-btn ui-btn-primary">Qui vicino</a>
@@ -617,14 +618,73 @@
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">QR Code</a>
+                        <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">QR Code</a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#setupPage" data-transition="slide" class="ui-btn ui-btn-primary">Impostazioni</a>
                     </div>
                 </div>
+                -->
+                
+                <style>
+                #homeGrid {
+                    margin-top: 23% !important;
+                    height: 80% !important;
+                }
+                #homeGrid .ui-block-a {
+                    max-width: 15em !important;
+                }
+                #homeGrid .ui-block-a,
+                #homeGrid .ui-block-b {
+                    height:25% !important;
+                }
+                #homeGrid .ui-block-a a,
+                #homeGrid .ui-block-b a {
+                    padding-top: 0 !important;
+                    color: rgba(0,0,0,0) !important;
+                    border-color:  rgba(0,0,0,0) !important;
+                    background: rgba(0,0,0,0) !important;
+                }
+                </style>
+                <div id="homeGrid" class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn uui-btn-primary">
+                            <img src="img/HomeReporting.png" style="width:100%" />
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="bottom:39% !important; right: 13% !important;ddisplay:none;">10</span>
+                        </a>
+                    </div>
+                    <div class="ui-block-b">
+                        <img src="img/Mano.png" style="width:100%" />
+                    </div>
+                    <div class="ui-block-a">
+                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeNews.png" style="width:100%" />
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                        </a>
+                    </div>
+                    <div class="ui-block-a">
+                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeQrScan.png" style="width:100%" />
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                        </a>
+                    </div>
+                    <div class="ui-block-a">
+                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeFollowing.png" style="width:100%" />
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                        </a>
+                    </div>
+                    <div class="ui-block-b">
+                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeNearby.png" style="width:100%" />
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                        </a>
+                    </div>
+                </div>
+                
+                
+                
             </div>
-        
         </div>
         <!-- /homePage -->
 
@@ -1005,7 +1065,7 @@
             <div data-role="main">
                 <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">-->
                 <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;height:100%;">
-                    <img id="photo" src="img/newyork.jpg" style="width:100%;" />
+                    <img id="photo" src="" style="width:100%;" />
                 </div>
             </div>
         </div>
