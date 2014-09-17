@@ -299,7 +299,7 @@ return;
         switch(qrCodeData.type) {
             case QrCodeData.TYPE_URL:
                 infoText = 'Trovato URL';
-                html = '<li><a href="' + qrCodeData.elements.url + '">' + qrCodeData.elements.url + '</li>';
+                html = '<li><a href="' + qrCodeData.elements.url + '" style="white-space:normal !important; word-wrap:break-word; overflow-wrap: break-word;">' + qrCodeData.elements.url + '</li>';
                 //window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
                 break;
             case QrCodeData.TYPE_TEXT:
@@ -393,7 +393,6 @@ return;
     },
     
     updateBalloonsInHomePage: function() {
-return;
         var cfg = [
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, elementId: 'newsCount', className: 'ui-li-count-news'},
             {type: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, elementId: 'reportingCount', className: 'ui-li-count-reporting'},

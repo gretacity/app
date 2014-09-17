@@ -13,7 +13,17 @@
         <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="css/glide-style.css" />
         <style>
+            @font-face {
+                font-family: 'MyriadSb';
+                src: url('fonts/MYRIADPRO-SEMIBOLD.OTF');
+                src: local('Myriad Pro Semibold'), url('fonts/MYRIADPRO-SEMIBOLD.woff') format('woff');
+
+                font-weight: normal;
+                font-style: normal;
+            }
+            
             * {
+                font-family: "MyriadSb" !important;
                 font-size: 1em !important;
                 text-shadow: none !important;
             }
@@ -59,18 +69,18 @@
             div[data-role="header"] a.ui-btn {
                 margin-top: 0.5em !important;
             }
-            div[data-role="navbar"] ul li a {
+           /* div[data-role="navbar"] ul li a {
                 background-color: rgb(89, 196, 248) !important;
                 text-shadow: none !important;
             }
             div[data-role="navbar"] ul li a.ui-btn-active {
-                background-color:rgb(255, 184, 0) !important;   /*#FFB800*/
-            }
+                background-color:rgb(255, 184, 0) !important;   /*#FFB800* /
+            } */
             
 
             /*div[data-role="navbar"] ul li .highlight.ui-btn {
                 background-color:#FF2424 !important;
-            }*/
+            } */
             
             .panel-item-selected a {
                 background-color: rgb(255, 184, 0) !important;
@@ -1061,7 +1071,6 @@
         <!-- qrCodeViewerPage -->
         <div data-role="page" id="qrCodeViewerPage">
              <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
                     <span>Leggi QR Code</span>
                 </div>                
@@ -1072,7 +1081,8 @@
                     <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">close</a>
                 </div>-->
                 <h2 id="info" class="text-primary"></h2>
-                <ul id="qrCodeViewer" data-role="listview" data-inset="false" data-theme="b">
+                
+                <ul id="qrCodeViewer" data-role="listview"  style="margin-top: 1em !important;" data-inset="false" data-theme="b">
                 </ul>
             </div>
         </div>
@@ -1296,6 +1306,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
+               <!-- <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Profilo</a>-->
                 <div class="ui-grid-a" style="margin-top: 2em;">
                     <div class="ui-block-a">
                         <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Profilo</a>
