@@ -53,8 +53,8 @@
                 /*padding: 1em 0 0 0;*/
             }
             .backgroundMap{
-                background: url(img/backgroundMap.png) repeat-y center center !important;
-                background-size: 130% !important;
+                background: url(img/backgroundMap.png) no-repeat center center !important;
+                background-size:cover !important;
             }
             div[data-role="header"] a.ui-btn {
                 margin-top: 0.5em !important;
@@ -494,6 +494,9 @@
                 height: 2.5em !important;
                 top: -4px !important;
             }
+            .toolbar-button-option{
+                background-image: url('img/HomeOption.png') !important;
+            }
             .toolbar-button-home {
                 background-image: url('img/HomeButton.png') !important;
             }
@@ -588,6 +591,7 @@
                      <!-- <img  src="img/greta.png" /> -->
                     <span>Home</span>
                 </div>
+                <a href="#setupPage" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-option ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext"></a>
             </div>
             <div data-role="main" style="position: absolute;top:0;left:0;bottom:0;right:0;">
                 <!--
@@ -628,11 +632,11 @@
                 
                 <style>
                 #homeGrid {
-                    margin-top: 23% !important;
-                    height: 80% !important;
+                    margin-top: 5em !important;
+                    height: 70% !important;
                 }
                 #homeGrid .ui-block-a {
-                    max-width: 15em !important;
+                
                 }
                 #homeGrid .ui-block-a,
                 #homeGrid .ui-block-b {
@@ -640,43 +644,49 @@
                 }
                 #homeGrid .ui-block-a a,
                 #homeGrid .ui-block-b a {
+                    margin-top: 0 !important;
                     padding-top: 0 !important;
                     color: rgba(0,0,0,0) !important;
                     border-color:  rgba(0,0,0,0) !important;
                     background: rgba(0,0,0,0) !important;
+                }
+                #homeGrid .ui-block-a a img,
+                #homeGrid .ui-block-b a img {
+                    width: 100% !important;
+                    max-width: 10em !important;
                 }
                 </style>
                 <div id="homeGrid" class="ui-grid-a">
                     <div class="ui-block-a">
                         <a href="#reportingHomePage" data-transition="slide" class="ui-btn uui-btn-primary">
                             <img src="img/HomeReporting.png" style="width:100%" />
-                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="bottom:39% !important; right: 13% !important;ddisplay:none;">10</span>
+                            <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="bottom:39% !important; right: 13% !important;display:none;">10</span>
                         </a>
                     </div>
                     <div class="ui-block-b">
-                        <img src="img/Mano.png" style="width:100%" />
+                        <img src="img/Mano.png" style="float:right;width:90%;max-width:15em;" />
                     </div>
                     <div class="ui-block-a">
-                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            <img src="img/HomeNews.png" style="width:100%" />
+                        <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeNews.png" />
                             <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-a">
-                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            <img src="img/HomeQrScan.png" style="width:100%" />
+                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeQrScan.png" />
                             <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-a">
-                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            <img src="img/HomeFollowing.png" style="width:100%" />
+                        <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeFollowing.png" />
                             <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            <img src="img/HomeNearby.png" style="width:100%" />
+                        <a href="#nearbyPage" data-transition="slide" class="ui-btn ui-btn-primary">
+                            <img src="img/HomeNearby.png" />
                             <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                         </a>
                     </div>
@@ -723,7 +733,8 @@
             </div>
         </div>
         <!-- /reportingHomePage -->
-
+   
+            
         <!-- reporting1Page -->
         <div data-role="page" id="reporting1Page">
             <div id="reporting1Popup" data-role="popup" class="ui-content" data-position-to="window" data-dismissible="false">
@@ -754,13 +765,13 @@
                     <textarea id="address" placeholder="Indirizzo"></textarea>
                 </fieldset>
             </div>            
-           <div data-role="footer" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
+           <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
                 <div style="background:#fff;color:#08c;text-align:center;">
                     1 di 4
                 </div>
                 <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
                    style="text-align:center; width:84%; padding:0 auto; margin: 0 auto;">
-                    AVANTI
+                    AVANTI 
                 </a>
     
 
