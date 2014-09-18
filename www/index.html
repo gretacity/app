@@ -199,16 +199,13 @@
                     <textarea id="address" placeholder="Indirizzo"></textarea>
                 </fieldset>
             </div>            
-           <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                <div style="background:#fff;color:#08c;text-align:center;">
+           <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
+                <div style="background:#fff;color:#08c;">
                     1 di 4
                 </div>
-                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
-                   style="text-align:center; width:84%; padding:0 auto; margin: 0 auto;">
+                <a href="#" class="button-next ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all">
                     AVANTI 
                 </a>
-    
-
             </div>
 <!-- 
 <div data-theme="b" data-role="footer" data-position="fixed">
@@ -240,9 +237,8 @@
                 </p>
                 <div id="map">Caricamento della mappa..</div>
             </div>            
-            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#reporting4Page" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
-                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+            <div data-role="footer" style="margin:0;text-align:center;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#reporting4Page" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all">
                     CONFERMA POSIZIONE
                 </a>
             </div>
@@ -309,12 +305,11 @@
                 <label style="white-space:normal;" for="private">Utilizza i dati personali solo per le comunicazioni con gli operatori della pubblica amministrazione</label> 
                 -->
             </div>
-            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <div style="background:#fff;color:#08c;text-align:center;">
+            <div data-role="footer" style="margin:0;text-align:center;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a" >
+                <div style="background:#fff;color:#08c;">
                     3 di 4
                 </div>
-                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
-                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all">
                     AVANTI
                 </a>
             </div>
@@ -373,12 +368,11 @@
                     </div>
                 </div>
             </div>
-            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <div style="background:#fff;color:#08c;text-align:center;">
+            <div data-role="footer" style="margin:0;text-align:center;" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" >
+                <div style="background:#fff;color:#08c;">
                     4 di 4
                 </div>
-                <a href="#" class="button-next ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
-                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+                <a href="#" class="button-next ui-btn">
                     INVIA SEGNALAZIONE
                 </a>
             </div>
@@ -404,9 +398,8 @@
                 </div>
                 <div id="mapView" style="width: 100%;height:20em;">Caricamento in corso...</div>
             </div>
-            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" id="changeViewType" class="ui-btn ui-shadow ui-corner-all"
-                   style="text-align:center;width:98%;padding:0 auto;margin: 0 auto; ">
+            <div data-role="footer" style="margin:0;text-align:center;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" id="changeViewType" class="ui-btn ui-shadow ui-corner-all button-toggle">
                    VEDI SU MAPPA
                 </a>
             </div>
@@ -502,11 +495,15 @@
         <!-- photoPage -->
         <div data-role="page" id="photoPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="true" data-theme="b">
-                <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">+</a>
-                <a href="javascript:app.reportingListPageZoomOutPhoto()" class="ui-btn ui-btn-right ui-icon-minus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-right:2.5em;">-</a>
-                <h1>Foto</h1>
-            </div>
+                <!--<a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>-->
+                <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-top:1em !important;">+</a>
+                <a href="javascript:app.reportingListPageZoomOutPhoto()" class="ui-btn ui-btn-right ui-icon-minus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-top:1em !important;margin-right:2.5em;">-</a>
+                <div class="center-wrapper">
+                    <!-- <img src="img/greta.png" /> --> 
+                    <span>Foto</span>
+                </div>
+            </div>            
             <div data-role="main">
                 <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">-->
                 <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;height:100%;">
@@ -548,7 +545,9 @@
             </div>
             <div data-role="main" class="ui-content">
                 <a href="#" id="readQrCodeButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
+                <!--
                 <a href="#" id="searchFollowginButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera ui-disabled">Trova Following</a>
+                -->
                 <ul data-role="listview" id="followingList" style="margin-top:1em;" data-theme="b">
                 </ul>
             </div>
@@ -811,9 +810,8 @@
                 </ul>
                 
             </div>
-            <div data-role="footer" style="margin:0;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" id="updateProfileButton" class="ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
-                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+            <div data-role="footer" style="margin:0;text-align:center;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" id="updateProfileButton" class="button-next ui-btn">
                     SALVA
                 </a>
             </div>
@@ -842,9 +840,8 @@
                     
                 </div>
             </div>
-            <div data-role="footer" style="margin:0;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" id="changePasswordButton" class="ui-btn ui-shadow ui-icon-check ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all"
-                   style="text-align:center;width:84%;padding:0 auto;margin: 0 auto; ">
+            <div data-role="footer" style="margin:0;text-align:center;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <a href="#" id="changePasswordButton" class="ui-btn button-next">
                     CAMBIA
                 </a>
             </div>

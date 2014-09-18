@@ -490,6 +490,7 @@ console.log("NEARBYPLACES FAIL", jqXHR);
         var url = config.URL_BASE + config.URL_NEARBY_PLACE_INFO;
         url += '&' + services.getRequestCommonParameters();
         var data = 'id=' + params.id + '&source=' + params.source
+console.log(url + '&' + data);
         $.ajax(url, {
             type: 'GET',
             data: data, 
