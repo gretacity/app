@@ -1069,8 +1069,8 @@ return;
     ////////////////////////////////////////
     // reporting6Page
     initReporting6Page: function() {
-        $('#reporting6Page #shotPhoto').on('click', self.getReportingPhoto);
-        $('#reporting6Page #fromGallery').on('click', self.getReportingPhoto);
+        $('#reporting6Page #sourceTypePopup #shotPhoto').on('click', self.getReportingPhoto);
+        $('#reporting6Page #sourceTypePopup #fromGallery').on('click', self.getReportingPhoto);
         $('#reporting6Page a.reporting-photo-shot').on('click', function(e) {
             self.reportingCurrPhotoPos = $(e.target).closest('div.reporting-photo-item').data('photopos');
             $('#sourceTypePopup', $.mobile.activePage).popup('open');
@@ -1082,14 +1082,15 @@ return;
     },
     
     getReportingPhoto: function(e) {
-        var remainingPhoto = $('#photoSet div a img.reporting-photo-missing', $.mobile.activePage).length;
+        /*var remainingPhoto = $('#photoSet div a img.reporting-photo-missing', $.mobile.activePage).length;
         if(remainingPhoto == 0) {
             helper.alert('Hai raggiunto il limite massimo di foto che puoi inviare');
             return;
-        }
-        var source = $(e.target).attr('id') == 'shotPhoto' ? 
+        }*/
+        var source = $(e.currentTarget).attr('id') == 'shotPhoto' ? 
                 Camera.PictureSourceType.CAMERA :
                 Camera.PictureSourceType.PHOTOLIBRARY;
+        console.log(source);
         camera.getPicture(function(res) {
             // Success callback
             var photo = $($('#photoSet div[data-photopos="' + self.reportingCurrPhotoPos + '"] a img.reporting-photo-missing', $.mobile.activePage)[0]);
