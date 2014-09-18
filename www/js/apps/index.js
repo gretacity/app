@@ -220,7 +220,14 @@ var app = {
                 function () {}
             );
         }
-        //$('[data-role="header"],[data-role="footer"]').fixedtoolbar({ tapToggle:false });
+        
+        $(document).on("pagecontainerbeforetransition", function (event, ui) {
+            /*if (ui.options.reverse == true) {*/
+            if((ui.toPage.attr('id') == 'homePage') || ((ui.prevPage) && (ui.prevPage.attr('id') == 'homePage'))) {
+                ui.options.transition = "none";
+            }
+        });
+
         services.checkSession(function(result) {
 // TODO TODO TODO
 return;
@@ -997,7 +1004,15 @@ return;
             var html = '';
             for(var i in res) {
                 var row = res[i];
-                html += '<li data-categoryid="'+row.id+'"><a href="javascript:app.selectReportingCategory('+row.id+')">'+row.nome+'</a></li>';
+                var iconUrl = row.icon || '';
+                html += '<li data-categoryid="'+row.id+'"><a href="javascript:app.selectReportingCategory('+row.id+')" style="padding-bottom:0;">' +
+                        '<div style="float:left;display:block;">';
+                if(iconUrl != '') {
+                    html += '<img src="' + iconUrl + '" style="height:3.5em;" />';
+                }
+                html += '</div>' + 
+                        '<span style="padding:1em 1em 0 4.5em;display:block;">' + row.nome + '</span>' +
+                        '</a></li>';
             }
             $('#reporting4Page #categories').html(html).listview('refresh');
         }, function(e, loginRequired) {
@@ -1079,9 +1094,9 @@ return;
             // Success callback
             var photo = $($('#photoSet div[data-photopos="' + self.reportingCurrPhotoPos + '"] a img.reporting-photo-missing', $.mobile.activePage)[0]);
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
-            photo.parent().next().show();
+            photo.parent().prev().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
-            $('#photoSet2 div[data-photopos="' + self.reportingCurrPhotoPos + '"] a').show();
+            //$('#photoSet2 div[data-photopos="' + self.reportingCurrPhotoPos + '"] a').show();
             helper.imageCropToFit(photo);
         }, function(e) {
             //helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
@@ -1096,8 +1111,9 @@ return;
         } else {
             pos = par;
         }
-        $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img').attr('src', '').css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
-        $('a.reporting-photo-delete', container).hide();
+        var imageEl = $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img');
+        imageEl.attr('src', '').css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
+        imageEl.parent().prev().hide();
     },
     
     sendReporting: function() {
@@ -1663,23 +1679,15 @@ return;
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
             }*/
-            
-            //var hasGallery = false;
+            console.log(result.foto);
             if(result.foto && (result.foto.length > 0)) {
-                //hasGallery = true;
-                
-                /*html += '<div class="slider"><ul class="slides">';
-                for(var i in result.foto) {
-                    html += '<li class="slide">' +
-                                '<img src="' + result.foto[i] + '" />' +
-                            '</li>';
-                }
-                html += '</ul></div>';*/
                 html += '<a href="#qrCodeInfoGalleryPage"><div style="position:relative;">' +
-                        '<img src="" style="position:absolute;right:0;top:10%;z-index:100;background:url(\'img/glide-arrows.png\') no-repeat bottom right;width:17px;height:28px;" />' +
-                        '<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
+                            '<img src="img/PhotoGallery.png" style="position:absolute;right:0;top:0;z-index:100;" />' +
+                            '<img src="img/Shadow.png" style="position:absolute;right:0;top:0;z-index:99;opacity:.7;" />' +
+                            '<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
                         '</div></a>';
             }
+            console.log(html);
             
             html += '<p class="qrcode-info-description">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>';
             html += '<div style="margin-top:3em;" class="ui-grid-a">' +
@@ -1704,22 +1712,13 @@ return;
             html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a></div>';
             html += '<div class="ui-block-b">';
             if(result.youtube && (result.youtube.length > 0)) {
-                //html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-style1">Video <span class="ui-li-count">' + result.youtube.length + '</span></a>';
                 html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia">Video</a>';
             } else {
                 html += '<a href="#" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia ui-disabled">Video</a>';
             }
             html += '</div></div>';
-            
-            
+                        
             $('#followingListDetailPage #infoResult').html(html);
-            /*if(hasGallery) {
-                var glide = $('.slider').glide({
-                    autoplay: false, // or 4000
-                    arrowLeftText: '',
-                    arrowRightText: ''
-                });         
-            }*/
             $.mobile.loading('hide');
         }, function(e, loginRequired) {
             $.mobile.loading('hide');

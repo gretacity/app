@@ -442,7 +442,7 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
             {name: 'news', key: 'notizie', icon: 'img/nearby/Info.png'},
             {name: 'follow', key: 'qrcode', icon: 'img/nearby/QRCode.png'},
             {name: 'segnalazioni', key: 'segnalazioni', icon: 'img/nearby/Segnalazioni.png'},
-            {name: 'suggeriti', key: 'suggeriti', icon: ''},
+            {name: 'suggeriti', key: 'suggeriti', icon: 'img/nearby/Suggeriti.png'},
             {name: 'aeroporti', key: 'airport', icon: 'img/nearby/Aeroporto.png'},
             {name: 'autobus', key: 'bus_station', icon: 'img/nearby/Autobus.png'},
             {name: 'bancomat', key: 'atm', icon: 'img/nearby/Banca.png'},
@@ -455,7 +455,7 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
             {name: 'ospedali', key: 'hospital', icon: 'img/nearby/Ospedale.png'},
             {name: 'parcheggi', key: 'parking', icon: 'img/nearby/Parcheggio.png'},
             {name: 'ristoranti', key: 'restaurant', icon: 'img/nearby/Ristorante.png'},
-            {name: 'stazioni di servizio', key: 'gas_station', icon: 'img/nearby/Rifornimeto.png'},
+            {name: 'stazioni di servizio', key: 'gas_station', icon: 'img/nearby/Rifornimento.png'},
             {name: 'uffici postali', key: 'post_office', icon: 'img/nearby/Ufficio-Postali.png'},
         ];
         success(results);
@@ -471,7 +471,7 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
         url += '&' + services.getRequestCommonParameters();
         //var url = config.URL_NEARBY_PLACES;
         var data = 'types='+placeCatId+'&lat='+lat+'&lng='+lng+'&distance='+distance;
-//console.log(data);
+console.log(url+'&'+data);
         $.ajax(url, {
             type:'GET', 
             data:data,
@@ -511,11 +511,11 @@ console.log("services.getNearbyPlaceInfo FAIL ", jqXHR);
     // REPORTING RELATED FUNCTIONS
     _reportingCategories: null,  // cache results
     
-    getReportingCategories: function(successCallbak, failCallback) {
-        if(services._reportingCategories != null) {
-            successCallbak(services._reportingCategories);
+    getReportingCategories: function(successCallback, failCallback) {
+        /*if(services._reportingCategories != null) {
+            successCallback(services._reportingCategories);
             return;
-        }
+        }*/
         var url = config.URL_BASE + config.URL_REPORTING_CATEGORY_LIST + '&' + services.getRequestCommonParameters();
         $.ajax(url, {
             type: 'GET',
@@ -523,7 +523,7 @@ console.log("services.getNearbyPlaceInfo FAIL ", jqXHR);
             dataType: 'json'
         }).done(function(result) {
             services._reportingCategories = result;
-            successCallbak(result);
+            successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
