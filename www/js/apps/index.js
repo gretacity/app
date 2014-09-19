@@ -371,12 +371,12 @@ return;
         //$('#photoPage #photo').attr('src', imageUrl);
         //$.mobile.changePage('#photoPage');
         
-        var win = window.open("ImageViewer.html", "_blank", "EnableViewPortScale=yes" );
-            // 
-        
+        //'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\'
+        var win = window.open("ImageViewer.html", "_blank", "location=no,closebuttoncaption=Indietro,EnableViewPortScale=yes" );
         win.addEventListener( "loadstop", function() {
             // Clear out the name in localStorage for subsequent opens.
             win.executeScript({code: "document.getElementsByTagName('img')[0].src = '" + imageUrl + "';" });
+            
         });
     },
     
