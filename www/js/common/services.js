@@ -68,15 +68,14 @@ console.log('services.recoverPassword SUCCESS', result);
             if(success) success();
         }).fail(function(jqXHR, textStatus, errorThrown) {
 console.log('services.recoverPassword FAIL', jqXHR);
-            if(fail) fail(textStatus);
+            if(fail) fail(jqXHR.responseText);
         });
     },
     
     changePassword: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_USER_CHANGE_PASSWORD;        
-        var data = 'oldpass='+encodeURIComponent(params.oldPassword)+'&password='+encodeURIComponent(params.newPassword)+
-                   '&password_1='+encodeURIComponent(params.newPassword)
-                   + '&' + services.getRequestCommonParameters();
+        var data = 'password_old='+encodeURIComponent(params.oldPassword)+'&password='+encodeURIComponent(params.newPassword)+
+                   '&' + services.getRequestCommonParameters();
         $.ajax(url, {
             type: 'POST',
             data: data
@@ -85,7 +84,7 @@ console.log('services.changePassword SUCCESS', result);
             if(success) success();
         }).fail(function(jqXHR, textStatus, errorThrown) {
 console.log('services.changePassword FAIL', jqXHR);
-            if(fail) fail();
+            if(fail) fail(jqXHR.responseText);
         });
         
     },

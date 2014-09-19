@@ -55,6 +55,7 @@ var app = {
         
         var registerPage = $('#registrationPage');
         registerPage.on('pageinit', self.initRegisterPage);
+        registerPage.on('pagebeforeshow', self.beforeShowRegisterPage);
         $('#registerButton', registerPage).on('click', self.register);
 
         var homePage = $('#homePage');
@@ -278,7 +279,7 @@ return;
                 case QrCodeData.TYPE_GRETACITY:
                     //self.currentQrCode = qrCodeData.elements.code;
                     //self.getFollowingInfo(qrCodeData.elements.code);
-                    alert('redirect to following page');
+                    self.getFollowingInfo(qrCodeData.elements.code);
                     break;
                 case QrCodeData.TYPE_URL:
                     //window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
@@ -622,6 +623,13 @@ return;
             }
         });
     },
+    beforeShowRegisterPage: function() {
+        $('#registrationPage input[type="text"]').val('');
+        $('#registrationPage input[type="email"]').val('');
+        $('#registrationPage input[type="password"]').val('');
+        $('#registrationPage input[type="tel"]').val('');
+        $('#registrationPage input[type="checkbox"]').attr('checked', false).checkboxradio('refresh');
+    },
     
     register: function() {
         var page = $('#registrationPage');
@@ -749,7 +757,7 @@ return;
                             self.lockLoginUi(false);
                         }, 'Recupera password');
                     }, function(e) {
-                        helper.alert('Si sono verificati errori durante la richiesta di una nuova password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', function() {
+                        helper.alert(e, function() {
                             self.lockLoginUi(false);
                         }, 'Recupera password');
                     });
@@ -790,10 +798,11 @@ return;
                 $.mobile.loading('hide');
                 helper.alert('La password è stata modificata', function() {
                     $.mobile.back({reverse: 'back'});
-                }, 'Recupera password');
-            }, function() {
+                }, 'Cambia password');
+            }, function(e) {
                 $.mobile.loading('hide');
-                helper.alert('Si sono verificati errori durante la richiesta di modifica password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', null, 'Recupera password');
+                //helper.alert('Si sono verificati errori durante la richiesta di modifica password.\nTi preghiamo di contattarci all\'indirizzo di posta elettronica supporto@gretacity.com.', null, 'Recupera password');
+                helper.alert(e, null, 'Cambia password');
             });
         }
     },
@@ -1629,7 +1638,7 @@ return;
                 if(description.length > 40) description = description.substr(0, 40) + '...';
                 var qrCodeId = row.r_qrcode_id || '';
                 
-                html += '<li data-icon="false"><a href="javascript:self.getFollowingInfo(\'' + qrCodeId.replace(/'/g, "\\'") + '\')">' + name + 
+                html += '<li data-icon="false"><a href="javascript:app.getFollowingInfo(\'' + qrCodeId.replace(/'/g, "\\'") + '\')">' + name + 
                         '<span id="count_' + qrCodeId + '" class="ui-li-count-cust" style="display:none;"></span>' +
                         '<label>' + description +'</label></a></li>';
             }
@@ -1692,7 +1701,6 @@ return;
                             '<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
                         '</div></a>';
             }
-            console.log(html);
             
             html += '<p class="qrcode-info-description">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>';
             html += '<div style="margin-top:3em;" class="ui-grid-a">' +
