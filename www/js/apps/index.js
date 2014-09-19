@@ -368,8 +368,18 @@ return;
                 imageUrl = imageUrl.substr(0, imageUrl.length - 1);
             }
         }
-        $('#photoPage #photo').attr('src', imageUrl);
-        $.mobile.changePage('#photoPage');
+        //$('#photoPage #photo').attr('src', imageUrl);
+        //$.mobile.changePage('#photoPage');
+        
+        var win = window.open("ImageViewer.html", "_blank", "EnableViewPortScale=yes" );
+            // 
+        
+        win.addEventListener( "loadstop", function() {
+            // Clear out the name in localStorage for subsequent opens.
+            win.executeScript({ code: "alert('ok');" });
+            win.executeScript({ code: "document.getElementsByTagName('img')[0].src = 'img/reporting/ambiente.png';" });
+            // document.getElementsByTagName('img')[0].src = 'img/reporting/ambiente.png';
+        });
     },
     
     fillCityList: function(val, listEl, targetElId, customHRef) {
