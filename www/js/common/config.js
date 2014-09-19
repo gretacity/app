@@ -33,8 +33,8 @@ var config = {
     //QR_CODE_TEST: 'http://www.gretacity.com/code/1000000769',
     //QR_CODE_TEST: 'http://www.google.com',
     QR_CODE_TEST: 'CIAOOOO',
-    LOGIN_DEFAULT_USERNAME: 'mario@rossi.it',
-    LOGIN_DEFAULT_PASSWORD: 'rossi',
+    LOGIN_DEFAULT_USERNAME: '', //mario@rossi.it',
+    LOGIN_DEFAULT_PASSWORD: '', //rossi',
     
     PASSWORD_MIN_LENGTH: 5,
     
