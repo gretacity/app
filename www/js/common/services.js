@@ -523,8 +523,9 @@ console.log("services.getNearbyPlaceInfo FAIL ", jqXHR);
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
-            services._reportingCategories = result;
+            //services._reportingCategories = result;
             successCallback(result);
+console.log(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
@@ -561,6 +562,7 @@ console.log('services.sendReporting', obj);
         }).done(function(result) {
             successCallback();
         }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.sendReporting FAIL', jqXHR);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },

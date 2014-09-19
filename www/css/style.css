@@ -70,7 +70,7 @@
             } */
             
             .panel-item-selected a {
-                background-color: rgb(255, 184, 0) !important;
+                background-color: rgb(89, 196, 248) !important;
             }
  
             .news-image,
@@ -196,7 +196,8 @@
             
             .qrcode-info-title {
                 /*background-color: #59C4F8;*/
-                background-color: #FFB800;
+                /*background-color: #FFB800;*/
+                background-color: rgb(89, 196, 248);
                 color:#FFF;
                 padding:.5em;
                 margin-top: 0;

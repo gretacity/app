@@ -837,7 +837,7 @@ return;
             barcodeReader.acquireQrCode(function(res) {
                 var qrCodeData = QrCodeData.fromText(res.text);
                 if(qrCodeData.type != QrCodeData.TYPE_GRETACITY) {
-                    helper.alert('Il QrCode letto non è valido', null, 'Segnalazione con QrCode');
+                    helper.alert('Il QR Code letto non appartiene al sistema Gretacity', null, 'Segnalazione con QrCode');
                     return;
                 }
                 self.reporting.qrCode = qrCodeData.elements.code;
@@ -1350,11 +1350,16 @@ return;
                     $('#priority', page).html('ALTA GRAVIT&Agrave;').css({'background-color': '#F00', 'color': '#FFF'});
                     break;
             }
-            var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
+            //var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
+            //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
+            //$('#photot2', page).css('background-image', 'url(\'' + photoUrl + '\')');
+            //$('#photot3', page).css('background-image', 'url(\'' + photoUrl + '\')');
             console.log(row);
-            $('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
-            //$('#photot2', page);
-            //$('#photot3', page);
+            var photos = $('.photo-preview', page);
+            for(var i = 0; i < photos.length; i++) {
+                var photoUrl = (row.immagini[i] != '' ? row.immagini[i] : 'img/camera.png');
+                $(photos[i]).css('background-image', 'url(\'' + photoUrl + '\')');
+            }
             var html = '';
             for(var i in row.log) {
                 html += '<li style="white-space:normal;">' + row.log[i] + '</li>';
@@ -1402,7 +1407,7 @@ return;
     initNewsSidePanel: function() {
         console.log('initializing side bar');
         services.getSubscribedChannels(function(result) {
-            var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Canali notizie</li>' +
+            var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Visualizza</li>' +
                        '<li data-icon="false" data-channelid="0"><a href="javascript:self.loadNewsChannel(\'0\')"><span></span>Tutte</a></li>';
             for(var i in result) {
                 var row = result[i];
@@ -1463,21 +1468,7 @@ return;
         self.initNewsSidePanel();
         setTimeout(function() {
             self.loadNewsChannel();
-        }, 200);
-        
-        /*var onlyNew = !self.newsEmptyBeforeShow;
-        if(self.newsEmptyBeforeShow === true) {
-            $('#newsPage #channelContent').empty();
-        } else {
-            self.newsEmptyBeforeShow = true;
-        }
-        
-        console.log('beforeShowNewsPage: onlyNew is ' + onlyNew);
-        
-        $.mobile.loading('show');
-        self.retrieveChannelContent(onlyNew);
-        pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
-        */
+        }, 200);        
     },
     formatChannelContentItem: function(item) {
         //var rowId = parseInt(item.id);
