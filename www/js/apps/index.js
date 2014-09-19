@@ -306,12 +306,12 @@ return;
         var infoText = '';
         switch(qrCodeData.type) {
             case QrCodeData.TYPE_URL:
-                infoText = 'Trovato URL';
+                infoText = 'Trovato URL <p>Hai la possibilità di visitare il sito cliccando sul link sottostante:</p>';
                 html = '<li><a href="' + qrCodeData.elements.url + '" style="white-space:normal !important; word-wrap:break-word; overflow-wrap: break-word;">' + qrCodeData.elements.url + '</li>';
                 //window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
                 break;
             case QrCodeData.TYPE_TEXT:
-                infoText = 'Testo';
+                infoText = 'Il QR Code ha acquisito il seguente testo:';
                 html = //'<li data-role="list-divider">Testo</li>' +
                        '<li style="white-space:normal"><strong>' + qrCodeData.elements.text + '</strong></li>';
                 break;
@@ -368,16 +368,17 @@ return;
                 imageUrl = imageUrl.substr(0, imageUrl.length - 1);
             }
         }
-        //$('#photoPage #photo').attr('src', imageUrl);
-        //$.mobile.changePage('#photoPage');
+        $('#photoPage #photo').attr('src', imageUrl);
+        $.mobile.changePage('#photoPage');
         
-        //'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\'
+        /*
         var win = window.open("ImageViewer.html", "_blank", "location=no,closebuttoncaption=Indietro,EnableViewPortScale=yes" );
         win.addEventListener( "loadstop", function() {
             // Clear out the name in localStorage for subsequent opens.
             win.executeScript({code: "document.getElementsByTagName('img')[0].src = '" + imageUrl + "';" });
             
         });
+         */
     },
     
     fillCityList: function(val, listEl, targetElId, customHRef) {
