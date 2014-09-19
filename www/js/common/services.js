@@ -137,6 +137,7 @@ console.log('services.getProfile: SUCCESS', result);//return;
                 },
                 address: (result.anagrafica[0].indirizzo || '').trim()
             };
+//console.log('services.getProfile: SUCCESS', r);//return;
             success(r);
         }).fail(function(jqXHR, textStatus, errorThrown) {
 console.log('services.getProfile: FAIL', textStatus);
@@ -165,8 +166,8 @@ console.log('services.updateProfile', url, data);
             success(result);
             config.userProfileHasBeenSet(true);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log('FAIL', textStatus);
-            fail(textStatus, services.isLoginRequired(jqXHR.status));
+//console.log('FAIL', textStatus, jqXHR);
+            fail(jqXHR.responseText, services.isLoginRequired(jqXHR.status));
         });
     },
     

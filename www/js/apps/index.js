@@ -358,7 +358,8 @@ return;
     },
 
     openPhoto: function(imageUrl) {
-        if(imageUrl == null) {
+        if(typeof(imageUrl) != "string") {
+            var el = imageUrl.currentTarget ? imageUrl.currentTarget : imageUrl;
             imageUrl = $(this).css('background-image');
             if(((imageUrl || '') == '') || (imageUrl.indexOf('url(file://') == 0)) return;
             if(imageUrl.indexOf('url(') == 0) {
@@ -2184,7 +2185,10 @@ self.tmp = res.routes;
             }, 'Profilo');
             return;
         }
-        profile.city = {id : $('#city', page).data('cityid')};
+        profile.city = {
+            id : $('#city', page).data('cityid'),
+            name: $('#city', page).val()
+        };
         
         // Specific validation for email
         if(!helper.isEmailValid(profile.email)) {
@@ -2212,7 +2216,8 @@ self.tmp = res.routes;
                 return;
             }
             $.mobile.loading('hide');
-            helper.alert('Si è verificato un errore durante l\'aggiornamento', null, 'Profilo');
+            //helper.alert('Si è verificato un errore durante l\'aggiornamento', null, 'Profilo');
+            helper.alert(e, null, 'Profilo');
         });
     },
     
