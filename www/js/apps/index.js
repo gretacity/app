@@ -376,9 +376,7 @@ return;
         
         win.addEventListener( "loadstop", function() {
             // Clear out the name in localStorage for subsequent opens.
-            win.executeScript({ code: "alert('ok');" });
-            win.executeScript({ code: "document.getElementsByTagName('img')[0].src = 'img/reporting/ambiente.png';" });
-            // document.getElementsByTagName('img')[0].src = 'img/reporting/ambiente.png';
+            win.executeScript({code: "document.getElementsByTagName('img')[0].src = '" + imageUrl + "';" });
         });
     },
     
