@@ -550,6 +550,7 @@ return;
         self.lockLoginUi(true);
         $.mobile.loading('show');
         auth.login({username: username, password: password}, function(result) {
+            $('#loginButton', page).html('ACCEDI');
             // Successfully loggedin, move forward
             pushNotificationHelper.register(function(res) {
                 console.log('Registered device on Apple/Google Push Server', res);
@@ -591,6 +592,7 @@ return;
                 $.mobile.changePage('#homePage');
             }
         }, function(e) {
+            $('#loginButton', page).html('ACCEDI');
             $.mobile.loading('hide');
             $('#loginButton', page).html(initialVal).removeClass('ui-disabled');
             helper.alert(e, function() {
@@ -660,6 +662,7 @@ return;
             }, 'Registrazione');
             return;
         }
+        params.city = $('#city', $.mobile.activePage).data('cityid');
         
         // Specific validation for email
         if(!helper.isEmailValid(params.email)) {
@@ -715,7 +718,7 @@ return;
         services.registerUser(params, function() {
             helper.alert('Operazione completata con successo.\n' +
                          'A breve riceverai una email per confermare la registrazione', function() {
-                $.mobile.changePage('#homePage', {transition: 'slide', reverse: true});
+                $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
             }, 'Registrazione');
         }, function(e) {
             // error callback
