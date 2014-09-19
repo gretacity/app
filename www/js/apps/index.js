@@ -1351,6 +1351,7 @@ return;
                     break;
             }
             var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
+            console.log(row);
             $('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
             //$('#photot2', page);
             //$('#photot3', page);
