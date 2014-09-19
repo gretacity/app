@@ -1110,8 +1110,8 @@ return;
     removeReportingPhoto: function(par) {
         var container = null;
         var pos = null;
-        if(par.target) {
-            container = $(par.target).closest('div.reporting-photo-item');
+        if(par.currentTarget) {
+            container = $(par.currentTarget).closest('div.reporting-photo-item');
             pos = container.data('photopos');
         } else {
             pos = par;
