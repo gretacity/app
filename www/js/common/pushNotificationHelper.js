@@ -61,15 +61,15 @@ function PushNotificationMessage() {
                     pageId = 'followingListPage';
                     break;
                 case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL:
-                    app.updateBalloonsInNews(true);
-                    pageId = 'newsChannelsPage';
+                    //app.updateBalloonsInNews(true);
+                    pageId = 'newsPage';
                     break;
                 case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING:
-                    pageId = 'reportingListPage';
+                    pageId = 'reportingHomePage';
                     break;
-                case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE:
+                /*case PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE:
                     pageId = 'channelInfoPage';
-                    break;
+                    break;*/
                 default:
                     console.error('Undefined push message type *' + typeId + '*');
                 break;                    
@@ -210,7 +210,7 @@ var pushNotificationHelper = {
         
         ix = ix || 0;
         
-        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL;
+        var notificationType = PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING;
         var data = [
             /*/ Complex notification data
             {id: 12, tot: 3},       // group 12 has 3 new items
@@ -220,12 +220,12 @@ var pushNotificationHelper = {
 
             // qrcode: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING
             //{id: config.QR_CODE_TEST, tot: 2}
-            //{id: '4000000028', tot: 2}
+            {id: '4000000028', tot: 2}
 
             // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
-            {id: '1157', tot: 2},
-            {id: '1088', tot: 4},
-            {id: '1017', tot: 7},
+            //{id: '1157', tot: 2},
+            //{id: '1088', tot: 4},
+            //{id: '1017', tot: 7},
 
             // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
             //{id: '330', tot: 1},
@@ -336,7 +336,7 @@ console.log('iOS token callback ' + result);
     
     // iOS only
     updateApplicationIconBadgeNumber: function() {
-        if(device && (device.platform == 'iOS') && pushNotificationHelper.pushNotification) {
+        if((typeof(device) != 'undefined') && (device.platform == 'iOS') && pushNotificationHelper.pushNotification) {
             var totUnread = pushNotificationHelper.getUnread();
 // For testing purposes:
 //totUnread = 999;
@@ -470,6 +470,8 @@ console.log('pushNotificationService: received notification from GCM/Apple serve
         }
         delete unreadData[typeId][groupId];
         window.localStorage.setItem('gretacity_unreaddata', JSON.stringify(unreadData));
+        
+        pushNotificationHelper.updateApplicationIconBadgeNumber();
     },
     
     setAllAsRead: function(typeId) {

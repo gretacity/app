@@ -587,12 +587,12 @@ console.log('services.getReportingList FAIL', jqXHR, textStatus);
     
     sendRequestSupport: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_SUPPORT;
-        var data = 'text=' + encodeURIComponent(params.text) + '&' + services.getRequestCommonParameters();
+        var data = 'message=' + encodeURIComponent(params.text) + '&' + services.getRequestCommonParameters();
         $.ajax(url, {
             type: 'get',
             data:data,
-            timeout: config.REQUEST_DEFAULT_TIMEOUT,
-            dataType: 'json'
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
+            //dataType: 'json'
         }).done(function(result) {
 console.log('services.sendRequestSupport SUCCESS', result);
             success(result);

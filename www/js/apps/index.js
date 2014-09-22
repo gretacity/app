@@ -167,7 +167,6 @@ var app = {
         
         if(config.EMULATE_ON_BROWSER) return;
         
-        // TODO
         //pushNotificationHelper.updateApplicationIconBadgeNumber();
         
         var lastRegistrationDate = pushNotificationHelper.getLastRegistrationDate();

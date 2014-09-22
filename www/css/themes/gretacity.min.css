@@ -29,7 +29,6 @@ button,
 legend,
 .ui-input-text input,
 .ui-input-search input {
-	color: inherit;
 	text-shadow: inherit;
         color: #00269C;
 }
