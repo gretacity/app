@@ -144,6 +144,10 @@ var app = {
         setupChannelSubscriptionPage.on('pagebeforeshow', self.beforeshowSetupChannelSubscriptionPage);
         setupChannelSubscriptionPage.on('pageshow', self.showSetupChannelSubscriptionPage);
         
+        var supportPage = $('#supportPage');
+        supportPage.on('pageshow', self.initSupportPage);
+        supportPage.on('pageshow', self.showSupportPage);
+        
         $('#infoPage').on('pageinit', function() {
             $('#infoPage #privacyButton').on('click', function() {
                 self.openLink(config.PRIVACY_URL);
@@ -155,31 +159,9 @@ var app = {
                 self.openLink(config.INFO_URL);
             });
         });
-        
-        
-        
-        
-        /*$('#logoutButton', profilePage).on('click', self.logout);
-        var profileNamePage = $('#profileNamePage');
-        profileNamePage.on('pageinit', self.intiProfileNamePage);
-        profileNamePage.on('pageshow', self.showProfileNamePage);
-        var profileCityPage = $('#profileCityPage');
-        profileCityPage.on('pageinit', self.initProfileCityPage);
-        profileCityPage.on('pageshow', self.showProfileCityPage);
-        var profileAddressPage = $('#profileAddressPage');
-        profileAddressPage.on('pagebeforeshow', self.showProfileAddressPage);
-        $('#saveProfileAddressButton', profileAddressPage).on('click', self.updateProfileAddress);
-        $('#profileFollowingPage').on('pagebeforeshow', self.beforeShowProfileFollowingPage);
-        var newsChannelsPage = $('#newsChannelsPage');
-        newsChannelsPage.on('pagebeforeshow', self.beforeShowNewsChannelsPage);
-        $('#getInfoButton', followingListPage).on('click', self.getInfoFromQrCode);
-        */
+                
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
-        //var reportingListPage = $('#reportingListPage');
-        //reportingListPage.on('pageshow', self.loadReportingItems);
-        //$('#refreshReportingListButton', reportingListPage).on('click', self.loadReportingItems);
-        //$('#loadMoreReportingItemsButton', reportingListPage).on('click', self.loadReportingItems);
     },
     onResume: function() {
         
@@ -368,17 +350,15 @@ return;
                 imageUrl = imageUrl.substr(0, imageUrl.length - 1);
             }
         }
-        $('#photoPage #photo').attr('src', imageUrl);
-        $.mobile.changePage('#photoPage');
         
-        /*
+        /*$('#photoPage #photo').attr('src', imageUrl);
+        $.mobile.changePage('#photoPage');*/
+        
         var win = window.open("ImageViewer.html", "_blank", "location=no,closebuttoncaption=Indietro,EnableViewPortScale=yes" );
         win.addEventListener( "loadstop", function() {
-            // Clear out the name in localStorage for subsequent opens.
             win.executeScript({code: "document.getElementsByTagName('img')[0].src = '" + imageUrl + "';" });
             
         });
-         */
     },
     
     fillCityList: function(val, listEl, targetElId, customHRef) {
@@ -2234,6 +2214,39 @@ self.tmp = res.routes;
     
     
     ////////////////////////////////////////
+    // supportPage
+    
+    initSupportPage: function() {
+        $('#supportPage #sendRequestButton').on('click', self.sendSupportRequest);
+    },
+
+    showSupportPage: function() {
+        $('#description', $.mobile.activePage).val('');
+    },
+    
+    sendSupportRequest: function() {
+        var text = $('#description', $.mobile.activePage).val().trim();
+        if(text.length == 0) {
+            helper.alert('Descrivici il problema', null, 'Supporto');
+            return;
+        }
+        $.mobile.loading('show');
+        services.sendRequestSupport({text: text}, function() {
+            $.mobile.loading('hide');
+            helper.alert('La tua richiesta di supporto è stata inviata.', function() {
+                $.mobile.changePage('#setupPage', {transition: 'slide', reverse: true});
+            }, 'Supporto');
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+                return;
+            }
+            $.mobile.loading('hide');
+            helper.alert(e, null, 'Supporto');
+        });
+    },
+
+    ////////////////////////////////////////
     // setupFollowingPage
     
     showSetupFollowingPage: function() {
@@ -2358,13 +2371,11 @@ self.tmp = res.routes;
         var html = '';
         if(result != null) {
             $('#info', $.mobile.activePage).html('Seleziona il comune di interesse dall\'elenco');
-            //html += '<optgroup label="Seleziona">';
             for(var i in result) {
                 var l = result[i];
                 html += '<option data-regid="' + l.id_regione + '" data-provid="' + l.id_provincia + '" data-cityid="' + l.id + '">' + l.nome + '</option>';
             }
             html += '<option value="manual"><strong>RICERCA MANUALE</strong></option>';
-            //html += '</optgroup>';
             $('#city', $.mobile.activePage).html(html);
             self.showManualCitySearch(false);
         } else {
@@ -2466,517 +2477,6 @@ self.tmp = res.routes;
         });
     },
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    intiProfileNamePage: function() {
-        $('#profileNamePage #saveProfileNameButton').on('click', self.updateProfileName);
-    },
-    showProfileNamePage: function() {
-        if(self.userProfile == null) {
-            $.mobile.changePage('#profilePage');
-            return;
-        }
-        // Get last name, first name and email address from user profile
-        var page = $('#profileNamePage');
-        $('#firstname', page).val(self.userProfile.firstname);
-        $('#lastname', page).val(self.userProfile.lastname);
-        $('#email', page).val(self.userProfile.email);
-    },
-    updateProfileName: function() {
-        var page = $('#profileNamePage');
-        // Validate data
-        var firstname = $('#firstname', page).val().trim();
-        var lastname = $('#lastname', page).val().trim();
-        var email = $('#email', page).val().trim();
-        var errors = [];
-        if(firstname == '') errors.push('il nome');
-        if(lastname == '') errors.push('il cognome');
-        if(email == '') errors.push('l\'email');
-        if(errors.length > 0) {
-            var message = 'Inserisci ' + errors.join(', ');
-            helper.alert(message, null, 'Aggiorna profilo');
-            return;
-        }
-        if(!helper.isEmailValid(email)) {
-            helper.alert('L\'email inserita non è corretta', function() {
-                $('#email', page).focus();
-            }, 'Aggiorna profilo');
-            return;
-        }
-        // Update user profile
-        self.userProfile.firstname = firstname;
-        self.userProfile.lastname = lastname;
-        self.userProfile.email = email;
-        services.updateProfile({profile: self.userProfile}, function() {
-            // and navigate back
-            $.mobile.back();
-            //$.mobile.changePage('#profilePage');
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Si è verificato un errore durante il salvataggio', null, 'Il tuo profilo');
-        });
-    },
-    
-    initProfileCityPage: function() {
-        $('#profileCityPage #cityName').on('input', self.profileCityNameChanged);
-    },
-    showProfileCityPage: function() {
-        if(self.userProfile == null) {
-            $.mobile.changePage('#profilePage');
-            return;
-        }
-        var page = $('#profileCityPage');
-        $('#cityName', page).val(
-            (self.userProfile ? (self.userProfile.city.name || '').trim() : '')
-        );
-        $('#citySuggestions', page).empty();
-    },
-    
-    
-    profileCityNameChanged: function() {
-        var val = $(this).val();
-        if(val.length >= 2) {
-            services.getLocationsByName({name:val}, function(result) {
-                var html = '';
-                var max_rows = 20;
-                var ix = 0;
-                for(var i in result) {
-                    if(ix++ >= max_rows) {
-                        html += '<li>Altri risultati omessi</li>';
-                        break;
-                    }
-                    var row = result[i];
-                    html += '<li><a href="javascript:self.setProfileCity(\'' + row.nome.trim().replace(/'/g, "\\'") + '\', '+row.id+')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
-                }
-                $('#profileCityPage #citySuggestions').html(html).listview("refresh");
-            });
-        }
-    },
-    setProfileCity: function(cityName, cityId) {
-        self.userProfile.city.id = cityId;
-        self.userProfile.city.name = cityName;
-        services.updateProfile({profile: self.userProfile}, function() {
-            services.invalidateSubscribedChannels();
-            self.initSidePanel();
-            // and navigate back
-            $.mobile.back();
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Si è verificato un errore durante il salvataggio', null, 'Il tuo profilo');
-        });
-    },
-    
-    
-    showProfileAddressPage: function() {
-        if(self.userProfile == null) {
-            $.mobile.changePage('#profilePage');
-            return;
-        }
-        var page = $('#profileAddressPage');
-        $('#address', page).val(
-            (self.userProfile ? (self.userProfile.address || '').trim() : '')
-        );
-    },
-    
-    
-    updateProfileAddress: function() {
-        var page = $('#profileAddressPage');
-        self.userProfile.address = $('#address', page).val().trim();
-        services.updateProfile({profile: self.userProfile}, function() {
-            // and navigate back
-            $.mobile.back();
-        }, function(e, loginRequired) {
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Si è verificato un errore durante il salvataggio', null, 'Il tuo profilo');
-        });
-    },*/
-    
-    
-    
-    
-    _initChannelSubscriptionPageBeforeShow: function() {
-        //$('#channelSubscriptionPage #city').parents('div.ui-select').addClass('ui-screen-hidden');
-        $('#automaticSelectionPanel').hide();
-        $('#manualSelectionPanel').hide();    
-    },
-    _initChannelSubscriptionPage: function() {
-        $.mobile.loading('show');
-        geoLocation.acquireGeoCoordinates(function(pos) {
-            services.getNearbyLocations(pos, function(result) {
-                // Successfully retrieved nearby locations from GPS coordinates
-                self.setNearbyLocations(result);
-            }, function(e, loginRequired) {
-                // Unable to retrieve nearby locations
-                if(loginRequired) {
-                    $.mobile.changePage('#loginPage');
-                    return;
-                }
-                self.setNearbyLocations(null);
-            });
-        }, function(e) {
-            // Unable to retrieve GPS coordinates
-            self.setNearbyLocations(null);
-        });
-    },
-    _setNearbyLocations: function(result) {
-        var page = $('#channelSubscriptionPage');
-        var html = '';
-        if(result != null) {
-            html += '<optgroup label="seleziona">';
-            for(var i in result) {
-                var l = result[i];
-                html += '<option data-regid="' + l.id_regione + '" data-provid="' + l.id_provincia + '" data-cityid="' + l.id + '">' + l.nome + '</option>';
-            }
-            html += '<option value="manual">RICERCA AVANZATA</option>';
-            html += '</optgroup>';
-            $('#city', page).html(html);
-            //$('#city', page).parents('div.ui-select').removeClass('ui-screen-hidden');
-            //$('#city', page).selectmenu('refresh');
-            
-            self.showManualCitySearch(false);
-            
-        } else {
-            //$('#city', page).parents('div.ui-select').addClass('ui-screen-hidden');
-            self.showManualCitySearch(true);
-        }
-        $.mobile.loading('hide');
-    },
-    _subscriptionCityChanged: function() {
-        var page = $('#channelSubscriptionPage');
-        if($(this).val() == 'manual') {
-            self.showManualCitySearch(true);
-        } else {
-            $('#manualSelectionPanel', page).hide('fast');
-            //self.getAvailableChannels($(this).val());
-            var selectedItem = $('#channelSubscriptionPage #city option:selected');
-            var cityName = selectedItem.html().trim();
-            var cityId = selectedItem.attr('data-cityid');
-            var provId = selectedItem.attr('data-provid');
-            var regionId = selectedItem.attr('data-regid');
-            self.getAvailableChannels(cityName, cityId, provId, regionId);
-        }
-    },
-    _showManualCitySearch: function(show) {
-        var page = $('#channelSubscriptionPage');
-        if(show === true) {
-            $('#automaticSelectionPanel').hide();
-            $('#manualSelectionPanel', page).show('fast', function() {
-                $('#manualSelectionPanel #cityNameManual', page).focus();
-            });
-        } else {
-            $('#automaticSelectionPanel').show();
-            $('#manualSelectionPanel', page).hide();
-        }
-    },
-    _cityNameManualChanged: function() {
-        var val = $(this).val();
-        if(val.length >= 4) {
-            services.getLocationsByName({name:val}, function(result) {
-                var html = '';
-                var max_rows = 20;
-                var ix = 0;
-                for(var i in result) {
-                    if(ix++ >= max_rows) {
-                        html += '<li>Altri risultati omessi</li>';
-                        break;
-                    }
-                    var row = result[i];
-                    html += '<li><a href="javascript:self.getAvailableChannels(\'' + row.nome.trim().replace(/'/g, "\\'") + '\', '+row.id+',' + row.id_provincia + ', ' + row.id_regione + ')">' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
-                }
-                $('#channelSubscriptionPage #citySuggestions').html(html).listview("refresh");
-//console.dir(result);
-            });
-        }
-    },
-    _getAvailableChannels: function(cityName, cityId, provId, regionId) {
-        $.mobile.loading('show');
-        $('#channelSubscriptionPage #availableChannelsContainer').show();
-        $('#channelSubscriptionPage #availableChannelList').empty();
-        services.getAvailableChannels({cityId: cityId, provId: provId, regionId: regionId}, function(result) {
-            var html = '';
-            if(result.length == 0) {
-                html = '<label style="white-space:normal;">Sei stato associato al comune di ' + cityName 
-                       + '.<br />Attualmente non ci sono canali disponibili, ma ti invieremo delle notifiche quando ce ne saranno.</label>';
-                $('#channelSubscriptionPage #availableChannelList').html(html);
-            } else {
-                for(var i in result) {
-                    var channelId = result[i].id;
-                    var channelName = result[i].nome;
-                    var subscribed = result[i].sottoscritto == '1';
-                    html += '<input type="checkbox" id="channel' + channelId + '" data-channelid="' + channelId + '" ' + 
-                            'data-channelname="' + channelName + '"' + (subscribed ? ' checked' : '') + '/>' +
-                            '<label for="channel' + channelId + '">' + channelName + '</label>';
-                }
-                $('#channelSubscriptionPage #availableChannelList').html(html);
-                $('#channelSubscriptionPage #availableChannelList input[type="checkbox"]').checkboxradio().on('click', self.subscribeToChannel);
-            }
-            $.mobile.silentScroll($('#channelSubscriptionPage #availableChannelsContainer').offset().top);
-            $.mobile.loading('hide');
-        }, function(e) {
-            $.mobile.loading('hide');
-        });
-    },
-    _subscribeToChannel: function() {
-        $.mobile.loading('show');
-        var channelId = $(this).attr('data-channelid');
-        var channelName = $(this).attr('data-channelname');
-        var subscribe = $(this).is(':checked');
-        services.subscribeToChannel({channelId: channelId, subscribe: subscribe}, function() {
-            // Update the subscribedChannels element in newsPage
-            /*
-            var channelsElements = $('#newsPage #subscribedChannels');
-            if(subscribe) {
-                //var selectedValue = channelsElements.val();
-                channelsElements.append('<option value="' + channelId + '" >' + channelName + '</option>');
-            } else {
-                $('option[value="' + channelId + '"]', channelsElements).remove();
-            }*/
-            $.mobile.loading('hide');
-        }, function(e, loginRequired) {
-            if(subscribe) {
-                // Remove the check mark
-                $(this).removeAttr('checked').checkboxradio("refresh");
-            } else {
-                // Reset the check mark
-                $(this).prop('checked', true).checkboxradio("refresh");
-            }
-            $.mobile.loading('hide');
-        });
-    },
-    
-    
-    //NEWS_UPDATE_CONTENT: 20000, // 20000 is 20 secs
-    /*newsEmptyBeforeShow: true,
-    newsChannelId: 0,
-    newsContentLastId: null, newsContentLastDate: null,
-    newsContentFirstId: null, newsContentFirstDate: null,
-    newChannelContentReceived: [],
-    //newsContentTimeout: null,
-    sideBarInitialized: false,
-    */
-    _initNewsPage: function() {
-        if(!self.sideBarInitialized) {
-            self.initSidePanel();
-        }        
-        var page = $('#newsPage');
-        $('#channelContent', page).empty();
-    },
-    _beforeShowNewsPage: function() {
-
-        var onlyNew = !self.newsEmptyBeforeShow;
-        if(self.newsEmptyBeforeShow === true) {
-            $('#newsPage #channelContent').empty();
-        } else {
-            self.newsEmptyBeforeShow = true;
-        }
-        
-        console.log('beforeShowNewsPage: onlyNew is ' + onlyNew);
-        
-        $.mobile.loading('show');
-        self.retrieveChannelContent(onlyNew);
-        pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL, self.newsChannelId);
-        self.updateBalloonsInNews();        
-    },
-    _beforeHideNewsPage: function() {
-    },
-    
-    _retrieveMoreChannelContent: function() {
-        self.retrieveChannelContent(false);
-    },
-    _showNewChannelContentReceived: function() {
-        $('#newContentReceivedButton').hide();
-        // Insert new rows in the top
-        var html = '';
-        for(var i in self.newChannelContentReceived) {
-            html += self.formatChannelContentItem(self.newChannelContentReceived[i]);
-        }
-        var channelContent = $('#newsPage #channelContent');
-        if($('li:first-child', channelContent).length == 1)
-            $('li:first-child', channelContent).before(html);
-        else
-            channelContent.append(html);
-        channelContent.listview('refresh');
-        self.newChannelContentReceived = null;
-        // Scroll to top
-        $.mobile.silentScroll(0);
-    },
-    
-    
-    
-    /*_newsDetailId: null,
-    showNewsDetail: function(id) {
-        self._newsDetailId = id;
-        self.newsEmptyBeforeShow = false;
-        $.mobile.changePage('#newsDetailPage', {transition: 'slide'});
-    },
-    initNewsDetailPage: function() {
-        if(self._newsDetailId == null) {
-            $.mobile.changePage('#newsChannelsPage');
-            return;
-        }
-        $.mobile.loading('show');
-        var id = self._newsDetailId;
-        self._newsDetailId = null;
-        services.getChannelContentDetail({id: id}, function(result) {
-            var page = $('#newsDetailPage');
-            var dateAdded = Date.parseFromYMDHMS(result.data_inserimento);
-            
-            var imgurl = (result.foto || '');
-            if(imgurl != '') {
-                $('#newsImage', page).css('background-image', 'url(\'' + imgurl + '\')').show();
-            } else {
-                $('#newsImage', page).css('background-image', '').hide();
-            }
-            $('#newsTitle', page).html(result.oggetto);
-            $('#newsDate', page).html("Inserita il " + dateAdded.toDMY() + " alle " + dateAdded.toHM());
-            var text = $('<span class="temp">'+result.descrizione+'</span>');
-            $('a', text).each(function() {
-                var href = $(this).attr('href');
-                $(this).attr('href', '#')
-                       .attr('onclick', 'javascript:window.open(\'' + href + '\', \'_blank\', \'location=no,closebuttoncaption=Indietro,enableViewportScale=yes\');');
-            });
-            $('#newsText', page).html(
-                text.html()
-            );
-            $.mobile.loading('hide');
-        }, function(e, loginRequired) {
-            $.mobile.loading('hide');
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Impossibile recuperare il contenuto', null, 'Notizia');
-        });
-    },
-    */
-    
-    _showNewsChannelAvailable: function() {
-        var newsChannelAvailableIds = pushNotificationHelper.getUnreadIds(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_NEWCHANNEL_AVAILABLE);
-        if(newsChannelAvailableIds.length == 0) return;
-        var page = $('#channelInfoPage');
-        $('div[data-role="main"] p', page).html('Ci sono nuovi canali disponibili ai quali potresti essere interessato');
-        $.mobile.changePage('#channelInfoPage', {transition : 'slideup'});
-console.log(newsChannelAvailableIds);
-        $.mobile.loading('show');
-        services.getChannelInfo({ids: newsChannelAvailableIds}, function(result) {
-            var html = '';
-            for(var i in result) {
-                var row = result[i];
-                html += '<div data-channelid="' + row.id + '" style="border-top:solid #0088CC 0.1em;margin-top:1em;padding-top:0.5em;">' +
-                            //'<label>Amministrazione Comunale di ...</label>' +
-                            '<strong>' + row.nome + '</strong>' +
-                            '<a href="javascript:self.subscribeToNewsChannelAvailable('+row.id+')" class="ui-btn" style="background-color:#0088CC;color:#FFF;text-shadow: none;">Sottoscrivi</a>' +
-                        '</div>';
-            }
-            $('#channelInfoContainer', page).html(html);
-            $.mobile.loading('hide');
-        }, function(e, loginRequired) {
-            $.mobile.loading('hide');
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Impossibile recuperare il contenuto', null, 'Canali disponibili');
-        });
-    },
-    _subscribeToNewsChannelAvailable: function(id) {
-        var page = $('#channelInfoPage');
-        var subscribeButton = $('#channelInfoContainer div[data-channelid="' + id + '"] a', page);
-        subscribeButton.html('Sottoscrizione...').addClass('ui-disabled');
-        
-        services.subscribeToChannel({
-            channelId: id, 
-            subscribe: true
-        }, function() {
-            // Once subscribed change text to "Sottoscritto" and add class ui-disabled
-            subscribeButton.html('Sottoscritto');
-        }, function(e, loginRequired) {
-            // An error occurred
-            subscribeButton.html('Sottoscrivi').removeClass('ui-disabled');
-            if(loginRequired) {
-                $.mobile.changePage('#loginPage');
-                return;
-            }
-            helper.alert('Impossibile completare l\'operazione', null, 'Sottoscrizione canale');
-        });
-    },
-
-    
-    
-    
-    /*getInfoFromQrCode: function() {
-        barcodeReader.acquireQrCode(function(res) {
-            if(res === '') return;
-            var qrCodeData = QrCodeData.fromText(res.text);
-            switch(qrCodeData.type) {
-                case QrCodeData.TYPE_GRETACITY:
-                    self.currentQrCode = qrCodeData.elements.code;
-                    self.getFollowingInfo(qrCodeData.elements.code);
-                    break;
-                case QrCodeData.TYPE_URL:
-                    window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
-                    break;
-                case QrCodeData.TYPE_TEXT:
-                case QrCodeData.TYPE_CONTACT:
-                case QrCodeData.TYPE_PHONE_NUMBER:
-                case QrCodeData.TYPE_SMS:
-                    self.openQrCodeInfoViewer(qrCodeData);
-                    break;
-                default:
-                    helper.alert('Codifica non supportata', null, 'Leggi QR Code');
-                    break;
-            }
-        }, function(e) {
-            $('#qrCodeInfoPage #qrCodeId').val('');
-            // errorCallback
-            helper.alert('Impossibile leggere il codice', null, 'Leggi QR Code');
-        });
-    },*/
-    
-    
-    
-    
-    
     
     _followQrCode: function() {
         var follow = $('#qrCodeInfoPage #infoResult #following').is(':checked');
@@ -3026,90 +2526,10 @@ console.log(newsChannelAvailableIds);
     
     
 
-    
-    
-    
-    
+
     
     mapsScriptLoaded: function() {
     },
     
-    
-    
-    
-    /*latLng: {lat: 0, lng: 0},
-   _map: null,
-    marker: null,*/
-    __mapsSetup: function() {
-        if(typeof(google) == 'undefined') return;
-        if(self.map != null) google.maps.event.clearListeners(self.map);
-        var lat = self.latLng.lat;
-        var lng = self.latLng.lng;
-        var mapZoom = config.GOOGLE_MAPS_ZOOM;
-        if(lat == 0) {
-            // Set default lat lng is set to Rome
-            lat = 41.900046; lng = 12.477215;
-            mapZoom = 5;
-        }
-        var options = {
-            zoom: mapZoom,
-            center: new google.maps.LatLng(lat, lng),
-            mapTypeId: eval(config.GOOGLE_MAPS_TYPE_ID),
-            streetViewControl: false
-        };
-        self.map = new google.maps.Map(document.getElementById('map'), options);
-        self.mapsSetMarker();
-    },
-    __mapsSetMarker: function() {
-        if(self.map == null) return;
-//console.log("Setting map position to " + self.latLng.lat + " " + self.latLng.lng);
-        var lat = self.latLng.lat;
-        var lng = self.latLng.lng;
-        var mapZoom = config.GOOGLE_MAPS_ZOOM;
-        if(lat == 0) {
-            // Set default lat lng is set to Rome
-            lat = 41.900046; lng = 12.477215;
-            mapZoom = 5;
-        }
-        
-        var markerPoint = new google.maps.LatLng(lat, lng);
-        self.marker = new google.maps.Marker({
-            position: markerPoint,
-            map: self.map,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-            title: 'Luogo della segnalazione'
-        });
-        self.map.panTo(markerPoint);
-        self.map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
-        google.maps.event.addListener(
-            self.marker, 
-            'click', 
-            function() {
-                if(document.activeElement) {
-                    $(document.activeElement).blur();
-                }
-        });
-        google.maps.event.addListener(
-            self.marker, 
-            'dragend', 
-            function() {
-                if(document.activeElement) {
-                    $(document.activeElement).blur();
-                }
-                self.latLng.lat = self.marker.getPosition().lat();
-                self.latLng.lng = self.marker.getPosition().lng();
-        });
-        google.maps.event.addListener(
-            self.marker, 
-            'dragstart', 
-            function() {
-                if(document.activeElement) {
-                    $(document.activeElement).blur();
-                }
-        });
-
-        var infowindow = new google.maps.InfoWindow({content: '<div>Trascina il segnaposto nella posizione corretta<br />per consentirci di individuare con precisione<br />il punto della tua segnalazione.</div>'});
-        infowindow.open(self.map, self.marker);
-    } 
+     
 };

@@ -146,24 +146,23 @@
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary " style="white-space:normal;padding-right:0;padding-left:0;">Segnala manualmente</a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
-                    </div>
+                    <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary " style="white-space:normal;padding-right:0;padding-left:0;">Segnala manualmente</a>
                 </div>
                 <div class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">
-                            Verifica le mie segnalazioni
-                            <span class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
-                        </a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="#" data-transition="slide" class="ui-btn ui-btn-primary ui-disabled" style="white-space:normal;padding-right:0;padding-left:0;">Segnalazioni intorno a me</a>
-                    </div>
+                    <p class="text-primary">
+                        Se il comune supporta il sistema Gretacity, 
+                        puoi utilizzare il QR Code per segnalarci la posizione.
+                    </p>
+                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
                 </div>
+                <div class="ui-grid-a">
+
+                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">
+                        Verifica le mie segnalazioni
+                        <span class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
+                    </a>
+                </div>
+                
             </div>
         </div>
         <!-- /reportingHomePage -->
@@ -757,26 +756,39 @@
                <!-- <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Profilo</a>-->
                 <div class="ui-grid-a" style="margin-top: 2em;">
                     <div class="ui-block-a">
-                        <a href="#profilePage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Profilo</a>
+                        <a href="#profilePage" data-transition="slide">
+                            <img src='img/SetupProfile.png' style="width:100%" />
+                        </a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#setupFollowingPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Following</a>
+                        <!--<a href="#setupFollowingPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Following</a>-->
+                        <a href="#setupFollowingPage" data-transition="slide">
+                            <img src='img/SetupFollowing.png' style="width:100%" />
+                        </a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#setupChannelsPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">News</a>
+                        <a href="#setupChannelsPage" data-transition="slide">
+                            <img src='img/SetupNews.png' style="width:100%" />
+                        </a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#infoPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Info</a>
+                        <a href="#infoPage" data-transition="slide">
+                            <img src='img/SetupPrivacy.png' style="width:100%" />
+                        </a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                    <a href="#supportPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Supporto</a>
+                        <a href="#supportPage" data-transition="slide">
+                            <img src='img/SetupSupport.png' style="width:100%" />
+                        </a>
                     </div>
                     <div class="ui-block-b">
-                        <a href="#" id="logoutButton" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Esci</a>
+                        <a href="#" id="logoutButton" data-transition="slide">
+                            <img src='img/SetupLogout.png' style="width:100%" />
+                        </a>
                     </div>
                 </div>
             </div>
@@ -958,9 +970,13 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
+                <!--
                 <p class="text-primary" style="margin-top: 5em;">
                     Per contattare il supporto invia una email all'indirizzo <strong>supporto@gretacity.com</strong>
                 </p>
+                -->
+                <textarea id="description" placeholder="Descrivici il problema"></textarea>
+                <a href="#" id="sendRequestButton" class="ui-btn ui-btn-primary  ui-btn-primary-background">Invia</a>
             </div>
         </div>
         <!-- /supportPage -->
@@ -1198,6 +1214,5 @@
         <script>
             app.initialize();
         </script>
-
     </body>
 </html>

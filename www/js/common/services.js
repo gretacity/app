@@ -582,8 +582,24 @@ console.log('services.getReportingList SUCCESS', result);
 console.log('services.getReportingList FAIL', jqXHR, textStatus);
             if(failCallback) failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
+    },
+    
+    
+    sendRequestSupport: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_SUPPORT;
+        var data = 'text=' + encodeURIComponent(params.text) + '&' + services.getRequestCommonParameters();
+        $.ajax(url, {
+            type: 'get',
+            data:data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
+            dataType: 'json'
+        }).done(function(result) {
+console.log('services.sendRequestSupport SUCCESS', result);
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
+            if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
+        });
     }
-    
-    
     
 }

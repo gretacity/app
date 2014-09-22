@@ -90,6 +90,8 @@ var config = {
     //URL_NEARBY_PLACE_INFO: 'http://bitroad.it/google/info.php',
     URL_NEARBY_PLACE_INFO: '/web/index.php?mode=module&p=app_services&a=info',
     
+    URL_SUPPORT: '/web/index...',
+    
     // TODO
     ///web/index.php?mode=module&p=app_services&a=aroundme&types=segnalazioni&lat=&lng=distance=',
     
