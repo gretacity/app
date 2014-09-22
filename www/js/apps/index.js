@@ -1797,16 +1797,70 @@ return;
             };
             var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap'), options);
             var point = new google.maps.LatLng(lat, lng);
-            var marker = new google.maps.Marker({
-                position: point,
-                map: map,
-                draggable: false,
-                animation: google.maps.Animation.DROP,
-                title: placeName
+            
+            geoLocation.acquireGeoCoordinates(function(pos) {
+                
+                //var startingMarkerPoint is equal to marker
+
+                var endPoint = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
+                var directionsDisplay = new google.maps.DirectionsRenderer({
+                    suppressInfoWindows: true,
+                    suppressMarkers: true,
+                    preserveViewport: false
+                });
+                var directionsService = new google.maps.DirectionsService();
+                directionsDisplay.setMap(map);
+                directionsService.route({
+                    origin: point, // startingMarkerPoint,
+                    destination: endPoint,
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, function(res, status) {
+                    if(status == google.maps.DirectionsStatus.OK) {
+                        startingMarkerPoint = res.routes[0].legs[0].start_location;
+                        endingMarkerPoint = res.routes[0].legs[0].end_location;
+                        directionsDisplay.setDirections(res);
+                    }                     
+                    var startingMarker = new google.maps.Marker({
+                        position: startingMarkerPoint,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: placeName
+                    });
+                    var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
+                    infowindow.open(map, startingMarker);
+                    var endingMarker = new google.maps.Marker({
+                        position: endingMarkerPoint,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: 'Tu'
+                    });
+                    var infowindow2 = new google.maps.InfoWindow({content: '<div>Tu</div>'});
+                    infowindow2.open(map, endingMarker);
+                    
+                    if(status != google.maps.DirectionsStatus.OK) {
+                        var bounds = new google.maps.LatLngBounds();
+                        bounds.extend(startingMarker.position);
+                        bounds.extend(endingMarker.position);
+                        map.fitBounds(bounds);
+                    }
+                });
+            }, function() {
+                var marker = new google.maps.Marker({
+                    position: point,
+                    map: map,
+                    draggable: false,
+                    animation: google.maps.Animation.DROP,
+                    title: placeName
+                });
+                map.panTo(point);
+                var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
+                infowindow.open(map, marker);
             });
-            map.panTo(point);
-            var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
-            infowindow.open(map, marker);
+            
         }, 300);
     },
     

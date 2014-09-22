@@ -34,7 +34,7 @@ var geoLocation = {
         
         if(config.EMULATE_ON_BROWSER) {
 if(options.enableHighAccuracy === true) {
-    errorCallback('Fake error message');
+    if(errorCallback) errorCallback('Fake error message');
     return;
 }
             if(successCallback) {
