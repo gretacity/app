@@ -1117,7 +1117,8 @@ return;
             pos = par;
         }
         var imageEl = $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img');
-        imageEl.attr('src', '').css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
+        imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
+        imageEl.removeAttr('src').replaceWith(imageEl.clone());
         imageEl.parent().prev().hide();
     },
     
