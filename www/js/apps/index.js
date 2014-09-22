@@ -908,9 +908,11 @@ return;
         self.reporting.latLng.lat = pos.coords.latitude;
         self.reporting.latLng.lng = pos.coords.longitude;
         geoLocation.reverseGeocoding(self.reporting.latLng, function(result) {
-            $('#address', $.mobile.activePage).val(result.road + " " + result.streetNumber);
-            $('#city', $.mobile.activePage).val(result.city);
-            $('#prov', $.mobile.activePage).val(result.prov);
+            if(result) {
+                $('#address', $.mobile.activePage).val(result.road + " " + result.streetNumber);
+                $('#city', $.mobile.activePage).val(result.city);
+                $('#prov', $.mobile.activePage).val(result.prov);
+            }
         });
         $('.info', $.mobile.activePage).html(
             'La tua posizione è stata acquisita avanti per confermare.'
@@ -940,10 +942,10 @@ return;
         if((self.reporting.latLng.lat || 0) == 0) {
             $.mobile.loading('show');
             geoLocation.geocode({prov: self.reporting.prov, city: self.reporting.city, address: self.reporting.address}, function(pos) {
-                console.log(pos);
-                self.reporting.latLng.lat = pos.lat();
-                self.reporting.latLng.lng = pos.lng();
-                console.log(self.reporting);
+                if(pos) {
+                    self.reporting.latLng.lat = pos.lat();
+                    self.reporting.latLng.lng = pos.lng();
+                }
                 $.mobile.changePage('#reporting2Page', {transition: 'slide'});
             });
         } else {

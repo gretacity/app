@@ -97,7 +97,7 @@ if(options.enableHighAccuracy === true) {
             if(params.address) addressParts.push(params.address);
         }
 //console.log('geoLocation._googleGeocode pars length: ' + addressParts.length);
-        if(addressParts.length == 0) return;
+        if(addressParts.length == 0) success();
         var address = 'Italia, ' + addressParts.join(', ');
 //console.log('geoLocation._googleGeocode searching for: ' + address);
         var geocoder = new google.maps.Geocoder();
@@ -108,7 +108,7 @@ if(options.enableHighAccuracy === true) {
                 if(results[0] && results[0].formatted_address) {
 //console.log('geoLocation._googleGeocode address: ' + results[0].formatted_address);
                     if(results[0].formatted_address.toLowerCase().indexOf('italia') == -1) {
-                        return;
+                        success();
                     }
                 } 
                 /*if(results[0].partial_match === true) {
@@ -116,9 +116,11 @@ console.log('geoLocation._googleGeocode partial match');
                     return;
                 }*/
                 if(results[0] && results[0].geometry && results[0].geometry.location) {
-console.log('geoLocation._googleGeocode result location: ', results[0].geometry.location);
-                    if(success) success(results[0].geometry.location);
+//console.log('geoLocation._googleGeocode result location: ', results[0].geometry.location);
+                    success(results[0].geometry.location);
                 }
+            } else {
+                success();
             }
         });
     },
@@ -161,6 +163,7 @@ console.log(firstResult);
                 successCallback(retVal);
             }
         });
+        successCallback();
         // https://maps.googleapis.com/maps/api/geocode/json?language=it&latlng=38.858364,16.549469&sensor=false&location_type=ROOFTOP&result_type=street_address&key=AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ
     },
     

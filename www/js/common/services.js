@@ -583,4 +583,7 @@ console.log('services.getReportingList FAIL', jqXHR, textStatus);
             if(failCallback) failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     }
+    
+    
+    
 }
