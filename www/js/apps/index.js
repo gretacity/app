@@ -1131,11 +1131,8 @@ return;
                 pos = 0;
             self.reporting.photos.push(src.substr(pos));
         });
-        console.log(self.reporting);
         $.mobile.loading('show');
         services.sendReporting(self.reporting, function() {
-            // Empty history
-            // 
             // Successfully sent
             self.emptyReportingPages();
             $.mobile.loading('hide');
