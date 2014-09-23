@@ -1120,10 +1120,7 @@ return;
         imageEl.removeAttr('src').replaceWith(imageEl.clone());
     },
     
-    sendReporting: function() { 
-        
-$.mobile.changePage('#reportingListPage', {transition: 'slide'});return;
-        
+    sendReporting: function() {
         self.reporting.photos = [];
         $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
             var src = $(this).attr('src');
