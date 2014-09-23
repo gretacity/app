@@ -43,7 +43,6 @@ var config = {
     
     PUSH_REGISTRATION_MAX_DAYS: 7,
     
-    
     REQUEST_DEFAULT_TIMEOUT: 5000,  // 5 secs
     
     URL_BASE: 'http://www.gretacity.com',

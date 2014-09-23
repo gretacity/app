@@ -205,7 +205,10 @@ var app = {
         
         $(document).on("pagecontainerbeforetransition", function (event, ui) {
             /*if (ui.options.reverse == true) {*/
-            if((ui.toPage.attr('id') == 'homePage') || ((ui.prevPage) && (ui.prevPage.attr('id') == 'homePage'))) {
+            if(
+                    (ui.toPage.attr('id') == 'homePage') || ((ui.prevPage) && (ui.prevPage.attr('id') == 'homePage')) ||
+                    (ui.toPage.attr('id') == 'setupPage') || ((ui.prevPage) && (ui.prevPage.attr('id') == 'setupPage'))
+              ) {
                 ui.options.transition = "none";
             }
         });

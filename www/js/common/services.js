@@ -180,6 +180,7 @@ console.log('services.updateProfile', url, data);
         url += '&' + services.getRequestCommonParameters();
         $.ajax(url, {
             type:'GET',
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
 //console.log('SUCCESS', result);return;

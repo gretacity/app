@@ -41,32 +41,28 @@ var auth = {
             // Do nothing... or notify to the failCallback event handler?
             return;
         }
-        
         var loginUrl = config.URL_BASE + config.URL_USER_LOGIN;
-        
         var data = 'username=' + encodeURIComponent(params.username) + '&password=' + encodeURIComponent(params.password) +
                    '&' + services.getRequestCommonParameters(true);
-        
         $.ajax({
-			type : "GET",
+            type : "GET",
             cache: false,
-            //async: false,
             url : loginUrl,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
             data: data,
-            dataType: "json",
-            crossDomain: true,
-		}).done(function(data, textStatus, jqXHR) {
+            dataType: "json"
+        }).done(function(data, textStatus, jqXHR) {
 //console.log(data);
 //console.log(jqXHR);
-			if(data != '') {
+            if(data != '') {
                 auth.setSessionId(data.session.id);
                 auth.lastLoginTime = new Date();
-				if(successCallback) successCallback(data);
+		if(successCallback) successCallback(data);
             } else {
-				if(failCallback) failCallback("Login errato");
+		if(failCallback) failCallback("Login errato");
             }
-		}).fail(function(jqXHR, textStatus, errorThrown) {
-console.log(jqXHR);
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+//console.log(jqXHR);
             auth.tmp = jqXHR;
             /*var errorMessage = (jqXHR.statusText.substr(0, 12).toLowerCase() == 'networkerror') ? 
                                                                                     'Errore di connessione' : 
