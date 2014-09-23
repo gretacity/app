@@ -397,17 +397,6 @@ return;
         ];
         for(var i in cfg) {
             var unreadCount = pushNotificationHelper.getUnread(cfg[i].type);
-            //var el = $('#'+cfg[i].elementId, $.mobile.activePage); //, page);
-            
-            /*if(cfg[i].type == PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING) {
-                if(unreadCount > 0) {
-                    $('#reportingMethodPage #reportingCount').html(unreadCount).show();
-                } else {
-                    $('#reportingMethodPage #reportingCount').html(unreadCount).hide();
-                }
-            }*/
-            
-            //var el = $('.'+cfg[i].className); //, page);
             var el = $('#homePage .'+cfg[i].className); //, page);
             if(el.length == 0) continue;
             el.html(unreadCount);
@@ -601,13 +590,17 @@ return;
     
     initRegisterPage: function() {
         var page = $('#registrationPage');
-        $('#city', page).on('input', function() {
-            var val = $(this).val();
+        $('#city', page).on('input', function(e) {
+            
+            var val = $(e.currentTarget).val();
+            
             if($(this).data('cityname') != val) {
                 $(this).data('cityid', '');
             }
             if(val.length >= 3) {
                 self.fillCityList(val, $('#citySuggestion', page), 'city');
+            } else if(val.length == 0) {
+                $('#citySuggestion', page).empty();
             }
         });
     },
@@ -617,6 +610,7 @@ return;
         $('#registrationPage input[type="password"]').val('');
         $('#registrationPage input[type="tel"]').val('');
         $('#registrationPage input[type="checkbox"]').attr('checked', false).checkboxradio('refresh');
+        $('#registrationPage #citySuggestion').empty();
     },
     
     register: function() {
