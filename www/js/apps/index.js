@@ -29,6 +29,9 @@ var app = {
                $.mobile.activePage.is('#loginPage')) {
                 e.preventDefault();
                 navigator.app.exitApp();
+            } else if($.mobile.activePage.is('#reportingListPage')) {
+                e.preventDefault();
+                $.mobile.changePage('#reportingHomePage', {transition: 'slide', reverse: true});
             } else {
                 navigator.app.backHistory();
             }
@@ -1117,15 +1120,9 @@ return;
         imageEl.removeAttr('src').replaceWith(imageEl.clone());
     },
     
-    sendReporting: function() {
+    sendReporting: function() { 
         
-$.mobile.changePage('#reportingListPage');
-while($.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 2].hash != '#reportingHomePage') {
-    console.log('deleting ' + $.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 2]);
-    $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 2, 1);
-    break;
-}        
-return;    
+$.mobile.changePage('#reportingListPage', {transition: 'slide'});return;
         
         self.reporting.photos = [];
         $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
