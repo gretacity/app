@@ -578,6 +578,7 @@
                 margin: 0 auto !important;
                 background:url('../img/button3.png') center center no-repeat !important;
                 background-size: 100% 98% !important;
+                box-shadow: none;
             }
             .button-important {
                 background:url('../img/button4.png') center center no-repeat !important;
@@ -585,6 +586,7 @@
             }
             div[data-role="footer"] {
                 background-color: #FFF !important;
+                border: none !important;
             }
             /*
                 border: none !important;
