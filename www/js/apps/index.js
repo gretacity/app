@@ -361,17 +361,23 @@ return;
     },
     
     fillCityList: function(val, listEl, targetElId, customHRef) {
+helper.alert('1');
         services.getLocationsByName({name:val}, function(result) {
+helper.alert('2');
             var html = '';
             var max_rows = 20;
             var ix = 0;
+helper.alert('3');
             for(var i in result) {
                 if(ix++ >= max_rows) {
                     html += '<li>Altri risultati omessi</li>';
                     break;
                 }
+helper.alert('4');
                 var row = result[i];
+helper.alert('5');
                 var cityName = row.nome.trim().replace(/'/g, "\\'");
+helper.alert('6');
                 var onclick = null;
                 if(customHRef) {
                     onclick = customHRef;
@@ -380,6 +386,7 @@ return;
                            '\', '+row.id+', \'' + listEl.attr('id') + '\')';
                 }
                 html += '<li><a href="#" onclick="' + onclick + '" data-regionid="' + row.id_regione + '" data-provid="' + row.id_provincia + '" data-cityid="'+row.id+'" data-cityname=\'' + cityName + '\'>' + row.nome.trim() + ', ' + row.sigla.trim() + '</a></li>';
+helper.alert(html);break;
             }
             listEl.html(html).listview("refresh");
         });
@@ -593,7 +600,7 @@ return;
         $('#city', page).on('input', function(e) {
             
             var val = $(e.currentTarget).val();
-helper.alert(val);            
+
             if($(this).data('cityname') != val) {
                 $(this).data('cityid', '');
             }
