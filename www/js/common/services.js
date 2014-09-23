@@ -301,16 +301,19 @@ console.log('services.getInfoFromQrCode FAIL', jqXHR);
     
     getLocationsByName: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_NEWS_SEARCH_LOCATION;
-        url += '&' + services.getRequestCommonParameters();
+        url += '&' + services.getRequestCommonParameters(true);
         var data = 'search='+params.name;
+helper.alert(data);
         $.ajax(url,{
             type:'GET',
             data:data,
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType:'json'
         }).done(function(result) {
+helper.alert('success ' + result.length);
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
+helper.alert('fail ' + jqXHR.responseText);
             if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
