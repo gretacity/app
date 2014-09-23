@@ -1445,7 +1445,7 @@ return;
     },
     showNewsPage: function() {
         self.initNewsSidePanel();
-helper.alert('show newspage');
+        $('#moreNewsButton', $.mobile.activePage).hide();
         $('#channelContent', $.mobile.activePage).empty();
         setTimeout(function() {
             self.loadNewsChannel();
@@ -1494,9 +1494,7 @@ helper.alert('show newspage');
     
         onlyNew = onlyNew || false;
         
-        //if(!onlyNew) {
-            $.mobile.loading('show');
-        //}
+        $.mobile.loading('show');
         
         var params = {
             channelId: self.newsChannelId, 
@@ -1509,7 +1507,11 @@ helper.alert('show newspage');
         
         console.log('retrieveChannelContent: getting channel content, params: ', params);
         
+        $('#moreNewsButton', $.mobile.activePage).addClass('ui-disabled');
+        
+        $.mobile.loading('show');
         services.getChannelContent(params, function(result) {
+            $('#moreNewsButton', $.mobile.activePage).removeClass('ui-disabled');
             $.mobile.loading('hide');
             $('#info', $.mobile.activePage).html('').hide();
             var html = '';
@@ -1576,9 +1578,9 @@ helper.alert('show newspage');
                     $('#info', $.mobile.activePage).html('Non ci sono news per l\'RSS selezionato').show();
                 }
             }
-                        
-            $.mobile.loading('hide');
+            
         }, function(e, loginRequired) {
+            $('#moreNewsButton', $.mobile.activePage).removeClass('ui-disabled');
             $.mobile.loading('hide');
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
