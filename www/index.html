@@ -28,13 +28,13 @@
                 <form id="loginForm" >
                     <input type="text" name="username" id="username" placeholder="Email*" />
                     <input type="password" name="password" id="password" autocomplete="off" placeholder="Password*">
-                    <a id="loginButton" style="border-radius:.5em;" data-role="button" class="margin-top">ACCEDI</a>
+                    <a id="loginButton" style="border-radius:.5em;" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>
                 </form>
                 <div id="recoverPasswordPanel">
-                    <a id="recoverPasswordButton" style="border-radius:.5em;" href="#" data-role="button" class="margin-top">RECUPERA PASSWORD</a>
+                    <a id="recoverPasswordButton" style="border-radius:.5em;" href="#" class="ui-btn ui-btn-primary2 margin-top">RECUPERA PASSWORD</a>
                 </div>
                 <div>
-                    <a id="registerPageButton" style="border-radius:.5em;" href="#registrationPage" data-transition="slide" data-role="button" class="margin-top">REGISTRATI SU GRETACITY</a>
+                    <a id="registerPageButton" style="border-radius:.5em;" href="#registrationPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">REGISTRATI SU GRETACITY</a>
                 </div>
             </div>
         </div>
@@ -67,12 +67,7 @@
                 <!-- dislaimer policy accepted -->
                 <input type="checkbox" id="disclaimerPolicyAccepted" data-theme="b" />
                 <label for="disclaimerPolicyAccepted">ho preso visione delle note legali</label>
-                <a href="#" id="registerButton" data-role="button" data-icon="check" data-iconpos="left" data-theme="b">Registrati</a>
-                <p style="text-align:justify">
-                    <small>
-                        Controlla la tua email per confermare la registrazione.
-                    </small>
-                </p>
+                <a href="#" id="registerButton" class="ui-btn ui-btn-primary2" >Registrati</a>
                 <p>
                     <small>
                         Consulta le <a href="#" onclick="window.open('http://www.gretacity.com/notelegali', '_system', 'location=yes')">note legali</a>.
@@ -136,7 +131,7 @@
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
                     <!-- <img  src="img/greta.png" /> --> 
-                    <span>Tue segnalazioni</span>
+                    <span>Segnalazioni</span>
                 </div>
                 <!--
                 < a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
@@ -145,10 +140,10 @@
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
-                    <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary " style="white-space:normal;padding-right:0;padding-left:0;">Segnala manualmente</a>
+                    <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;">Segnala manualmente</a>
                 </div>
                 <div class="ui-grid-a">
-                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
+                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
                     <p class="text-primary">
                         Se il comune supporta il sistema Gretacity, 
                         puoi utilizzare il QR Code per segnalarci la posizione.
@@ -156,7 +151,7 @@
                 </div>
                 <div class="ui-grid-a">
 
-                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary" style="white-space:normal;padding-right:0;padding-left:0;">
+                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;">
                         Verifica le mie segnalazioni
                         <span class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                     </a>
@@ -201,21 +196,10 @@
                 <div style="background:#fff;color:#08c;">
                     1 di 4
                 </div>
-                <a href="#" class="button-next ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all">
+                <a href="#" class="button-next">
                     AVANTI 
                 </a>
-            </div>
-<!-- 
-<div data-theme="b" data-role="footer" data-position="fixed">
-<div data-role="navbar" data-iconpos="top">
-<ul>
-    
-    <li style="background:#fff; color:#000">1 di 4 <br> <a href="#test" data-transition="fade" data-icon="edit">Test</a>
-
-</ul>
-</div>
-</div>-->
-            
+            </div>            
         </div>
         <!-- /reporting1Page -->
         
@@ -236,7 +220,7 @@
                 <div id="map">Caricamento della mappa..</div>
             </div>            
             <div data-role="footer" style="margin:0;text-align:center;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#reporting4Page" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all">
+                <a href="#reporting4Page" class="button-next">
                     CONFERMA POSIZIONE
                 </a>
             </div>
@@ -307,7 +291,7 @@
                 <div style="background:#fff;color:#08c;">
                     3 di 4
                 </div>
-                <a href="#" class="button-next ui-btn ui-shadow ui-icon-carat-r ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all">
+                <a href="#" class="button-next">
                     AVANTI
                 </a>
             </div>
@@ -370,7 +354,7 @@
                 <div style="background:#fff;color:#08c;">
                     4 di 4
                 </div>
-                <a href="#" class="button-next ui-btn">
+                <a href="#" class="button-next button-important">
                     INVIA SEGNALAZIONE
                 </a>
             </div>
@@ -384,7 +368,7 @@
              </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <span>Segnalazioni</span>
+                    <span>Tue segnalazioni</span>
                 </div>
                 <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
@@ -483,7 +467,7 @@
                 <p id="info" class="text-primary" style="display:none;"></p>
                 <ul id="channelContent" data-role="listview" data-theme="b">				
                 </ul>
-                <a href="#" id="moreNewsButton" class="ui-btn" style="margin-top:25px;">Altre notizie</a>
+                <a href="#" id="moreNewsButton" class="ui-btn ui-btn-primary2" style="margin-top:25px;">Altre notizie</a>
             </div>
         </div>
         <!-- /newsPage -->
@@ -541,7 +525,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <a href="#" id="readQrCodeButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera">Leggi QR Code</a>
+                <a href="#" id="readQrCodeButton" class="ui-btn-primary2 ui-btn">Leggi QR Code</a>
                 <!--
                 <a href="#" id="searchFollowginButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera ui-disabled">Trova Following</a>
                 -->
@@ -811,20 +795,17 @@
                     <input id="lastname" placeholder="Cognome" required />
                     <input id="firstname" placeholder="Nome" required />
                     <input type="email" id="email" placeholder="Email" required />
+                    <a href="#changePasswordPage" data-transition="slide" class="ui-btn ui-btn-primary2">CAMBIA PASSWORD</a>
                     <p class="text-primary">Compila i seguenti campi così il comune potrà contattarti in caso di segnalazione</p>
                     <input id="address" placeholder="Indirizzo di residenza" />
                     <input type="tel" id="phone" placeholder="Cellulare" />
+                    <a href="#" id="updateProfileButton" class=" ui-btn ui-btn-primary2">SALVA</a>
                 </div>
-                <ul data-role="listview" data-theme="b" data-inset="true">
-                    <li><a href="#changePasswordPage" data-transition="slide"><label>Cambia password</label></a></li>
-                </ul>
-                
             </div>
+            <!--
             <div data-role="footer" style="margin:0;text-align:center;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" id="updateProfileButton" class="button-next ui-btn">
-                    SALVA
-                </a>
             </div>
+            -->
         </div>
         <!-- /profilePage -->
         
@@ -847,13 +828,8 @@
                         <!--<label for="passwordConfirm">Conferma password</label>-->
                         <input id="passwordConfirm" type="password" placeholder="Ripeti la nuova password" />
                     </fieldset>
-                    
+                    <a href="#" id="changePasswordButton" class="ui-btn ui-btn-primary2">CAMBIA</a>
                 </div>
-            </div>
-            <div data-role="footer" style="margin:0;text-align:center;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <a href="#" id="changePasswordButton" class="ui-btn button-next">
-                    CAMBIA
-                </a>
             </div>
         </div>
         <!-- /changePasswordPage -->
@@ -885,7 +861,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">                
-                <a href="#setupChannelSubscriptionPage" class="ui-btn">Aggiungi altra città</a>
+                <a href="#setupChannelSubscriptionPage" class="ui-btn ui-btn-primary2">Aggiungi altra città</a>
                 <p class="text-primary">Deseleziona l'RSS se non vuoi più seguirlo</p>
                 <div data-role="controlgroup" id="subscribedChannels" style="padding:0;margin:0;" data-theme="b"></div>
                 <!--<ul data-role="listview" id="subscribedChannels"></ul>-->
@@ -949,9 +925,9 @@
             </div>
             <div data-role="main" class="ui-content">
                 <div>
-                    <a href="#" id="privacyButton" class="ui-btn ui-btn-primary">Privacy</a>
-                    <a href="#" id="policyButton" class="ui-btn ui-btn-primary">Policy</a>
-                    <a href="#" id="infoButton" class="ui-btn ui-btn-primary">Info App</a>
+                    <a href="#" id="privacyButton" class="ui-btn ui-btn-primary2">Privacy</a>
+                    <a href="#" id="policyButton" class="ui-btn ui-btn-primary2">Policy</a>
+                    <a href="#" id="infoButton" class="ui-btn ui-btn-primary2">Info App</a>
                 </div>
             </div>
         </div>
@@ -974,7 +950,7 @@
                 </p>
                 -->
                 <textarea id="description" placeholder="Descrivici il problema"></textarea>
-                <a href="#" id="sendRequestButton" class="ui-btn ui-btn-primary  ui-btn-primary-background">Invia</a>
+                <a href="#" id="sendRequestButton" class="ui-btn ui-btn-primary2">Invia</a>
             </div>
         </div>
         <!-- /supportPage -->

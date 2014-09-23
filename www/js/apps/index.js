@@ -565,12 +565,11 @@ return;
             $('#loginButton').val('Login');
             self.lockLoginUi(false);
             config.userLastLoginUsername(username);
+            $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
             if(self.pageId != null) {
-                $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
                 $.mobile.changePage('#' + self.pageId);
                 self.pageId = null;
             } else {
-                $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 1);
                 $.mobile.changePage('#homePage');
             }
         }, function(e) {
@@ -1000,6 +999,8 @@ return;
     ////////////////////////////////////////
     // reporting4Page
     initReporting4Page: function() {
+    },
+    showReporting4Page: function() {
         services.getReportingCategories(function(res) {
             var html = '';
             for(var i in res) {
@@ -1022,8 +1023,6 @@ return;
                 helper.alert(e, null, 'Invia segnalazione');
             }        
         });
-    },
-    showReporting4Page: function() {
     },
     selectReportingCategory: function(id) {
         self.reporting.categoryId = id;
@@ -1119,6 +1118,15 @@ return;
     },
     
     sendReporting: function() {
+        
+$.mobile.changePage('#reportingListPage');
+while($.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 2].hash != '#reportingHomePage') {
+    console.log('deleting ' + $.mobile.navigate.history.stack[$.mobile.navigate.history.stack.length - 2]);
+    $.mobile.navigate.history.stack.splice($.mobile.navigate.history.stack.length - 2, 1);
+    break;
+}        
+return;    
+        
         self.reporting.photos = [];
         $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
             var src = $(this).attr('src');
@@ -1132,6 +1140,8 @@ return;
         console.log(self.reporting);
         $.mobile.loading('show');
         services.sendReporting(self.reporting, function() {
+            // Empty history
+            // 
             // Successfully sent
             self.emptyReportingPages();
             $.mobile.loading('hide');
@@ -1256,8 +1266,8 @@ return;
                         '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">descrizione: <strong>' + payload.descrizione_problema + '</strong></div>' +
                         '<div>stato: <strong>' + payload.stato + '</strong></div>' +
                         '</div>' +
-                        '<a href="javascript:app.reportListShowDetail(\'' + payload.id + '\')" class="ui-btn">DETTAGLI</a>' +
-                        '<a href="javascript:$(\'#reportingListPopup\').popup(\'close\')" class="ui-btn">CHIUDI</a>';
+                        '<a href="javascript:app.reportListShowDetail(\'' + payload.id + '\')" class="ui-btn ui-btn-primary2">DETTAGLI</a>' +
+                        '<a href="javascript:$(\'#reportingListPopup\').popup(\'close\')" class="ui-btn ui-btn-primary2">CHIUDI</a>';
                 var popup = $('#reportingListPopup', $.mobile.activePage);
                 $('div.ui-content', popup).html(content);
                 popup.popup('open');
@@ -1979,13 +1989,15 @@ return;
             $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
         }
     },
-    beforeShowNearbyResultsPage: function() {
+    beforeShowNearbyResultsPage: function(e, ui) {
         $('#nearbyResultsPage #nearbySearchSlider').parents('div.ui-slider').css({'padding-right': 10});
         if(self.nearbyCategoryId == null) {
             $.mobile.changePage('#nearbyPage', {transition: 'slide', reverse: true});
             return;
         }
-        self.searchNearbyPlaces(self.nearbyCategoryId);
+        if(ui.prevPage.attr('id') != 'nearbyPlaceInfoPage') {
+            self.searchNearbyPlaces(self.nearbyCategoryId);
+        }
     },
     searchNearbyPlaces: function() {
         var page = $('#nearbyResultsPage');

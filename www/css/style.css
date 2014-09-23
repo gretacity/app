@@ -139,6 +139,15 @@
                 color: #FFF !important;
                 font-weight: bold !important;
             }
+            .ui-btn-primary2 {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/button3.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+                padding-bottom: 1.2em !important;
+            }
             
             
             .ui-priority-button {
@@ -564,8 +573,25 @@
             .button-toggle {
                 border: none !important;
                 width: 90% !important;
+                padding:0 auto !important;
+                padding-bottom: 1.2em !important;
+                margin: 0 auto !important;
+                background:url('../img/button3.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+            }
+            .button-important {
+                background:url('../img/button4.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+            }
+            div[data-role="footer"] {
+                background-color: #FFF !important;
+            }
+            /*
+                border: none !important;
+                width: 90% !important;
                 padding:0 auto !important; 
                 margin: 0 auto !important;
-                background:url('../img/button2.png') center center no-repeat !important;
+                background:url('../img/button3.png') center center no-repeat !important;
                 background-size: cover !important;
-            }
+
+            */
