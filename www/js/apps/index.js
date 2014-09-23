@@ -593,7 +593,7 @@ return;
         $('#city', page).on('input', function(e) {
             
             var val = $(e.currentTarget).val();
-            
+helper.alert(val);            
             if($(this).data('cityname') != val) {
                 $(this).data('cityid', '');
             }
