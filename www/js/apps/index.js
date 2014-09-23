@@ -1444,8 +1444,9 @@ return;
         });        
     },
     showNewsPage: function() {
-
         self.initNewsSidePanel();
+helper.alert('show newspage');
+        $('#channelContent', $.mobile.activePage).empty();
         setTimeout(function() {
             self.loadNewsChannel();
         }, 200);        
