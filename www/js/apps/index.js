@@ -1256,7 +1256,7 @@ return;
                             '<div>' + dateAdded + '</div>' +
                             '<div>' + payload.indirizzo + '</div>' +
                             '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">' + payload.descrizione_problema + '</div>' +
-                            '<div>stato: <strong>' + payload.stato + '</strong></div>' +
+                            '<div>' + payload.stato + '</div>' +
                         '</div>' +
                         '<a href="javascript:app.reportListShowDetail(\'' + payload.id + '\')" class="ui-btn ui-btn-primary2">DETTAGLI</a>' +
                         '<a href="javascript:$(\'#reportingListPopup\').popup(\'close\')" class="ui-btn ui-btn-primary2">CHIUDI</a>';
