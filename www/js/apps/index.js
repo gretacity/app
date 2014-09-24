@@ -217,8 +217,6 @@ var app = {
         });
 
         services.checkSession(function(result) {
-// TODO TODO TODO
-return;
             console.log('onDeviceReady: session check ' + result);
             if(result) {
                 services.getProfile(null, function(result) {
@@ -986,6 +984,14 @@ return;
 
         //self._reporting2Map.panTo(markerPoint);
         //self._reporting2Map.setCenter(markerPoint, config.GOOGLE_MAPS_ZOOM);
+        google.maps.event.addListener(
+                self._reporting2Map,
+                'click',
+                function(e) {
+                    self._reporting2Marker.setPosition(e.latLng);
+                    self.reporting.latLng.lat = self._reporting2Marker.getPosition().lat();
+                    self.reporting.latLng.lng = self._reporting2Marker.getPosition().lng();
+                });
         google.maps.event.addListener(
             self._reporting2Marker, 
             'dragend', 
