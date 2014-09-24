@@ -89,6 +89,12 @@
                 padding: 0;
             }
             
+            .news-list-title {
+                font-weight: lighter;
+                font-style: italic;
+                color: #aeaece;
+                padding-top: .4em !important;
+            }
             .news-note,
             .news-list-note {
                 font-weight: lighter;
@@ -486,8 +492,9 @@
                 font-weight: normal;
                 white-space: normal;
                 text-overflow: ellipsis !important;
-                padding-top:.4em !important;
+                /*padding-top:.4em !important;*/
                 padding-right: .2em !important;
+                margin-top: 0 !important;
                 height: 3em !important;
                 line-height: 1em !important;
                 overflow: hidden;
@@ -496,6 +503,42 @@
                 position: absolute;
                 right: 1em;
                 bottom: .3em;
+            }
+            
+            
+            
+            #reportingList li a img {
+                margin-right: 1em !important;
+                width: 5em !important;
+                height:5em !important;
+                background-position: center center !important;
+                background-repeat: no-repeat !important;
+                background-size: cover !important;
+                display: block !important;
+                float: left !important;
+            }
+            
+            #reportingList li a div.reporting-list-item-row span {
+                /*font-size:.8em !important;*/
+                /*display: block  !important;
+                float: left !important;
+                width: 6.5em !important;*/
+                display: none;
+            }
+            
+            #reportingList li a div.reporting-list-item-row strong {
+                color: #00269C !important;
+            }
+            
+            #reportingList li a div.reporting-list-item-descr {
+                width: 60% !important;
+                text-overflow: ellipsis !important;
+                overflow: hidden !important;
+            }
+            
+            #reportingList li a div.reporting-list-item-status {
+                text-overflow: ellipsis !important;
+                overflow: hidden !important;
             }
             
             .ui-icon-toolbar-button {

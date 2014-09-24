@@ -1284,13 +1284,13 @@ return;
                 //console.log(row);
 //TODO onclick="self.reportingListPageViewPhoto(this)"
                 //var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
+                var dateAdded = Date.parseFromYMDHMS(row.data_inserimento).toDMYHM();    // row.data_inserimento
                 html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
-                        '<img src="" style="margin-right:1em;width:5em;height:5em;background:url(\'' + row.foto + '\') center center no-repeat;background-size: cover;display:block;float:left;" />' +
-                        '<div>data e ora: <strong>' + row.data_inserimento + '</strong></div>' +
-                        '<div>luogo: <strong>' + row.indirizzo + '</strong></div>' +
-                        '<div style="width:70%;text-overflow: ellipsis;overflow:hidden;">descrizione: <strong>' + row.descrizione_problema + '</strong></div>' +
-                        '<div>stato: <strong>' + row.stato + '</strong>' +
-                        //'<span id="count_reporting_' + row.id + '" class="ui-li-count-cust"' + (unreadCount == 0 ? ' style="display:none"' : '') + '>&nbsp;' + unreadCount + '</span></div>' +
+                        '<img src="" style="background-image:url(\'' + row.foto + '\');" />' +
+                        '<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
+                        '<div class="reporting-list-item-row"><span>Luogo:</span> <strong>' + row.indirizzo + '</strong></div>' +
+                        '<div class="reporting-list-item-row reporting-list-item-descr"><span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
+                        '<div class="reporting-list-item-row reporting-list-item-status"><span>Stato:</span> <strong>' + row.stato + '</strong>' +
                         '<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
                         '</div></a></li>';
             }
@@ -1337,7 +1337,7 @@ return;
             console.log(row);
             var photos = $('.photo-preview', page);
             for(var i = 0; i < photos.length; i++) {
-                var photoUrl = (row.immagini[i] != '' ? row.immagini[i] : 'img/camera.png');
+                var photoUrl = ((row.immagini[i] || '') != '' ? row.immagini[i] : 'img/camera.png');
                 $(photos[i]).css('background-image', 'url(\'' + photoUrl + '\')');
             }
             var html = '';
@@ -1461,13 +1461,14 @@ return;
         if(image == '') {
             image = 'img/no-photo.jpg';
         }
+        var source = item.categoria || '';
         var href = (item.link == '') ? 
                 'javascript:self.showNewsDetail(' + item.id + ')' : 
                 'javascript:app.openLink(\'' + encodeURIComponent(item.link) + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
-        
         html =  '<li data-icon="false">' +
                     '<a href="' + href + '">' +
                         '<div style="background:url(\'' + image + '\') center center no-repeat; background-size:cover;border:solid .5em #FFF;" class="img-container"/></div>' +
+                        '<div class="news-list-title">' + source + '</div>' +
                         '<h1>' + item.oggetto + '</h1>' +
                         '<div class="news-list-note news-list-note-bottom">del ' + dateAdded + '</div>' +
                     '</a>' +
@@ -2401,6 +2402,7 @@ self.tmp = res.routes;
         self.showManualCitySearch(false);
         $('#city', $.mobile.activePage).html('').selectmenu('refresh');
         $('#cityNameManual', $.mobile.activePage).val('');
+        $('#citySuggestions', $.mobile.activePage).empty();
         $('#availableChannelsContainer', $.mobile.activePage).hide();
         $('#availableChannelList', $.mobile.activePage).html('');
         $('#info', $.mobile.activePage).html('Stiamo acquisendo la tua posizione...');

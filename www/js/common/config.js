@@ -271,6 +271,14 @@ Date.prototype.toDMYHMS = function() {
     if(ss.length == 1) ss = "0" + ss;
     return this.toDMY() + " " + hh + ":" + mm + ":" + ss;
 }
+Date.prototype.toDMYHM = function() {
+    var hh, mm;
+    hh = String(this.getHours());
+    if(hh.length == 1) hh = "0" + hh;
+    mm = String(this.getMinutes());
+    if(mm.length == 1) mm = "0" + mm;
+    return this.toDMY() + " " + hh + ":" + mm;
+}
 Date.parseFromYMDHMS = function(dateText) {
     if(((dateText || '') == '') || (dateText == '0000-00-00 00:00:00')) return null;
     var parts = dateText.split(' ');

@@ -191,12 +191,8 @@
                     <label for="address">Indirizzo</label>
                     <textarea id="address" style="color:#00269C;" placeholder="Indirizzo"></textarea>
                 </fieldset>
-                <!--
-                <div style="height:20em;border:solid 1px #f00;">&nbsp;</div>
-                -->
             </div>            
            <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
-
                 <a href="#" class="button-next">
                     AVANTI 
                 </a>
@@ -473,7 +469,7 @@
                 <p id="info" class="text-primary" style="display:none;"></p>
                 <ul id="channelContent" data-role="listview" data-theme="b">				
                 </ul>
-                <a href="#" id="moreNewsButton" class="ui-btn ui-btn-primary2" style="margin-top:25px;">Altre notizie</a>
+                <a href="#" id="moreNewsButton" class="ui-btn ui-btn-primary2" style="margin-top:25px;display:none;">Altre notizie</a>
             </div>
         </div>
         <!-- /newsPage -->
@@ -868,7 +864,7 @@
             </div>
             <div data-role="main" class="ui-content">                
                 <a href="#setupChannelSubscriptionPage" class="ui-btn ui-btn-primary2">Aggiungi altra città</a>
-                <p class="text-primary">Deseleziona l'RSS se non vuoi più seguirlo</p>
+                <p class="text-primary">Deseleziona il canale se non vuoi più seguirlo</p>
                 <div data-role="controlgroup" id="subscribedChannels" style="padding:0;margin:0;" data-theme="b"></div>
                 <!--<ul data-role="listview" id="subscribedChannels"></ul>-->
             </div>
@@ -880,7 +876,7 @@
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
-                    <span>Aggiungi RSS</span>
+                    <span>Aggiungi canale</span>
                 </div>
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
@@ -896,7 +892,7 @@
                 
                 <ul id="availableChannelsContainer" data-role="listview" data-inset="true" data-theme="b" style="display:none;">
                     <li data-role="list-divider">
-                        <label>RSS associati al comune</label>
+                        <label>Canali associati al comune</label>
                     </li>
                     <li style="padding:0;">
                         <fieldset data-role="controlgroup" style="padding:0;margin:0;" id="availableChannelList">
@@ -961,215 +957,7 @@
         </div>
         <!-- /supportPage -->
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <!-- profileNamePage 
-        <div data-role="page" id="profileNamePage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Nominativo</h1>
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <div data-role="fieldcontain">
-                    <input type="text" id="firstname" placeholder="Nome" />
-                    <input type="text" id="lastname" placeholder="Cognome" />
-                    <input type="email" id="email" placeholder="Email" />
-                    <a href="#" id="saveProfileNameButton" class="ui-btn">Conferma</a>
-                </div>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-         /profileNamePage -->
-        
-        <!-- profileCityPage 
-        <div data-role="page" id="profileCityPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Residenza</h1>
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <label for="cityName">Specifica il tuo comune e indirizzo di residenza</label>
-                <input id="cityName" placeholder="Cerca comune" autofocus />
-                <ul id="citySuggestions" data-role="listview" data-inset="true"></ul>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-         /profileCityPage -->
-        
-        <!-- profileAddressPage 
-        <div data-role="page" id="profileAddressPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Residenza</h1>
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <div data-role="fieldcontain">
-                    <input type="text" id="address" placeholder="Indirizzo di residenza" />
-                    <a href="#" id="saveProfileAddressButton" class="ui-btn ui-icon-check ui-btn-icon-right">Conferma</a>
-                </div>
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-         /profileAddressPage -->
 
-        
-        
-        
-
-        <!-- photoDialog 
-        <div data-role="dialog" id="_photoPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="true">
-                <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-                <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">+</a>
-                <a href="javascript:app.reportingListPageZoomOutPhoto()" class="ui-btn ui-btn-right ui-icon-minus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-right:3em;">-</a>
-                <h1>Foto Segnalazione</h1>
-            </div>
-            <div data-role="main">
-                <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">
-                - - >
-                <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;">
-                    <img id="photo" />
-                </div>
-            </div>
-        </div>
-         /photoDialog -->
-        
-        
-        <!-- newsPage 
-        <div data-role="page" id="_newsPage">
-            
-            <div data-role="panel" id="newsChannelsPanel" data-display="overlay" data-position-fixed="true">
-                <ul data-role="listview" id="channelList"></ul>
-            </div>
-            
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                
-                <img src="img/greta.png" style="display:block; float:left; padding:0 auto; " />
-                
-                <h1>Notizie</h1>
-                <a href="#newsChannelsPanel" class="ui-btn ui-shadow ui-btn-left ui-icon-gretahome ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">News</a>
-                <a href="#" id="refreshNewsButton" style="margin-right:3em;" class="ui-btn ui-shadow ui-btn-right ui-icon-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Refresh</a>
-                <a href="#profilePage" class="ui-btn ui-shadow ui-btn-right ui-icon-gear ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Profile</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                
-                <a href="#" id="newContentReceivedButton" class="ui-btn" 
-                   style="width:83%;position:fixed;margin: 0 auto;z-index:1000;color:#FFF;background:#EE0000;display:none;">
-                </a>
-                <p id="noSubscribedChannelsNotice" style="display:none;">
-                    Nel tuo profilo puoi sottoscrivere i canali delle notizie da seguire.
-                    <br />
-                    <a href="#profilePage" class="ui-btn">Modifica profilo</a>
-                </p>
-                <h1 id="noNewsNotice" style="display:none;">Nessuna notizia</h1>
-                <ul id="channelContent" data-role="listview" data-inset="false"></ul>
-                <a href="#" id="_moreNewsButton" class="ui-btn" style="margin-top:25px;">Altre notizie</a>
-            </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#followingListPage" data-icon="tag" style="font-weight: lighter;color:#FFF;">Following<span class="ui-li-count-following ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#reportingMethodPage" data-icon="alert2" cclass="highlight" style="font-weight: lighter;color:#FFF;">Segnala<span class="ui-li-count-reporting ui-li-count ui-li-count-cust" style="display:none;"></span></a></li>
-                        <li><a href="#nearbyPage" data-icon="location" style="font-weight: lighter;color:#FFF;">QUI Vicino</a></li>                        
-                    </ul>
-                </div>
-            </div>
-        </div>
-         /newsPage -->
-        
-    
-        <!-- newsDetailPage 
-        <div data-role="page" id="newsDetailPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false">
-                <h1>Notizie</h1>
-                <!--<a href="#newsPage" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a> - - >
-                <a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-            </div>
-            <div data-role="main" class="ui-content">
-                <div id="newsImage" class="news-image"></div>
-                <h1 id="newsTitle"></h1>
-                <div id="newsDate" class="news-note"></div>
-                <p id="newsText" style="border:1px solid #DDD;padding:1em;white-space:normal;word-wrap:break-word;"></p>
-            </div>
-        </div>
-         /newsDetailPage -->
-    
-        
-    
-        
-    
-            
-        <!-- reportingPhotoPage 
-        <div data-role="page" id="reportingPhotoPage">
-            <div data-role="main" style="text-align:center">
-                <a href="#" data-rel="back" data-reverse="true">
-                    <img src="" />
-                </a>
-            </div>
-            <div data-role="footer" data-position="fixed" align="center">
-                <a href="#" id="removePhotoButton" class="ui-btn ui-btn-icon-left ui-icon-delete" style="text-align:left;width:85%">Rimuovi</a>
-            </div>
-        </div>
-        /reportingPhotoPage -->
         
         
     
