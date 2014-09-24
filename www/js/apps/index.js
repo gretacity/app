@@ -873,7 +873,6 @@ return;
                 self.reportingGeoCoordinatesAcquired(pos);
             }, function(e) {
                 geoLocation.acquireGeoCoordinates(function(pos) {
-                    $('#reporting1Popup').popup('close');
                     self.reportingGeoCoordinatesAcquired(pos);
                 }, function(e) {
                     $('#reporting1Popup').popup('close');
@@ -891,6 +890,7 @@ return;
                 $('#city', $.mobile.activePage).val(result.city);
                 $('#prov', $.mobile.activePage).val(result.prov);
             }
+            $('#reporting1Popup').popup('close');
         });
         $('.info', $.mobile.activePage).html(
             'La tua posizione è stata acquisita avanti per confermare.'
@@ -1387,7 +1387,8 @@ return;
     initNewsSidePanel: function() {
         console.log('initializing side bar');
         services.getSubscribedChannels(function(result) {
-            var html = '<li data-role="list-divider" style="background-color:rgb(89, 196, 248)">Visualizza</li>' +
+            var html = '<li data-role="list-divider" style="margin:0 auto;text-align:center;display:block;height:2em;padding-top:1.5em;background:url(\'img/Header.png\') center center;background-size:cover;background-color:#08c;"><h1>Visualizza</h1></li>' +
+                       '<li data-icon="plus"><a href="#setupChannelSubscriptionPage" style="color:#FFF;background-color:rgb(89, 196, 248);">Aggiungi</a></li>' +
                        '<li data-icon="false" data-channelid="0"><a href="javascript:self.loadNewsChannel(\'0\')"><span></span>Tutte</a></li>';
             for(var i in result) {
                 var row = result[i];
@@ -2426,14 +2427,16 @@ self.tmp = res.routes;
     
     setNearbyLocations: function(result) {
         var html = '';
+        $.mobile.selectmenu.prototype.options.hidePlaceholderMenuItems = false;
         if(result != null) {
             $('#info', $.mobile.activePage).html('Seleziona il comune di interesse dall\'elenco');
+            html += '<option data-placeholder="true">Seleziona il comune</option>';
             for(var i in result) {
                 var l = result[i];
                 html += '<option data-regid="' + l.id_regione + '" data-provid="' + l.id_provincia + '" data-cityid="' + l.id + '">' + l.nome + '</option>';
             }
             html += '<option value="manual"><strong>RICERCA MANUALE</strong></option>';
-            $('#city', $.mobile.activePage).html(html);
+            $('#city', $.mobile.activePage).html(html).selectmenu('refresh');
             self.showManualCitySearch(false);
         } else {
             self.showManualCitySearch(true);
@@ -2493,14 +2496,15 @@ self.tmp = res.routes;
                        + '.<br />Attualmente non ci sono canali disponibili, ma ti invieremo delle notifiche quando ce ne saranno.</label>';
                 $('#availableChannelList', $.mobile.activePage).html(html);
             } else {
-//console.log(result);
                 for(var i in result) {
                     var channelId = result[i].id;
                     var channelName = result[i].nome;
+                    var channelScope = result[i].ambito || '';
                     var subscribed = result[i].sottoscritto == '1';
                     html += '<input type="checkbox" id="channel' + channelId + '" data-channelid="' + channelId + '" ' + 
                             'data-channelname="' + channelName + '"' + (subscribed ? ' checked' : '') + '/>' +
-                            '<label for="channel' + channelId + '">' + channelName + '</label>';
+                            '<label for="channel' + channelId + '">' + channelName + '<br /><span style="font-size:.8em !important;color:#aeaece !important;">' + channelScope + '</span></label>'
+                            ;
                 }
 //console.log($('#availableChannelList', $.mobile.activePage).html());
                 $('#availableChannelList', $.mobile.activePage).html(html);
