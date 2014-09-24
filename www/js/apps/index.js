@@ -223,7 +223,7 @@ var app = {
                     self.userProfile = result;
                 });
             }
-            window.location.hash = (result ? 'newsPage' : 'loginPage');
+            window.location.hash = (result ? 'homePage' : 'loginPage');
             $.mobile.initializePage();
         });
         
@@ -1259,9 +1259,9 @@ var app = {
                 var dateAdded = Date.parseFromYMDHMS(payload.data_inserimento).toDMYHM();
                 var content = '<img src="" style="border-radius: .5em; margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block;" />' +
                         '<div style="padding: 0 0 1em 0;overflow:hidden;">' +
-                            '<div>' + dateAdded + '</div>' +
-                            '<div>' + payload.indirizzo + '</div>' +
                             '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">' + payload.descrizione_problema + '</div>' +
+                            '<div>' + payload.indirizzo + '</div>' +
+                            '<div>' + dateAdded + '</div>' +
                             '<div>' + payload.stato + '</div>' +
                         '</div>' +
                         '<a href="javascript:app.reportListShowDetail(\'' + payload.id + '\')" class="ui-btn ui-btn-primary2">DETTAGLI</a>' +
@@ -1294,9 +1294,9 @@ var app = {
                 var dateAdded = Date.parseFromYMDHMS(row.data_inserimento).toDMYHM();    // row.data_inserimento
                 html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
                         '<img src="" style="background-image:url(\'' + row.foto + '\');" />' +
-                        '<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
-                        '<div class="reporting-list-item-row"><span>Luogo:</span> <strong>' + row.indirizzo + '</strong></div>' +
                         '<div class="reporting-list-item-row reporting-list-item-descr"><span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
+                        '<div class="reporting-list-item-row"><span>Luogo:</span> <strong>' + row.indirizzo + ', ' + row.sigla + '</strong></div>' +
+                        '<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
                         '<div class="reporting-list-item-row reporting-list-item-status"><span>Stato:</span> <strong>' + row.stato + '</strong>' +
                         '<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
                         '</div></a></li>';
@@ -1474,7 +1474,7 @@ var app = {
                 'javascript:app.openLink(\'' + encodeURIComponent(item.link) + '\', \'_blank\', \'location=yes,closebuttoncaption=Indietro,enableViewportScale=yes\');';
         html =  '<li data-icon="false">' +
                     '<a href="' + href + '">' +
-                        '<div style="background:url(\'' + image + '\') center center no-repeat; background-size:cover;border:solid .5em #FFF;" class="img-container"/></div>' +
+                        '<div style="background:url(\'' + image + '\') center center no-repeat;border-radius:1em;background-size:cover;border:solid .5em #FFF;" class="img-container"/></div>' +
                         '<div class="news-list-title">' + source + '</div>' +
                         '<h1>' + item.oggetto + '</h1>' +
                         '<div class="news-list-note news-list-note-bottom">del ' + dateAdded + '</div>' +
