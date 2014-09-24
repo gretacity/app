@@ -540,7 +540,10 @@
                 text-overflow: ellipsis !important;
                 overflow: hidden !important;
             }
-            
+            .ui-body-inherit
+            {
+                border-radius: .5em !important;
+            }
             #reportingListPopup-popup {
                 width: 80% !important;
             }

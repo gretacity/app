@@ -701,11 +701,11 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;z-index:100;background:#fff;">
-                <label style="white-space:nowrap;">Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label>
-                <input type="range" id="nearbySearchSlider" min="1" max="20" step="1" value="2" data-highlight="true" data-mini="true" />
+                <label for="nearbySearchSlider" > Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label><br/>
+                <input type="range" id="nearbySearchSlider" name="nearbySearchSlider" min="1" max="20" step="1" value="2" data-highlight="true" data-mini="true" />
             </div>
             <div data-role="main" class="ui-content">
-                <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:70px;" data-theme="b">
+                <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:92px;" data-theme="b">
                 </ul>
             </div>
         </div>

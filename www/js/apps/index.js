@@ -1251,7 +1251,7 @@ return;
                 console.log('clicked');
                 var payload = this.get('payload');
                 var dateAdded = Date.parseFromYMDHMS(payload.data_inserimento).toDMYHM();
-                var content = '<img src="" style="margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block;" />' +
+                var content = '<img src="" style="border-radius: .5em; margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block;" />' +
                         '<div style="padding: 0 0 1em 0;overflow:hidden;">' +
                             '<div>' + dateAdded + '</div>' +
                             '<div>' + payload.indirizzo + '</div>' +
