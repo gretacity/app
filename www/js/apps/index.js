@@ -1250,12 +1250,13 @@ return;
             google.maps.event.addListener(marker, 'click', function() {
                 console.log('clicked');
                 var payload = this.get('payload');
+                var dateAdded = Date.parseFromYMDHMS(payload.data_inserimento).toDMYHM();
                 var content = '<img src="" style="margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block;" />' +
-                        '<div style="padding: 0 0 0 0;overflow:hidden;">' +
-                        '<div>data e ora: <strong>' + payload.data_inserimento + '</strong></div>' +
-                        '<div>luogo: <strong>' + payload.indirizzo + '</strong></div>' +
-                        '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">descrizione: <strong>' + payload.descrizione_problema + '</strong></div>' +
-                        '<div>stato: <strong>' + payload.stato + '</strong></div>' +
+                        '<div style="padding: 0 0 1em 0;overflow:hidden;">' +
+                            '<div>' + dateAdded + '</div>' +
+                            '<div>' + payload.indirizzo + '</div>' +
+                            '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">' + payload.descrizione_problema + '</div>' +
+                            '<div>stato: <strong>' + payload.stato + '</strong></div>' +
                         '</div>' +
                         '<a href="javascript:app.reportListShowDetail(\'' + payload.id + '\')" class="ui-btn ui-btn-primary2">DETTAGLI</a>' +
                         '<a href="javascript:$(\'#reportingListPopup\').popup(\'close\')" class="ui-btn ui-btn-primary2">CHIUDI</a>';

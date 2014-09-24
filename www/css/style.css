@@ -541,6 +541,16 @@
                 overflow: hidden !important;
             }
             
+            #reportingListPopup-popup {
+                width: 80% !important;
+            }
+            
+            #reportingListPopup-popup .ui-btn {
+                display: block !important;
+                margin: 0 auto !important;
+                max-width: 10em !important;
+            }
+            
             .ui-icon-toolbar-button {
                 margin: 0 !important;
                 padding: 0 !important;
