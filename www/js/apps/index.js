@@ -134,6 +134,7 @@ var app = {
         });
         var profilePage = $('#profilePage');
         profilePage.on('pageinit', self.initProfilePage);
+        profilePage.on('pagebeforeshow', self.beforeshowProfilePage);
         profilePage.on('pageshow', self.showProfilePage);
 
         var setupFollowingPage = $('#setupFollowingPage');
@@ -2178,7 +2179,17 @@ self.tmp = res.routes;
         });
         $('#profilePage #updateProfileButton').on('click', self.updateProfile);
     },
-    
+    beforeshowProfileShow: function() {
+        var page = $('#profilePage');
+        $('#firstname', page).val('');
+        $('#lastname', page).val('');
+        $('#email', page).val('');
+        $('#city', page).val('')
+                        .data('cityid', '')
+                        .data('cityname', '');
+        $('#address', page).val('');
+        $('#phone', page).val('');
+    },
     showProfilePage: function() {
         /*if(self.userProfile != null) {
             self.fillProfilePage();
