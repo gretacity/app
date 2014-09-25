@@ -2267,9 +2267,15 @@ self.tmp = res.routes;
         }
         $.mobile.loading('show');
         services.updateProfile({profile: profile}, function() {
+            var emailChanged = (self.userProfile.email != profile.email);
             self.userProfile = profile;
-            //$.mobile.loading('hide');
-            $.mobile.back();
+            if(emailChanged) {
+                helper.alert('Controlla la casella di posta per confermare il tuo nuovo indirizzo email', function() {
+                    $.mobile.back({transition: 'slide', reverse: true});
+                }, 'Profilo');
+            } else {
+                $.mobile.back({transition: 'slide', reverse: true});
+            }
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
