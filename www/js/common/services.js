@@ -555,8 +555,6 @@ console.log(result);
             }
         }
 console.log('services.sendReporting', obj);
-helper.alert(obj.segnalazione.lat + ' ' + obj.segnalazione.lng);
-return;
         $.ajax(url, {
             type: 'POST',
             url: url, 
