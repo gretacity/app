@@ -501,7 +501,7 @@ var app = {
         }
     },
     
-    login: function() {        
+    login: function() {
         var page = $('#loginPage');
         var usernameEl = $('#username', page);
         var username = usernameEl.val().trim();

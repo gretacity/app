@@ -41,10 +41,10 @@ var auth = {
             // Do nothing... or notify to the failCallback event handler?
             return;
         }*/
-        var loginUrl = config.URL_BASE + config.URL_USER_LOGIN;
+        var loginUrl = config.URL_BASE + config.URL_USER_LOGIN ;
         var data = 'username=' + encodeURIComponent(params.username) + '&password=' + encodeURIComponent(params.password) +
                    '&' + services.getRequestCommonParameters(true);
-console.log('auth.login DATA ', data);
+//console.log('auth.login DATA ', data);
         $.ajax({
             type : "GET",
             cache: false,
@@ -53,8 +53,7 @@ console.log('auth.login DATA ', data);
             data: data,
             dataType: "json"
         }).done(function(result) {
-console.log('auth.login SUCCESS', result);
-//console.log(jqXHR);
+//console.log('auth.login SUCCESS', result);
             if(result != '') {
                 auth.setSessionId(result.session.id);
                 auth.lastLoginTime = new Date();
