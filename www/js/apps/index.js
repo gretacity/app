@@ -452,7 +452,9 @@ var app = {
             $('li a #count_' + i, listEl).html('&nbsp;' + unreadData[i]).show();
         }
         if((openIfUnread || false) && (hasUnread)) {
-            $('#newsPage #newsChannelsPanel').panel('open');
+            setTimeout(function() {
+                $('#newsPage #newsChannelsPanel').panel('open');
+            }, 500);
         }
     },
     /*updateBalloonsInNewsContent: function() {
