@@ -2274,7 +2274,11 @@ self.tmp = res.routes;
             }
             $.mobile.loading('hide');
             //helper.alert('Si è verificato un errore durante l\'aggiornamento', null, 'Profilo');
-            helper.alert(e, null, 'Profilo');
+            helper.alert(
+                (e || '') == '' ? 'Si è verificato un errore durante l\'aggiornamento' : e, 
+                null, 
+                'Profilo'
+            );
         });
     },
     

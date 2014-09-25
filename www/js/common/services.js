@@ -165,7 +165,7 @@ console.log('services.updateProfile', url, data);
             success(result);
             config.userProfileHasBeenSet(true);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-//console.log('FAIL', textStatus, jqXHR);
+console.log('FAIL', textStatus, jqXHR);
             fail(jqXHR.responseText, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -555,6 +555,8 @@ console.log(result);
             }
         }
 console.log('services.sendReporting', obj);
+helper.alert(obj.segnalazione.lat + ' ' + obj.segnalazione.lng);
+return;
         $.ajax(url, {
             type: 'POST',
             url: url, 
