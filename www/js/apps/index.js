@@ -1169,14 +1169,14 @@ var app = {
             $('#reportingListPage #mapView').hide();
             setTimeout(function() {
                 $('#reportingListPage #changeViewType').html('VEDI SU MAPPA');
-            }, 200);
+            }, 500);
             self.reportingListCurrentView = self.reportingListViewTypeList;
         } else {
             $('#reportingListPage #reportingListView').hide();
             $('#reportingListPage #mapView').show();
             setTimeout(function() {
                 $('#reportingListPage #changeViewType').html('VEDI ELENCO');
-            }, 200);
+            }, 500);
             self.reportingListCurrentView = self.reportingListViewTypeMap;
         }
     },
