@@ -2111,8 +2111,8 @@ var app = {
                     travelMode: google.maps.TravelMode.DRIVING
                 }, function(res, status) {
                     if(status == google.maps.DirectionsStatus.OK) {
-console.log(res.routes);
-self.tmp = res.routes;
+//console.log(res.routes);
+//self.tmp = res.routes;
                         //res.routes[0].legs[0].start_location.lat()
                         //res.routes[0].legs[0].start_location.lng()
                         startingMarkerPoint = res.routes[0].legs[0].start_location;
@@ -2179,7 +2179,7 @@ self.tmp = res.routes;
         });
         $('#profilePage #updateProfileButton').on('click', self.updateProfile);
     },
-    beforeshowProfileShow: function() {
+    beforeshowProfilePage: function() {
         var page = $('#profilePage');
         $('#firstname', page).val('');
         $('#lastname', page).val('');
