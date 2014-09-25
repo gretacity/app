@@ -44,7 +44,7 @@ var auth = {
         var loginUrl = config.URL_BASE + config.URL_USER_LOGIN;
         var data = 'username=' + encodeURIComponent(params.username) + '&password=' + encodeURIComponent(params.password) +
                    '&' + services.getRequestCommonParameters(true);
-console.log(data);
+console.log('auth.login DATA ', data);
         $.ajax({
             type : "GET",
             cache: false,
@@ -52,13 +52,13 @@ console.log(data);
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             data: data,
             dataType: "json"
-        }).done(function(data, textStatus, jqXHR) {
-console.log(data);
+        }).done(function(result) {
+console.log('auth.login SUCCESS', result);
 //console.log(jqXHR);
-            if(data != '') {
-                auth.setSessionId(data.session.id);
+            if(result != '') {
+                auth.setSessionId(result.session.id);
                 auth.lastLoginTime = new Date();
-		if(successCallback) successCallback(data);
+		if(successCallback) successCallback(result);
             } else {
 		if(failCallback) failCallback("Login errato");
             }
