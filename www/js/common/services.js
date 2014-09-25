@@ -119,6 +119,8 @@ console.log('services.changePassword FAIL', jqXHR);
     getProfile: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_PROFILE_LOAD;
         url += '&' + services.getRequestCommonParameters();
+console.log(auth.getSessionId());
+console.log(url);
         $.ajax(url, {
             type:'GET',
             dataType:'json',
