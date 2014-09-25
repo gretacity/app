@@ -2180,10 +2180,10 @@ self.tmp = res.routes;
     },
     
     showProfilePage: function() {
-        if(self.userProfile != null) {
+        /*if(self.userProfile != null) {
             self.fillProfilePage();
             return;
-        }
+        }*/
         $.mobile.loading('show');
         services.getProfile(null, function(result) {
             self.userProfile = result;
@@ -2268,7 +2268,8 @@ self.tmp = res.routes;
         $.mobile.loading('show');
         services.updateProfile({profile: profile}, function() {
             self.userProfile = profile;
-            $.mobile.loading('hide');
+            //$.mobile.loading('hide');
+            $.mobile.back();
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');

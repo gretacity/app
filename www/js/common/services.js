@@ -161,7 +161,7 @@ console.log('services.updateProfile', url, data);
             data: data,
             //dataType: 'json',
         }).done(function(result) {
-//console.log('SUCCESS', result);//return;
+console.log('SUCCESS', result);//return;
             success(result);
             config.userProfileHasBeenSet(true);
         }).fail(function(jqXHR, textStatus, errorThrown) {
