@@ -37,13 +37,14 @@ var auth = {
     // params {username: "", password : ""}
     login: function(params, successCallback, failCallback) {
         
-        if((params == null) || (params.username == null) || (params.password == null)) {
+        /*if((params == null) || (params.username == null) || (params.password == null)) {
             // Do nothing... or notify to the failCallback event handler?
             return;
-        }
+        }*/
         var loginUrl = config.URL_BASE + config.URL_USER_LOGIN;
         var data = 'username=' + encodeURIComponent(params.username) + '&password=' + encodeURIComponent(params.password) +
                    '&' + services.getRequestCommonParameters(true);
+console.log(data);
         $.ajax({
             type : "GET",
             cache: false,
@@ -52,7 +53,7 @@ var auth = {
             data: data,
             dataType: "json"
         }).done(function(data, textStatus, jqXHR) {
-//console.log(data);
+console.log(data);
 //console.log(jqXHR);
             if(data != '') {
                 auth.setSessionId(data.session.id);
@@ -63,7 +64,7 @@ var auth = {
             }
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 //console.log(jqXHR);
-            auth.tmp = jqXHR;
+            //auth.tmp = jqXHR;
             /*var errorMessage = (jqXHR.statusText.substr(0, 12).toLowerCase() == 'networkerror') ? 
                                                                                     'Errore di connessione' : 
                                                                                     'Login non valido';*/
