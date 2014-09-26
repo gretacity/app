@@ -46,9 +46,10 @@ var app = {
         loginPage.on('pagebeforeshow', function() {
             if(config.userLastLoginUsername() != '') {
                 $('#username', loginPage).val(config.userLastLoginUsername());
+            } else {
+                $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
             }
             $('#password', loginPage).val(config.LOGIN_DEFAULT_PASSWORD);
-            $('#username', loginPage).val(config.LOGIN_DEFAULT_USERNAME);
         });
         $('#loginButton', loginPage).on('click', self.login);
         $('#recoverPasswordButton', loginPage).on('click', self.recoverPassword);
