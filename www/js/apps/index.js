@@ -293,7 +293,8 @@ var app = {
         switch(qrCodeData.type) {
             case QrCodeData.TYPE_URL:
                 infoText = 'Trovato URL <p>Hai la possibilità di visitare il sito cliccando sul link sottostante:</p>';
-                html = '<li><a href="' + qrCodeData.elements.url + '" style="white-space:normal !important; word-wrap:break-word; overflow-wrap: break-word;">' + qrCodeData.elements.url + '</li>';
+                var href = 'javascript:app.openLink(\'' + qrCodeData.elements.url + '\')';
+                html = '<li><a href="' + href + '" style="white-space:normal !important; word-wrap:break-word; overflow-wrap: break-word;">' + qrCodeData.elements.url + '</li>';
                 //window.open(qrCodeData.elements.url, '_blank', 'location=no,closebuttoncaption=Indietro');
                 break;
             case QrCodeData.TYPE_TEXT:
