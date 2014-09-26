@@ -1330,7 +1330,7 @@ var app = {
             $('#address', page).val(row.indirizzo);
             $('#category', page).val(row.nome_categoria);
             $('#description', page).val(row.descrizione_problema);
-            $('#status', page).val(row.stato);
+            $('#status', page).val(row.stato); 
             switch(parseInt(row.priorita)) {
                 case 0:
                     $('#priority', page).html('BASSA GRAVIT&Agrave;').css({'background-color': '#0F0', 'color': '#222'});
