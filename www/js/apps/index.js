@@ -2522,9 +2522,9 @@ var app = {
         }
         
         $('#availableChannelsContainer', $.mobile.activePage).show();
-        $('#availableChannelList', $.mobile.activePage).empty();
+        $('#availableChannelsContainer li #availableChannelList', $.mobile.activePage).empty();
         services.getAvailableChannels({cityId: cityId, provId: provId, regionId: regionId}, function(result) {
-            $('#availableChannelList', $.mobile.activePage).show()
+            $('#availableChannelsContainer li #availableChannelList', $.mobile.activePage).show()
             var html = '';
             if(result.length == 0) {
                 html = '<label style="white-space:normal;">Sei stato associato al comune di ' + cityName 
@@ -2536,16 +2536,14 @@ var app = {
                     var channelName = result[i].nome;
                     var channelScope = result[i].ambito || '';
                     var subscribed = result[i].sottoscritto == '1';
-                    html += '<input type="checkbox" id="channel' + channelId + '" data-channelid="' + channelId + '" ' + 
-                            'data-channelname="' + channelName + '"' + (subscribed ? ' checked' : '') + '/>' +
-                            '<label for="channel' + channelId + '">' + channelName + '<br /><span style="font-size:.8em !important;color:#aeaece !important;">' + channelScope + '</span></label>'
-                            ;
+                    html += '<input type="checkbox" id="cchannel' + channelId + '" data-channelid="' + channelId + '" ' + 
+                                'data-channelname="' + channelName + '"' + (subscribed ? ' checked' : '') + '/>' +
+                            '<label for="cchannel' + channelId + '">' + channelName + 
+                            '<br /><span style="font-size:.8em !important;color:#aeaece !important;">' + channelScope + '</span></label>';
                 }
-//console.log($('#availableChannelList', $.mobile.activePage).html());
-                $('#availableChannelList', $.mobile.activePage).html(html);
-                $('#availableChannelList input[type="checkbox"]', $.mobile.activePage).checkboxradio().on('click', self.subscribeToChannel);
-                $('#availableChannelList label:not(".ui-btn")', $.mobile.activePage).remove();
-//console.log($('#availableChannelList', $.mobile.activePage).html());
+                $('#availableChannelsContainer li #availableChannelList', $.mobile.activePage).html(html);
+                $('#availableChannelsContainer li #availableChannelList input[type="checkbox"]', $.mobile.activePage).checkboxradio().checkboxradio('refresh').on('click', self.subscribeToChannel);
+                $('#availableChannelsContainer li #availableChannelList', $.mobile.activePage).children('label:not(".ui-btn")').remove();
             }
             $.mobile.silentScroll($('#availableChannelsContainer', $.mobile.activePage).offset().top);
             $.mobile.loading('hide');
