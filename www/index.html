@@ -136,7 +136,7 @@
                 <!--
                 < a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
                 -->
-                <a href="#" data-rel="back" data-transition="none" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
+                <a href="#homePage" data-transition="none" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
@@ -253,7 +253,7 @@
             </div>
         </div>
         <!-- /reporting4Page -->
-        
+                
         <!-- reporting5Page -->
         <div data-role="page" id="reporting5Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -265,7 +265,7 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <textarea id="description" placeholder="Descrivi brevemente il disservizio"></textarea>
+                <textarea id="description" placeholder="Descrivi brevemente il disservizio" data-role="none"></textarea>
                 <p class="text-primary">Clicca sulla gravità del disservizio</p>
                 <div id="prioritySet" class="ui-grid-b">
                     <div class="ui-block-a" style="text-align:center;">
@@ -330,7 +330,7 @@
                     Per aiutarci a individuare con precisione il disservizio,
                     invia almeno una foto.
                 </p>                
-                <div id="photoSet" class="ui-grid-b">
+                <div id="photoSet" class="ui-grid-b ui-responsive">
                     <div class="reporting-photo-item ui-block-a" data-photopos="0" style="text-align:center;position:relative;">
                         <img src="img/PhotoDelete.png" class="reporting-photo-delete" style="display:none;" />
                         <a href="#" class="reporting-photo-shot">
@@ -399,17 +399,17 @@
                 <a href="#reportingListPage" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
-            <div data-role="main" class="ui-content">
-                <div data-role="fieldcontent">
-                   <textarea id="description" style="color: #00269C;" placeholder="Disservizio" readonly></textarea>
+            <div data-role="main" class="ui-content" id="main">
+                <div data-role="fieldcontent" id="fieldcontent">
+                  <!-- <textarea id="description" style="color: #00269C;" placeholder="Disservizio" readonly></textarea>
                     <input id="city" placeholder="Comune" readonly />
                     <input id="prov" placeholder="Provincia" readonly />
                     <input id="address" placeholder="Indirizzo" readonly />
-                    <input id="category" placeholder="Categoria" readonly />
+                    <input id="category" placeholder="Categoria" readonly /> -->
                 </div>
-                <div style="text-align:center;margin:1.5em auto;">
-                    <div id="priority" style="margin:0 auto;color:#eee;background:#F00;width:100%;height:2em;border-radius:.2em;border:.1em solid #333;padding:0.8em 0 0 0;font-weight:bold;font-size:-2em">ALTA GRAVIT&Agrave;</div>
-                </div>
+                <!-- <div style="text-align:center;margin:1.5em auto;">
+                    <div id="priority" style="margin:0 auto;color:#eee;background:#F00;width:100%;height:2em;border-radius:7em;border:.1em solid #333;padding:0.8em 0 0 0;font-weight:bold;font-size:-2em"></div>
+                </div> -->
                 <div class="ui-grid-b" style="margin:0;padding:0;">
                     <div id="photot1" class="ui-block-a photo-preview"
                          style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;"
@@ -426,8 +426,29 @@
                 <ul id="log" data-role="listview" data-inset="true">
                 </ul>
             </div>
+             <div data-role="footer" id="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                
+            </div>
          </div>
-        <!-- /reportingListDetailPage -->
+        <!-- /reportingListDetailPage
+        
+        <ul class="rrssb-buttons clearfix">
+    <li class="facebook">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=http://gretacity.com/web/" class="popup">
+            <span class="icon">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                    <path d="M27.825,4.783c0-2.427-2.182-4.608-4.608-4.608H4.783c-2.422,0-4.608,2.182-4.608,4.608v18.434
+                        c0,2.427,2.181,4.608,4.608,4.608H14V17.379h-3.379v-4.608H14v-1.795c0-3.089,2.335-5.885,5.192-5.885h3.718v4.608h-3.726
+                        c-0.408,0-0.884,0.492-0.884,1.236v1.836h4.609v4.608h-4.609v10.446h4.916c2.422,0,4.608-2.188,4.608-4.608V4.783z"/>
+                </svg>
+            </span>
+            <span class="text">facebook</span>
+        </a>
+    
+</ul>
+        
+        
+        -->
         
         <!-- reportingNearbyPage -->
         <div data-role="page" id="reportingNearbyPage">
@@ -474,6 +495,28 @@
         </div>
         <!-- /newsPage -->
         
+        <!-- commentPage -->
+        <div data-role="page" id="commentPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <a href="#" data-rel="back" data-reverse="true" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Indietro</a>
+                <div class="center-wrapper">
+                    <!-- <img src="img/greta.png" /> --> 
+                    <span>Commenti</span>
+                </div>                
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
+            </div>
+            
+            <div data-role="main" class="ui-content">
+                <h3 id="titleNewComment"></h3>
+                <ul data-role="listview" id="newsCommentPage"> </ul>
+                <div id="leaveCommentPanel">
+                    <textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea>
+                    <br />
+                    <a href="javascript:app.nomejs()" class="ui-btn">Pubblica</a>
+                </div>
+            </div>
+        </div>
+        <!-- /commentPage -->
         
         <!-- photoPage -->
         <div data-role="page" id="photoPage">
@@ -865,8 +908,8 @@
             <div data-role="main" class="ui-content">                
                 <a href="#setupChannelSubscriptionPage" class="ui-btn ui-btn-primary2">Aggiungi altra città</a>
                 <p class="text-primary">Deseleziona il canale se non vuoi più seguirlo</p>
-                <div data-role="controlgroup" id="subscribedChannels" style="padding:0;margin:0;" data-theme="b"></div>
-                <!--<ul data-role="listview" id="subscribedChannels"></ul>-->
+                <!--<div data-role="controlgroup" id="subscribedChannels" style="padding:0;margin:0;" data-theme="b"></div>-->
+                <ul data-role="listview" id="subscribedChannels" style="padding:0;margin:0;" data-theme="b"></ul>
             </div>
         </div>
         <!-- /setupChannelsPage -->        
@@ -913,10 +956,10 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <div>
-                    <a href="#" id="privacyButton" class="ui-btn ui-btn-primary2">Privacy</a>
-                    <a href="#" id="policyButton" class="ui-btn ui-btn-primary2">Policy</a>
-                    <a href="#" id="infoButton" class="ui-btn ui-btn-primary2">Info App</a>
+                <div style="margin-top:5em;">
+                    <a style="margin-bottom:2em;" href="#" id="privacyButton" class="ui-btn ui-btn-primary2">Privacy</a>
+                    <a style="margin-bottom:2em;" href="#" id="policyButton" class="ui-btn ui-btn-primary2">Policy</a>
+                    <a style="margin-bottom:2em;" href="#" id="infoButton" class="ui-btn ui-btn-primary2">Info App</a>
                 </div>
             </div>
         </div>
@@ -938,9 +981,13 @@
                     Per contattare il supporto invia una email all'indirizzo <strong>supporto@gretacity.com</strong>
                 </p>
                 -->
-                <textarea id="description" placeholder="Descrivici il problema"></textarea>
+                <p class="text-primary">
+                    Per informarci del problema da te riscontrato, inviaci un messaggio attraverso questa pagina.
+                </p>
+                <textarea id="description" placeholder="Descrivici il problema" data-role="none" style="height:13em; max-height: 15em;"></textarea>
                 <a href="#" id="sendRequestButton" class="ui-btn ui-btn-primary2">Invia</a>
             </div>
+            
         </div>
         <!-- /supportPage -->
         
@@ -964,7 +1011,6 @@
         <script src="js/common/barcodeReader.js"></script>
         <script src="js/common/services.js"></script>
         <script src="js/common/pushNotificationHelper.js"></script>
-        <script src="js/jquery.glide.min.js"></script>
         <script src="js/apps/index.js"></script>
         <script>
             app.initialize();

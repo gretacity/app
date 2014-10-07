@@ -102,7 +102,6 @@ var app = {
         var newsPage = $('#newsPage');
         newsPage.on('pageinit', self.initNewsPage);
         newsPage.on('pageshow', self.showNewsPage);
-
         var followingListPage = $('#followingListPage');
         followingListPage.on('pageinit', self.initFollowingListPage);
         followingListPage.on('pageshow', self.showFollowingListPage);
@@ -1259,16 +1258,22 @@ var app = {
             }
             marker= new google.maps.Marker(markerOptions);
             google.maps.event.addListener(marker, 'click', function() {
-                console.log('clicked');
                 var payload = this.get('payload');
                 var dateAdded = Date.parseFromYMDHMS(payload.data_inserimento).toDMYHM();
-                var content = '<img src="" style="border-radius: .5em; margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block;" />' +
-                        '<div style="padding: 0 0 1em 0;overflow:hidden;">' +
+                var content = '';
+                content+='<img src="img/share.png" onclick="javascript:app.Sharing(\'' + payload.id + '\')" style="width: 7em; float:right;display: block;position:relative;z-index: 100; top: 0.5em;margin-top: -1em;"/>';
+                if (payload.foto!=''){
+                    content += '<img src="" style="border-radius: .5em; margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block; z-index:1;" />';
+                }else{
+                    content+='<img src="" style="border-radius: .5em; margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'\img/no-photo.jpg \'\)center center no-repeat;background-size: cover;display:block;" />';
+                }
+                content +='<div style="padding: 0 0 1em 0;overflow:hidden;">' +
                             '<div style="width:100%;text-overflow: ellipsis;overflow:hidden;">' + payload.descrizione_problema + '</div>' +
                             '<div>' + payload.indirizzo + '</div>' +
                             '<div>' + dateAdded + '</div>' +
                             '<div>' + payload.stato + '</div>' +
                         '</div>' +
+                        
                         '<a href="javascript:app.reportListShowDetail(\'' + payload.id + '\')" class="ui-btn ui-btn-primary2">DETTAGLI</a>' +
                         '<a href="javascript:$(\'#reportingListPopup\').popup(\'close\')" class="ui-btn ui-btn-primary2">CHIUDI</a>';
                 var popup = $('#reportingListPopup', $.mobile.activePage);
@@ -1293,18 +1298,54 @@ var app = {
         } else {
             for(var i in self.reportingListData) {
                 var row = self.reportingListData[i];
+                var color = '';
+                switch(parseInt(row.priorita)) {
+                    case 0:
+                        //$('#priority', page).html('BASSA GRAVIT&Agrave;').css({'background-color': '#0F0', 'color': '#222'});
+                        color= "#0F0";
+                        break;
+                    case 1:
+                        //$('#priority', page).html('MEDIA GRAVIT&Agrave;').css({'background-color': '#FAF200', 'color': '#222'});
+                        color= "#FAF200";
+                        break;
+                    case 2:
+                        //$('#priority', page).html('ALTA GRAVIT&Agrave;').css({'background-color': '#F00', 'color': '#FFF'});
+                        color="#F00";
+                        break;
+                }
                 //console.log(row);
 //TODO onclick="self.reportingListPageViewPhoto(this)"
                 //var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
                 var dateAdded = Date.parseFromYMDHMS(row.data_inserimento).toDMYHM();    // row.data_inserimento
-                html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
+                 html += '<li data-icon="false">'+
+                        '<a style="background:linear-gradient(135deg, '+color+' 5%,'+color+' 10%,'+color+' 10%,#FFF 20%);padding:0;" href="javascript:app.reportListShowDetail(\'' + row.id + '\')">'+
+                        '<div style="padding: .2em 0 .2em 0;text-overflow: ellipsis;overflow: hidden;">' +
+                        '<img src="" style="background-image:url(\'http://www.gretacity.com//Data/Upload/Segnalazioni/tipologia/round/'+row.nome_categoria+'.png\');" />' +
+                        '<div style="float:left;width: 44%;text-overflow: ellipsis;overflow: hidden;">'+
+                        '<div class="reporting-list-item-row reporting-list-item-descr">'+
+                        '<span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
+                        '<div class="reporting-list-item-row" style="text-overflow: ellipsis;overflow: hidden;"><span>Luogo:</span><strong>' + row.indirizzo + ' ' + row.sigla + '</strong></div>' +
+                        '<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
+                        '<div class="reporting-list-item-row reporting-list-item-status"><span>Stato:</span> <strong>' + row.stato + '</strong>' +
+                        '<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
+                        '</div>';
+                if(row.foto!=''){
+                    html+='<img src="" style="margin-right: .1em !important;float:right!important;background-image:url(\'' + row.foto + '\');"/>';
+                }else{
+                    html+='<img src="" style="margin-right: .1em !important;float:right!important;background-image:url(\'\img/no-photo.jpg \'\);"/>';
+                }
+                html+='</div></a>'+
+                        '<img src="img/share.png" onclick="javascript:app.Sharing(\'' + row.id + '\')" style="width: 7em; margin: 0 auto;display: block;"/>' +
+                        '</li>'; 
+              
+                /*html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
                         '<img src="" style="background-image:url(\'' + row.foto + '\');" />' +
-                        '<div class="reporting-list-item-row reporting-list-item-descr"><span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
+                        '<div class="gg-list-item-row reporting-list-item-descr"><span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
                         '<div class="reporting-list-item-row"><span>Luogo:</span> <strong>' + row.indirizzo + ', ' + row.sigla + '</strong></div>' +
                         '<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
                         '<div class="reporting-list-item-row reporting-list-item-status"><span>Stato:</span> <strong>' + row.stato + '</strong>' +
                         '<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
-                        '</div></a></li>';
+                        '</div></a></li>'; */
             }
         }
         list.html(html);
@@ -1322,43 +1363,64 @@ var app = {
                 break;
             }
         }
+        console.log(row);
         if(row) {
             pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
             var page = $('#reportingListDetailPage');
-            $('#city', page).val(row.comune);
-            $('#prov', page).val(row.sigla);
-            $('#address', page).val(row.indirizzo);
-            $('#category', page).val(row.nome_categoria);
-            $('#description', page).val(row.descrizione_problema);
+            //$('#city', page).val(row.comune);
+            //$('#prov', page).val(row.sigla);
+            //$('#address', page).val(row.indirizzo);
+            //$('#category', page).val(row.nome_categoria);
+            //$('#description', page).val(row.descrizione_problema);
             $('#status', page).val(row.stato); 
+            var color = '';
             switch(parseInt(row.priorita)) {
                 case 0:
-                    $('#priority', page).html('BASSA GRAVIT&Agrave;').css({'background-color': '#0F0', 'color': '#222'});
+                    //$('#priority', page).html('BASSA GRAVIT&Agrave;').css({'background-color': '#0F0', 'color': '#222'});
+                    color= "#0F0";
                     break;
                 case 1:
-                    $('#priority', page).html('MEDIA GRAVIT&Agrave;').css({'background-color': '#FAF200', 'color': '#222'});
+                    //$('#priority', page).html('MEDIA GRAVIT&Agrave;').css({'background-color': '#FAF200', 'color': '#222'});
+                    color= "#FAF200";
                     break;
                 case 2:
-                    $('#priority', page).html('ALTA GRAVIT&Agrave;').css({'background-color': '#F00', 'color': '#FFF'});
+                    //$('#priority', page).html('ALTA GRAVIT&Agrave;').css({'background-color': '#F00', 'color': '#FFF'});
+                    color="#F00";
                     break;
             }
-            //var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
+            var html_desc = '<div><img src="http://www.gretacity.com//Data/Upload/Segnalazioni/tipologia/round/'+row.nome_categoria+'.png" style="float:left;"/>'+
+                        '</div> <div style="color:#00269C; padding-left:7em; margin-bottom:3em;">'+
+                        '<div>'+row.descrizione_problema +'</div>'+
+                        '<div>'+row.nome_categoria+'</div>'+
+                        '<div>'+ row.indirizzo+'</div>'+
+                        '<div>'+ row.comune+' ('+row.sigla+')</div>'+
+                        //'<div style="background-color:'+color+'; height:2em; width:2em; border-radius:5em; float:right;"></div>'+
+                    '</div>';
+            
+            $('#main', page).css('background', 'linear-gradient(135deg, '+color+' 5%,'+color+' 10%,'+color+' 10%,#FFF 20%)');
+//var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
             //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
             //$('#photot2', page).css('background-image', 'url(\'' + photoUrl + '\')');
             //$('#photot3', page).css('background-image', 'url(\'' + photoUrl + '\')');
-            console.log(row);
+            //console.log(row);
             var photos = $('.photo-preview', page);
             for(var i = 0; i < photos.length; i++) {
                 var photoUrl = ((row.immagini[i] || '') != '' ? row.immagini[i] : 'img/camera.png');
                 $(photos[i]).css('background-image', 'url(\'' + photoUrl + '\')');
             }
+            $('#fieldcontent', page).html(html_desc);
             var html = '';
             for(var i in row.log) {
-                html += '<li style="white-space:normal;">' + row.log[i] + '</li>';
+                html += '<li style="color: #00269C; white-space:normal;">' + row.log[i] + '</li>';
             }
+            
             $('#log', page).html(html).listview().listview('refresh');
+            var html_share='<img src="img/share.png" onclick="javascript:app.Sharing(\'' + row.id + '\')" style="float:right; padding:1em;"/>';
+            $('#myfooter', page).html(html_share);
             $.mobile.changePage('#reportingListDetailPage', {transition: 'slide'});
         }
+        
+        
     },
     
     
@@ -1368,6 +1430,28 @@ var app = {
         $('#reportingListDetailPage .photo-preview').each(function() {
             $(this).on('click', self.openPhoto);
         });
+       // $('#reportingListDetailPage #social').on ('click', self.Sharing());
+    },
+   
+    Sharing: function(id){
+        var row = null;
+        for(var i in self.reportingListData) {
+            if(self.reportingListData[i].id == id) {
+                row = self.reportingListData[i];
+                break;
+            }
+        }
+        console.log(row);
+        console.log("dimmi che c'è"+id);
+
+        var urlBase="https://www.facebook.com/sharer/sharer.php?u=";
+        var urlReporting="http://gretacity.com/web/index.php?p=segnalazione_home&recid=";
+        urlReporting +=id;
+               
+        var res = encodeURIComponent(urlReporting);
+        var url =urlBase+res;
+        console.log(url);
+        var ref = window.open(url, '_blank', 'location=yes');
     },
     
     ////////////////////////////////////////
@@ -1455,7 +1539,11 @@ var app = {
         $('#moreNewsButton', page).on('click', function() {
             self.loadNewsChannel(self.newsChannelId, false);
         });        
+        $('#commentButtonNews', page).on('click', function() {
+            
+        })
     },
+    
     showNewsPage: function() {
         self.initNewsSidePanel();
         $('#moreNewsButton', $.mobile.activePage).hide();
@@ -1482,8 +1570,9 @@ var app = {
                         '<div style="background:url(\'' + image + '\') center center no-repeat;border-radius:1em;background-size:cover;border:solid .5em #FFF;" class="img-container"/></div>' +
                         '<div class="news-list-title">' + source + '</div>' +
                         '<h1>' + item.oggetto + '</h1>' +
-                        '<div class="news-list-note news-list-note-bottom">del ' + dateAdded + '</div>' +
+                        '<div class="news-list-note" style="position: absolute; bottom:.3em;">del ' + dateAdded + '</div>' +
                     '</a>' +
+                    //'<img id="comment" src="img/comment.png" onclick="app.loadComments('+item.id+')" style="position:absolute; top:5em; right:.5em; width:2em;"/>'+
                 '</li>';
 
         return html;
@@ -1609,6 +1698,45 @@ var app = {
         });
     },
     
+     //////// //////// ////////
+    //////// commentsPage
+        
+   
+    loadComments: function(newsId){
+        $.mobile.loading('show');
+        $.mobile.changePage('#commentPage');
+        var page= $('#commentPage');
+        
+        $('#comment', page).val('');
+        
+        var currentCommentInfo=[
+            {titolo:"titolo della notizia", nome:"Mario",commento:"La notizia è molto interessante, ma risulta esserlo troppo poca interessante",data:"10/10/2010", stato:"1"},
+            {titolo:"titolo della notizia", nome:"Andre", commento:"fkdsja fjdsoa dsfioa fjiodsa",data:"10/10/2010", stato:"0"},
+            {titolo:"titolo della notizia", nome:"Francesca",commento:"sdji onfjsdioasfio",data:"10/10/2010", stato:"1"},
+        ];
+        $('h3', page).html(currentCommentInfo[0].titolo);
+        var html = '';
+        if(currentCommentInfo && (currentCommentInfo.length > 0)) {
+            for(var i in currentCommentInfo) {
+                var c = currentCommentInfo[i];
+                //var d = Date.parseFromYMDHMS(c.data);
+                var d= new Date();
+                html += '<li>';
+                if((c.nome || '') != '') {
+                    html += '<small  class="news-note" display:block;>Commento di ' + c.nome + '</small>';
+                }
+                html += '<p style="white-space:normal;">' + c.commento + '</p>';
+                html += '<small class="news-note">' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
+
+                if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
+                html += '</li>';
+            }
+        } else {
+            html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
+        }
+        $.mobile.loading('hide');
+        $('#newsCommentPage', page).html(html).listview().listview('refresh');
+    },
     
     
     
@@ -1633,12 +1761,12 @@ var app = {
                 var row = result.follows[i];
                 var name = row.denominazione || '';
                 var description = row.descrizione || '';
-                if(description.length > 40) description = description.substr(0, 40) + '...';
+               // if(description.length > 40) description = description.substr(0, 40) + '...';
                 var qrCodeId = row.r_qrcode_id || '';
                 
-                html += '<li data-icon="false"><a href="javascript:app.getFollowingInfo(\'' + qrCodeId.replace(/'/g, "\\'") + '\')">' + name + 
+                html += '<li data-icon="false"><a href="javascript:app.getFollowingInfo(\'' + qrCodeId.replace(/'/g, "\\'") + '\')"><img src="img/qr-code.png"/>' + name + 
                         '<span id="count_' + qrCodeId + '" class="ui-li-count-cust" style="display:none;"></span>' +
-                        '<label>' + description +'</label></a></li>';
+                        '<label style="overflow: hidden;text-overflow: ellipsis;">' + description +'</label></a></li>';
             }
             $('#followingListPage #followingList').html(html).listview('refresh');
             self.updateBalloonsInFollowing();
@@ -1700,7 +1828,9 @@ var app = {
                         '</div></a>';
             }
             
-            html += '<p class="qrcode-info-description">' + result.info.descrizione.replace(/\n/g, '<br />') + '</p>';
+            html += '<p class="qrcode-info-description">' + result.info.descrizione+ '</p>';
+            html = html.replace(/\r\n\r\n/g, "</p><p>").replace(/\n\n/g, "</p><p>");
+            html = html.replace(/\r\n/g, "<br />").replace(/\n/g, "<br />");
             html += '<div style="margin-top:3em;" class="ui-grid-a">' +
                     '<div class="ui-block-a">';
             if(result.notizie && (result.notizie.length > 0)) {
@@ -1787,8 +1917,8 @@ var app = {
             for(var i in result.notizie) {
                 var news = result.notizie[i];
                 html += '<li class="qrcode-info-news">' + 
-                        '<div>' + news.titolo + '</div>' +
-                        '<p>' + news.annotazione + '</p>' +
+                        '<div style="white-space: normal !important; color: #00269C !important;">' + news.titolo + '</div>' +
+                        '<p style="white-space:normal;">' + news.annotazione + '</p>' +
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
                         '</li>';
             }
@@ -1879,8 +2009,9 @@ var app = {
     },
     
     beforeShowQrCodeInfoCommentsPage: function() {
-        var result = self.currentQrCodeInfo;
+        var result = self.currentQrCodeInfo;        
         var canLeaveComment = (result.categoria.commenti == 1);
+        
         var page = $('#qrCodeInfoCommentsPage');
         $('h3', page).html(result.info.nome);
         var html = '';
@@ -1892,10 +2023,10 @@ var app = {
                 if((c.nome || '') != '') {
                     html += '<small  class="news-note" display:block;>Commento di ' + c.nome + '</small>';
                 }
-                html += '<p>' + c.descrizione + '</p>';
+                html += '<p style="white-space:normal;">' + c.descrizione + '</p>';
                 html += '<small class="news-note">' + d.toDMY() + ' alle ' + d.toHM() + '</small>';
                 
-                html
+               
                 if(c.stato == 0) html += '<div class="news-note">in attesa di approvazione</div>';
                 html += '</li>';
             }
@@ -1903,9 +2034,9 @@ var app = {
             html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
         }
         if(canLeaveComment) {
-            $('#leaveCommentPanel').show();
+            $('#leaveCommentPanel', page).show();
         } else {
-            $('#leaveCommentPanel').hide();
+            $('#leaveCommentPanel', page).hide();
         }
         $('#qrCodeCommentsList', page).html(html).listview('refresh');
     },
@@ -1920,10 +2051,23 @@ var app = {
             //html += '<li data-role="list-divider">Video</li>';
             for(var i in result.youtube) {
                 var v = result.youtube[i];
-                html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
-            }
+				html +='<li>';
+                //html += '<li><a href="#" onclick="javascript:self.openLink(\'' + v.media_file.replace(/'/g, "\\'") + '\')" target="_system">' + v.nome + '</a></li>';
+				//html +=v.nome;
+				html +=v.media_file.replace(/(?:https:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.it)\/(?:watch\?v=)?(.+)/g, '<iframe width="100%" height="10%" src="http://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
+				html +='</li>';
+			}
             html += '</ul>';
-        }
+			
+			/* html += '<object>'+
+				'<param name="movie" value="http://www.youtube.com/v/u8D3Fxv3BG0?version=3&amp;hl=it_IT">'+
+				'<param name="allowFullScreen" value="false">'+
+				'<param name="allowscriptaccess" value="always">'+
+				'<param name="wmode" value="opaque">'+
+				'<embed src="http://www.youtube.com/v/u8D3Fxv3BG0?version=3&amp;hl=it_IT" wmode="opaque" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true">'+
+			'</object>'; */
+		}
+        //}';
         $('#qrCodeMultimediaContent', page).html(html);
         $('#qrCodeMultimediaContent #videos', page).listview();
     },
@@ -2189,6 +2333,7 @@ var app = {
         $('#city', page).val('')
                         .data('cityid', '')
                         .data('cityname', '');
+        $('#citySuggestion',page).empty();
         $('#address', page).val('');
         $('#phone', page).val('');
     },
@@ -2337,7 +2482,6 @@ var app = {
             helper.alert(e, null, 'Supporto');
         });
     },
-
     ////////////////////////////////////////
     // setupFollowingPage
     
@@ -2373,26 +2517,27 @@ var app = {
 
     ////////////////////////////////////////
     // setupChannelsPage
-    
     showSetupChannelsPage: function() {
         $.mobile.loading('show');
         services.getSubscribedChannels(function(result) {
             $.mobile.loading('hide');
             var html = '';
             for(var i in result) {
+                console.log(result);
                 var channelId = result[i].id_feed;
                 var channelName = result[i].nome_feed;
                 var channelOwner = result[i].denominazione;
-                /*html += '<li style="margin:0;padding:0">'+
+                html += '<li style="margin:0;padding:0">'+
                             '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
                             '<label for="channel' + channelId + '">' + channelName + 
                             '<br /><small>' + channelOwner + '</small></label>'+
-                        '</li>';*/
-                html += '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
+                        '</li>';
+                /*html += '<input type="checkbox" id="channel' + channelId + '" data-id="' + channelId + '" checked data-removable="' + result[i].remove + '" />'+
                         '<label for="channel' + channelId + '">' + channelName + 
-                        '<br /><small>' + channelOwner + '</small></label>';
+                        '<br /><small>' + channelOwner + '</small></label>';*/
             }
-            $('#subscribedChannels', $.mobile.activePage).html(html).trigger('create');//.listview('refresh');
+            console.log(html);
+            $('#subscribedChannels', $.mobile.activePage).html(html).trigger('create').listview('refresh');
             $('#subscribedChannels input[type="checkbox"]', $.mobile.activePage).checkboxradio().on('click', function(e) {
                 var removable = $(this).attr('data-removable') == '1';
                 if(!removable) {
@@ -2562,7 +2707,7 @@ var app = {
         }, function(e, loginRequired) {
             if(subscribe) {
                 // Remove the check mark
-                $(this).removeAttr('checked').checkboxradio("refresh");
+                Attr('checked').checkboxradio("refresh");
             } else {
                 // Reset the check mark
                 $(this).prop('checked', true).checkboxradio("refresh");
@@ -2580,10 +2725,11 @@ var app = {
 // TODO Move up
     leaveCommentOnQrCode: function() {
         var text = $('#qrCodeInfoCommentsPage #comment').val().trim();
+	  var qr = $('#followingListDetailPage #qrCodeId').val();
         if(text == '') return;
         var params = {
             comment: text,
-            qrCodeId: $('#qrCodeInfoPage #qrCodeId').val()
+            qrCodeId: qr
         };
         $.mobile.loading('show');
         services.leaveCommentOnQrCode(params, function() {
