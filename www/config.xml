@@ -70,8 +70,7 @@
     <gap:plugin name="org.apache.cordova.globalization" version="0.2.6" />
     <gap:plugin name="org.apache.cordova.inappbrowser" version="0.3.3" />
     <gap:plugin name="org.apache.cordova.network-information" version="0.2.7" />
-
-
+    
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
     <icon src="res/icon/android/icon-36-ldpi.png"   gap:platform="android"    gap:density="ldpi" />
@@ -98,9 +97,9 @@
     <icon src="res/icon/ios/icon-40.png"            gap:platform="ios"      width="40" height="40" />
     <icon src="res/icon/ios/icon-40-2x.png"         gap:platform="ios"      width="80" height="80" />
 
-    <!--
+    
     <icon src="res/icon/ios/icon-60-3x.png"         gap:platform="ios"      width="180" height="180" />
-    -->
+    
     
     <icon src="res/icon/webos/icon-64.png"          gap:platform="webos" />
     <icon src="res/icon/windows-phone/icon-48.png"  gap:platform="winphone" />
@@ -127,14 +126,14 @@
     <gap:splash src="res/screen/ios/screen-ipad-landscape-2x.png"        gap:platform="ios"     width="2048" height="1496" />
     <gap:splash src="res/screen/ios/screen-iphone-portrait-568h-2x.png"  gap:platform="ios"     width="640"  height="1136" />
     
-    <!--
+    
     <gap:splash src="res/screen/ios/screen-iphone-portrait-667h-2x.png"  gap:platform="ios"     width="750"   height="1334" />
     <gap:splash src="res/screen/ios/screen-iphone-landscape-375h-2x.png"  gap:platform="ios"    width="1334"  height="750" />
     <gap:splash src="res/screen/ios/screen-iphone-portrait-736h-3x.png"  gap:platform="ios"     width="1242"  height="2208" />
     <gap:splash src="res/screen/ios/screen-iphone-portrait-414h-3x.png"  gap:platform="ios"     width="2208"  height="1242" />
-    -->
     
-    <gap:splash src="res/screen/windows-phone/screen-portrait.jpg"  gap:platform="winphone" />
+    
+    <gap:splash src="res/screen/windows-phone/screen-portrait.png"  gap:platform="winphone" />
 
     <!--
         Define access to external domains.
@@ -144,6 +143,7 @@
 
         Otherwise, you can specify specific domains:
     -->
+	<!--<access origin="*" subdomains="true"/> -->
     <access origin="*" />
     <access origin="http://www.gretacity.com" subdomains="true" />
     <!--

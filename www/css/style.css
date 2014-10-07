@@ -653,3 +653,9 @@
                 background-size: cover !important;
 
             */
+            #description
+            {
+                height: 10em;
+                max-height: 10em;  
+                width:100%;
+            }
