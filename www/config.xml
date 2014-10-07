@@ -120,16 +120,16 @@
     <gap:splash src="res/screen/ios/screen-iphone-landscape.png"    gap:platform="ios"     width="480" height="320" />
     <gap:splash src="res/screen/ios/screen-iphone-portrait-2x.png"  gap:platform="ios"     width="640" height="960" />
     <gap:splash src="res/screen/ios/screen-iphone-landscape-2x.png" gap:platform="ios"     width="960" height="640" />
-    <gap:splash src="res/screen/ios/screen-ipad-portrait.png"       gap:platform="ios"     width="768" height="1024" />
-    <gap:splash src="res/screen/ios/screen-ipad-landscape.png"      gap:platform="ios"     width="1024" height="768" />
-    <gap:splash src="res/screen/ios/screen-ipad-portrait-2x.png"         gap:platform="ios"     width="1536" height="2008" />
-    <gap:splash src="res/screen/ios/screen-ipad-landscape-2x.png"        gap:platform="ios"     width="2048" height="1496" />
-    <gap:splash src="res/screen/ios/screen-iphone-portrait-568h-2x.png"  gap:platform="ios"     width="640"  height="1136" />
+    <gap:splash src="res/screen/ios/screen-ipad-portrait.jpg"       gap:platform="ios"     width="768" height="1024" />
+    <gap:splash src="res/screen/ios/screen-ipad-landscape.jpg"      gap:platform="ios"     width="1024" height="768" />
+    <gap:splash src="res/screen/ios/screen-ipad-portrait-2x.jpg"         gap:platform="ios"     width="1536" height="2008" />
+    <gap:splash src="res/screen/ios/screen-ipad-landscape-2x.jpg"        gap:platform="ios"     width="2048" height="1496" />
+    <gap:splash src="res/screen/ios/screen-iphone-portrait-568h-2x.jpg"  gap:platform="ios"     width="640"  height="1136" />
     
     
-    <gap:splash src="res/screen/ios/screen-iphone-portrait-667h-2x.png"  gap:platform="ios"     width="750"   height="1334" />
-    <gap:splash src="res/screen/ios/screen-iphone-landscape-375h-2x.png"  gap:platform="ios"    width="1334"  height="750" />
-    <gap:splash src="res/screen/ios/screen-iphone-portrait-736h-3x.png"  gap:platform="ios"     width="1242"  height="2208" />
+    <gap:splash src="res/screen/ios/screen-iphone-portrait-667h-2x.jpg"  gap:platform="ios"     width="750"   height="1334" />
+    <gap:splash src="res/screen/ios/screen-iphone-landscape-375h-2x.jpg"  gap:platform="ios"    width="1334"  height="750" />
+    <gap:splash src="res/screen/ios/screen-iphone-portrait-736h-3x.jpg"  gap:platform="ios"     width="1242"  height="2208" />
     <gap:splash src="res/screen/ios/screen-iphone-portrait-414h-3x.png"  gap:platform="ios"     width="2208"  height="1242" />
     
     
