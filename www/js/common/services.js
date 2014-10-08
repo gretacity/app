@@ -587,6 +587,20 @@ console.log('services.getReportingList FAIL', jqXHR, textStatus);
         });
     },
     
+    sendHidden: function(params, successCallback, failCallback) {
+        var url = config.URL_BASE + config.URL_REPORTING_HIDDEN+'&' + services.getRequestCommonParameters();
+        var data = 'recid='+encodeURIComponent(params);
+console.log('services.sendHidden', data);
+        $.ajax(url, {
+            type: 'POST',
+            data: data,
+          timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result) {
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            failCallback(jqXHR.responseText);
+        });
+    },
     
     sendRequestSupport: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_SUPPORT;

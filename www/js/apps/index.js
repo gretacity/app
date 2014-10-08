@@ -1335,6 +1335,8 @@ var app = {
                     html+='<img src="" style="margin-right: .1em !important;float:right!important;background-image:url(\'\img/no-photo.jpg \'\);"/>';
                 }
                 html+='</div></a>'+
+                        '<img src="img/PhotoDelete.png" onclick="javascript:app.RemoveReport(\'' + row.id + '\')" style="position:absolute; z-index:100; top:0; right:0;"/>'+
+                        '<img src="img/Shadow.png"  style="position:absolute; z-index:10; top:0; right:0; opacity: 0.8;width: 5em;"/>'+
                         '<img src="img/share.png" onclick="javascript:app.Sharing(\'' + row.id + '\')" style="width: 7em; margin: 0 auto;display: block;"/>' +
                         '</li>'; 
               
@@ -1354,6 +1356,27 @@ var app = {
         $.mobile.silentScroll();
     },
     
+    
+    RemoveReport: function(id){
+        var row = null;
+        for(var i in self.reportingListData) {
+            if(self.reportingListData[i].id == id) {
+                row = self.reportingListData[i];
+                break;
+            }
+        }
+        services.sendHidden(row.id, function() {
+        // Successfully sent
+        $.mobile.loading('hide');
+        helper.alert('La tua segnalazione è stata cancellata', function() {
+            $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
+        }, 'Elimina');
+    }, function(e) {
+        // An error occurred
+        $.mobile.loading('hide');
+        helper.alert('Si è verificato un errore durante la cancellazione', null, 'Elimina');
+    });
+    },
     reportListShowDetail: function(id) {
         $.mobile.loading('show');
         var row = null;
@@ -1441,17 +1464,14 @@ var app = {
                 break;
             }
         }
-        console.log(row);
-        console.log("dimmi che c'è"+id);
-
-        var urlBase="https://www.facebook.com/sharer/sharer.php?u=";
-        var urlReporting="http://gretacity.com/web/index.php?p=segnalazione_home&recid=";
-        urlReporting +=id;
-               
-        var res = encodeURIComponent(urlReporting);
-        var url =urlBase+res;
-        console.log(url);
-        var ref = window.open(url, '_blank', 'location=yes');
+        //var urlBase="https://www.facebook.com/sharer/sharer.php?u=";
+        //var urlReporting="http://gretacity.com/web/index.php?p=segnalazione_home&recid=";
+        //var urlReporting =encodeURIComponent(config.URL_REPORTING_SHARE+id);
+        //console.log(config.URL_BASE_FACEBOOK+urlReporting);
+        //var res = encodeURIComponent(urlReporting);
+        //var url =urlBase+res;
+        //console.log(url);
+        var url = window.open(config.URL_BASE_FACEBOOK+encodeURIComponent(config.URL_REPORTING_SHARE+id), '_blank', 'location=yes');
     },
     
     ////////////////////////////////////////

@@ -40,6 +40,9 @@ var config = {
     PASSWORD_MIN_LENGTH: 5,
     
     REPORTING_MAX_PHOTOS: 3,
+    //SHARE url
+    URL_BASE_FACEBOOK:'https://www.facebook.com/sharer/sharer.php?u=',
+    URL_REPORTING_SHARE:'http://gretacity.com/web/index.php?p=segnalazione_home&recid=',
     
     
     PUSH_REGISTRATION_MAX_DAYS: 7,
@@ -84,6 +87,8 @@ var config = {
     URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
     URL_REPORTING_SEND: '/web/index.php?mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
     URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',
+    //params:recid=id_segnalazione
+    URL_REPORTING_HIDDEN:'/web/index.php?p=segnalazioni&a=utente&mode=module&s=segnalazione_edit_web&s_t=hidden',
     
     //URL_NEARBY_PLACES: 'http://bitroad.it/google/places.php',
     URL_NEARBY_PLACES: '/web/index.php?mode=module&p=app_services&a=aroundme',
