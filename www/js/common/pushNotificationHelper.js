@@ -225,7 +225,7 @@ var pushNotificationHelper = {
             // news: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_CHANNEL
             {id: '1157', tot: 20},
             {id: '1088', tot: 4},
-            //{id: '1017', tot: 7},
+            {id: '1017', tot: 7}
 
             // reporting: PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING
             //{id: '330', tot: 10},
