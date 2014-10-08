@@ -128,7 +128,9 @@ console.log('geoLocation._googleGeocode partial match');
     
     
     reverseGeocoding: function(params, successCallback) {
-//params.lat = 38.827707; params.lng = 16.628456; // Via Caprera 144
+        //params.lat=41.4731791;
+        //params.lng=12.8893273;
+//*params.lat = 38.827707; params.lng = 16.628456; // Via Caprera 144
 //params.lat = 38.827512; params.lng = 16.627475; // Via Niccoloso da Recco 6
         //geoLocation._googleReverseGeocoding(params, successCallback);
         geoLocation._osmReverseGeocoding(params, successCallback);
@@ -167,7 +169,7 @@ console.log(firstResult);
         // https://maps.googleapis.com/maps/api/geocode/json?language=it&latlng=38.858364,16.549469&sensor=false&location_type=ROOFTOP&result_type=street_address&key=AIzaSyCP3LSUtIAVLhGhp65HQCvHd3u0Ee4HqzQ
     },
     
-    
+    //(row.foto != '' ? row.foto : 'img/camera.png');
     _osmReverseGeocoding: function(params, successCallBack) {
         // http://nominatim.openstreetmap.org/reverse?lat=38.858364&lon=16.549469&format=json&addressdetails=1&zoom=18
         var url = 'http://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&zoom=18&lat=' + params.lat +'&lon=' + params.lng;
@@ -175,6 +177,8 @@ console.log(firstResult);
             var retVal = {
                 prov: result.address.county,
                 city: result.address.city,
+                town: result.address.town,
+                village: result.address.village,
                 road: result.address.road,
                 streetNumber: '',
             };

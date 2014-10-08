@@ -410,6 +410,13 @@
                 color: #aeaece;
                 font-size: 1em !important;
             }
+            
+            .failInfo{
+                color: #FF0000;
+            }
+            .successInfo{
+                color: #00269C;
+            }
             .ui-btn-primary {
                 border-radius: .4em !important;
                 background-color: #08C !important;

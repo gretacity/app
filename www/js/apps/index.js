@@ -878,25 +878,39 @@ var app = {
                     self.reportingGeoCoordinatesAcquired(pos);
                 }, function(e) {
                     $('#reporting1Popup').popup('close');
-                    $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
+                    // $('#' + fieldId, $.mobile.activePage).addClass('input-error')
+                    $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.').addClass('failInfo');                
                 }, {enableHighAccuracy: false});
             });
         }
     },
     reportingGeoCoordinatesAcquired: function(pos) {
+        var town;
+        var city;
+        var village;
+        var chepalle;
+        
         self.reporting.latLng.lat = pos.coords.latitude;
         self.reporting.latLng.lng = pos.coords.longitude;
         geoLocation.reverseGeocoding(self.reporting.latLng, function(result) {
+        console.log(result);
+                
             if(result) {
                 $('#address', $.mobile.activePage).val(result.road + " " + result.streetNumber);
-                $('#city', $.mobile.activePage).val(result.city);
                 $('#prov', $.mobile.activePage).val(result.prov);
+                if (result.village != null ){                
+                    $('#city', $.mobile.activePage).val(result.village);
+                }
+                else if (result.town != null ){                
+                    $('#city', $.mobile.activePage).val(result.town);
+                }
+                else
+                    $('#city', $.mobile.activePage).val(result.city);
+                console.log(result);
             }
             $('#reporting1Popup').popup('close');
         });
-        $('.info', $.mobile.activePage).html(
-            'La tua posizione è stata acquisita avanti per confermare.'
-        );
+        $('.info', $.mobile.activePage).html('La tua posizione è stata acquisita avanti per confermare.').addClass('successInfo');
     },
     validateReporting1Page: function() {
         var hasErrors = false;
@@ -1369,7 +1383,7 @@ var app = {
         // Successfully sent
         $.mobile.loading('hide');
         helper.alert('La tua segnalazione è stata cancellata', function() {
-            $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
+            $.mobile.changePage('#reportingHomePage', {transition: 'slide', reverse: true});
         }, 'Elimina');
     }, function(e) {
         // An error occurred
