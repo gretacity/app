@@ -278,7 +278,33 @@
             .ui-btn-multimedia {
                 background-image: url('../img/video.png');
             }
-            
+            .ui-btn-manualmente {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/segnaManualmente.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+                padding-bottom: 3.6em !important;
+            }
+            .ui-btn-qrcode {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/segnaQrcode.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+                padding-bottom: 2.4em !important;
+            }
+            .ui-btn-mieSegnalazioni {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/lemieSegnalazioni.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+                padding-bottom: 2.4em !important;
+            }
             .qrcode-info-news div {
                 font-weight: bold;
             }
@@ -453,16 +479,35 @@
                 padding: 0 .3 !important;
                 overflow: hidden !important;
             }
+             .reporting-photo-missing {
+                /*height:5em;*/
+                background: url('../img/camera.png') no-repeat center center;
+            }
             .profile-missing{
                 height: 9em !important;
                 width: 90% !important; 
                 float:right;
             }
-            .reporting-photo-missing {
+            .profile-photo-missing {
                 /*height:5em;*/
-                background: url('../img/camera.png') no-repeat center center;
+                background: url('../img/default.jpg') no-repeat center center;
+                background-size: 100% 100%;
             }
-            
+            .profile-photo-item {
+                /*border: solid 1px #0f0 !important;*/
+                margin: 0 .3 !important;
+                padding: 0 .3 !important;
+                overflow: hidden !important;
+                height: 7em !important;
+            }
+            .profile-photo {
+                width: 100% !important;
+                height: 7em !important;
+                /*border: solid 1px #f00 !important;*/
+                margin: 0 .3 !important;
+                padding: 0 .3 !important;
+                overflow: hidden !important;
+            }
             .ui-loader-background {
                 width:100%;
                 height:100%;

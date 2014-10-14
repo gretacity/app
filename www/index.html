@@ -70,7 +70,7 @@
             </div>
             <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
                 <p class="text-primary">
-                       Tutti i diritti sono riservati.
+                       Copyright © Gretacity. All Rights Reserved
                 </p>
             </div>
         </div>
@@ -196,26 +196,31 @@
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
-                    <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;line-height: 2.5;padding-bottom: 1.6em !important;">Segnala manualmente</a>
+                    <a href="#reporting1Page" data-transition="slide" class="ui-btn uui-btn-manualmente uui-btn-primary2" style="background-color:rgba(0,0,0,0); border-color:rgba(0,0,0,0);white-space:normal;padding-right:0;padding-left:0;line-height: 2.5;">
+                        <img src="img/segnaManualmente.png" style="background-color: rgba(0, 0, 0, 0);width: 100%; max-width: 25em;">
+                    </a>
                 </div>
                 
                 <div class="ui-grid-a">
 
-                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary2" style="margin-bottom: 1em; white-space:normal;padding-right:0;padding-left:0;">
-                        Verifica le mie segnalazioni
+                    <a href="#reportingListPage" data-transition="slide" class="ui-btn uui-btn-mieSegnalazioni uui-btn-primary2" style="background-color:rgba(0,0,0,0); border-color:rgba(0,0,0,0); margin-bottom: 1em; white-space:normal;padding-right:0;padding-left:0;">
+                        <img src="img/lemieSegnalazioni.png" style="background-color: rgba(0, 0, 0, 0);width: 100%; max-width: 25em;">
                         <span class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                     </a>
                 </div>
-                
-            </div>
-            <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
                 <p class="text-primary">
-                        Se il comune supporta il sistema Gretacity, 
+                        Se il comune supporta il sistema di censimento Gretacity, 
                         puoi utilizzare il QR Code per segnalarci la posizione.
                 </p>
                 <div class="ui-grid-a">
-                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary2" style="width: 100%; white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
+                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn uui-btn-qrcode uui-btn-primary2" style="background-color:rgba(0,0,0,0); border-color:rgba(0,0,0,0); width: 100%; white-space:normal;padding-right:0;padding-left:0;margin-top: 0;margin-bottom: 0;
+padding-bottom: 0;">
+                        <img src="img/segnaQrcode.png" style="background-color: rgba(0, 0, 0, 0);width: 100%; max-width: 25em;">
+                    </a>
                 </div>
+            </div>
+            <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
+                
             </div>
         </div>
         <!-- /reportingHomePage -->
@@ -911,10 +916,10 @@
                              style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;"
                              >
                         </div> -->
-                        <div class="reporting-photo-item" data-photopos="0" style=" height:7em !important; margin-top: 1em;" >
+                        <div class="profile-photo-item" data-photopos="0" style=" height:7em !important; margin-top: 1em;" >
                             <img src="img/PhotoDelete.png" class="reporting-photo-delete" style="z-index:100; top: inherit; display:none; float:right;" />
-                            <a href="#" class="reporting-photo-shot" style="height:7em !important; float:right; width: 90% !important;margin-bottom: 2em;max-width: 12em !important;">
-                                <img src="" id="photoProfile" class="reporting-photo reporting-photo-missing" style="z-index:1; height:7em !important;" />
+                            <a href="#" class="profile-photo-shot" style="height:7em !important; float:right; width: 90% !important;margin-bottom: 2em;max-width: 12em !important;">
+                                <img src="" id="photoProfile" class="profile-photo profile-photo-missing" style="z-index:1; height:7em !important;" />
                             </a>
                         </div>
                     </div>

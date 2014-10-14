@@ -1098,6 +1098,7 @@ var app = {
     initReporting6Page: function() {
         $('#reporting6Page #sourceTypePopup #shotPhoto').on('click', self.getReportingPhoto);
         $('#reporting6Page #sourceTypePopup #fromGallery').on('click', self.getReportingPhoto);
+        
         $('#reporting6Page a.reporting-photo-shot').on('click', function(e) {
             self.reportingCurrPhotoPos = $(e.target).closest('div.reporting-photo-item').data('photopos');
             $('#sourceTypePopup', $.mobile.activePage).popup('open');
@@ -1132,6 +1133,19 @@ var app = {
             //helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});
     },
+    
+    beforeremoveReportingPhoto:  function (e){
+        console.log("elimina");
+        if ( $(e.currentTarget).attr('id')=='annulla'){
+            return;
+             console.log("elimina1");
+        }
+        else {
+            self.removeReportingPhoto(e);
+             console.log("elimina2");
+        }
+    },
+    
     removeReportingPhoto: function(par) {
         var container = null;
         var pos = null;
@@ -1147,29 +1161,9 @@ var app = {
         imageEl.removeAttr('src').replaceWith(imageEl.clone());
     },
     
-    removeProfilePhoto: function(par,id) {
-        var container = null;
-        var pos = null;
-        if(par.currentTarget) {
-            container = $(par.currentTarget).closest('div.reporting-photo-item');
-            pos = container.data('photopos');
-        } else {
-            pos = par;
-        }
-        var imageEl = $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img');
-        imageEl.parent().prev().hide();
-        imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
-        imageEl.removeAttr('src').replaceWith(imageEl.clone());
-    services.deleteProfilePhoto(id, function() {
-        // Successfully sent
-        $.mobile.loading('hide');
-   
-        }, function(e) {
-        // An error occurred
-        $.mobile.loading('hide');
-        helper.alert('Si è verificato un errore durante la cancellazione', null, 'Elimina');
-    });
-    },
+    
+    
+    
     sendReporting: function() {
         self.reporting.photos = [];
         $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
@@ -1210,14 +1204,14 @@ var app = {
             $('#reportingListPage #mapView').hide();
             setTimeout(function() {
                 $('#reportingListPage #changeViewType').html('VEDI SU MAPPA');
-            }, 500);
+            }, 400);
             self.reportingListCurrentView = self.reportingListViewTypeList;
         } else {
             $('#reportingListPage #reportingListView').hide();
             $('#reportingListPage #mapView').show();
             setTimeout(function() {
                 $('#reportingListPage #changeViewType').html('VEDI ELENCO');
-            }, 500);
+            }, 400);
             self.reportingListCurrentView = self.reportingListViewTypeMap;
         }
     },
@@ -1415,21 +1409,21 @@ var app = {
                 break;
             }
         }
-    if (confirm("Vuoi Eliminare la segnalazione?") == true) {
-        services.sendHidden(row.id, function() {
-        // Successfully sent
-        $.mobile.loading('hide');
-        //helper.alert('La tua segnalazione è stata cancellata', function() {
-            $.mobile.changePage('#reportingHomePage', {transition: 'slide', reverse: true});
-        //}, 'Elimina');
-        }, function(e) {
-        // An error occurred
-        $.mobile.loading('hide');
-        helper.alert('Si è verificato un errore durante la cancellazione', null, 'Elimina');
-    });}
-    else{
-        return;
-    }
+        helper.confirm("Vuoi Eliminare la segnalazione?", function(ix) {
+            if(ix == 1) {
+                services.sendHidden(row.id, function() {
+                    // Successfully sent
+                    $.mobile.loading('hide');
+                    //helper.alert('La tua segnalazione è stata cancellata', function() {
+                        $.mobile.changePage('#reportingHomePage', {transition: 'slide', reverse: true});
+                    //}, 'Elimina');
+                }, function(e) {
+                    // An error occurred
+                    $.mobile.loading('hide');
+                    helper.alert('Si è verificato un errore durante la cancellazione', null, 'Elimina');
+                });
+            }
+        }, 'Elimina segnalazione', ['Procedi', 'Annulla']);
     },
     reportListShowDetail: function(id) {
         $.mobile.loading('show');
@@ -2424,15 +2418,14 @@ var app = {
             }
         });
         $('#profilePage #updateProfileButton').on('click', self.updateProfile);
-        $('#profilePage a.reporting-photo-shot').on('click', function(e) {
-            self.reportingCurrPhotoPos = $(e.target).closest('div.reporting-photo-item').data('photopos');
+        $('#profilePage a.profile-photo-shot').on('click', function(e) {
             $('#sourceTypePopup', $.mobile.activePage).popup('open');
         });
         $('#profilePage .reporting-photo-delete').on('click', function(e) {
             self.removeProfilePhoto(e,self.userProfile.id);
         });
-        $('#profilePage #sourceTypePopup #shotPhoto').on('click', self.getReportingPhoto);
-        $('#profilePage #sourceTypePopup #fromGallery').on('click', self.getReportingPhoto);
+        $('#profilePage #sourceTypePopup #shotPhoto').on('click', self.getProfilePhoto);
+        $('#profilePage #sourceTypePopup #fromGallery').on('click', self.getProfilePhoto);
     },
     beforeshowProfilePage: function() {
         var page = $('#profilePage');
@@ -2477,11 +2470,14 @@ var app = {
                         .data('cityname', cityName);
         $('#address', page).val(self.userProfile.address || '');
         $('#phone', page).val(self.userProfile.phone || '');
-        var photoUrl = (self.userProfile.photo != '' ? self.userProfile.photo : 'img/camera.png');
+        var photoUrl = (self.userProfile.photo != '' ? self.userProfile.photo : 'img/default.jpg');
         $('#photoProfile', page).attr('src', photoUrl);
-        /*if(self.userProfile.photo){
+        var photo="http://www.gretacity.com//Data/Upload/Logo_ente/default.jpg";
+        var photo2="img/default.jpg";
+        if(self.userProfile.photo!= photo && self.userProfile.photo!=photo2){
+            console.log(self.userProfile.photo);
             $('.reporting-photo-delete', page).css('display', 'inherit');
-        }*/
+        }
         //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
         /*var photos = $('.photo-preview', page);
             for(var i = 0; i < photos.length; i++) {
@@ -2495,7 +2491,7 @@ var app = {
         var profile = {};
         //svuota variabile photos nell'oggetto profile
         profile.photos = [];
-        $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
+        $('#photoSet a img:not(.profile-photo-missing)', $.mobile.activePage).each(function() {
             var src = $(this).attr('src');
             var pos = src.indexOf('base64,');
             if(pos != -1) 
@@ -2582,6 +2578,48 @@ var app = {
         });
     },
     
+getProfilePhoto: function(e) {
+        /*var remainingPhoto = $('#photoSet div a img.reporting-photo-missing', $.mobile.activePage).length;
+        if(remainingPhoto == 0) {
+            helper.alert('Hai raggiunto il limite massimo di foto che puoi inviare');
+            return;
+        }*/
+        var source = $(e.currentTarget).attr('id') == 'shotPhoto' ? 
+                Camera.PictureSourceType.CAMERA :
+                Camera.PictureSourceType.PHOTOLIBRARY;
+        console.log(source);
+        camera.getPicture(function(res) {
+            // Success callback
+            var photo = $($('#photoSet div[data-photopos="0"] a img.profile-photo-missing', $.mobile.activePage)[0]);
+            console.log(photo);
+            photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('profile-photo-missing');
+            photo.parent().prev().show();
+            $('#sourceTypePopup', $.mobile.activePage).popup('close');
+            helper.imageCropToFit(photo);
+        }, function(e) {
+            //helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
+        }, {sourceType: source});
+    },
+    removeProfilePhoto: function(par,id) {
+        helper.confirm("Vuoi Eliminare la foto del profilo?", function(ix) {
+            if(ix == 1) {
+                var imageEl = $('#photoSet div.profile-photo-item[data-photopos="0"] a img');
+                imageEl.parent().prev().hide();
+                imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('profile-photo-missing');
+                imageEl.removeAttr('src').replaceWith(imageEl.clone());
+
+                services.deleteProfilePhoto(id, function() {
+                    // Successfully sent
+                    $.mobile.loading('hide');
+
+                }, function(e) {
+                    // An error occurred
+                    $.mobile.loading('hide');
+                    helper.alert('Si è verificato un errore durante la cancellazione', null, 'Elimina');
+                });
+            }
+        }, 'Elimina Foto', ['Procedi', 'Annulla']);
+    },
     
     ////////////////////////////////////////
     // supportPage
