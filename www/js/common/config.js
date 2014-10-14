@@ -44,7 +44,7 @@ var config = {
     URL_BASE_FACEBOOK:'https://www.facebook.com/sharer/sharer.php?u=',
     URL_BASE_TWITTER:'https://twitter.com/home?status=',
     URL_REPORTING_SHARE:'http://gretacity.com/web/index.php?p=segnalazione_home&a=facebook&mode=module&recid=',
-    
+    URL_REPORTING_SHARE_TWITTER:'http://gretacity.com/web/index.php?p=segnalazione_home&recid=',
     
     PUSH_REGISTRATION_MAX_DAYS: 7,
     

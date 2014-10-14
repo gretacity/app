@@ -1204,14 +1204,14 @@ var app = {
             $('#reportingListPage #mapView').hide();
             setTimeout(function() {
                 $('#reportingListPage #changeViewType').html('VEDI SU MAPPA');
-            }, 400);
+            }, 600);
             self.reportingListCurrentView = self.reportingListViewTypeList;
         } else {
             $('#reportingListPage #reportingListView').hide();
             $('#reportingListPage #mapView').show();
             setTimeout(function() {
                 $('#reportingListPage #changeViewType').html('VEDI ELENCO');
-            }, 400);
+            }, 600);
             self.reportingListCurrentView = self.reportingListViewTypeMap;
         }
     },
@@ -1409,7 +1409,7 @@ var app = {
                 break;
             }
         }
-        helper.confirm("Vuoi Eliminare la segnalazione?", function(ix) {
+        helper.confirm("Vuoi eliminare la segnalazione?", function(ix) {
             if(ix == 1) {
                 services.sendHidden(row.id, function() {
                     // Successfully sent
@@ -1525,7 +1525,7 @@ var app = {
                 break;
             }
         }
-        var url = window.open(config.URL_BASE_TWITTER+encodeURIComponent(config.URL_REPORTING_SHARE+id), '_blank', 'location=yes');
+        var url = window.open(config.URL_BASE_TWITTER+encodeURIComponent(config.URL_REPORTING_SHARE_TWITTER+id), '_blank', 'location=yes');
     },
     ////////////////////////////////////////
     // reportingNearbyPage
@@ -2601,7 +2601,7 @@ getProfilePhoto: function(e) {
         }, {sourceType: source});
     },
     removeProfilePhoto: function(par,id) {
-        helper.confirm("Vuoi Eliminare la foto del profilo?", function(ix) {
+        helper.confirm("Vuoi eliminare la foto del profilo?", function(ix) {
             if(ix == 1) {
                 var imageEl = $('#photoSet div.profile-photo-item[data-photopos="0"] a img');
                 imageEl.parent().prev().hide();
