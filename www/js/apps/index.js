@@ -175,7 +175,7 @@ var app = {
         
         var lastRegistrationDate = pushNotificationHelper.getLastRegistrationDate();
         if((auth.getSessionId() != '') && ((lastRegistrationDate == null) || (lastRegistrationDate.getDiffInDays(new Date()) >= config.PUSH_REGISTRATION_MAX_DAYS))) {
-            console.log('onResume: registration to push server required');
+console.log('onResume: registration to push server required');
             // Update the registration to push server
             pushNotificationHelper.register(function(res) {
                 console.log('Registered device on Apple/Google Push Server', res);
@@ -2577,11 +2577,11 @@ getProfilePhoto: function(e) {
         var source = $(e.currentTarget).attr('id') == 'shotPhoto' ? 
                 Camera.PictureSourceType.CAMERA :
                 Camera.PictureSourceType.PHOTOLIBRARY;
-        console.log(source);
+//console.log(source);
         camera.getPicture(function(res) {
             // Success callback
             var photo = $($('#photoSet .profile-photo-item a img.profile-photo-missing', $.mobile.activePage)[0]);
-            console.log(photo);
+//console.log(photo);
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('profile-photo-missing');
             photo.parent().prev().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
@@ -2594,6 +2594,8 @@ getProfilePhoto: function(e) {
         helper.confirm("Vuoi eliminare la foto del profilo?", function(ix) {
             if(ix == 1) {
                 var imageEl = $('#photoSet div.profile-photo-item a img');
+                console.log('QUIII');
+                console.log(imageEl);
                 imageEl.parent().prev().hide();
                 imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('profile-photo-missing');
                 imageEl.removeAttr('src').replaceWith(imageEl.clone());
@@ -2684,7 +2686,7 @@ getProfilePhoto: function(e) {
             $.mobile.loading('hide');
             var html = '';
             for(var i in result) {
-                console.log(result);
+//console.log(result);
                 var channelId = result[i].id_feed;
                 var channelName = result[i].nome_feed;
                 var channelOwner = result[i].denominazione;
@@ -2697,7 +2699,7 @@ getProfilePhoto: function(e) {
                         '<label for="channel' + channelId + '">' + channelName + 
                         '<br /><small>' + channelOwner + '</small></label>';*/
             }
-            console.log(html);
+//console.log(html);
             $('#subscribedChannels', $.mobile.activePage).html(html).trigger('create').listview('refresh');
             $('#subscribedChannels input[type="checkbox"]', $.mobile.activePage).checkboxradio().on('click', function(e) {
                 var removable = $(this).attr('data-removable') == '1';
