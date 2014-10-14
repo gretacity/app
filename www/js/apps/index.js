@@ -224,7 +224,7 @@ var app = {
                     self.userProfile = result;
                 });
             }
-            window.location.hash = (result ? 'homePage' : 'loginPage');
+            window.location.hash = (result ? 'homePage' : 'beforeLoginPage');
             $.mobile.initializePage();
         });
         
@@ -474,6 +474,7 @@ var app = {
     changePageAfterLogin: function(pageId) {
         self.pageId = pageId;
     },
+    
     
     
     
@@ -1120,6 +1121,8 @@ var app = {
         camera.getPicture(function(res) {
             // Success callback
             var photo = $($('#photoSet div[data-photopos="' + self.reportingCurrPhotoPos + '"] a img.reporting-photo-missing', $.mobile.activePage)[0]);
+            
+            console.log(photo);
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
             photo.parent().prev().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
@@ -1144,6 +1147,29 @@ var app = {
         imageEl.removeAttr('src').replaceWith(imageEl.clone());
     },
     
+    removeProfilePhoto: function(par,id) {
+        var container = null;
+        var pos = null;
+        if(par.currentTarget) {
+            container = $(par.currentTarget).closest('div.reporting-photo-item');
+            pos = container.data('photopos');
+        } else {
+            pos = par;
+        }
+        var imageEl = $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img');
+        imageEl.parent().prev().hide();
+        imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
+        imageEl.removeAttr('src').replaceWith(imageEl.clone());
+    services.deleteProfilePhoto(id, function() {
+        // Successfully sent
+        $.mobile.loading('hide');
+   
+        }, function(e) {
+        // An error occurred
+        $.mobile.loading('hide');
+        helper.alert('Si è verificato un errore durante la cancellazione', null, 'Elimina');
+    });
+    },
     sendReporting: function() {
         self.reporting.photos = [];
         $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
@@ -1351,8 +1377,8 @@ var app = {
                 }
                 html+='</div></a>'+
                         '<div>'+
-                        '<img src="img/share_facebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="float:right; padding:.5em; width:45%;"/>'+
-                        '<img src="img/share_twitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" padding:.5em; width:45%;"/>'+
+                        '<img src="img/share_facebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="float:right; padding:.5em; width:45%; max-width:15em;"/>'+
+                        '<img src="img/share_twitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" padding:.5em; width:45%; max-width:15em;"/>'+
                         '</div>'+
                         '</li>';
                         
@@ -1466,8 +1492,8 @@ var app = {
             }
             
             $('#log', page).html(html).listview().listview('refresh');
-            var html_share='<img src="img/share_facebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="float:right; padding:.5em; width:45%;"/>'+
-                           '<img src="img/share_twitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style="float:left; padding:.5em; width:45%;"/>';
+            var html_share='<img src="img/share_facebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="float:right; padding:.5em; width:45%;  max-width:15em;"/>'+
+                           '<img src="img/share_twitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style="float:left; padding:.5em; width:45%;  max-width:15em;"/>';
             html_share+='<a href="#" onclick="javascript:app.RemoveReport(\'' + row.id + '\')"  style=" width: 90%;margin-top: 1em;color: #FFF !important;font-weight: bold !important;float: right;border: none;padding-bottom: 1.2em !important;" class="ui-btn button-important">ELIMINA</a>';
             $('#myfooter', page).html(html_share);
             $.mobile.changePage('#reportingListDetailPage', {transition: 'slide'});
@@ -1791,7 +1817,28 @@ var app = {
         $('#newsCommentPage', page).html(html).listview().listview('refresh');
     },
     
-    
+    leaveCommentOnNews: function(id) {
+        var text = $('#newsCommentPage #comment').val().trim();
+	  var qr = $('#followingListDetailPage #qrCodeId').val();
+        if(text == '') return;
+        var params = {
+            comment: text,
+            newsId: qr
+        };
+        $.mobile.loading('show');
+        services.leaveCommentOnQrCode(params, function() {
+            // success
+            var d = new Date();
+            $('#qrCodeInfoCommentsPage #noComments').hide();
+            $('#qrCodeInfoCommentsPage #qrCodeCommentsList').append('<li><p>' + text + '</p><small>' + d.toDMY() + ' alle ' + d.toHM() + '</small></li>');
+            $('#qrCodeInfoCommentsPage #qrCodeCommentsList').listview('refresh');
+            $('#qrCodeInfoCommentsPage #comment').val('');
+            $.mobile.loading('hide');
+        }, function(e) {
+            $.mobile.loading('hide');
+            helper.alert('Impossibile inviare il commento', null, 'Lascia il commento');
+        });
+    },
     
     
     ////////////////////////////////////////
@@ -2377,6 +2424,15 @@ var app = {
             }
         });
         $('#profilePage #updateProfileButton').on('click', self.updateProfile);
+        $('#profilePage a.reporting-photo-shot').on('click', function(e) {
+            self.reportingCurrPhotoPos = $(e.target).closest('div.reporting-photo-item').data('photopos');
+            $('#sourceTypePopup', $.mobile.activePage).popup('open');
+        });
+        $('#profilePage .reporting-photo-delete').on('click', function(e) {
+            self.removeProfilePhoto(e,self.userProfile.id);
+        });
+        $('#profilePage #sourceTypePopup #shotPhoto').on('click', self.getReportingPhoto);
+        $('#profilePage #sourceTypePopup #fromGallery').on('click', self.getReportingPhoto);
     },
     beforeshowProfilePage: function() {
         var page = $('#profilePage');
@@ -2389,6 +2445,7 @@ var app = {
         $('#citySuggestion',page).empty();
         $('#address', page).val('');
         $('#phone', page).val('');
+        $('#photoProfile', page).attr('src', '');
     },
     showProfilePage: function() {
         /*if(self.userProfile != null) {
@@ -2420,10 +2477,33 @@ var app = {
                         .data('cityname', cityName);
         $('#address', page).val(self.userProfile.address || '');
         $('#phone', page).val(self.userProfile.phone || '');
+        var photoUrl = (self.userProfile.photo != '' ? self.userProfile.photo : 'img/camera.png');
+        $('#photoProfile', page).attr('src', photoUrl);
+        /*if(self.userProfile.photo){
+            $('.reporting-photo-delete', page).css('display', 'inherit');
+        }*/
+        //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
+        /*var photos = $('.photo-preview', page);
+            for(var i = 0; i < photos.length; i++) {
+                var photoUrl = ((self.userProfile.immagini[i] || '') !== '' ? self.userProfile.immagini[i] : 'img/camera.png');
+                $(photos[i]).css('background-image', 'url(\'' + photoUrl + '\')');
+            }*/
+        
     },
     updateProfile: function() {
         var page = $($.mobile.activePage);
         var profile = {};
+        //svuota variabile photos nell'oggetto profile
+        profile.photos = [];
+        $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
+            var src = $(this).attr('src');
+            var pos = src.indexOf('base64,');
+            if(pos != -1) 
+                pos += 7;
+            else 
+                pos = 0;
+            profile.photos.push(src.substr(pos));
+        });
         // Validation
         var hasErrors = false;
         // city_id

@@ -119,7 +119,9 @@ console.log('services.changePassword FAIL', jqXHR);
     getProfile: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_PROFILE_LOAD;
         url += '&' + services.getRequestCommonParameters();
+        //url += '&d=1';
 console.log(auth.getSessionId());
+
 console.log(url);
         $.ajax(url, {
             type:'GET',
@@ -136,9 +138,11 @@ console.log('services.getProfile: SUCCESS', result);//return;
                     id: (result.anagrafica[0].dic_comune_id || 0),
                     name: (result.anagrafica[0].comune || '').trim()
                 },
-                address: (result.anagrafica[0].indirizzo || '').trim()
+                address: (result.anagrafica[0].indirizzo || '').trim(),
+                id:result.anagrafica[0].sys_user_id,
+                photo: result.user.logo
             };
-//console.log('services.getProfile: SUCCESS', r);//return;
+console.log('services.getProfile: SUCCESS', r);//return;
             success(r);
         }).fail(function(jqXHR, textStatus, errorThrown) {
 console.log('services.getProfile: FAIL', textStatus);
@@ -151,17 +155,46 @@ console.log('services.getProfile: FAIL', textStatus);
     updateProfile: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_PROFILE_UPDATE;
         url += '&' + services.getRequestCommonParameters();
-        data = 'cognome=' + encodeURIComponent(params.profile.lastname) +
+        //url += '&d=1'
+       /* data = 'cognome=' + encodeURIComponent(params.profile.lastname) +
                '&nome=' + encodeURIComponent(params.profile.firstname) +
                '&email=' + encodeURIComponent(params.profile.email) +
                '&id_comune=' + encodeURIComponent(params.profile.city.id) +
                '&indirizzo=' + encodeURIComponent(params.profile.address) +
                '&telefono=' + encodeURIComponent(params.profile.phone);
+        
+       
+            
 console.log('services.updateProfile', url, data);
+
         $.ajax(url, {
             type: 'POST',
             data: data,
             //dataType: 'json',
+        */
+        var obj = {
+            profilo: {
+                cognome: params.profile.lastname,
+                nome: params.profile.firstname,
+                email: params.profile.email,
+                id_comune: params.profile.city.id,
+                indirizzo: params.profile.address,
+                telefono: params.profile.phone
+            }
+        };
+        if(params.profile.photos.length > 0) {
+            obj.pictures = [];
+            for(var i in params.profile.photos) {
+                obj.pictures.push(params.profile.photos[i]);
+            }
+        } 
+console.log('services.updateProfile', url, obj);
+
+        $.ajax(url, {
+            type: 'POST',
+            url: url, 
+            data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
+            dataType: 'text',
         }).done(function(result) {
 console.log('SUCCESS', result);//return;
             success(result);
@@ -171,7 +204,21 @@ console.log('FAIL', textStatus, jqXHR);
             fail(jqXHR.responseText, services.isLoginRequired(jqXHR.status));
         });
     },
-    
+    deleteProfilePhoto: function(params, successCallback, failCallback) {
+        var url = config.URL_BASE + config.URL_PROFILE_DELETE_PHOTO+'&' + services.getRequestCommonParameters();
+        var data = 'id='+encodeURIComponent(params);
+        console.log(url);
+console.log('services.deleteProfilePhoto', data);
+        $.ajax(url, {
+            type: 'POST',
+            data: data,
+          timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result) {
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            failCallback(jqXHR.responseText);
+        });
+    },
     
     //////////////////////////////////////////////////////
     // QRCODE INFO RELATED FUNCTIONS
@@ -433,9 +480,47 @@ console.log("services.getChannelContetnDetail SUCCESS", result);
         });
     },
     
+    leaveCommentNews: function(params, successCallback, failCallback) {
+        var obj = {
+            commento: {
+                nome:params.nome,
+                descrizione: params.comment,
+                data:params.data,
+                id_news: params.idNews,
+            }
+        };
+        var url = config.URL_BASE + config.URL_NEWS_SEND_COMMENT;
+        url += '&' + services.getRequestCommonParameters();
+        $.ajax(url, {
+            type: 'POST',
+            data: 'obj='+JSON.stringify(obj),
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result) {
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
     
-    
-    
+    getCommentNews: function(code, success, fail) {
+        var url = config.URL_BASE + config.URL_NEWS_GET_COMMENT;
+        url += '&'+services.getRequestCommonParameters();
+//console.log(url);
+//console.log('qrcode=' + encodeURIComponent(code));
+        $.ajax(url, {
+            type: 'GET',
+            data: 'result=' + encodeURIComponent(code),
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
+            dataType: 'json'
+        }).done(function(result) {
+console.log('services.getInfoFromQrCode SUCCESS', result);//return;
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.getInfoFromQrCode FAIL', jqXHR);
+            var loginRequired = services.isLoginRequired(jqXHR.status);
+            fail(textStatus, false);
+        });
+    },
     //////////////////////////////////////////////////////
     // "NEARBY PLACES" RELATED FUNCTIONS
     

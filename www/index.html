@@ -15,11 +15,11 @@
 </head>
 <body>
 <div class="ui-loader-background"> </div>
-        <!-- loginPage -->
+        <!-- loginPage 
         <div data-role="page" id="loginPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
                 <div class="center-wrapper">
-                    <!-- <img  src="img/greta.png" /> --> 
+                   
                     <span>Login</span>
                 </div>
             </div>
@@ -38,8 +38,64 @@
                 </div>
             </div>
         </div>
-        <!-- /loginPage -->
-
+       loginPage -->
+        <!-- BeforeloginPage -->
+        <div data-role="page" id="beforeLoginPage" style="background: url('img/backgroundlog.jpg') center center no-repeat;background-size: cover;">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <div class="center-wrapper">
+                    <span>Benvenuto</span>
+                </div>
+            </div>
+            <div data-role="main" class="ui-content" >
+                <div>
+                    <img src="img/logolog.png" style="width:50%; margin:0 auto; display:block; border-radius:5px; margin-top:2em; margin-bottom: 2em; max-width: 12em;"/>
+                </div>
+                
+                 <!--<div style="margin:0; padding:0; width:100%; height:20em; background:url('img/background.jpg') center center no-repeat; background-size:cover; border-bottom: solid 2px #000;">
+                 <img src="img/background.jpg" style="margin:0 auto;"/>
+                </div>-->
+                <div id="loginForm" >
+                    <!-- <a id="loginButton" style="border-radius:.5em;" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>-->
+                    <a id="LoginButton" style="border-radius:.5em;" href="#loginPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>
+                </div>
+                                 
+                 <!--<div>
+                    <a id="facebookLogin" style="border-radius:.5em;" href="#" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top" onclick="Login()"  >Facebook</a>
+                </div> -->
+                 
+                <div>
+                    <a id="registerPageButton" style="border-radius:.5em;" href="#registrationPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">ISCRIVITI</a>
+                </div>
+                 
+            </div>
+            <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
+                <p class="text-primary">
+                       Tutti i diritti sono riservati.
+                </p>
+            </div>
+        </div>
+        <!-- /BeforeloginPage -->
+        <!--LoginPage-->
+        <div data-role="page" id="loginPage">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <div class="center-wrapper">
+                    <span>Login</span>
+                </div>
+                <a href="#beforeLoginPage" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+            </div>
+            <div data-role="main" class="ui-content">
+                <p class="text-primary">Registrati per accedere all'area riservata*</p>
+                <form id="loginForm" >
+                    <input type="text" name="username" id="username" placeholder="Email*" />
+                    <input type="password" name="password" id="password" autocomplete="off" placeholder="Password*">
+                    <a id="loginButton" style="border-radius:.5em;" class="ui-btn ui-btn-primary2 margin-top">LOGIN</a>
+                </form>
+                <div id="recoverPasswordPanel">
+                    <a id="recoverPasswordButton" style="border-radius:.5em;" href="#" class="ui-btn ui-btn-primary2 margin-top">RECUPERA PASSWORD</a>
+                </div>
+            </div>
+        </div>
+        <!--/LoginPage-->
         <!-- registrationPage -->
         <div data-role="page" id="registrationPage" >
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -140,23 +196,26 @@
             </div>
             <div data-role="main" class="ui-content">
                 <div class="ui-grid-a">
-                    <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;">Segnala manualmente</a>
+                    <a href="#reporting1Page" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;line-height: 2.5;padding-bottom: 1.6em !important;">Segnala manualmente</a>
                 </div>
-                <div class="ui-grid-a">
-                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
-                    <p class="text-primary">
-                        Se il comune supporta il sistema Gretacity, 
-                        puoi utilizzare il QR Code per segnalarci la posizione.
-                    </p>
-                </div>
+                
                 <div class="ui-grid-a">
 
-                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary2" style="white-space:normal;padding-right:0;padding-left:0;">
+                    <a href="#reportingListPage" data-transition="slide" class="ui-btn ui-btn-primary2" style="margin-bottom: 1em; white-space:normal;padding-right:0;padding-left:0;">
                         Verifica le mie segnalazioni
                         <span class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                     </a>
                 </div>
                 
+            </div>
+            <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
+                <p class="text-primary">
+                        Se il comune supporta il sistema Gretacity, 
+                        puoi utilizzare il QR Code per segnalarci la posizione.
+                </p>
+                <div class="ui-grid-a">
+                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary2" style="width: 100%; white-space:normal;padding-right:0;padding-left:0;">Segnala tramite QR code</a>
+                </div>
             </div>
         </div>
         <!-- /reportingHomePage -->
@@ -494,7 +553,7 @@
                 <div id="leaveCommentPanel">
                     <textarea id="comment" style="color:#08C;width:98%;margin-top:1.5em;" placeholder="Lascia il tuo commento"></textarea>
                     <br />
-                    <a href="javascript:app.nomejs()" class="ui-btn">Pubblica</a>
+                    <a href="javascript:app.leaveCommentOnNews()" class="ui-btn">Pubblica</a>
                 </div>
             </div>
         </div>
@@ -547,11 +606,14 @@
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
-                    <span>Following</span>
+                    <span>Segui</span>
                 </div>                
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
+                <p class="text-primary">
+                    Inquadra il qr code dell'attivià per rimanere sempre aggiornato. 
+                </p>
                 <a href="#" id="readQrCodeButton" class="ui-btn-primary2 ui-btn">Leggi QR Code</a>
                 <!--
                 <a href="#" id="searchFollowginButton" class="ui-btn-primary ui-btn ui-btn-icon-left ui-icon-camera ui-disabled">Trova Following</a>
@@ -727,7 +789,7 @@
             </div>
             <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;padding:1em;z-index:100;background:#fff;">
                 <label for="nearbySearchSlider" > Cerca <span id="currentPlaceType" style="font-weight:bold;"></span> nel raggio (in Km) di </label><br/>
-                <input type="range" id="nearbySearchSlider" name="nearbySearchSlider" min="1" max="20" step="1" value="2" data-highlight="true" data-mini="true" />
+                <input type="range" id="nearbySearchSlider" name="nearbySearchSlider" min="1" max="50" step="1" value="2" data-highlight="true" data-mini="true" />
             </div>
             <div data-role="main" class="ui-content">
                 <ul data-role="listview" id="placesList" data-inset="false" style="margin-top:92px;" data-theme="b">
@@ -807,6 +869,22 @@
         
         <!-- profilePage -->
         <div data-role="page" id="profilePage">
+            <div id="sourceTypePopup" data-role="popup" data-theme="b" style="border: none;">
+                <div data-role="controlgroup">
+                    <a href="#" id="shotPhoto" class="ui-btn" >
+                        <div style="float:left;">
+                            <img src="img/camera2.png" style="max-width:2em;vertical-align: middle; padding: .1em;">
+                            Scatta foto
+                        </div>
+                    </a>
+                    <a href="#" id="fromGallery" class="ui-btn">
+                         <div style="float:left;">
+                            <img src="img/gallery.png" style="max-width:2em;vertical-align: middle; padding: .1em;">
+                            Da galleria
+                         </div>
+                    </a>                   
+                </div>
+            </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
@@ -815,16 +893,47 @@
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <div class="ui-field-contain" style="padding-top:0;">
-                    <p class="text-primary">* Campi obbligatori</p>
+                <div class="ui-field-contain ui-grid-a" style="padding-top:0;">
+                    <div class="ui-grid-solo">
+                        <div class="ui-block-a">
+                            <p class="text-primary">* Campi obbligatori</p>
+                        </div>
+                    </div>
+                    <div class="ui-block-a">
+                        <input id="city" placeholder="Comune di residenza" required />
+                        <ul id="citySuggestion" data-role="listview" data-inset="true" data-theme="b"></ul>
+                        <input id="lastname" placeholder="Cognome" required />
+                        <input id="firstname" placeholder="Nome" required />
+                        
+                    </div>
+                    <div id="photoSet" class="ui-block-b">
+                        <!--<div id="photot1" class="ui-block-a photo-preview"
+                             style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;"
+                             >
+                        </div> -->
+                        <div class="reporting-photo-item" data-photopos="0" style=" height:7em !important; margin-top: 1em;" >
+                            <img src="img/PhotoDelete.png" class="reporting-photo-delete" style="z-index:100; top: inherit; display:none; float:right;" />
+                            <a href="#" class="reporting-photo-shot" style="height:7em !important; float:right; width: 90% !important;margin-bottom: 2em;max-width: 12em !important;">
+                                <img src="" id="photoProfile" class="reporting-photo reporting-photo-missing" style="z-index:1; height:7em !important;" />
+                            </a>
+                        </div>
+                    </div>
+                    <!-- <p class="text-primary">* Campi obbligatori</p>
                     <input id="city" placeholder="Comune di residenza" required />
                     <ul id="citySuggestion" data-role="listview" data-inset="true" data-theme="b"></ul>
                     <input id="lastname" placeholder="Cognome" required />
                     <input id="firstname" placeholder="Nome" required />
-                    <input type="email" id="email" placeholder="Email" required />
-                    <p class="text-primary">Compila i seguenti campi così il comune potrà contattarti in caso di segnalazione</p>
-                    <input id="address" placeholder="Indirizzo di residenza" />
-                    <input type="tel" id="phone" placeholder="Cellulare" />
+                    <input type="email" id="email" placeholder="Email" required />-->
+                </div>
+                    <div class="ui-grid-solo">
+                        <div class="ui-block-a">
+                            <input type="email" id="email" placeholder="Email" required />
+                            <p class="text-primary">Compila i seguenti campi così il comune potrà contattarti in caso di segnalazione</p>
+                            <input id="address" placeholder="Indirizzo di residenza" />
+                            <input type="tel" id="phone" placeholder="Cellulare" />
+                        </div>
+                    </div>
+             
                     <a href="#changePasswordPage" data-transition="slide" class="ui-btn ui-btn-primary2">CAMBIA PASSWORD</a>
                     <a href="#" id="updateProfileButton" class=" ui-btn ui-btn-primary2">SALVA</a>
                 </div>
@@ -997,5 +1106,6 @@
         <script>
             app.initialize();
         </script>
+        
     </body>
 </html>

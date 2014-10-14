@@ -453,6 +453,11 @@
                 padding: 0 .3 !important;
                 overflow: hidden !important;
             }
+            .profile-missing{
+                height: 9em !important;
+                width: 90% !important; 
+                float:right;
+            }
             .reporting-photo-missing {
                 /*height:5em;*/
                 background: url('../img/camera.png') no-repeat center center;

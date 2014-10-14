@@ -63,6 +63,7 @@ var config = {
     
     URL_PROFILE_LOAD: '/web/index.php?mode=module&p=login&s=get_user',
     URL_PROFILE_UPDATE: '/web/index.php?mode=module&p=login&s=update_user',
+    URL_PROFILE_DELETE_PHOTO: '/web/index.php?mode=module&p=login&s=delete_photo',
     
     URL_NEWS_NEARBY_LOCATION: '/web/index.php?mode=module&p=app_services&a=comuni',
     // Ricerca comuni per nome
@@ -76,6 +77,8 @@ var config = {
     URL_NEWS_UNSUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=rem_feed',
     URL_NEWS_LIST: '/web/index.php?mode=module&p=app_services&a=get_notizie',
     URL_NEWS_DETAIL: '/web/index.php?mode=module&p=app_services&a=get_notizia',
+    // URL_NEWS_SEND_COMMENT: '/web/index.php?mode=module&p=&s=&s_t=',
+    //URL_NEWS_GET_COMMENT:'/web/index.php?mode=module&p=&s=&s_t=',
     
     URL_QRCODE_GET_INFO: '/web/index.php?p=app_services&a=get&mode=module',
     URL_QRCODE_SEND_COMMENT: '/web/index.php?mode=module&p=commenti&s=commenti&s_t=add_app',
@@ -102,7 +105,7 @@ var config = {
     ///web/index.php?mode=module&p=app_services&a=aroundme&types=segnalazioni&lat=&lng=distance=',
     
     NEARBY_DEFAULT_DISTANCE: 2, // In Km
-    NEARBY_MAX_DISTANCE: 20,    // In Km
+    NEARBY_MAX_DISTANCE: 50,    // In Km
     
     
     GOOGLE_GCM_PROJECT_ID: '464796215250',
