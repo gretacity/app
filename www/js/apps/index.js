@@ -1134,17 +1134,7 @@ var app = {
         }, {sourceType: source});
     },
     
-    beforeremoveReportingPhoto:  function (e){
-        console.log("elimina");
-        if ( $(e.currentTarget).attr('id')=='annulla'){
-            return;
-             console.log("elimina1");
-        }
-        else {
-            self.removeReportingPhoto(e);
-             console.log("elimina2");
-        }
-    },
+
     
     removeReportingPhoto: function(par) {
         var container = null;
@@ -2590,7 +2580,7 @@ getProfilePhoto: function(e) {
         console.log(source);
         camera.getPicture(function(res) {
             // Success callback
-            var photo = $($('#photoSet div[data-photopos="0"] a img.profile-photo-missing', $.mobile.activePage)[0]);
+            var photo = $($('#photoSet .profile-photo-item a img.profile-photo-missing', $.mobile.activePage)[0]);
             console.log(photo);
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('profile-photo-missing');
             photo.parent().prev().show();
@@ -2603,7 +2593,7 @@ getProfilePhoto: function(e) {
     removeProfilePhoto: function(par,id) {
         helper.confirm("Vuoi eliminare la foto del profilo?", function(ix) {
             if(ix == 1) {
-                var imageEl = $('#photoSet div.profile-photo-item[data-photopos="0"] a img');
+                var imageEl = $('#photoSet div.profile-photo-item a img');
                 imageEl.parent().prev().hide();
                 imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('profile-photo-missing');
                 imageEl.removeAttr('src').replaceWith(imageEl.clone());
