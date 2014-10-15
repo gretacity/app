@@ -1139,7 +1139,11 @@ console.log('onResume: registration to push server required');
     removeReportingPhoto: function(par) {
         var container = null;
         var pos = null;
-        if(par.currentTarget) {
+        var page= $.mobile.activePage;
+        console.log(page);
+//        helper.confirm("Vuoi eliminare la segnalazione?", function(ix) {
+//            if(ix == 1) {
+        if(par.currentTarget) {            
             container = $(par.currentTarget).closest('div.reporting-photo-item');
             pos = container.data('photopos');
         } else {
@@ -1149,6 +1153,8 @@ console.log('onResume: registration to push server required');
         imageEl.parent().prev().hide();
         imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
         imageEl.removeAttr('src').replaceWith(imageEl.clone());
+//            }//fine if ix=1
+//        }, 'elimina foto', ['procedi', 'annulla']);
     },
     
     
@@ -1190,17 +1196,25 @@ console.log('onResume: registration to push server required');
     reportingListMap: null,
     toggleReportingListView: function() {
         if(self.reportingListCurrentView == self.reportingListViewTypeMap) {
-            $('#reportingListPage #reportingListView').show();
-            $('#reportingListPage #mapView').hide();
+            //$('#reportingListPage #reportingListView').show();
+            //$('#reportingListPage #mapView').hide();
+            $.mobile.loading('show');
             setTimeout(function() {
+                $('#reportingListPage #reportingListView').show();
+                $('#reportingListPage #mapView').hide();
                 $('#reportingListPage #changeViewType').html('VEDI SU MAPPA');
+                $.mobile.loading('hide');
             }, 600);
             self.reportingListCurrentView = self.reportingListViewTypeList;
         } else {
-            $('#reportingListPage #reportingListView').hide();
-            $('#reportingListPage #mapView').show();
+            //$('#reportingListPage #reportingListView').hide();
+            //$('#reportingListPage #mapView').show();
+            $.mobile.loading('show');
             setTimeout(function() {
+                $('#reportingListPage #reportingListView').hide();
+                $('#reportingListPage #mapView').show();
                 $('#reportingListPage #changeViewType').html('VEDI ELENCO');
+                $.mobile.loading('hide');
             }, 600);
             self.reportingListCurrentView = self.reportingListViewTypeMap;
         }
@@ -2428,7 +2442,8 @@ console.log('onResume: registration to push server required');
         $('#citySuggestion',page).empty();
         $('#address', page).val('');
         $('#phone', page).val('');
-        $('#photoProfile', page).attr('src', '');
+    //    $('#photoProfile', page).attr('src', '');
+    
     },
     showProfilePage: function() {
         /*if(self.userProfile != null) {
@@ -2461,12 +2476,15 @@ console.log('onResume: registration to push server required');
         $('#address', page).val(self.userProfile.address || '');
         $('#phone', page).val(self.userProfile.phone || '');
         var photoUrl = (self.userProfile.photo != '' ? self.userProfile.photo : 'img/default.jpg');
+        console.log(photoUrl);
         $('#photoProfile', page).attr('src', photoUrl);
-        var photo="http://www.gretacity.com//Data/Upload/Logo_ente/default.jpg";
-        var photo2="img/default.jpg";
-        if(self.userProfile.photo!= photo && self.userProfile.photo!=photo2){
-            console.log(self.userProfile.photo);
-            $('.reporting-photo-delete', page).css('display', 'inherit');
+        
+        var photoPh=self.userProfile.photo;
+        var photoVera=photoPh.substr(photoPh.length - 11);//default.jpg
+        console.log(photoVera);
+        
+        if (photoVera != "default.jpg"){
+            $('.reporting-photo-delete', page).css('display', 'hineit');
         }
         //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
         /*var photos = $('.photo-preview', page);
