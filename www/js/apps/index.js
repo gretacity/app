@@ -2269,7 +2269,7 @@ console.log('onResume: registration to push server required');
                 for(var i in result) {
                     var row = result[i];
                     html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.id + '\', \'' + row.source + '\')">' 
-                                + row.name + '<label><small>' 
+                                + row.name + '<label style="overflow: hidden !important; text-overflow: ellipsis;"><small>' 
                                 + ((row.phoneNumber || '') != '' ? 'Tel. ' + row.phoneNumber  + '<br />' : '')
                                 + row.address
                                 + '</small><br /><b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b></label></a></li>';
