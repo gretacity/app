@@ -881,7 +881,7 @@ console.log('onResume: registration to push server required');
                     $('#reporting1Popup').popup('close');
                     // $('#' + fieldId, $.mobile.activePage).addClass('input-error')
                     $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.').addClass('failInfo');                
-                }, {s: false});
+                }, {enableHighAccuracy: false});
             });
         }
     },
@@ -2232,7 +2232,7 @@ console.log('onResume: registration to push server required');
                         console.log(e);
                         $.mobile.loading('hide');
                         self.showNearbyPlaces(catId, catName);
-                    });
+                    }, {enableHighAccuracy: false});
                 }
             }, 'Localizzazione GPS', ['Riprova', 'Annulla']);
             return;

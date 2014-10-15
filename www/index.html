@@ -15,32 +15,8 @@
 </head>
 <body>
 <div class="ui-loader-background"> </div>
-        <!-- loginPage 
-        <div data-role="page" id="loginPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                <div class="center-wrapper">
-                   
-                    <span>Login</span>
-                </div>
-            </div>
-            <div data-role="main" class="ui-content">
-                <p class="text-primary">Registrati per accedere all'area riservata*</p>
-                <form id="loginForm" >
-                    <input type="text" name="username" id="username" placeholder="Email*" />
-                    <input type="password" name="password" id="password" autocomplete="off" placeholder="Password*">
-                    <a id="loginButton" style="border-radius:.5em;" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>
-                </form>
-                <div id="recoverPasswordPanel">
-                    <a id="recoverPasswordButton" style="border-radius:.5em;" href="#" class="ui-btn ui-btn-primary2 margin-top">RECUPERA PASSWORD</a>
-                </div>
-                <div>
-                    <a id="registerPageButton" style="border-radius:.5em;" href="#registrationPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">REGISTRATI SU GRETACITY</a>
-                </div>
-            </div>
-        </div>
-       loginPage -->
         <!-- BeforeloginPage -->
-        <div data-role="page" id="beforeLoginPage" style="background: url('img/backgroundlog.jpg') center center no-repeat;background-size: cover;">
+        <div data-role="page" id="beforeLoginPage" class="beforeBackgroud">
             <!--<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
                 <div class="center-wrapper">
                     <span>Benvenuto</span>
@@ -48,26 +24,19 @@
             </div> -->
             <div data-role="main" class="ui-content" >
                 <div>
-                    <img src="img/logolog.png" style="width:50%; margin:0 auto; display:block; border-radius:5px; margin-top:2em; margin-bottom: 2em; max-width: 12em;"/>
-                    <img src="img/the-smart-city.png" style="margin:0 auto; display:block; padding: .5em; width:8em; max-width: 12em;">        
+                    <img src="img/logolog.png" class="beforeLogin"/>
+                    <img src="img/the-smart-city.png" class="beforeSmartCity" >        
                 </div>
-                
-                 <!--<div style="margin:0; padding:0; width:100%; height:20em; background:url('img/background.jpg') center center no-repeat; background-size:cover; border-bottom: solid 2px #000;">
-                 <img src="img/background.jpg" style="margin:0 auto;"/>
-                </div>-->
                 <div id="loginForm" >
                     <!-- <a id="loginButton" style="border-radius:.5em;" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>-->
                     <a id="LoginButton" style="border-radius:.5em;" href="#loginPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>
-                </div>
-                               
+                </div>      
                  <!--<div>
                     <a id="facebookLogin" style="border-radius:.5em;" href="#" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top" onclick="Login()"  >Facebook</a>
                 </div> -->
-                 
                 <div>
                     <a id="registerPageButton" style="border-radius:.5em;" href="#registrationPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">ISCRIVITI</a>
                 </div>
-                 
             </div>
             <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
                 <p class="text-primary">
@@ -187,12 +156,8 @@
         <div data-role="page" id="reportingHomePage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <!-- <img  src="img/greta.png" /> --> 
                     <span>Segnalazioni</span>
                 </div>
-                <!--
-                < a href="#" data-rel="back" class="ui-btn ui-shadow ui-btn-right ui-icon-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext">Home</a>
-                -->
                 <a href="#homePage" data-transition="none" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
@@ -203,30 +168,27 @@
                 </div>
                 
                 <div class="ui-grid-a">
-
                     <a href="#reportingListPage" data-transition="slide" class="ui-btn uui-btn-mieSegnalazioni uui-btn-primary2" style="background-color:rgba(0,0,0,0); border-color:rgba(0,0,0,0); margin-bottom: 1em; white-space:normal;padding-right:0;padding-left:0;">
                         <img src="img/lemieSegnalazioni.png" style="background-color: rgba(0, 0, 0, 0);width: 100%; max-width: 25em;">
                         <span class="ui-li-count-cust ui-li-count-reporting" style="display:none;"></span>
                     </a>
                 </div>
+                
                 <p class="text-primary">
                         Se il comune supporta il sistema di censimento Gretacity, 
                         puoi utilizzare il QR Code per segnalarci la posizione.
                 </p>
                 <div class="ui-grid-a">
-                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn uui-btn-qrcode uui-btn-primary2" style="background-color:rgba(0,0,0,0); border-color:rgba(0,0,0,0); width: 100%; white-space:normal;padding-right:0;padding-left:0;margin-top: 0;margin-bottom: 0;
-padding-bottom: 0;">
+                    <a href="" id="reportByQrCodeButton" data-transition="slide" class="ui-btn uui-btn-qrcode uui-btn-primary2" style="background-color:rgba(0,0,0,0); border-color:rgba(0,0,0,0); width: 100%; white-space:normal;padding-right:0;padding-left:0;margin-top: 0;margin-bottom: 0; padding-bottom: 0;">
                         <img src="img/segnaQrcode.png" style="background-color: rgba(0, 0, 0, 0);width: 100%; max-width: 25em;">
                     </a>
                 </div>
             </div>
-            <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">
-                
+            <div data-role="footer" class="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false" data-theme="a" style="text-align:center;">    
             </div>
         </div>
         <!-- /reportingHomePage -->
    
-            
         <!-- reporting1Page -->
         <div data-role="page" id="reporting1Page">
             <div id="reporting1Popup" data-role="popup" class="ui-content" data-position-to="window" data-dismissible="false">
@@ -238,11 +200,6 @@ padding-bottom: 0;">
                     <!-- <img  src="img/greta.png" /> --> 
                     <span>Segnalazione manuale</span>
                 </div>
-                <!--
-                <h1 style="line-height:3em;height:3em;margin:0 20%;white-space:normal;background-image:url(img/greta.png);background-repeat: no-repeat;background-position:.5em center;background-size:2.6em;padding:0 0 0 2.5em;">
-                    <span style="display:block;vertical-align:middle;">Segnalazione manuale</span>
-                </h1>
-                -->
                 <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
@@ -272,7 +229,6 @@ padding-bottom: 0;">
         <div data-role="page" id="reporting2Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <!-- <img  src="img/greta.png" /> --> 
                     <span>Posizione</span>
                 </div>
                 <a href="#reporting1Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
@@ -296,13 +252,12 @@ padding-bottom: 0;">
         <div data-role="page" id="reporting4Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <!-- <img  src="img/greta.png" /> --> 
                     <span>Categoria</span>
                 </div>
                 <a href="#reporting2Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
-            <div data-role="fieldcontain" style="position:fixed;width:100%;margin:0;z-index:100;background:#fff;">
+            <div data-role="fieldcontain"  class="category">
                 <p class="text-primary">
                     Seleziona la categoria del problema.
                 </p>
@@ -311,7 +266,7 @@ padding-bottom: 0;">
                 <ul id="categories" data-role="listview" data-theme="b" style="margin-top:3.6em;"></ul>
             </div>
             <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                <div style="background:#fff;color:#08c;text-align:center; border-top:solid 1px #000;">
+                <div class="step" >
                     2 di 4
                 </div>
                 <!-- <div style="line-height:1em;">&nbsp;</div> -->
@@ -334,16 +289,13 @@ padding-bottom: 0;">
                 <p class="text-primary">Clicca sulla gravità del disservizio</p>
                 <div id="prioritySet" class="ui-grid-b">
                     <div class="ui-block-a" style="text-align:center;">
-                        <a href="#" data-priorityid="0" class="ui-btn ui-btn-priority" 
-                           style="background:url('img/green.png') center center no-repeat; background-size: contain; border:none; padding: 1em;">basso</a>
+                        <a href="#" data-priorityid="0" class="ui-btn ui-btn-priority">basso</a>
                     </div>
                     <div class="ui-block-b" style="text-align:center;">
-                        <a href="#" data-priorityid="1" class="ui-btn ui-btn-priority"
-                           style="background:url('img/yellow.png') center center no-repeat; background-size: contain; border:none; padding: 1em;">medio</a>
+                        <a href="#" data-priorityid="1" class="ui-btn ui-btn-priority">medio</a>
                     </div>
                     <div class="ui-block-c" style="text-align:center;">
-                        <a href="#" data-priorityid="2" class="ui-btn ui-btn-priority"
-                           style="background:url('img/red.png') center center no-repeat; background-size: contain; border:none; padding: 1em;">alto</a>
+                        <a href="#" data-priorityid="2" class="ui-btn ui-btn-priority">alto</a>
                     </div>
                 </div>
                 <!--
@@ -466,25 +418,13 @@ padding-bottom: 0;">
             </div>
             <div data-role="main" class="ui-content" id="main">
                 <div data-role="fieldcontent" id="fieldcontent">
-                  <!-- <textarea id="description" style="color: #00269C;" placeholder="Disservizio" readonly></textarea>
-                    <input id="city" placeholder="Comune" readonly />
-                    <input id="prov" placeholder="Provincia" readonly />
-                    <input id="address" placeholder="Indirizzo" readonly />
-                    <input id="category" placeholder="Categoria" readonly /> -->
                 </div>
-                <!-- <div style="text-align:center;margin:1.5em auto;">
-                    <div id="priority" style="margin:0 auto;color:#eee;background:#F00;width:100%;height:2em;border-radius:7em;border:.1em solid #333;padding:0.8em 0 0 0;font-weight:bold;font-size:-2em"></div>
-                </div> -->
                 <div class="ui-grid-b" style="margin:0;padding:0;">
-                    <div id="photot1" class="ui-block-a photo-preview"
-                         style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;"
-                         >
+                    <div id="photot1" class="ui-block-a photo-preview photo">
                     </div>
-                    <div id="photot2" class="ui-block-b photo-preview" 
-                         style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;">
+                    <div id="photot2" class="ui-block-b photo-preview photo">
                     </div>
-                    <div id="photot3" class="ui-block-c photo-preview" 
-                         style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;">
+                    <div id="photot3" class="ui-block-c photo-preview photo">
                     </div>
                 </div>
                 <input id="status" style="font-weight:bold;text-align:center;" placeholder="Stato" readonly />
@@ -492,7 +432,6 @@ padding-bottom: 0;">
                 </ul>
             </div>
              <div data-role="footer" id="myfooter" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-                
             </div>
          </div>
         <!-- /reportingListDetailPage-->
@@ -566,24 +505,22 @@ padding-bottom: 0;">
         <!-- /commentPage -->
         
         <!-- photoPage -->
-        <div data-role="page" id="photoPage">
+       <!-- <div data-role="page" id="photoPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="true" data-theme="b">
-                <!--<a href="#" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>-->
                 <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
                 <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-top:1em !important;">+</a>
                 <a href="javascript:app.reportingListPageZoomOutPhoto()" class="ui-btn ui-btn-right ui-icon-minus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-top:1em !important;margin-right:2.5em;">-</a>
                 <div class="center-wrapper">
-                    <!-- <img src="img/greta.png" /> --> 
                     <span>Foto</span>
                 </div>
             </div>            
             <div data-role="main">
-                <!--<div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;_background-image:url('http://www.gretacity.com/Data/Upload/Segnalazioni/thumbs/600_800_232.jpg');background-repeat:no-repeat;">-->
+
                 <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;height:100%;">
                     <img id="photo" src="" style="width:100%;" />
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- /photoPage -->
         
         
@@ -591,16 +528,12 @@ padding-bottom: 0;">
         <div data-role="page" id="qrCodeViewerPage">
              <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <span>Leggi QR Code</span>
+                    <span>Qr Code</span>
                 </div>                
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
             <div data-role="main" class="ui-content">
-                <!--<div style="height:3.5em;">
-                    <a href="#" data-rel="back" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-check">close</a>
-                </div>-->
                 <h2 id="info" class="text-primary"></h2>
-                
                 <ul id="qrCodeViewer" data-role="listview"  style="margin-top: 1em !important;" data-inset="false" data-theme="b">
                 </ul>
             </div>
@@ -635,7 +568,7 @@ padding-bottom: 0;">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
                 <div class="center-wrapper">
-                    <span>Following</span>
+                    <span>Segui</span>
                 </div>                
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
             </div>
@@ -694,7 +627,7 @@ padding-bottom: 0;">
             </div>
             <div data-role="main" class="ui-content">
                 <div>
-                    <h3 class="qrcode-info-title">title</h3>
+                    <h3 class="qrcode-info-title"></h3>
                     <!--<div class="qrcode-info-subtitle">Notizie</div>-->
                 </div>
                 <ul data-role="listview" id="qrCodeNewsList" style="margin-top:1em;">
@@ -714,7 +647,7 @@ padding-bottom: 0;">
             </div>
             <div data-role="main" class="ui-content">
                 <div>
-                    <h3 class="qrcode-info-title">title</h3>
+                    <h3 class="qrcode-info-title"></h3>
                     <!--<div class="qrcode-info-subtitle">Commenti</div>-->
                 </div>
                 <ul data-role="listview" id="qrCodeCommentsList">
@@ -740,7 +673,7 @@ padding-bottom: 0;">
             </div>
             <div data-role="main" class="ui-content">
                 <div>
-                    <h3 class="qrcode-info-title">title</h3>
+                    <h3 class="qrcode-info-title"></h3>
                     <!--<div class="qrcode-info-subtitle">Video</div>-->
                 </div>
                 <div id="qrCodeMultimediaContent"></div>
@@ -759,8 +692,8 @@ padding-bottom: 0;">
             </div>
             <div data-role="main" class="ui-content">
                 <div>
-                    <h3 class="qrcode-info-title">title</h3>
-                    <div class="qrcode-info-subtitle">Link</div>
+                    <h3 class="qrcode-info-title"></h3>
+                    <div class="qrcode-info-subtitle"></div>
                 </div>
                 <ul data-role="listview" id="qrCodeLinksList">
                 </ul>
@@ -884,10 +817,10 @@ padding-bottom: 0;">
                         </div>
                     </a>
                     <a href="#" id="fromGallery" class="ui-btn">
-                         <div style="float:left;">
+                        <div style="float:left;">
                             <img src="img/gallery.png" style="max-width:2em;vertical-align: middle; padding: .1em;">
                             Da galleria
-                         </div>
+                        </div>
                     </a>                   
                 </div>
             </div>
@@ -913,43 +846,25 @@ padding-bottom: 0;">
                         
                     </div>
                     <div id="photoSet" class="ui-block-b">
-                        <!--<div id="photot1" class="ui-block-a photo-preview"
-                             style="border:1px solid #CCC;background:url('img/camera.png') center center no-repeat;background-size: cover;height:6em;"
-                             >
-                        </div> -->
-                        
-                        
-                        <div class="profile-photo-item" data-photopos="0" style=" height:7em !important; margin-top: 1em;" >
-                           <img id="deleteFoto" src="img/PhotoDelete.png" class="reporting-photo-delete" style="z-index:100; top: inherit; display:none; float:right;" /> 
-                            <a href="#" class="profile-photo-shot" style="height:7em !important; float:right; width: 90% !important;margin-bottom: 2em;max-width: 12em !important;">
-                                <img src="" id="photoProfile" class="profile-photo profile-photo-missing" style="z-index:1; height:7em !important;" />
+                        <div class="profile-photo-item" data-photopos="0">
+                           <img id="deleteFoto" src="img/PhotoDelete.png" class="reporting-photo-delete" style="display:none;"/> 
+                            <a href="#" class="profile-photo-shot">
+                                <img src="" id="photoProfile" class="profile-photo profile-photo-missing" />
                             </a>
                         </div>
                     </div>
-                    <!-- <p class="text-primary">* Campi obbligatori</p>
-                    <input id="city" placeholder="Comune di residenza" required />
-                    <ul id="citySuggestion" data-role="listview" data-inset="true" data-theme="b"></ul>
-                    <input id="lastname" placeholder="Cognome" required />
-                    <input id="firstname" placeholder="Nome" required />
-                    <input type="email" id="email" placeholder="Email" required />-->
                 </div>
-                    <div class="ui-grid-solo">
-                        <div class="ui-block-a">
-                            <input type="email" id="email" placeholder="Email" required />
-                            <p class="text-primary">Compila i seguenti campi così il comune potrà contattarti in caso di segnalazione</p>
-                            <input id="address" placeholder="Indirizzo di residenza" />
-                            <input type="tel" id="phone" placeholder="Cellulare" />
-                        </div>
+                <div class="ui-grid-solo">
+                    <div class="ui-block-a">
+                        <input type="email" id="email" placeholder="Email" required />
+                        <p class="text-primary">Compila i seguenti campi così il comune potrà contattarti in caso di segnalazione</p>
+                        <input id="address" placeholder="Indirizzo di residenza" />
+                        <input type="tel" id="phone" placeholder="Cellulare" />
                     </div>
-             
-                    <a href="#changePasswordPage" data-transition="slide" class="ui-btn ui-btn-primary2">CAMBIA PASSWORD</a>
-                    <a href="#" id="updateProfileButton" class=" ui-btn ui-btn-primary2">SALVA</a>
                 </div>
+                <a href="#changePasswordPage" data-transition="slide" class="ui-btn ui-btn-primary2">CAMBIA PASSWORD</a>
+                <a href="#" id="updateProfileButton" class=" ui-btn ui-btn-primary2">SALVA</a>
             </div>
-            <!--
-            <div data-role="footer" style="margin:0;text-align:center;" data-position="fixed" data-tap-toggle="false"  data-theme="a">
-            </div>
-            -->
         </div>
         <!-- /profilePage -->
         

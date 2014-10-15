@@ -12,8 +12,26 @@
                 font-size: 1em !important;
                 text-shadow: none !important;
             }
-            
-            
+            .beforeBackgroud{
+                background: url('../img/backgroundlog.jpg') center center no-repeat;
+                background-size: cover;
+            }
+            .beforeLogin{
+                width:50%;
+                margin:0 auto;
+                display:block;
+                border-radius:5px;
+                margin-top:2em;
+                margin-bottom: 2em;
+                max-width: 12em;
+            }
+            .beforeSmartCity{
+                margin:0 auto;
+                display:block;
+                padding: .5em;
+                width:8em;
+                max-width: 12em;
+            }
             .ui-icon-gretahome {
                 background: url(../img/greta-home.png) 50% 50% no-repeat;
                 background-size: 38px 38px;
@@ -175,8 +193,19 @@
                 margin-top: -200%;
             }
             
-            
-            
+            .category{
+                position:fixed;
+                width:100%;
+                margin:0;
+                z-index:100;
+                background:#fff;
+            }
+            .step{
+                background:#fff;
+                color:#08c;
+                text-align:center; 
+                border-top:solid 1px #000;
+            }
             #reportingPositionPopup {
                 display: none;
                 z-index: 10000 !important;
@@ -194,7 +223,27 @@
                 font-style: italic !important;
                 color: #aeaece !important;
             }
-            
+            a[data-priorityid="0"]{
+                background:url('../img/green.png') center center no-repeat;
+                background-size: contain;
+                border:none;
+                padding: 1em;
+                background-color:rgba(0,0,0,0)!important;
+            }
+            a[data-priorityid="1"]{
+                background:url('../img/yellow.png') center center no-repeat;
+                background-size: contain;
+                border:none;
+                padding: 1em;
+                background-color:rgba(0,0,0,0)!important;
+            }
+            a[data-priorityid="2"]{
+                background:url('../img/red.png') center center no-repeat;
+                background-size: contain;
+                border:none;
+                padding: 1em;
+                background-color:rgba(0,0,0,0)!important;
+            }
             .qrcode-info-lastnews {
                 color: #FFF;
                 background-color: rgb(89, 196, 248);
@@ -464,6 +513,12 @@
             .ui-btn-priority-notset {
                 opacity: .3 !important;
             }
+            .photo{
+                border:1px solid #CCC;
+                background:url('../img/camera.png') center center no-repeat;
+                background-size: cover;
+                height:6em;
+            }
             .reporting-photo-item {
                 /*border: solid 1px #0f0 !important;*/
                 margin: 0 .3 !important;
@@ -493,13 +548,30 @@
                 background: url('../img/default.jpg') no-repeat center center;
                 background-size: 100% 100%;
             }
+            .profile-photo-shot{
+                height:7em !important;
+                float:right;
+                width: 90% !important;
+                margin-bottom: 2em;
+                max-width: 12em !important;
+            }
             .profile-photo-item {
                 /*border: solid 1px #0f0 !important;*/
                 margin: 0 .3 !important;
                 padding: 0 .3 !important;
                 overflow: hidden !important;
                 height: 7em !important;
+                margin-top: 1em;
             }
+            #photoProfile{
+                z-index:1;
+                height:7em !important;
+            }
+            #deleteFoto{
+                z-index:100;
+                top: inherit;
+                float:right;
+            } 
             .profile-photo {
                 width: 100% !important;
                 height: 7em !important;
