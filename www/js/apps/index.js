@@ -881,7 +881,7 @@ console.log('onResume: registration to push server required');
                     $('#reporting1Popup').popup('close');
                     // $('#' + fieldId, $.mobile.activePage).addClass('input-error')
                     $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.').addClass('failInfo');                
-                }, {enableHighAccuracy: true});
+                }, {s: false});
             });
         }
     },
@@ -1553,7 +1553,7 @@ console.log('onResume: registration to push server required');
             }, function(e) {
                 $('#reporting1Popup').popup('close');
                 $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
-            }, {enableHighAccuracy: true});
+            }, {enableHighAccuracy: false});
         });
     },
     
@@ -2216,13 +2216,11 @@ console.log('onResume: registration to push server required');
         }, function(e) {
             console.log(e);
             //$.mobile.loading('hide');
-        }//, {enableHighAccuracy: true});
-        );
-     },
+        }, {enableHighAccuracy: false});
+    },
     
     showNearbyPlaces: function(catId, catName) {
         if(self.nearbyCurrentPos == null) {
-            
             helper.confirm('Impossibile recuperare la tua posizione GPS', function(choice) {
                 if(choice == 1) {
                     $.mobile.loading('show');
@@ -2788,8 +2786,8 @@ getProfilePhoto: function(e) {
         }, function(e) {
             // Unable to retrieve GPS coordinates
             self.setNearbyLocations(null);
-        }//, {enableHighAccuracy: true});
-    );},
+        }, {enableHighAccuracy: false});
+    },
     
     setNearbyLocations: function(result) {
         var html = '';
