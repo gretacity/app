@@ -881,7 +881,7 @@ console.log('onResume: registration to push server required');
                     $('#reporting1Popup').popup('close');
                     // $('#' + fieldId, $.mobile.activePage).addClass('input-error')
                     $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.').addClass('failInfo');                
-                }, {enableHighAccuracy: false});
+                }, {enableHighAccuracy: true});
             });
         }
     },
@@ -1139,22 +1139,24 @@ console.log('onResume: registration to push server required');
     removeReportingPhoto: function(par) {
         var container = null;
         var pos = null;
-        var page= $.mobile.activePage;
-        console.log(page);
-//        helper.confirm("Vuoi eliminare la segnalazione?", function(ix) {
-//            if(ix == 1) {
-        if(par.currentTarget) {            
-            container = $(par.currentTarget).closest('div.reporting-photo-item');
-            pos = container.data('photopos');
-        } else {
-            pos = par;
+        
+        var page= $.mobile.activePage.attr('id');        
+        if (page=="reporting6Page"){
+            helper.confirm("Vuoi eliminare la foto?", function(ix) {
+                if(ix == 1) {
+                    if(par.currentTarget) {            
+                        container = $(par.currentTarget).closest('div.reporting-photo-item');
+                        pos = container.data('photopos');
+                    } else {
+                        pos = par;
+                    }
+                    var imageEl = $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img');
+                    imageEl.parent().prev().hide();
+                    imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
+                    imageEl.removeAttr('src').replaceWith(imageEl.clone());
+                }
+            }, 'Elimina foto', ['Procedi', 'Annulla']);
         }
-        var imageEl = $('#photoSet div.reporting-photo-item[data-photopos="'+pos+'"] a img');
-        imageEl.parent().prev().hide();
-        imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
-        imageEl.removeAttr('src').replaceWith(imageEl.clone());
-//            }//fine if ix=1
-//        }, 'elimina foto', ['procedi', 'annulla']);
     },
     
     
@@ -1551,7 +1553,7 @@ console.log('onResume: registration to push server required');
             }, function(e) {
                 $('#reporting1Popup').popup('close');
                 $('.info', $.mobile.activePage).html('Non è stato possibile recuperare la tua posizione e quindi è necessario inserirla manualmente.');                
-            }, {enableHighAccuracy: false});
+            }, {enableHighAccuracy: true});
         });
     },
     
@@ -2214,7 +2216,7 @@ console.log('onResume: registration to push server required');
         }, function(e) {
             console.log(e);
             //$.mobile.loading('hide');
-        }, {enableHighAccuracy: false});
+        }, {enableHighAccuracy: true});
     },
     showNearbyPlaces: function(catId, catName) {
         if(self.nearbyCurrentPos == null) {
@@ -2443,6 +2445,7 @@ console.log('onResume: registration to push server required');
         $('#address', page).val('');
         $('#phone', page).val('');
     //    $('#photoProfile', page).attr('src', '');
+        //$('',page)
     
     },
     showProfilePage: function() {
@@ -2475,16 +2478,16 @@ console.log('onResume: registration to push server required');
                         .data('cityname', cityName);
         $('#address', page).val(self.userProfile.address || '');
         $('#phone', page).val(self.userProfile.phone || '');
+        
         var photoUrl = (self.userProfile.photo != '' ? self.userProfile.photo : 'img/default.jpg');
-        console.log(photoUrl);
         $('#photoProfile', page).attr('src', photoUrl);
         
         var photoPh=self.userProfile.photo;
         var photoVera=photoPh.substr(photoPh.length - 11);//default.jpg
         console.log(photoVera);
         
-        if (photoVera != "default.jpg"){
-            $('.reporting-photo-delete', page).css('display', 'hineit');
+        if (photoVera == "default.jpg"){
+            $('.reporting-photo-delete', page).css('display', 'none');
         }
         //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
         /*var photos = $('.photo-preview', page);
@@ -2783,7 +2786,7 @@ getProfilePhoto: function(e) {
         }, function(e) {
             // Unable to retrieve GPS coordinates
             self.setNearbyLocations(null);
-        }, {enableHighAccuracy: false});
+        }, {enableHighAccuracy: true});
     },
     
     setNearbyLocations: function(result) {
