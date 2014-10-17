@@ -2499,8 +2499,8 @@ console.log('onResume: registration to push server required');
                         .data('cityname', '');
         $('#citySuggestion',page).empty();
         $('#address', page).val('');
-        $('#phone', page).val('');
-       // $('#photoProfile', page).attr('src', '');    
+        $('#phone', page).val('')        
+        $('#photoProfile', page).attr('src', '');    
     },
     
     showProfilePage: function() {
