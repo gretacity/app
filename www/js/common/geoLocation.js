@@ -128,6 +128,8 @@ console.log('geoLocation._googleGeocode partial match');
     
     
     reverseGeocoding: function(params, successCallback) {
+        //var lat = params.lat;
+        //var lng = params.lng;
         //params.lat=41.4731791;
         //params.lng=12.8893273;
 //*params.lat = 38.827707; params.lng = 16.628456; // Via Caprera 144
@@ -182,7 +184,6 @@ console.log(firstResult);
                 road: result.address.road,
                 streetNumber: '',
             };
-console.log(result);
             successCallBack(retVal);
         });
     }

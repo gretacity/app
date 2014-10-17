@@ -70,14 +70,16 @@
     <gap:plugin name="org.apache.cordova.globalization" version="0.2.6" />
     <gap:plugin name="org.apache.cordova.inappbrowser" version="0.3.3" />
     <gap:plugin name="org.apache.cordova.network-information" version="0.2.7" />
-   <!-- <gap:plugin name="com.phonegap.plugins.facebookconnect">
-        <param name="APP_ID" value="370053863152357" />
-        <param name="APP_NAME" value="gretacity" />
+    
+    <!--
+    <gap:plugin name="com.phonegap.plugins.facebookconnect">
+        <param name="APP_ID" value="766633046736732" />
+        <param name="APP_NAME" value="Gretacity" />
     </gap:plugin>
     <feature  name= "org.apache.cordova.facebook.Connect" > 
     <param  name= "android-package"  value= "org.apache.cordova.facebook.ConnectPlugin"  /> 
-    </feature> -->
-    
+    </feature>-->
+
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
     <icon src="res/icon/android/icon-36-ldpi.png"   gap:platform="android"    gap:density="ldpi" />
@@ -151,7 +153,7 @@
         Otherwise, you can specify specific domains:
     -->
 	<!--<access origin="*" subdomains="true"/> -->
-    <access origin="*" />
+    <access origin="*" subdomains="true" />
     <access origin="http://www.gretacity.com" subdomains="true" />
     <!--
         <access origin="http://phonegap.com" />                    - allow any secure requests to http://phonegap.com/

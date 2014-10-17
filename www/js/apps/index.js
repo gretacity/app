@@ -234,6 +234,31 @@ console.log('onResume: registration to push server required');
         console.log('Received Event: ' + id);
     },
     
+    loginUser: function(){
+    FB.login(function(response) {
+        if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            //console.log(response); // dump complete info
+            access_token = response.authResponse.accessToken; //get access token
+            user_id = response.authResponse.userID; //get FB UID
+            
+            FB.api('/me', function(response) {
+                alert ("email: "+response.email); //get user email
+                alert ("naam : "+respone.name);
+                
+          // you can store this data into your database             
+            });
+
+        } else {
+            //user hit cancel button
+            console.log('User cancelled login or did not fully authorize.');
+
+        }
+    }, {
+        scope: 'publish_stream,email'
+    });
+},
+    
     ////////////////////////////
     // Common functions
      
@@ -889,12 +914,11 @@ console.log('onResume: registration to push server required');
         var town;
         var city;
         var village;
-        var chepalle;
         
         self.reporting.latLng.lat = pos.coords.latitude;
         self.reporting.latLng.lng = pos.coords.longitude;
         geoLocation.reverseGeocoding(self.reporting.latLng, function(result) {
-        console.log(result);
+//console.log(result);
                 
             if(result) {
                 $('#address', $.mobile.activePage).val(result.road + " " + result.streetNumber);
@@ -990,6 +1014,7 @@ console.log('onResume: registration to push server required');
         
         var lat = self.reporting.latLng.lat;
         var lng = self.reporting.latLng.lng;
+        
         var mapZoom = config.GOOGLE_MAPS_ZOOM;
         
         var markerPoint = new google.maps.LatLng(lat, lng);
@@ -1010,6 +1035,21 @@ console.log('onResume: registration to push server required');
                     self._reporting2Marker.setPosition(e.latLng);
                     self.reporting.latLng.lat = self._reporting2Marker.getPosition().lat();
                     self.reporting.latLng.lng = self._reporting2Marker.getPosition().lng();
+                    geoLocation.reverseGeocoding(self.reporting.latLng, function(result) {
+        if(result) { 
+            
+            self.reporting.address = result.road;
+            self.reporting.prov = result.prov
+            if (result.village != null ){                
+                self.reporting.city = result.village;
+            }
+            else if (result.town != null ){                
+                self.reporting.city = result.town;
+            }
+            else
+                self.reporting.city = result.city;
+            }
+        });
                 });
         google.maps.event.addListener(
             self._reporting2Marker, 
@@ -1017,6 +1057,21 @@ console.log('onResume: registration to push server required');
             function() {
                 self.reporting.latLng.lat = self._reporting2Marker.getPosition().lat();
                 self.reporting.latLng.lng = self._reporting2Marker.getPosition().lng();
+                geoLocation.reverseGeocoding(self.reporting.latLng, function(result) {
+        if(result) { 
+            
+            self.reporting.address = result.road;
+            self.reporting.prov = result.prov
+            if (result.village != null ){                
+                self.reporting.city = result.village;
+            }
+            else if (result.town != null ){                
+                self.reporting.city = result.town;
+            }
+            else
+                self.reporting.city = result.city;
+            }
+        });
         });
     },
     
@@ -1139,11 +1194,10 @@ console.log('onResume: registration to push server required');
     removeReportingPhoto: function(par) {
         var container = null;
         var pos = null;
-        
-        var page= $.mobile.activePage.attr('id');        
-        if (page=="reporting6Page"){
-            helper.confirm("Vuoi eliminare la foto?", function(ix) {
-                if(ix == 1) {
+        //var page= $.mobile.activePage.attr('id');        
+        //if (page=="reporting6Page"){
+            //helper.confirm("Vuoi eliminare la foto?", function(ix) {
+                //if(ix == 1) {
                     if(par.currentTarget) {            
                         container = $(par.currentTarget).closest('div.reporting-photo-item');
                         pos = container.data('photopos');
@@ -1154,9 +1208,9 @@ console.log('onResume: registration to push server required');
                     imageEl.parent().prev().hide();
                     imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('reporting-photo-missing');
                     imageEl.removeAttr('src').replaceWith(imageEl.clone());
-                }
-            }, 'Elimina foto', ['Procedi', 'Annulla']);
-        }
+                //}
+            //}, 'Elimina foto', ['Procedi', 'Annulla']);
+       // }
     },
     
     
@@ -1174,6 +1228,7 @@ console.log('onResume: registration to push server required');
             self.reporting.photos.push(src.substr(pos));
         });
         $.mobile.loading('show');
+        
         services.sendReporting(self.reporting, function() {
             // Successfully sent
             self.emptyReportingPages();
