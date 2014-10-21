@@ -2500,7 +2500,8 @@ console.log('onResume: registration to push server required');
         $('#citySuggestion',page).empty();
         $('#address', page).val('');
         $('#phone', page).val('')        
-        $('#photoProfile', page).attr('src', '');    
+        $('#photoProfile', page).attr('src', ''); 
+       
     },
     
     showProfilePage: function() {
@@ -2670,8 +2671,8 @@ getProfilePhoto: function(e) {
         helper.confirm("Vuoi eliminare la foto del profilo?", function(ix) {
             if(ix == 1) {
                 var imageEl = $('#photoSet div.profile-photo-item a img');
-                console.log('QUIII');
-                console.log(imageEl);
+                //console.log('QUIII');
+                //console.log(imageEl);
                 imageEl.parent().prev().hide();
                 imageEl.css({'margin-left': '', 'margin-top': '', 'height': '', 'width': ''}).addClass('profile-photo-missing');
                 imageEl.removeAttr('src').replaceWith(imageEl.clone());

@@ -121,8 +121,7 @@ console.log('services.changePassword FAIL', jqXHR);
         url += '&' + services.getRequestCommonParameters();
         //url += '&d=1';
 console.log(auth.getSessionId());
-
-console.log(url);
+//console.log(url);
         $.ajax(url, {
             type:'GET',
             dataType:'json',
@@ -161,12 +160,8 @@ console.log('services.getProfile: FAIL', textStatus);
                '&email=' + encodeURIComponent(params.profile.email) +
                '&id_comune=' + encodeURIComponent(params.profile.city.id) +
                '&indirizzo=' + encodeURIComponent(params.profile.address) +
-               '&telefono=' + encodeURIComponent(params.profile.phone);
-        
-       
-            
+               '&telefono=' + encodeURIComponent(params.profile.phone);       
 console.log('services.updateProfile', url, data);
-
         $.ajax(url, {
             type: 'POST',
             data: data,
