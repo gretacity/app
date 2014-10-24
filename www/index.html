@@ -679,7 +679,7 @@
             </div>
             <div data-role="footer" style="margin:0;text-align:center;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
                 <a href="#" id="changeViewType" class="ui-btn ui-shadow ui-corner-all button-toggle">
-                   VEDI SU MAPPA
+                   VEDI ELENCO
                 </a>
             </div>
         </div>
@@ -1046,37 +1046,37 @@
                 <div class="ui-grid-a" style="margin-top: 2em;">
                     <div class="ui-block-a">
                         <a href="#profilePage" data-transition="slide">
-                            <img src='img/SetupProfile.png' style="width:100%" />
+                            <img src='img/SetupProfile.png' style="width:100%" onmouseover="this.src='img/SetupProfileSel.png'" onmouseout="this.src='img/SetupProfile.png'" onclick="this.src='img/SetupProfileSel.png'" />
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <!--<a href="#setupFollowingPage" data-transition="slide" class="ui-btn ui-btn-primary ui-btn-primary-background">Following</a>-->
                         <a href="#setupFollowingPage" data-transition="slide">
-                            <img src='img/SetupFollowing.png' style="width:100%" />
+                            <img src='img/SetupFollowing.png' style="width:100%" onmouseover="this.src='img/SetupFollowingSel.png'" onmouseout="this.src='img/SetupFollowing.png'" onclick="this.src='img/SetupFollowingSel.png'"/>
                         </a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
                         <a href="#setupChannelsPage" data-transition="slide">
-                            <img src='img/SetupNews.png' style="width:100%" />
+                            <img src='img/SetupNews.png' style="width:100%" onmouseover="this.src='img/SetupNewsSel.png'" onmouseout="this.src='img/SetupNews.png'" onclick="this.src='img/SetupNewsSel.png'"/>
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#infoPage" data-transition="slide">
-                            <img src='img/SetupPrivacy.png' style="width:100%" />
+                            <img src='img/SetupPrivacy.png' style="width:100%" onmouseover="this.src='img/SetupPrivacySel.png'" onmouseout="this.src='img/SetupPrivacy.png'" onclick="this.src='img/SetupPrivacySel.png'"/>
                         </a>
                     </div>
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
                         <a href="#supportPage" data-transition="slide">
-                            <img src='img/SetupSupport.png' style="width:100%" />
+                            <img src='img/SetupSupport.png' style="width:100%" onmouseover="this.src='img/SetupSupportSel.png'" onmouseout="this.src='img/SetupSupport.png'" onclick="this.src='img/SetupSupportSel.png'"/>
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#" id="logoutButton" data-transition="slide">
-                            <img src='img/SetupLogout.png' style="width: 70%; display: block; margin: 0 auto;" />
+                            <img src='img/SetupLogout.png' style="width: 70%; display: block; margin: 0 auto;" onmouseover="this.src='img/SetupLogoutSel.png'" onmouseout="this.src='img/SetupLogout.png'" onclick="this.src='img/SetupLogoutSel.png'"/>
                         </a>
                     </div>
                 </div>
@@ -1100,7 +1100,7 @@
                             <img src="img/gallery.png" style="max-width:2em;vertical-align: middle; padding: .1em;">
                             Da galleria
                         </div>
-                    </a>                   
+                    </a>
                 </div>
             </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -1126,7 +1126,7 @@
                     </div>
                     <div id="photoSet" class="ui-block-b">
                         <div class="profile-photo-item" data-photopos="0">
-                           <img id="deleteFoto" src="img/PhotoDelete.png" class="reporting-photo-delete" style="display:none;"/> 
+                            <img id="deleteFoto" src="img/PhotoDelete.png" class="reporting-photo-delete" style="display:none;"/>
                             <a href="#" class="profile-photo-shot">
                                 <img src="" id="photoProfile" class="profile-photo profile-photo-missing" />
                             </a>

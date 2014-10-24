@@ -1228,7 +1228,6 @@ console.log('onResume: registration to push server required');
             self.reporting.photos.push(src.substr(pos));
         });
         $.mobile.loading('show');
-        
         services.sendReporting(self.reporting, function() {
             // Successfully sent
             self.emptyReportingPages();
@@ -1261,7 +1260,7 @@ console.log('onResume: registration to push server required');
                 $('#reportingListPage #mapView').hide();
                 $('#reportingListPage #changeViewType').html('VEDI SU MAPPA');
                 $.mobile.loading('hide');
-            }, 600);
+            }, 500);
             self.reportingListCurrentView = self.reportingListViewTypeList;
         } else {
             //$('#reportingListPage #reportingListView').hide();
@@ -1272,7 +1271,7 @@ console.log('onResume: registration to push server required');
                 $('#reportingListPage #mapView').show();
                 $('#reportingListPage #changeViewType').html('VEDI ELENCO');
                 $.mobile.loading('hide');
-            }, 600);
+            }, 500);
             self.reportingListCurrentView = self.reportingListViewTypeMap;
         }
     },
@@ -2488,6 +2487,7 @@ console.log('onResume: registration to push server required');
         });
         $('#profilePage #sourceTypePopup #shotPhoto').on('click', self.getProfilePhoto);
         $('#profilePage #sourceTypePopup #fromGallery').on('click', self.getProfilePhoto);
+        //$('#profilePage #sourceTypePopup #deletePhoto').on('click', self.removeProfilePhoto);
     },
     beforeshowProfilePage: function() {
         var page = $('#profilePage');
@@ -2501,7 +2501,6 @@ console.log('onResume: registration to push server required');
         $('#address', page).val('');
         $('#phone', page).val('')        
         $('#photoProfile', page).attr('src', ''); 
-       
     },
     
     showProfilePage: function() {
@@ -2521,10 +2520,16 @@ console.log('onResume: registration to push server required');
                 return;
             }
             helper.alert('Si è verificato un errore', null, 'Profilo')
+            $mobile.changePage('#setupPage');
         });
     },
     fillProfilePage: function() {
         var page = $('#profilePage');
+        //setTimeout(function() {
+        //, 100);
+        $.mobile.loading('show');
+        setTimeout(function() {
+            $.mobile.loading('hide');
         $('#firstname', page).val(self.userProfile.firstname);
         $('#lastname', page).val(self.userProfile.lastname);
         $('#email', page).val(self.userProfile.email);
@@ -2543,8 +2548,12 @@ console.log('onResume: registration to push server required');
         
         if (photoVera != "default.jpg"){
             $('.reporting-photo-delete', page).css('display', 'block');
-            $('#photoProfile', page).attr('src', self.userProfile.photo);  
+            $('#photoProfile', page).attr('src', self.userProfile.photo ); 
         }
+        else {
+            $('#photoProfile', page).attr('src', self.userProfile.photo ); 
+        }
+    }, 50);
         //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
         /*var photos = $('.photo-preview', page);
             for(var i = 0; i < photos.length; i++) {
@@ -2663,6 +2672,7 @@ getProfilePhoto: function(e) {
             photo.parent().prev().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
             helper.imageCropToFit(photo);
+            self.updateProfile();
         }, function(e) {
             //helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});
@@ -2670,6 +2680,7 @@ getProfilePhoto: function(e) {
     removeProfilePhoto: function(par,id) {
         helper.confirm("Vuoi eliminare la foto del profilo?", function(ix) {
             if(ix == 1) {
+                $('#sourceTypePopup', $.mobile.activePage).popup('close');
                 var imageEl = $('#photoSet div.profile-photo-item a img');
                 //console.log('QUIII');
                 //console.log(imageEl);
@@ -2979,6 +2990,7 @@ getProfilePhoto: function(e) {
             $('#qrCodeInfoCommentsPage #qrCodeCommentsList').append('<li><p>' + text + '</p><small>' + d.toDMY() + ' alle ' + d.toHM() + '</small></li>');
             $('#qrCodeInfoCommentsPage #qrCodeCommentsList').listview('refresh');
             $('#qrCodeInfoCommentsPage #comment').val('');
+            $.mobile.changePage('#followingListPage');
             $.mobile.loading('hide');
         }, function(e) {
             $.mobile.loading('hide');
