@@ -172,6 +172,15 @@
                 font-weight: bold !important;
                 padding-bottom: 1.2em !important;
             }
+            .ui-btn-primary2:hover {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/button3Hover.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+                padding-bottom: 1.2em !important;
+            }
             .ui-priority-button {
                 height:2em;
                 width:2em;
