@@ -336,15 +336,6 @@
                 font-weight: bold !important;
                 padding-bottom: 3.6em !important;
             }
-            .ui-btn-manualmente:hover {
-                border: none !important;
-                background-color: #FFF !important;
-                background: url('../img/segnaManualmenteHover.png') center center no-repeat !important;
-                background-size: 100% 98% !important;
-                color: #FFF !important;
-                font-weight: bold !important;
-                padding-bottom: 3.6em !important;
-            }
             .ui-btn-qrcode {
                 border: none !important;
                 background-color: #FFF !important;
@@ -786,6 +777,7 @@
                 background-size: 100% 98% !important;
                 box-shadow: none;
             }
+            .button-next:hover,
             .button-toggle:hover {
                 border: none !important;
                 width: 90% !important;
