@@ -698,6 +698,10 @@
             .toolbar-button-option{
                 background-image: url('../img/HomeOption.png') !important;
             }
+            .toolbar-button-option:hover{
+                background-image: url('../img/HomeOptionHover.png') !important;
+            }
+            
             .toolbar-button-home {
                 background-image: url('../img/HomeButton.png') !important;
             }
