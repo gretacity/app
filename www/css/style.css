@@ -163,6 +163,140 @@
                 color: #FFF !important;
                 font-weight: bold !important;
             }
+            .ui-btn-HomeReporting{
+                background: url('../img/HomeReporting.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+             .ui-btn-HomeReporting:hover{
+                background: url('../img/HomeReportingSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeNews{
+                background: url('../img/HomeNews.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeNews:hover{
+                background: url('../img/HomeNewsSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeQrScan{
+                background: url('../img/HomeQrScan.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeQrScan:hover{
+                background: url('../img/HomeQrScanSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeFollowing{
+                background: url('../img/HomeFollowing.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeFollowing:hover{
+                background: url('../img/HomeFollowingSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeNearby{
+                background: url('../img/HomeNearby.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-HomeNearby:hover{
+                background: url('../img/HomeNearbySel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupProfile{
+                background: url('../img/SetupProfile.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupProfile:hover{
+                background: url('../img/SetupProfileSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupNews{
+                background: url('../img/SetupNews.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupNews:hover{
+                background: url('../img/SetupNewsSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupFollowing{
+                background: url('../img/SetupFollowing.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupFollowing:hover{
+                background: url('../img/SetupFollowingSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupPrivacy{
+                background: url('../img/SetupPrivacy.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupPrivacy:hover{
+                background: url('../img/SetupPrivacySel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupSupport{
+                background: url('../img/SetupSupport.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupSupport:hover{
+                background: url('../img/SetupSupportSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 7em;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupLogout{
+                background: url('../img/SetupLogout.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 6em;
+                margin-top: 4%;
+                max-height: 10em !important;
+            }
+            .ui-btn-setupLogout:hover{
+                background: url('../img/SetupLogoutSel.png') center center no-repeat !important;
+                background-size: contain !important;
+                height: 6em;
+                margin-top: 4%;
+                max-height: 10em !important;
+            }
             .ui-btn-primary2 {
                 border: none !important;
                 background-color: #FFF !important;
