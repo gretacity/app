@@ -336,6 +336,15 @@
                 font-weight: bold !important;
                 padding-bottom: 3.6em !important;
             }
+            .ui-btn-manualmente:hover {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/segnaManualmenteHover.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+                padding-bottom: 3.6em !important;
+            }
             .ui-btn-qrcode {
                 border: none !important;
                 background-color: #FFF !important;
@@ -497,15 +506,7 @@
                 background-color: #08C !important;
                 color: #FFF !important;
             }
-            .ui-btn-primary-background {
-                margin-top: 0 !important;
-                border-color:  rgba(0,0,0,0) !important;
-                background-color: rgba(0,0,0,0) !important;
-                background: url('../img/button.png') no-repeat;
-                background-position: center 0;
-                background-size: 100% 4em !important;
-                height: 2.5em !important;
-            }
+            
             .ui-btn-priority {
                 height:1em;
                 width:60%;
@@ -705,15 +706,31 @@
             .toolbar-button-home {
                 background-image: url('../img/HomeButton.png') !important;
             }
+            .toolbar-button-home:hover {
+                background-image: url('../img/HomeButtonHover.png') !important;
+            }
+            
             .toolbar-button-back {
                 background-image: url('../img/BackButton.png') !important;
             }
+            .toolbar-button-back:hover {
+                background-image: url('../img/BackButtonHover.png') !important;
+            }
+            
             .toolbar-button-refresh {
                 background-image: url('../img/RefreshButton.png') !important;
                 margin-left:3em !important;
             }
+            .toolbar-button-refresh:hover {
+                background-image: url('../img/RefreshButtonHover.png') !important;
+                margin-left:3em !important;
+            }
+            
             .toolbar-button-list {
                 background-image: url('../img/ListButton.png') !important;
+            }
+            .toolbar-button-list:hover {
+                background-image: url('../img/ListButtonHover.png') !important;
             }
             
             #homeGrid {
@@ -769,10 +786,26 @@
                 background-size: 100% 98% !important;
                 box-shadow: none;
             }
+            .button-toggle:hover {
+                border: none !important;
+                width: 90% !important;
+                padding:0 auto !important;
+                padding-bottom: 1.2em !important;
+                margin: 0 auto !important;
+                background:url('../img/button3Hover.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                box-shadow: none;
+            }
+            
             .button-important {
                 background:url('../img/button4.png') center center no-repeat !important;
                 background-size: 100% 98% !important;
             }
+            .button-important:hover {
+                background:url('../img/button4Hover.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+            }
+            
             div[data-role="footer"] {
                 background-color: #FFF !important;
                 border: none !important;
