@@ -17,18 +17,12 @@
 <div class="ui-loader-background"> </div>
         <!-- BeforeloginPage -->
         <div data-role="page" id="beforeLoginPage" class="beforeBackgroud">
-            <!--<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                <div class="center-wrapper">
-                    <span>Benvenuto</span>
-                </div>
-            </div> -->
             <div data-role="main" class="ui-content" >
                 <div>
                     <img src="img/logolog.png" class="beforeLogin"/>
                     <img src="img/the-smart-city.png" class="beforeSmartCity" >        
                 </div>
                 <div id="loginForm" >
-                    <!-- <a id="loginButton" style="border-radius:.5em;" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>-->
                     <a id="LoginButton" style="border-radius:.5em;" href="#loginPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">ACCEDI</a>
                 </div>      
                 <!-- <div>
@@ -37,10 +31,7 @@
                 <div>
                     <a id="registerPageButton" style="border-radius:.5em;" href="#registrationPage" data-transition="slide" class="ui-btn ui-btn-primary2 margin-top">ISCRIVITI</a>
                 </div>
-                 
-                 
-                 
-                   <div id="fb-root"></div>
+                <div id="fb-root"></div>
 
   <!--                 
 <script>
@@ -125,14 +116,6 @@
   }
 
 
-
-    
-    
-    
-    
-    
-    
-    
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -322,7 +305,6 @@
             </div>
         </div>
         <!-- /BeforeloginPage -->
-        
        
         <!--LoginPage-->
         <div data-role="page" id="loginPage">
@@ -345,11 +327,11 @@
             </div>
         </div>
         <!--/LoginPage-->
+        
         <!-- registrationPage -->
         <div data-role="page" id="registrationPage" >
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <!-- <img  src="img/greta.png" /> --> 
                     <span>Registrazione</span>
                 </div>
                 <a href="#" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
@@ -388,7 +370,6 @@
         <div data-role="page" id="homePage" class="backgroundMap">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
                <div class="center-wrapper">
-                     <!-- <img  src="img/greta.png" /> -->
                     <span>Home</span>
                 </div>
                 <a href="#setupPage" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-option ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext"></a>
@@ -398,7 +379,6 @@
                     <div class="ui-block-a">
                         <a href="#reportingHomePage" data-transition="slide" class="ui-btn ui-btn-primary">
                             <div class="ui-btn-HomeReporting"></div>
-                           <!-- <img src="img/HomeReporting.png" style="width:100%" onmouseover="this.src='img/HomeReportingSel.png'" onmouseout="this.src='img/HomeReporting.png'" onclick="this.src='img/HomeReportingSel.png'"/> -->
                             <span id="reportingCount" class="ui-li-count-cust ui-li-count-reporting ui-li-count-home" style="display:none;"></span>
                         </a>
                     </div>
@@ -408,27 +388,23 @@
                     <div class="ui-block-a">
                         <a href="#newsPage" data-transition="slide" class="ui-btn ui-btn-primary">
                             <div class="ui-btn-HomeNews"></div>
-                            <!-- <img src="img/HomeNews.png" onmouseover="this.src='img/HomeNewsSel.png'" onmouseout="this.src='img/HomeNews.png'" onclick="this.src='img/HomeNewsSel.png'" /> -->
                             <span id="newsCount" class="ui-li-count-cust ui-li-count-news ui-li-count-home" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-a">
                         <a href="#" id="qrCodeButton" data-transition="slide" class="ui-btn ui-btn-primary">
-                            <div class="ui-btn-HomeQrScan"></div>
-                            <!-- <img src="img/HomeQrScan.png" onmouseover="this.src='img/HomeQrScanSel.png'" onmouseout="this.src='img/HomeQrScan.png'" onclick="this.src='img/HomeQrScanSel.png'"/> -->
+                            <div class="ui-btn-HomeQrScan"></div>                            
                         </a>
                     </div>
                     <div class="ui-block-a">
                         <a href="#followingListPage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            <div class="ui-btn-HomeFollowing"></div>
-                            <!-- <img src="img/HomeFollowing.png" onmouseover="this.src='img/HomeFollowingSel.png'" onmouseout="this.src='img/HomeFollowing.png'" onclick="this.src='img/HomeFollowingSel.png'" /> -->
+                            <div class="ui-btn-HomeFollowing"></div>                            
                             <span id="followingCount" class="ui-li-count-cust ui-li-count-following ui-li-count-home" style="display:none;"></span>
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#nearbyPage" data-transition="slide" class="ui-btn ui-btn-primary">
-                            <div class="ui-btn-HomeNearby"></div>
-                            <!-- <img src="img/HomeNearby.png" onmouseover="this.src='img/HomeNearbySel.png'" onmouseout="this.src='img/HomeNearby.png'" onclick="this.src='img/HomeNearbySel.png'" /> -->
+                            <div class="ui-btn-HomeNearby"></div>                            
                         </a>
                     </div>
                 </div>
@@ -490,7 +466,6 @@
             </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <!-- <img  src="img/greta.png" /> --> 
                     <span>Segnalazione manuale</span>
                 </div>
                 <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
@@ -562,7 +537,6 @@
                 <div class="step" >
                     2 di 4
                 </div>
-                <!-- <div style="line-height:1em;">&nbsp;</div> -->
             </div>
         </div>
         <!-- /reporting4Page -->
@@ -571,7 +545,6 @@
         <div data-role="page" id="reporting5Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <!-- <img src="img/greta.png" /> --> 
                     <span>Descrizione</span>
                 </div>
                 <a href="#reporting4Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
@@ -591,11 +564,6 @@
                         <a href="#" data-priorityid="2" class="ui-btn ui-btn-priority">alto</a>
                     </div>
                 </div>
-                <!--
-                <br /><br /><br />
-                <input type="checkbox" id="private" data-theme="b" />
-                <label style="white-space:normal;" for="private">Utilizza i dati personali solo per le comunicazioni con gli operatori della pubblica amministrazione</label> 
-                -->
             </div>
             <div data-role="footer" style="margin:0;text-align:center;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a" >
 
@@ -703,7 +671,6 @@
          <div data-role="page" id="reportingListDetailPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <div class="center-wrapper">
-                    <!-- <img src="img/greta.png" /> --> 
                     <span>Segnalazioni</span>
                 </div>
                 <a href="#reportingListPage" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
@@ -735,8 +702,7 @@
                  <div class="ui-content"></div>
              </div>
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
-                <div class="center-wrapper">
-                    <!-- <img src="img/greta.png" /> --> 
+                <div class="center-wrapper"> 
                     <span>Segnalazioni vicine</span>
                 </div>
                 <a href="#reportingHomePage" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
@@ -760,7 +726,6 @@
                 <a href="#" id="channelsButton" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-list ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Canali</a>
                 <a href="#" id="refreshButton" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-refresh ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Refresh</a>
                 <div class="center-wrapper">
-                    <!-- <img src="img/greta.png" /> --> 
                     <span>News</span>
                 </div>                
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
@@ -779,7 +744,6 @@
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <a href="#" data-rel="back" data-reverse="true" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Indietro</a>
                 <div class="center-wrapper">
-                    <!-- <img src="img/greta.png" /> --> 
                     <span>Commenti</span>
                 </div>                
                 <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
@@ -795,27 +759,7 @@
                 </div>
             </div>
         </div>
-        <!-- /commentPage -->
-        
-        <!-- photoPage -->
-       <!-- <div data-role="page" id="photoPage">
-            <div data-role="header" data-position="fixed" data-tap-toggle="true" data-theme="b">
-                <a href="#" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
-                <a href="javascript:app.reportingListPageZoomInPhoto()" class="ui-btn ui-btn-right ui-icon-plus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-top:1em !important;">+</a>
-                <a href="javascript:app.reportingListPageZoomOutPhoto()" class="ui-btn ui-btn-right ui-icon-minus ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext" style="margin-top:1em !important;margin-right:2.5em;">-</a>
-                <div class="center-wrapper">
-                    <span>Foto</span>
-                </div>
-            </div>            
-            <div data-role="main">
-
-                <div id="photoContainer" style="background-color:#cecece;overflow:hidden;text-align:center;width:100%;height:100%;">
-                    <img id="photo" src="" style="width:100%;" />
-                </div>
-            </div>
-        </div>-->
-        <!-- /photoPage -->
-        
+        <!-- /commentPage -->        
         
         <!-- qrCodeViewerPage -->
         <div data-role="page" id="qrCodeViewerPage">
@@ -1028,8 +972,7 @@
                 </ul>
             </div>
         </div>
-        <!-- /nearbyResultsPage -->
-    
+        <!-- /nearbyResultsPage -->    
     
         <!-- nearbyPlaceInfoPage -->
         <div data-role="page" id="nearbyPlaceInfoPage">
@@ -1046,7 +989,6 @@
         </div>
         <!-- /nearbyPlaceInfoPage -->
 
-
         <!-- setupPage -->
         <div data-role="page" id="setupPage">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -1059,14 +1001,12 @@
                 <div class="ui-grid-a" style="margin-top: 2em;">
                     <div class="ui-block-a">
                         <a href="#profilePage" data-transition="slide">
-                            <div class="ui-btn-setupProfile"></div>
-                            <!-- <img src='img/SetupProfile.png' style="width:100%" onmouseover="this.src='img/SetupProfileSel.png'" onmouseout="this.src='img/SetupProfile.png'" onclick="this.src='img/SetupProfileSel.png'" />-->
+                            <div class="ui-btn-setupProfile"></div>                            
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#setupFollowingPage" data-transition="slide">
                             <div class="ui-btn-setupFollowing"></div>
-                            <!-- <img src='img/SetupFollowing.png' style="width:100%" onmouseover="this.src='img/SetupFollowingSel.png'" onmouseout="this.src='img/SetupFollowing.png'" onclick="this.src='img/SetupFollowingSel.png'"/> -->
                         </a>
                     </div>
                 </div>
@@ -1074,13 +1014,11 @@
                     <div class="ui-block-a">
                         <a href="#setupChannelsPage" data-transition="slide">
                             <div class="ui-btn-setupNews"></div>
-                            <!--<img src='img/SetupNews.png' style="width:100%" onmouseover="this.src='img/SetupNewsSel.png'" onmouseout="this.src='img/SetupNews.png'" onclick="this.src='img/SetupNewsSel.png'"/>-->
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#infoPage" data-transition="slide">
-                            <div class="ui-btn-setupPrivacy"></div>
-                            <!--<img src='img/SetupPrivacy.png' style="width:100%" onmouseover="this.src='img/SetupPrivacySel.png'" onmouseout="this.src='img/SetupPrivacy.png'" onclick="this.src='img/SetupPrivacySel.png'"/>-->
+                            <div class="ui-btn-setupPrivacy"></div>                            
                         </a>
                     </div>
                 </div>
@@ -1088,13 +1026,11 @@
                     <div class="ui-block-a">
                         <a href="#supportPage" data-transition="slide">
                             <div class="ui-btn-setupSupport"></div>
-                            <!--<img src='img/SetupSupport.png' style="width:100%" onmouseover="this.src='img/SetupSupportSel.png'" onmouseout="this.src='img/SetupSupport.png'" onclick="this.src='img/SetupSupportSel.png'"/>-->
                         </a>
                     </div>
                     <div class="ui-block-b">
                         <a href="#" id="logoutButton" data-transition="slide">
                             <div class="ui-btn-setupLogout"></div>
-                            <!--<img src='img/SetupLogout.png' style="width: 70%; display: block; margin: 0 auto;" onmouseover="this.src='img/SetupLogoutSel.png'" onmouseout="this.src='img/SetupLogout.png'" onclick="this.src='img/SetupLogoutSel.png'"/>-->
                         </a>
                     </div>
                 </div>
@@ -1139,8 +1075,7 @@
                         <input id="city" placeholder="Comune di residenza" required />
                         <ul id="citySuggestion" data-role="listview" data-inset="true" data-theme="b"></ul>
                         <input id="lastname" placeholder="Cognome" required />
-                        <input id="firstname" placeholder="Nome" required />
-                        
+                        <input id="firstname" placeholder="Nome" required />                        
                     </div>
                     <div id="photoSet" class="ui-block-b">
                         <div class="profile-photo-item" data-photopos="0">
@@ -1274,8 +1209,7 @@
                 </div>
             </div>
         </div>
-        <!-- /infoPage -->
-        
+        <!-- /infoPage -->        
         
         <!-- supportPage -->
         <div data-role="page" id="supportPage">
@@ -1300,12 +1234,8 @@
             </div>
             
         </div>
-        <!-- /supportPage -->
+        <!-- /supportPage -->  
         
-
-        
-        
-    
         <script src="js/jquery-2.1.0.min.js"></script>
         <script>
         $(document).on("mobileinit",function() {
