@@ -478,6 +478,10 @@
                 color: #FFF !important;
                 font-weight: bold !important;
                 padding-bottom: 3.6em !important;
+                width: 100%;
+                max-width: 25em;
+                height: 1em!important;
+                margin: 0 auto !important;
             }
             .ui-btn-qrcode {
                 border: none !important;
@@ -487,16 +491,49 @@
                 color: #FFF !important;
                 font-weight: bold !important;
                 padding-bottom: 2.4em !important;
+                width: 100%;
+                max-width: 25em;
+                height: 1em!important;
+                margin: 0 auto !important;
             }
             .ui-btn-mieSegnalazioni {
                 border: none !important;
                 background-color: #FFF !important;
-                background: url('../img/lemieSegnalazioni.png') center center no-repeat !important;
+                background: url('../img/mieSegnalazioni.png') center center no-repeat !important;
                 background-size: 100% 98% !important;
                 color: #FFF !important;
                 font-weight: bold !important;
                 padding-bottom: 2.4em !important;
+                width: 100%;
+                max-width: 25em;
+                height: 1em!important;
+                margin: 0 auto !important;
+            }    
+            .ui-btn-manualmente:hover {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/segnaManualmenteHover.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
             }
+            .ui-btn-qrcode:hover {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/segnaQrcodeHover.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+            }
+            .ui-btn-mieSegnalazioni:hover {
+                border: none !important;
+                background-color: #FFF !important;
+                background: url('../img/mieSegnalazioniHover.png') center center no-repeat !important;
+                background-size: 100% 98% !important;
+                color: #FFF !important;
+                font-weight: bold !important;
+            }
+            
             .qrcode-info-news div {
                 font-weight: bold;
             }

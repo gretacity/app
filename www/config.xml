@@ -140,7 +140,7 @@
     <gap:splash src="res/screen/ios/screen-iphone-landscape-375h-2x.png"  gap:platform="ios"    width="1334"  height="750" />
     <gap:splash src="res/screen/ios/screen-iphone-portrait-736h-3x.png"  gap:platform="ios"     width="1242"  height="2208" />
     <gap:splash src="res/screen/ios/screen-iphone-landscape-414h-3x.png"  gap:platform="ios"     width="2208"  height="1242" />
-     <gap:splash src="res/screen/ios/screen-iphone-portrait-414h-3x.png"  gap:platform="ios"     width="1242"  height="2208" />
+    <gap:splash src="res/screen/ios/screen-iphone-portrait-414h-3x.png"  gap:platform="ios"     width="1242"  height="2208" />
     
     
     <gap:splash src="res/screen/windows-phone/screen-portrait.jpg"  gap:platform="winphone" />
