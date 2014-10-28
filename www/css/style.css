@@ -520,7 +520,7 @@
             .ui-btn-qrcode:hover {
                 border: none !important;
                 background-color: #FFF !important;
-                background: url('../img/segnaQrcodeHover.png') center center no-repeat !important;
+                background: url('../img/segnaQrCodeHover.png') center center no-repeat !important;
                 background-size: 100% 98% !important;
                 color: #FFF !important;
                 font-weight: bold !important;
