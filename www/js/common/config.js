@@ -77,6 +77,7 @@ var config = {
     URL_NEWS_UNSUBSCRIBE_CHANNEL: '/web/index.php?mode=module&p=app_services&a=rem_feed',
     URL_NEWS_LIST: '/web/index.php?mode=module&p=app_services&a=get_notizie',
     URL_NEWS_DETAIL: '/web/index.php?mode=module&p=app_services&a=get_notizia',
+    URL_NEWS_SHARE:'/web/index.php?mode=module&p=segnalazioni&s=segnalazione_edit_web&s_t=fotonotizia',
     // URL_NEWS_SEND_COMMENT: '/web/index.php?mode=module&p=&s=&s_t=',
     //URL_NEWS_GET_COMMENT:'/web/index.php?mode=module&p=&s=&s_t=',
     

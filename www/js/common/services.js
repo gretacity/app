@@ -516,6 +516,26 @@ console.log('services.getInfoFromQrCode FAIL', jqXHR);
             fail(textStatus, false);
         });
     },
+    
+    
+    shareNewsPhoto: function(params, successCallback, failCallback) {
+        var url = config.URL_BASE + config.URL_NEWS_SHARE+'&' + services.getRequestCommonParameters();
+        var data = 'id='+encodeURIComponent(params);
+        //url+= '&d=1';
+        console.log(url);
+console.log('services.shareNewsPhoto', data);
+        $.ajax(url, {
+            type: 'POST',
+            data: data,
+          timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result) {
+console.log('services.shareNewsPhoto SUCCESS', result);
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.shareNewsPhoto ERROR', result);
+            failCallback(jqXHR.responseText);
+        });
+    },
     //////////////////////////////////////////////////////
     // "NEARBY PLACES" RELATED FUNCTIONS
     
