@@ -1350,18 +1350,26 @@ console.log('onResume: registration to push server required');
             if(row.icona != '') {
                 markerOptions.icon = row.icona;
             }
+           
             marker= new google.maps.Marker(markerOptions);
             google.maps.event.addListener(marker, 'click', function() {
                 var payload = this.get('payload');
                 var dateAdded = Date.parseFromYMDHMS(payload.data_inserimento).toDMYHM();
                 var content = '';
-                content+=//'<img src="img/share.png" onclick="javascript:app.SharingFb(\'' + payload.id + '\')" style="width: 7em; float:right;display: block;position:relative;z-index: 100; top: 0.5em;margin-top: -1em;"/>'+
-                         //'<img src="img/share_twitter_icon.png" onclick="javascript:app.SharingTwitter(\'' + payload.id + '\')" style=" display: block;position:relative;z-index: 100; right:0; top: 0.5em;margin-top: -1em;"/>'
-                        //'<img src="img/facebookLogo.png" onclick="javascript:app.SharingFb(\'' + payload.id + '\')" style="width: 2.5em;float: right;display: block;position: relative;z-index: 100;top: 1em;right: 0.4em;margin-top: -1em;"/>'+
-                        //'<img src="img/twitterLogo.png" onclick="javascript:app.SharingTwitter(\'' + payload.id + '\')" style="width: 2.5em; display: block;position: relative;z-index: 100;right: 0;top: 1em;left: -1em; margin-top: -1em; float:right;"/>';
-                        '<img src="img/facebookLogo.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:33%; max-width: 10em;"/>'+
-                        '<img src="img/twitterLogo.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:33%; max-width: 10em;"/>'+
-                        '<img src="img/share-giornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>';
+                content+='<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + payload.id + '\')" style=" width: 2.5em; float: right; display: block ;position: relative; z-index: 100; top: 1em; right: 6.6em; margin-top: -1em;"/>'+
+                         '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + payload.id + '\')" style="width: 2.5em; display: block;position: relative;z-index: 100;right: 1em; top: 1em;  margin-top: -1em; float:right;"/>';
+                        //'<img src="img/LogoTwitter.png" onclick="javascript:app.shareNewsPhoto(\'' + payload.id + '\')" style="width: 2.5em; display: block;position: relative;z-index: 100;right: -4.6em; top: 1em; margin-top: -1em; float:right;"/>';
+                        //'<img src="img/LLFacebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:33%; max-width: 10em;"/>'+
+                        //'<img src="img/LLogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:33%; max-width: 10em;"/>'+
+                        //'<img src="img/LLGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>';
+                         
+                // PopUp su Mappa per singola Segnalazione
+                if(row.stato.length>1){
+                    content+='<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + payload.id + '\')" style="width: 2.5em; display: block;position: relative;z-index: 100;right: -4.6em; top: 1em; margin-top: -1em; float:right;"/>';
+                }else{
+                    content+='<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style="width: 2.5em; display: block;position: relative;z-index: 100;right: -4.6em; top: 1em; margin-top: -1em; float:right;"/>';
+                }
+                
                 if (payload.foto!=''){
                     content += '<img src="" style="border-radius: .5em; margin-right:1em;width:100%;margin-bottom:1em;height:7em;background:url(\'' + payload.foto + '\') center center no-repeat;background-size: cover;display:block; z-index:1;" />';
                 }else{
@@ -1413,11 +1421,11 @@ console.log('onResume: registration to push server required');
                         color="#F00";
                         break;
                 }
-                //console.log(row);
+//console.log(row);
 //TODO onclick="self.reportingListPageViewPhoto(this)"
-                //var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
+//var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
                 var dateAdded = Date.parseFromYMDHMS(row.data_inserimento).toDMYHM();    // row.data_inserimento
-                 html += '<li data-icon="false">'+
+                html += '<li data-icon="false">'+
                         '<a style="border-bottom: none; background:linear-gradient(135deg, '+color+' 5%,'+color+' 10%,'+color+' 10%,#FFF 20%);padding:0;" href="javascript:app.reportListShowDetail(\'' + row.id + '\')">'+
                         '<div style="padding: .2em 0 .2em 0;text-overflow: ellipsis;overflow: hidden;">' +
                         '<img src="" style="background-image:url(\'http://www.gretacity.com//Data/Upload/Segnalazioni/tipologia/round/'+row.nome_categoria+'.png\');" />' +
@@ -1434,32 +1442,43 @@ console.log('onResume: registration to push server required');
                 }else{
                     html+='<img src="" style="margin-right: .1em !important;float:right!important;background-image:url(\'\img/no-photo.jpg \'\);"/>';
                 }
+                
                 html+='</div></a>'+
                         '<div style="text-align: center;">'+
                         //'<img src="img/share_facebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="float:right; padding:.5em; width:45%; max-width:15em;"/>'+
                         //'<img src="img/share_twitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" padding:.5em; width:45%; max-width:15em;"/>'+
-                        '<img src="img/facebookLogo.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:33%; max-width: 10em;"/>'+
-                        '<img src="img/twitterLogo.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:33%; max-width: 10em;"/>'+
-                        '<img src="img/share-giornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>'+
+                        '<a style="vertical-align: super">Condividi con:   </a>'+
+                        '<img src="img/LogoFb.png." onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
+                        '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';
+                
+                // Segnalazioni in Elenco
+                if(row.stato.length>1){
+                    html+='<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+                }else{
+                    html+='<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+                }
+                html+=  //'<img src="img/LogoFb.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>'+
+                        //'<img src="img/LLFacebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:33%; max-width: 10em;"/>'+
+                        //'<img src="img/LLogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:33%; max-width: 10em;"/>'+
+                        //'<img src="img/LLGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>'+
                         '</div>'+
                         '</li>';
-                        
-                        
-                         //'<img src="img/share.png" onclick="javascript:app.Sharing(\'' + row.id + '\')" style="width: 7em; margin: 0 auto;display: block;"/>'+
-                        //'<a href="#" onclick="javascript:app.RemoveReport(\'' + row.id + '\')"  style="color: #FFF !important;font-weight: bold !important;float: right;border: none;padding-bottom: 1.2em !important;" class="ui-btn button-important">ELIMINA</a>'+
-                        //'<img src="img/PhotoDelete.png" onclick="javascript:app.RemoveReport(\'' + row.id + '\')" style="position:absolute; z-index:100; top:0; right:0;"/>'+
-                        //'<img src="img/Shadow.png"  style="position:absolute; z-index:10; top:0; right:0; opacity: 0.8;width: 5em;"/>'+
-                        //'<a href="#" onclick="javascript:app.Sharing(\'' + row.id + '\')" class="ui-btn ui-btn-primary2 ">Condividi su FB</a>';
-                        //'<img src="img/share.png" onclick="javascript:app.Sharing(\'' + row.id + '\')" style="width: 7em; margin: 0 auto;display: block;"/>';
 
-                /*html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
-                        '<img src="" style="background-image:url(\'' + row.foto + '\');" />' +
-                        '<div class="gg-list-item-row reporting-list-item-descr"><span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
-                        '<div class="reporting-list-item-row"><span>Luogo:</span> <strong>' + row.indirizzo + ', ' + row.sigla + '</strong></div>' +
-                        '<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
-                        '<div class="reporting-list-item-row reporting-list-item-status"><span>Stato:</span> <strong>' + row.stato + '</strong>' +
-                        '<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
-                        '</div></a></li>'; */
+//'<img src="img/share.png" onclick="javascript:app.Sharing(\'' + row.id + '\')" style="width: 7em; margin: 0 auto;display: block;"/>'+
+//'<a href="#" onclick="javascript:app.RemoveReport(\'' + row.id + '\')"  style="color: #FFF !important;font-weight: bold !important;float: right;border: none;padding-bottom: 1.2em !important;" class="ui-btn button-important">ELIMINA</a>'+
+//'<img src="img/PhotoDelete.png" onclick="javascript:app.RemoveReport(\'' + row.id + '\')" style="position:absolute; z-index:100; top:0; right:0;"/>'+
+//'<img src="img/Shadow.png"  style="position:absolute; z-index:10; top:0; right:0; opacity: 0.8;width: 5em;"/>'+
+//'<a href="#" onclick="javascript:app.Sharing(\'' + row.id + '\')" class="ui-btn ui-btn-primary2 ">Condividi su FB</a>';
+//'<img src="img/share.png" onclick="javascript:app.Sharing(\'' + row.id + '\')" style="width: 7em; margin: 0 auto;display: block;"/>';
+
+/*html += '<li data-icon="false"><a href="javascript:app.reportListShowDetail(\'' + row.id + '\')"><div style="padding: 0 0 0 0;overflow:hidden;">' +
+'<img src="" style="background-image:url(\'' + row.foto + '\');" />' +
+'<div class="gg-list-item-row reporting-list-item-descr"><span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
+'<div class="reporting-list-item-row"><span>Luogo:</span> <strong>' + row.indirizzo + ', ' + row.sigla + '</strong></div>' +
+'<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
+'<div class="reporting-list-item-row reporting-list-item-status"><span>Stato:</span> <strong>' + row.stato + '</strong>' +
+'<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
+'</div></a></li>'; */
             }
         }
         list.html(html);
@@ -1467,8 +1486,7 @@ console.log('onResume: registration to push server required');
         $.mobile.loading('hide');
         $.mobile.silentScroll();
     },
-    
-    
+
     RemoveReport: function(id){
         var row = null;
         for(var i in self.reportingListData) {
@@ -1537,11 +1555,13 @@ console.log('onResume: registration to push server required');
                     '</div>';
             
             $('#main', page).css('background', 'linear-gradient(135deg, '+color+' 5%,'+color+' 10%,'+color+' 10%,#FFF 20%)');
+            
 //var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
-            //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
-            //$('#photot2', page).css('background-image', 'url(\'' + photoUrl + '\')');
-            //$('#photot3', page).css('background-image', 'url(\'' + photoUrl + '\')');
-            //console.log(row);
+//$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
+//$('#photot2', page).css('background-image', 'url(\'' + photoUrl + '\')');
+//$('#photot3', page).css('background-image', 'url(\'' + photoUrl + '\')');
+//console.log(row);
+            
             var photos = $('.photo-preview', page);
             for(var i = 0; i < photos.length; i++) {
                 var photoUrl = ((row.immagini[i] || '') != '' ? row.immagini[i] : 'img/camera.png');
@@ -1553,13 +1573,26 @@ console.log('onResume: registration to push server required');
                 html += '<li style="color: #00269C; white-space:normal;">' + row.log[i] + '</li>';
             }
             
+            //segnalazione singola
+            var Bshare= '<a style="vertical-align: super">Condividi con:</a>'+
+                    '<img src="img/LogoFb.png." onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
+                    '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';           
+            if (row.log.length>1){
+                Bshare += '<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+            }else {
+                Bshare += '<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+            }
             $('#log', page).html(html).listview().listview('refresh');
-            var html_share=//'<img src="img/facebookLogo.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="float:right; padding:.5em; width:45%;  max-width:15em;"/>'+
-                           //'<img src="img/twitterLogo.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style="float:left; padding:.5em; width:45%;  max-width:15em;"/>';
-                        '<img src="img/facebookLogo.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:33%; max-width: 10em;"/>'+
-                        '<img src="img/twitterLogo.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:33%; max-width: 10em;"/>'+
-                        '<img src="img/share-giornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>';
-            html_share+='<a href="#" onclick="javascript:app.RemoveReport(\'' + row.id + '\')"  style=" width: 90%;margin-top: 0;color: #FFF !important;font-weight: bold !important;float: right;border: none;padding-bottom: 1.2em !important;" class="ui-btn button-important">ELIMINA</a>';
+            //var Bshare='<a style="vertical-align: super">Condividi con:</a>'+
+                    //'<img src="img/LogoFb.png." onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
+                    //'<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>'+
+                    //'<img src="img/LogoFb.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+                        
+                    //'<img src="img/LLFacebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:33%; max-width: 10em;"/>'+
+                    //'<img src="img/LLogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:33%; max-width: 10em;"/>'+
+                    //'<img src="img/LLGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>';
+            var html_share='<a href="#" onclick="javascript:app.RemoveReport(\'' + row.id + '\')"  style=" width: 90%;margin-top: 0;color: #FFF !important;font-weight: bold !important;float: right;border: none;padding-bottom: 1.2em !important;" class="ui-btn button-important">ELIMINA</a>';
+            $('#condividi', page).html(Bshare);
             $('#myfooter', page).html(html_share);
             $.mobile.changePage('#reportingListDetailPage', {transition: 'slide'});
         }
@@ -1625,6 +1658,11 @@ console.log('onResume: registration to push server required');
             }
         }, 'Fotonotizia', ['Procedi', 'Annulla']);
     },
+       
+    CantSend: function(){
+        helper.alert('Potrai inviare la segnalazione ai giornali quando la stessa sarà approvata.', null, 'Foto Notizia');
+    },
+    
     ////////////////////////////////////////
     // reportingNearbyPage
     initReportingNearbyPage: function() {
