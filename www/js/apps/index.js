@@ -1447,15 +1447,15 @@ console.log('onResume: registration to push server required');
                         '<div style="text-align: center;">'+
                         //'<img src="img/share_facebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="float:right; padding:.5em; width:45%; max-width:15em;"/>'+
                         //'<img src="img/share_twitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" padding:.5em; width:45%; max-width:15em;"/>'+
-                        '<a style="vertical-align: super">Condividi con:   </a>'+
-                        '<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
-                        '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';
+                        '<a style="vvertical-align: super; position: relative; bottom: 1em;">Condividi con:   </a>'+
+                        '<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2.5em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
+                        '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2.5em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';
                 
                 // Segnalazioni in Elenco
                 if(row.stato.length>1){
-                    html+='<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+                    html+='<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2.5em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
                 }else{
-                    html+='<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+                    html+='<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style=" width: 2.5em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
                 }
                 html+=  //'<img src="img/LogoFb.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>'+
                         //'<img src="img/LLFacebook.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:33%; max-width: 10em;"/>'+
@@ -1574,13 +1574,13 @@ console.log('onResume: registration to push server required');
             }
             
             //segnalazione singola
-            var Bshare= '<a style="vertical-align: super">Condividi con:</a>'+
-                    '<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
-                    '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';           
+            var Bshare= '<a style="vvertical-align: super; position: relative; bottom: 1em;">Condividi con:</a>'+
+                    '<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2.5em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
+                    '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2.5em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';           
             if (row.log.length>1){
-                Bshare += '<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+                Bshare += '<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2.5em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
             }else {
-                Bshare += '<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style=" width: 2em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
+                Bshare += '<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style=" width: 2.5em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
             }
             $('#log', page).html(html).listview().listview('refresh');
             //var Bshare='<a style="vertical-align: super">Condividi con:</a>'+
