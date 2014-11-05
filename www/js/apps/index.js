@@ -1344,13 +1344,13 @@ console.log('onResume: registration to push server required');
                     indirizzo: row.indirizzo,
                     descrizione_problema: row.descrizione_problema,
                     stato: row.stato,
-                    foto: row.foto
+                    foto: row.foto,
+                    log: row.log
                 }
             };
             if(row.icona != '') {
                 markerOptions.icon = row.icona;
             }
-           
             marker= new google.maps.Marker(markerOptions);
             google.maps.event.addListener(marker, 'click', function() {
                 var payload = this.get('payload');
@@ -1364,7 +1364,9 @@ console.log('onResume: registration to push server required');
                         //'<img src="img/LLGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>';
                          
                 // PopUp su Mappa per singola Segnalazione
-                if(row.stato.length>1){
+                self.tm=row;
+                console.log('segnalazione',row.log.length);
+                if(row.log.length>1){
                     content+='<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + payload.id + '\')" style="width: 2.5em; display: block;position: relative;z-index: 100;right: -4.6em; top: 1em; margin-top: -1em; float:right;"/>';
                 }else{
                     content+='<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style="width: 2.5em; display: block;position: relative;z-index: 100;right: -4.6em; top: 1em; margin-top: -1em; float:right;"/>';
@@ -1452,7 +1454,7 @@ console.log('onResume: registration to push server required');
                         '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2.5em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';
                 
                 // Segnalazioni in Elenco
-                if(row.stato.length>1){
+                if(row.log.length>1){
                     html+='<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2.5em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
                 }else{
                     html+='<img src="img/LogoGiornali.png" onclick="javascript:app.CantSend()" style=" width: 2.5em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
@@ -1660,7 +1662,7 @@ console.log('onResume: registration to push server required');
     },
        
     CantSend: function(){
-        helper.alert('Potrai inviare la segnalazione ai giornali quando la stessa sarà approvata.', null, 'Foto Notizia');
+        helper.alert('La tua segnalazione deve essere ancora approvata.', null, 'Foto Notizia');
     },
     
     ////////////////////////////////////////

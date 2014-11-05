@@ -957,8 +957,7 @@
                 background-size: 100% 98% !important;
                 box-shadow: none;
             }
-            .button-next:hover,
-            .button-toggle:hover {
+            .button-next:hover {
                 border: none !important;
                 width: 90% !important;
                 padding:0 auto !important;
