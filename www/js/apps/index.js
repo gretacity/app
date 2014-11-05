@@ -1364,8 +1364,6 @@ console.log('onResume: registration to push server required');
                         //'<img src="img/LLGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 33%; max-width: 10em;"/>';
                          
                 // PopUp su Mappa per singola Segnalazione
-                self.tm=row;
-                console.log('segnalazione',row.log.length);
                 if(row.log.length>1){
                     content+='<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + payload.id + '\')" style="width: 2.5em; display: block;position: relative;z-index: 100;right: -4.6em; top: 1em; margin-top: -1em; float:right;"/>';
                 }else{
