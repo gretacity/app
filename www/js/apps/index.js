@@ -65,6 +65,7 @@ var app = {
         var homePage = $('#homePage');
         homePage.on('pageinit', self.initHomePage);
         homePage.on('pageshow', self.showHomePage);
+        homePage.on('pagebeforeshow', self.beforeshowHomePage);
         
         var reportingHomePage = $('#reportingHomePage');
         reportingHomePage.on('pageinit', self.initReportingHomePage);
@@ -830,6 +831,10 @@ console.log('onResume: registration to push server required');
     },
     showHomePage: function() {
         self.reportingListData = null;
+        self.updateBalloonsInHomePage();
+    },
+    beforeshowHomePage: function(){
+        //self.reportingListData = null;
         self.updateBalloonsInHomePage();
     },
     
@@ -1901,7 +1906,7 @@ console.log('onResume: registration to push server required');
             if($.mobile.activePage.attr('id') != 'newsPage') return;
             if(onlyNew) {
                 //
-            } else {
+            } else {// Impossibile recuperare il contenuto
                 helper.alert('Impossibile recuperare il contenuto', null, 'Canale');
             }
         });
@@ -1941,7 +1946,7 @@ console.log('onResume: registration to push server required');
                 html += '</li>';
             }
         } else {
-            html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
+            html += '<p id="noComments" style="text-align:left;margin-top:1.5em; margin-left: 1.5em;">Nessun commento</p>';
         }
         $.mobile.loading('hide');
         $('#newsCommentPage', page).html(html).listview().listview('refresh');
@@ -2261,7 +2266,7 @@ console.log('onResume: registration to push server required');
                 html += '</li>';
             }
         } else {
-            html += '<p id="noComments" style="text-align:left;margin-top:1.5em;">Nessun commento</p>';
+            html += '<p id="noComments" style="text-align:left;margin-top:1.5em; margin-left:1.5em;">Nessun commento</p>';
         }
         if(canLeaveComment) {
             $('#leaveCommentPanel', page).show();
