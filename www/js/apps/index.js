@@ -65,7 +65,7 @@ var app = {
         var homePage = $('#homePage');
         homePage.on('pageinit', self.initHomePage);
         homePage.on('pageshow', self.showHomePage);
-        homePage.on('pagebeforeshow', self.beforeshowHomePage);
+        //homePage.on('pagebeforeshow', self.beforeshowHomePage);
         
         var reportingHomePage = $('#reportingHomePage');
         reportingHomePage.on('pageinit', self.initReportingHomePage);
@@ -833,10 +833,10 @@ console.log('onResume: registration to push server required');
         self.reportingListData = null;
         self.updateBalloonsInHomePage();
     },
-    beforeshowHomePage: function(){
+    //beforeshowHomePage: function(){
         //self.reportingListData = null;
-        self.updateBalloonsInHomePage();
-    },
+      //  self.updateBalloonsInHomePage();
+    //},
     
     ////////////////////////////////////////
     // reportingHomePage
