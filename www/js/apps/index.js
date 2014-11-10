@@ -746,9 +746,6 @@ console.log('onResume: registration to push server required');
                 $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
             }, 'Registrazione');
         }, function(e) {
-            
-            helper.alert(textStatus, null, 'Registrazione1');
-            helper.alert(texterrorThrown, null, 'Registrazione1');
             // error callback
             if((e||'') == '') e = 'Impossibile completare la registrazione';
             helper.alert(e, null, 'Registrazione');
