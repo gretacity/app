@@ -124,10 +124,10 @@ var config = {
     // and longitude coordinates in meters
     GEO_OTPS_MINIMUM_ACCURACY_REQUIRED: 3,
     
-    //CAMERA_QUALITY: 12,
+    CAMERA_QUALITY: 25,
     CAMERA_CORRECT_ORIENTATION: true,
-    CAMERA_TARGET_WIDTH: null, //300,
-    CAMERA_TARGET_HEIGHT: null, //400,
+    CAMERA_TARGET_WIDTH: 600, //300,
+    CAMERA_TARGET_HEIGHT: 800, //400,
     CAMERA_SAVE_TO_PHOTO_ALBUM: false,
     CAMERA_ALLOW_EDIT: true,
     
