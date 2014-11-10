@@ -746,7 +746,7 @@ console.log('onResume: registration to push server required');
                 $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
             }, 'Registrazione');
         }, function(e) {
-            if (e.textStatus.toLowerCase()=='timeout'){
+            if (textStatus == 'timeout'){
                 helper.alert('Operazione completata con successo.\n' +
                          'A breve riceverai una email per confermare la registrazione', function() {
                              $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});            
