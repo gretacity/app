@@ -65,7 +65,7 @@ var app = {
         var homePage = $('#homePage');
         homePage.on('pageinit', self.initHomePage);
         homePage.on('pageshow', self.showHomePage);
-        homePage.on('pagebeforeshow', self.beforeshowHomePage);
+        //homePage.on('pagebeforeshow', self.beforeshowHomePage);
         
         var reportingHomePage = $('#reportingHomePage');
         reportingHomePage.on('pageinit', self.initReportingHomePage);
@@ -746,6 +746,10 @@ console.log('onResume: registration to push server required');
                 $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
             }, 'Registrazione');
         }, function(e) {
+            if(!helper.isOnline()) {
+            helper.alert('Errore di connessione', null, 'Registrazione');
+            return;
+        }
             // error callback
             if((e||'') == '') e = 'Impossibile completare la registrazione';
             helper.alert(e, null, 'Registrazione');
@@ -833,10 +837,9 @@ console.log('onResume: registration to push server required');
         self.reportingListData = null;
         self.updateBalloonsInHomePage();
     },
-    beforeshowHomePage: function(){
+    //beforeshowHomePage: function(){
         //self.reportingListData = null;
-        self.updateBalloonsInHomePage();
-    },
+        //self.updateBalloonsInHomePage();    },
     
     ////////////////////////////////////////
     // reportingHomePage
@@ -1827,6 +1830,9 @@ console.log('onResume: registration to push server required');
         $('#moreNewsButton', $.mobile.activePage).addClass('ui-disabled');
         
         $.mobile.loading('show');
+        //setTimeout(function() {
+        //}, 300);
+        
         services.getChannelContent(params, function(result) {
             $('#moreNewsButton', $.mobile.activePage).removeClass('ui-disabled');
             $.mobile.loading('hide');
@@ -2955,6 +2961,7 @@ getProfilePhoto: function(e) {
         }
         $.mobile.loading('hide');
     },
+    
     subscriptionCityChanged: function() {
         if($(this).val() == 'manual') {
             self.showManualCitySearch(true);
