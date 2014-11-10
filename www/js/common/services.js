@@ -52,6 +52,7 @@ var services = {
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             failCallback(jqXHR.responseText);
+            alert("Status: " + textStatus); alert("Error: " + errorThrown);
         });
     },
     
