@@ -79,6 +79,9 @@
     <feature  name= "org.apache.cordova.facebook.Connect" > 
     <param  name= "android-package"  value= "org.apache.cordova.facebook.ConnectPlugin"  /> 
     </feature>-->
+    <gap:config-file platform="android" parent="/manifest/application"> 
+        <activity android:launchMode="singleTop" /> 
+    </gap:config-file> 
     <feature name="android.hardware.camera" required="false"></feature>
     <feature name="android.hardware.camera.autofocus" required="false"></feature>
     <!-- Define app icon for each platform. -->
