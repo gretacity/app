@@ -126,8 +126,11 @@ var config = {
     
     CAMERA_QUALITY: 25,
     CAMERA_CORRECT_ORIENTATION: true,
-    CAMERA_TARGET_WIDTH: 600, //300,
-    CAMERA_TARGET_HEIGHT: 800, //400,
+    CAMERA_TARGET_WIDTH: null
+    
+    
+    , //300,
+    CAMERA_TARGET_HEIGHT: null, //400,
     CAMERA_SAVE_TO_PHOTO_ALBUM: false,
     CAMERA_ALLOW_EDIT: true,
     
