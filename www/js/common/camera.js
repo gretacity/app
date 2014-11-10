@@ -21,7 +21,7 @@ var camera = {
             sourceType = Camera.PictureSourceType.CAMERA;
         }
         
-        var cameraOptions = {quality: config.CAMERA_QUALITY,
+        var cameraOptions = {//quality: config.CAMERA_QUALITY,
                              destinationType: Camera.DestinationType.DATA_URL,
                              //sourceType: Camera.PictureSourceType.CAMERA,       //PHOTOLIBRARY
                              sourceType: sourceType,
