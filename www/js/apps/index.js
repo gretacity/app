@@ -739,13 +739,13 @@ console.log('onResume: registration to push server required');
             return;
         }
 
-        // Registration
+        // Registration            
         services.registerUser(params, function() {
             helper.alert('Operazione completata con successo.\n' +
                          'A breve riceverai una email per confermare la registrazione', function() {
                 $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
             }, 'Registrazione');
-        }, function(e) {
+        }, function(e, textStatus) {
             if (textStatus == 'timeout'){
                 helper.alert('Operazione completata con successo.\n' +
                          'A breve riceverai una email per confermare la registrazione', function() {
@@ -755,7 +755,7 @@ console.log('onResume: registration to push server required');
             // error callback
             if((e||'') == '') e = 'Impossibile completare la registrazione';
             helper.alert(e, null, 'Registrazione');
-        });
+        });        
     },
     
     recoverPassword: function() {
