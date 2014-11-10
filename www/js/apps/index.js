@@ -65,7 +65,7 @@ var app = {
         var homePage = $('#homePage');
         homePage.on('pageinit', self.initHomePage);
         homePage.on('pageshow', self.showHomePage);
-        //homePage.on('pagebeforeshow', self.beforeshowHomePage);
+        homePage.on('pagebeforeshow', self.beforeshowHomePage);
         
         var reportingHomePage = $('#reportingHomePage');
         reportingHomePage.on('pageinit', self.initReportingHomePage);
@@ -746,6 +746,12 @@ console.log('onResume: registration to push server required');
                 $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});
             }, 'Registrazione');
         }, function(e) {
+            if (e.textStatus.toLowerCase()=='timeout'){
+                helper.alert('Operazione completata con successo.\n' +
+                         'A breve riceverai una email per confermare la registrazione', function() {
+                             $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});            
+                         }, 'Registrazione');
+                     }
             // error callback
             if((e||'') == '') e = 'Impossibile completare la registrazione';
             helper.alert(e, null, 'Registrazione');
@@ -833,9 +839,10 @@ console.log('onResume: registration to push server required');
         self.reportingListData = null;
         self.updateBalloonsInHomePage();
     },
-    //beforeshowHomePage: function(){
+    beforeshowHomePage: function(){
         //self.reportingListData = null;
-        //self.updateBalloonsInHomePage();    },
+        //self.updateBalloonsInHomePage();    
+        },
     
     ////////////////////////////////////////
     // reportingHomePage
