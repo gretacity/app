@@ -753,8 +753,11 @@ console.log('onResume: registration to push server required');
                          }, 'Registrazione');
                      }
             // error callback
-            if((e||'') == '') e = 'Impossibile completare la registrazione';
-            helper.alert(e, null, 'Registrazione');
+            //if((e||'') == '') 
+            else {
+                e = 'Impossibile completare la registrazione';
+                helper.alert(e, null, 'Registrazione');
+            }
         });        
     },
     
