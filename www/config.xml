@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
+        xmlns:android = "http://schemas.android.com/apk/res/android"
         id        = "com.gretacity.gretacity"
         versionCode = "7"
         version   = "2.1">
@@ -35,7 +35,8 @@
     <preference name="disable-cursor"             value="false" />          <!-- blackberry: prevents a mouse-icon/cursor from being displayed on the app -->
     <preference name="android-minSdkVersion"      value="14" />              <!-- android: MIN SDK version supported on the target device. MAX version is blank by default. -->
     <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
-    
+    <preference name="androidLaunchMode" value="singleTask"/>
+    <preference name="androidAlwaysRetainTaskState" value="true"/>
     <!-- Plugins -->
 
     <!-- Core plugins 
@@ -58,7 +59,9 @@
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.vibration" />
     -->
-    
+    <gap:config-file platform="android" parent="/manifest/application">
+        <activity android:launchMode="singleInstance" />
+    </gap:config-file>
     <!-- Third party plugins -->
     <!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
     <gap:plugin name="com.phonegap.plugins.barcodescanner" version="1.1.0" />
@@ -79,9 +82,7 @@
     <feature  name= "org.apache.cordova.facebook.Connect" > 
     <param  name= "android-package"  value= "org.apache.cordova.facebook.ConnectPlugin"  /> 
     </feature>-->
-    <gap:config-file platform="android" parent="/manifest/application"> 
-        <activity android:launchMode="singleTop" /> 
-    </gap:config-file> 
+
     <feature name="android.hardware.camera" required="false"></feature>
     <feature name="android.hardware.camera.autofocus" required="false"></feature>
     <!-- Define app icon for each platform. -->
