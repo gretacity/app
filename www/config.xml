@@ -62,12 +62,12 @@
     <gap:config-file platform="android" parent="/manifest/application">
         <uses-feature android:name="android.hardware.camera" android:required="false"/>
         <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+        <uses-permission android:name="android.permission.CAMERA" />
         <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="10"/>
         <activity android:configChanges="orientation|keyboardHidden" />
         <activity android:alwaysRetainTaskState="true" android:launchMode="singleTask" />
     </gap:config-file>
-    <feature name="android.hardware.camera" required="false"></feature>
-    <feature name="android.hardware.camera.autofocus" required="false"></feature>
+   
     
     
     
