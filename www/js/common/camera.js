@@ -36,9 +36,9 @@ var camera = {
         navigator.camera.getPicture(function(imageData) {
             if(successCallback) successCallback(imageData);
         }, function(error) {
-            if(errorCallback) errorCallback(error); 
+            if(errorCallback) {
             helper.alert('Impossibile caricare l\'immagine. Memoria ram del dispositivo insufficiente.', null, 'Fotocamera');
-            $.mobile.changePage('#reportingHomePage');
+            $.mobile.changePage('#reportingHomePage'); }errorCallback(error); 
         }, cameraOptions);
     }
 }
