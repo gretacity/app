@@ -1050,20 +1050,19 @@ console.log('onResume: registration to push server required');
                     self.reporting.latLng.lat = self._reporting2Marker.getPosition().lat();
                     self.reporting.latLng.lng = self._reporting2Marker.getPosition().lng();
                     geoLocation.reverseGeocoding(self.reporting.latLng, function(result) {
-        if(result) { 
-            
-            self.reporting.address = result.road;
-            self.reporting.prov = result.prov
-            if (result.village != null ){                
-                self.reporting.city = result.village;
-            }
-            else if (result.town != null ){                
-                self.reporting.city = result.town;
-            }
-            else
-                self.reporting.city = result.city;
-            }
-        });
+                        if(result) { 
+                            self.reporting.address = result.road;
+                            self.reporting.prov = result.prov
+                            if (result.village != null ){                
+                                self.reporting.city = result.village;
+                            }
+                            else if (result.town != null ){                
+                                self.reporting.city = result.town;
+                            }
+                            else
+                                self.reporting.city = result.city;
+                        }
+                    });
                 });
         google.maps.event.addListener(
             self._reporting2Marker, 
@@ -2572,6 +2571,9 @@ console.log('onResume: registration to push server required');
             }
         });
         $('#profilePage #updateProfileButton').on('click', self.updateProfile);
+        $('#profilePage #accountDelete').on('click', function(e){
+            self.deleteAccount(e, self.userProfile.id);
+        });
         $('#profilePage a.profile-photo-shot').on('click', function(e) {
             $('#sourceTypePopup', $.mobile.activePage).popup('open');
         });
@@ -2582,6 +2584,7 @@ console.log('onResume: registration to push server required');
         $('#profilePage #sourceTypePopup #fromGallery').on('click', self.getProfilePhoto);
         //$('#profilePage #sourceTypePopup #deletePhoto').on('click', self.removeProfilePhoto);
     },
+    
     beforeshowProfilePage: function() {
         var page = $('#profilePage');
         $('#firstname', page).val('');
@@ -2616,6 +2619,7 @@ console.log('onResume: registration to push server required');
             $mobile.changePage('#setupPage');
         });
     },
+    
     fillProfilePage: function() {
         var page = $('#profilePage');
         //setTimeout(function() {
@@ -2747,7 +2751,23 @@ console.log('onResume: registration to push server required');
         });
     },
     
-getProfilePhoto: function(e) {
+    deleteAccount: function(e, id){
+        helper.confirm("Vuoi eliminare il tuo Account?", function(ix) {
+            if(ix == 1) {
+                services.deleteProfile(id, function() {
+                    // account delete ok
+                    $.mobile.loading('hide');
+                    $.mobile.changePage('#beforeLoginPage');
+                }, function(e) {
+                    // error
+                    $.mobile.loading('hide');
+                    helper.alert('Si è verificato un errore durante la cancellazione', null, 'Elimina');
+                });
+            }             
+        }, 'Elimina Account', ['Procedi', 'Annulla']);
+    },
+    
+    getProfilePhoto: function(e) {
         /*var remainingPhoto = $('#photoSet div a img.reporting-photo-missing', $.mobile.activePage).length;
         if(remainingPhoto == 0) {
             helper.alert('Hai raggiunto il limite massimo di foto che puoi inviare');
@@ -2770,6 +2790,7 @@ getProfilePhoto: function(e) {
             //helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});
     },
+    
     removeProfilePhoto: function(par,id) {
         helper.confirm("Vuoi eliminare la foto del profilo?", function(ix) {
             if(ix == 1) {

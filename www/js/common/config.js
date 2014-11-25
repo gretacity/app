@@ -64,6 +64,7 @@ var config = {
     URL_PROFILE_LOAD: '/web/index.php?mode=module&p=login&s=get_user',
     URL_PROFILE_UPDATE: '/web/index.php?mode=module&p=login&s=update_user',
     URL_PROFILE_DELETE_PHOTO: '/web/index.php?mode=module&p=login&s=delete_photo',
+    URL_PROFILE_DELETE: '/web/index.php?mode=module&p=utenti&s=utenti&s_t=remove_app',
     
     URL_NEWS_NEARBY_LOCATION: '/web/index.php?mode=module&p=app_services&a=comuni',
     // Ricerca comuni per nome
@@ -184,7 +185,7 @@ var config = {
     },
     
     USER_LAST_LOGIN_USERNAME_KEY: 'gretacity_userlastloginusername',
-    userLastLoginUsername: function(val) {
+	userLastLoginUsername: function(val) {
         if(typeof(val) != 'undefined') {
             window.localStorage.setItem(config.USER_LAST_LOGIN_USERNAME_KEY, val);
         }

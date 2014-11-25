@@ -216,6 +216,21 @@ console.log('services.deleteProfilePhoto', data);
         });
     },
     
+    deleteProfile: function (params, successCallback, failCallback){
+        var url = config.URL_BASE + config.URL_PROFILE_DELETE;
+        url += '&' + services.getRequestCommonParameters();
+        var data = 'id='+encodeURIComponent(params);
+        console.log('services.deleteProfile', data);
+        $.ajax(url, {
+            type : 'POST',
+            data : data, 
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result){
+            successCallback(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            failCallback(jqXHR.responseText);
+        });
+    },
     //////////////////////////////////////////////////////
     // QRCODE INFO RELATED FUNCTIONS
     

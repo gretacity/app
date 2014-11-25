@@ -40,6 +40,7 @@ if(options.enableHighAccuracy === true) {
             if(successCallback) {
                 var lat = 38.858364, lng = 16.549469, accuracy = 15;
                 //lat = 38.810899; lng = 16.603324;
+                
                 setTimeout(function() {
                     successCallback(
                         {coords: {longitude: lng, latitude: lat, accuracy: accuracy}}
