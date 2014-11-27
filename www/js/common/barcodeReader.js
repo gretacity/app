@@ -137,7 +137,7 @@ QrCodeData.fromText = function(text) {
         var parts = text.split(':');
         qrCodeData.elements.phoneNumber = parts[1];
         qrCodeData.elements.message = parts[2];
-    } else if(text.indexOf('http://') === 0) {
+    } else if(text.indexOf('http') === 0) { // era http://
         qrCodeData.type = QrCodeData.TYPE_URL;
         qrCodeData.elements.url = text;
     } else {
