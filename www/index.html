@@ -516,7 +516,7 @@
             </div>
         </div>
         <!-- /reporting2Page -->
-        
+                
         <!-- reporting4Page -->
         <div data-role="page" id="reporting4Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -542,6 +542,31 @@
         </div>
         <!-- /reporting4Page -->
                 
+        <!-- reportingSollecita -->
+        <div data-role="page" id="reportingSollecita">
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+                <div class="center-wrapper">
+                    <span>Sollecita</span>
+                </div>
+                <a href="#reporting4Page" data-reverse="true" data-rel="back" class="ui-btn ui-btn-left ui-icon-toolbar-button toolbar-button-back ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Back</a>
+                <a href="#homePage" data-reverse="true" class="ui-btn ui-btn-right ui-icon-toolbar-button toolbar-button-home ui-btn-icon-right ui-alt-icon ui-nodisc-icon ui-btn-icon-notext">Home</a>
+            </div>
+            <div data-role="fieldcontain"  class="category">
+                <p id="prova" class="text-primary">
+                    <!-- da index rigo 1103 e 1110 -->
+                </p>
+            </div>
+            <div data-role="main" class="ui-content">
+                <ul id="segnalazioni" data-role="listview" data-theme="b" style="margin-top:3.6em;"></ul>
+            </div>
+            <div data-role="footer" style="margin:0;" data-id="myfooter" data-position="fixed" data-tap-toggle="false"  data-theme="a">
+                <div class="step" >
+                    vuoto
+                </div>
+            </div>
+        </div>
+        <!-- /reportingSollecita -->
+        
         <!-- reporting5Page -->
         <div data-role="page" id="reporting5Page">
             <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
@@ -580,6 +605,9 @@
         
         <!-- reporting6Page -->
         <div data-role="page" id="reporting6Page">
+             <div data-role="popup" id="reportingSharePopup" data-dismissible="false">
+                 <div class="ui-content"></div>
+             </div>
             <div id="sourceTypePopup" data-role="popup" data-theme="b" style="border: none;">
                 <div data-role="controlgroup" >
                     <a href="#" id="shotPhoto" class="ui-btn" >

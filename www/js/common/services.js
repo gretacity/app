@@ -110,10 +110,6 @@ console.log('services.changePassword FAIL', jqXHR);
         });
     },
     
-    
-    
-    
-    
     //////////////////////////////////////////////////////
     // PROFILE RELATED FUNCTIONS
     
@@ -185,7 +181,6 @@ console.log('services.updateProfile', url, data);
             }
         } 
 console.log('services.updateProfile', url, obj);
-
         $.ajax(url, {
             type: 'POST',
             url: url, 
@@ -200,6 +195,7 @@ console.log('FAIL', textStatus, jqXHR);
             fail(jqXHR.responseText, services.isLoginRequired(jqXHR.status));
         });
     },
+    
     deleteProfilePhoto: function(params, successCallback, failCallback) {
         var url = config.URL_BASE + config.URL_PROFILE_DELETE_PHOTO+'&' + services.getRequestCommonParameters();
         var data = 'id='+encodeURIComponent(params);
@@ -231,9 +227,9 @@ console.log('services.deleteProfilePhoto', data);
             failCallback(jqXHR.responseText);
         });
     },
+    
     //////////////////////////////////////////////////////
     // QRCODE INFO RELATED FUNCTIONS
-    
     
     getFollowings: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_QRCODE_FOLLOWING;
@@ -307,8 +303,6 @@ console.log('services.getInfoFromQrCode FAIL', jqXHR);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
-    
-    
     
     //////////////////////////////////////////////////////
     // NEWS RELATED FUNCTIONS
@@ -399,7 +393,6 @@ console.log('services.getInfoFromQrCode FAIL', jqXHR);
             fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
-    
     
     getChannelInfo: function(params, success, fail) {
         var url = config.URL_BASE + config.URL_NEWS_CHANNEL_INFO;
@@ -533,25 +526,25 @@ console.log('services.getInfoFromQrCode FAIL', jqXHR);
         });
     },
     
-    
     shareNewsPhoto: function(params, successCallback, failCallback) {
         var url = config.URL_BASE + config.URL_NEWS_SHARE+'&' + services.getRequestCommonParameters();
         var data = 'id='+encodeURIComponent(params);
         //url+= '&d=1';
         console.log(url);
-console.log('services.shareNewsPhoto', data);
+//console.log('services.shareNewsPhoto', data);
         $.ajax(url, {
             type: 'POST',
             data: data,
           timeout: config.REQUEST_DEFAULT_TIMEOUT
         }).done(function(result) {
-console.log('services.shareNewsPhoto SUCCESS', result);
+//console.log('services.shareNewsPhoto SUCCESS', result);
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('services.shareNewsPhoto ERROR', result);
+//console.log('services.shareNewsPhoto ERROR', result);
             failCallback(jqXHR.responseText);
         });
     },
+    
     //////////////////////////////////////////////////////
     // "NEARBY PLACES" RELATED FUNCTIONS
     
@@ -625,8 +618,6 @@ console.log("services.getNearbyPlaceInfo FAIL ", jqXHR);
     },
     
     
-    
-    
     //////////////////////////////////////////////////////
     // REPORTING RELATED FUNCTIONS
     _reportingCategories: null,  // cache results
@@ -650,7 +641,60 @@ console.log(result);
         });
     },
     
+    // SERVIZIO NUOVO PER OTTENERE SEGNALAZIONI DA SOLLECITARE
+    getReportingSollecita: function(params, success, fail) {
+console.log('Ingresso services.getReportingSollecita');
+        var url = config.URL_BASE + config.URL_REPORTING_GET_SOLLECITA;
+        var obj = {
+            segnalazione: {
+                r_qr_code_id: reporting.qrCode,
+                lat: reporting.latLng.lat,
+                lon: reporting.latLng.lng,
+                id_categoria: reporting.categoryId,
+                indirizzo: reporting.address,
+                comune: reporting.city,
+                prov: reporting.prov,
+            }
+        };
+        $.ajax(url, {
+            type: 'GET',
+            url: url, 
+            data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
+            dataType: 'text',
+        }).done(function(result) {
+console.log('services.getReportingSollecita, success');
+            successCallback();
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.getReportingSollecita fail,', jqXHR);
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+    
+    // SERVIZIO PER INVIARE LA SEGNALAZIONE DA SOLLECITARE
+    sendReportingSollecita: function(id, success, fail) {        
+console.log('Ingresso services.sendReportingSollecita');
+        var url = config.URL_BASE + config.URL_REPORTING_SEND_SOLLECITA;
+        var obj = {
+            segnalazione: {
+                id_segnalazione:id
+            }
+        }
+        $.ajax(url, {
+            type: 'POST',
+            url: url, 
+            data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
+            dataType: 'text',
+        }).done(function(result) {
+console.log('services.sendReportingSollecita, success');            
+            successCallback();
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.sendReportingSollecita fail,', jqXHR);
+            failCallback(textStatus, services.isLoginRequired(jqXHR.status));
+        });
+    },
+        
     sendReporting: function(reporting, successCallback, failCallback) {
+       
         var url = config.URL_BASE + config.URL_REPORTING_SEND + '&' + services.getRequestCommonParameters();
         var obj = {
             segnalazione: {
@@ -672,16 +716,16 @@ console.log(result);
                 obj.pictures.push(reporting.photos[i]);
             }
         }
-console.log('services.sendReporting', obj);
+//console.log('services.sendReporting', obj);
         $.ajax(url, {
             type: 'POST',
             url: url, 
             data: 'obj=' + encodeURIComponent(JSON.stringify(obj)),
             dataType: 'text',
         }).done(function(result) {
-            successCallback();
+            successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('services.sendReporting FAIL', jqXHR);
+//console.log('services.sendReporting FAIL', jqXHR);
             failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },

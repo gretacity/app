@@ -91,6 +91,8 @@ var config = {
     URL_QRCODE_FOLLOWING : '/web/index.php?mode=module&p=app_services&a=get_follows',
     
     URL_REPORTING_CATEGORY_LIST: '/web/index.php?mode=module&a=categories&p=app_services',
+    URL_REPORTING_GET_SOLLECITA: '/web/index.php?mode=module&a=categories&p=app_services',// DA AGGIORNARE
+    URL_REPORTING_SEND_SOLLECITA: '/web/index.php?mode=module&a=categories&p=app_services',// DA AGGIORNARE
     URL_REPORTING_SEND: '/web/index.php?mode=module&p=segnalazioni_utente&s=segnalazione_web&s_t=add_app',
     URL_REPORTING_LIST: '/web/index.php?p=segnalazioni&a=utente&mode=module',
     //params:recid=id_segnalazione

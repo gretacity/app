@@ -2,6 +2,7 @@ var app = {
     self: null,
     language: '',
     pushNotification: null,
+    
     initialize: function() {
         self = this;
         this.bindEvents();
@@ -11,6 +12,7 @@ var app = {
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'pause', 'offline', and 'online'.
+    
     bindEvents: function() {
         document.addEventListener('deviceready', self.onDeviceReady, false);
         document.addEventListener('resume', self.onResume, false);
@@ -77,6 +79,9 @@ var app = {
         
         var reporting2Page = $('#reporting2Page');
         reporting2Page.on('pageshow', self.showReporting2Page);
+        
+        var reportingSollecita = $('#reportingSollecita');
+        reportingSollecita.on('pageshow', self.showreportingSollecita);
         
         var reporting4Page = $('#reporting4Page');
         reporting4Page.on('pageinit', self.initReporting4Page);
@@ -168,12 +173,10 @@ var app = {
         var infoPage = $('#qrCodeInfoPage');
         $('#getInfoButton', infoPage).on('click', self.getInfoFromQrCode);
     },
-    onResume: function() {
-        
-        if(config.EMULATE_ON_BROWSER) return;
-        
-        //pushNotificationHelper.updateApplicationIconBadgeNumber();
-        
+    
+    onResume: function() {        
+        if(config.EMULATE_ON_BROWSER) return;        
+        //pushNotificationHelper.updateApplicationIconBadgeNumber();        
         var lastRegistrationDate = pushNotificationHelper.getLastRegistrationDate();
         if((auth.getSessionId() != '') && ((lastRegistrationDate == null) || (lastRegistrationDate.getDiffInDays(new Date()) >= config.PUSH_REGISTRATION_MAX_DAYS))) {
 console.log('onResume: registration to push server required');
@@ -186,18 +189,19 @@ console.log('onResume: registration to push server required');
             });
         }
     },
+    
     onOnline: function() {
         //$('#loginPage #loginButton').removeClass('ui-disabled');
     },
+    
     onOffline: function() {
         //$('#loginPage #loginButton').addClass('ui-disabled');
     },
     // deviceready Event Handler
-    //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'self.receivedEvent(...);'
-    onDeviceReady: function() {
-        
+    
+    onDeviceReady: function() {        
         self.receivedEvent('deviceready');
         if(typeof(navigator.language) == 'string') {
             self.language = navigator.language;
@@ -231,6 +235,7 @@ console.log('onResume: registration to push server required');
         
     },
     // Update DOM on a Received Event
+    
     receivedEvent: function(id) {
         console.log('Received Event: ' + id);
     },
@@ -261,8 +266,7 @@ console.log('onResume: registration to push server required');
 },
     
     ////////////////////////////
-    // Common functions
-     
+    // Common functions     
     maximizeMap: function(map) {
         var mapEl = (typeof(map) == 'string') ? $(map) : map;
         var page = mapEl.closest('div[data-role="page"]');
@@ -416,6 +420,7 @@ console.log('onResume: registration to push server required');
             listEl.html(html).listview("refresh");
         });
     },
+    
     setCity: function(targetElId, name, id, listElId) {
         $('#' + targetElId, $.mobile.activePage).val(name).data('cityid',id).data('cityname', name);
         $('#' + listElId, $.mobile.activePage).empty();
@@ -439,6 +444,7 @@ console.log('onResume: registration to push server required');
             }
         }
     },
+    
     updateBalloonsInReportingHome: function() {
         // Display a balloon in the item that contains updates
         var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING);
@@ -451,6 +457,7 @@ console.log('onResume: registration to push server required');
             el.hide();
         }
     },
+    
     updateBalloonsInReporting: function() {
         // Display a balloon for each item that contains updates
         var unreadCount = pushNotificationHelper.getUnread(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, null, true);
@@ -459,6 +466,7 @@ console.log('onResume: registration to push server required');
             el = $('#reportingListPage #count_reporting_' + i).html('&nbsp;' + unreadCount[i]).show();
         }
     },
+    
     updateBalloonsInFollowing: function() {
         var listEl = $('#followingListPage #followingList');
         $('li a span.ui-li-count', listEl).hide().html('');
@@ -485,32 +493,14 @@ console.log('onResume: registration to push server required');
             }, 500);
         }
     },
-    /*updateBalloonsInNewsContent: function() {
-        // Don't display the balloon on top of the feed,
-        // but uses the old feed update system and display 
-        // a button on the top of the page to add new posts.
-        self.retrieveChannelContent(true);
-    },*/
     
     ////////////////////////////
     // Common functions (end)
-    
     
     pageId : null,
     changePageAfterLogin: function(pageId) {
         self.pageId = pageId;
     },
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     lockLoginUi: function(lock) {
         var page = $('loginPage');
@@ -638,6 +628,7 @@ console.log('onResume: registration to push server required');
             }
         });
     },
+    
     beforeShowRegisterPage: function() {
         $('#registrationPage input[type="text"]').val('');
         $('#registrationPage input[type="email"]').val('');
@@ -831,17 +822,18 @@ console.log('onResume: registration to push server required');
             });
         }
     },
-    
-    
-    ////////////////////////////////////////
+    //
+////////////////////////////////////////
     // homePage
     initHomePage: function() {
         $('#homePage #qrCodeButton').on('click', self.readQrCode);
     },
+    
     showHomePage: function() {
         self.reportingListData = null;
         self.updateBalloonsInHomePage();
     },
+    
     beforeshowHomePage: function(){
         //self.reportingListData = null;
         //self.updateBalloonsInHomePage();    
@@ -873,7 +865,6 @@ console.log('onResume: registration to push server required');
         self.updateBalloonsInReportingHome();
     },
     
-    
     emptyReportingPages: function() {
         self.reporting = {
             latLng: {
@@ -896,8 +887,7 @@ console.log('onResume: registration to push server required');
     },
     
     ////////////////////////////////////////
-    // reporting1Page
-    
+    // reporting1Page    
     initReporting1Page: function() {
         $('#reporting1Page #prov').on('input', function() {
             if(this.value.length > 2) this.value = this.value.substr(0, 2);
@@ -905,17 +895,20 @@ console.log('onResume: registration to push server required');
         });
         $('#reporting1Page .button-next').on('click', self.validateReporting1Page);
     },
+    
     showReporting1Page: function(e, ui) {
         //
         if(ui.prevPage.attr('id') == 'reportingHomePage') {
             self.emptyReportingPages();
             $('#reporting1Popup').popup('open');
             geoLocation.acquireGeoCoordinates(function(pos) {
+                //console.log("POSIZIONE",pos);
                 $('#reporting1Popup').popup('close');
                 self.reportingGeoCoordinatesAcquired(pos);
             }, function(e) {
                 geoLocation.acquireGeoCoordinates(function(pos) {
                     self.reportingGeoCoordinatesAcquired(pos);
+                    //console.log("POSIZIONE2",pos);
                 }, function(e) {
                     $('#reporting1Popup').popup('close');
                     // $('#' + fieldId, $.mobile.activePage).addClass('input-error')
@@ -924,7 +917,9 @@ console.log('onResume: registration to push server required');
             });
         }
     },
+    
     reportingGeoCoordinatesAcquired: function(pos) {
+        //console.log("POSIZIONE3",pos);
         var town;
         var city;
         var village;
@@ -951,6 +946,7 @@ console.log('onResume: registration to push server required');
         });
         $('.info', $.mobile.activePage).html('La tua posizione è stata acquisita avanti per confermare.').addClass('successInfo');
     },
+    
     validateReporting1Page: function() {
         var hasErrors = false;
         var fields = ['city', 'address', 'prov'];
@@ -986,7 +982,6 @@ console.log('onResume: registration to push server required');
         }
     },
     
-   
     ////////////////////////////////////////
     // reporting2Page
     showReporting2Page: function(e, ui) {
@@ -997,6 +992,7 @@ console.log('onResume: registration to push server required');
             }, 200);
         }
     },
+    
     _reporting2Map: null,
     _reporting2Marker: null,
     reporting2MapsSetup: function() {
@@ -1023,6 +1019,7 @@ console.log('onResume: registration to push server required');
             self.reportingPage2SetMarkerOnMap();
         }, 200);
     },
+    
     reportingPage2SetMarkerOnMap: function() {
         if(self._reporting2Map == null) return;
         
@@ -1090,12 +1087,12 @@ console.log('onResume: registration to push server required');
     
     ////////////////////////////////////////
     // reporting3Page
-    
-    
+        
     ////////////////////////////////////////
     // reporting4Page
     initReporting4Page: function() {
     },
+    
     showReporting4Page: function() {
         services.getReportingCategories(function(res) {
             var html = '';
@@ -1120,11 +1117,87 @@ console.log('onResume: registration to push server required');
             }        
         });
     },
+    
     selectReportingCategory: function(id) {
         self.reporting.categoryId = id;
-        $.mobile.changePage('#reporting5Page', {transition: 'slide'});
+        $.mobile.changePage('#reporting5Page', {transition: 'slide'});//da modificare dopo il servizio in reportingSollecita da reporting5Page
     },
     
+    ////////////////////////////////////////
+    // reportingSollecita    
+    showreportingSollecita: function(){
+console.log('Ingresso_showreportingSollecita');
+        var page= $('#reportingSollecita');
+        var html = '';
+        services.getReportingSollecita(function(res) {
+console.log('getreportingsollecita, risultato è:', res);            
+            $.mobile.loading(show);
+            if (res.length != 0){
+                //ci sono segnalazioni simili nella zona   
+                for(var i in res) {
+                    var row = res[i];
+console.log('showreportingSollecita_row,',row);
+                    //var iconUrl = row.icon || '';
+                    var dateAdded = Date.parseFromYMDHMS(row.data_inserimento).toDMYHM();
+                    html += '<li data-icon="false">'+
+                            '<a style="border-bottom: none; background:linear-gradient(135deg, '+color+' 5%,'+color+' 10%,'+color+' 10%,#FFF 20%);padding:0;" href="javascript:app.reportListShowDetail(\'' + row.id + '\')">'+
+                            '<div style="padding: .2em 0 .2em 0;text-overflow: ellipsis;overflow: hidden;">' +
+                            '<img src="" style="background-image:url(\'http://www.gretacity.com//Data/Upload/Segnalazioni/tipologia/round/'+row.nome_categoria+'.png\');" />' +
+                            '<div style="float:left;width: 44%;text-overflow: ellipsis;overflow: hidden;">'+
+                            '<div class="reporting-list-item-row reporting-list-item-descr">'+
+                            '<span>Descrizione:</span> <strong>' + row.descrizione_problema + '</strong></div>' +
+                            '<div class="reporting-list-item-row" style="text-overflow: ellipsis;overflow: hidden;"><span>Luogo:</span><strong>' + row.indirizzo + ' ' + row.sigla + '</strong></div>' +
+                            '<div class="reporting-list-item-row"><span>Data:</span> <strong>' + dateAdded + '</strong></div>' +
+                            '<div class="reporting-list-item-row reporting-list-item-status"><span>Stato:</span> <strong>' + row.stato + '</strong>' +
+                            '<span id="count_reporting_' + row.id + '" class="ui-li-count-cust" style="display:none"></span></div>' +
+                            '</div>'+
+                            '</div></a>'+
+                            '<div style="text-align: center;">'+
+                            '<a style="vvertical-align: super; position: relative; bottom: 1em;">Sollecita:   </a>'+
+                            '<img src="img/LogoFb.png" onclick="javascript:app.sendSollecita(\'' + row.id + '\')" style="width:2.5em !important; max-width: 10em; right: -1em !important; position: relative;"/>'
+                            '</div>'+
+                            '</li>';
+                }
+                $.mobile.loading(hide);
+                $('.text-primary', page).html('Sollecita la segnalazione...');
+                $('#segnalazioni', page).html(html);
+        }
+        else {
+            //non ci sono segnalazioni
+            $.mobile.loading(hide);
+            $('.text-primary', page).html('Non ci sono presenti segnalazioni nella tua zona.');
+        }
+        }, function(e, loginRequired) {
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+            } else {
+                //helper.alert(e, null, 'Invia segnalazione');
+            }        
+        });
+    },    
+    
+    sendSollecita: function(id){
+console.log('index.sendSollecita, id=', id);
+        helper.confirm('Sicuro di voler sollecitare questo disservizio?.', function(ix) {
+                if(ix == 1) {
+console.log('index.sendSollecita, procedi ');
+                    $.mobile.loading('show');
+                    services.sendReportingSollecita(id, function(){
+console.log('index.sendSollecita success, id=', id);                        
+                        // Successfully sent
+                        $.mobile.loading('hide');
+                        helper.alert('Sollecito effettuato con successo', null, 'Sollecita');
+                        $.mobile.changePage('#reportingHomePage');
+                    }, function(e) {
+                        // An error occurred
+console.log('index.sendSollecita.sendSollecita fail, id=', id); console.log('index.sendSollecita.sendSollecita fail', e);                        
+                        $.mobile.loading('hide');
+                        helper.alert('Si è verificato un errore durante il sollecito', null, 'Sollecita');
+                        $.mobile.changePage('#reportingHomePage');
+                    });
+                }
+            }, 'Sollecita', ['Procedi', 'Annulla']);
+    },
     
     ////////////////////////////////////////
     // reporting5Page
@@ -1138,6 +1211,7 @@ console.log('onResume: registration to push server required');
         });
         $('#reporting5Page a.button-next').on('click', self.validateReporting5Page);
     },
+    
     validateReporting5Page: function() {
         var descriptionEl = $('#description', $.mobile.activePage);
         if(descriptionEl.val().trim() == '') {
@@ -1178,11 +1252,6 @@ console.log('onResume: registration to push server required');
     },
     
     getReportingPhoto: function(e) {
-        /*var remainingPhoto = $('#photoSet div a img.reporting-photo-missing', $.mobile.activePage).length;
-        if(remainingPhoto == 0) {
-            helper.alert('Hai raggiunto il limite massimo di foto che puoi inviare');
-            return;
-        }*/
         var source = $(e.currentTarget).attr('id') == 'shotPhoto' ? 
                 Camera.PictureSourceType.CAMERA :
                 Camera.PictureSourceType.PHOTOLIBRARY;
@@ -1195,15 +1264,12 @@ console.log('onResume: registration to push server required');
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
             photo.parent().prev().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
-            //$('#photoSet2 div[data-photopos="' + self.reportingCurrPhotoPos + '"] a').show();
             helper.imageCropToFit(photo);
         }, function(e) {
             //helper.alert('Si è verificato un problema', null, 'Acquisizione foto');
         }, {sourceType: source});
     },
-    
-
-    
+  
     removeReportingPhoto: function(par) {
         var container = null;
         var pos = null;
@@ -1226,33 +1292,47 @@ console.log('onResume: registration to push server required');
        // }
     },
     
-    
-    
-    
     sendReporting: function() {
-        self.reporting.photos = [];
-        $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
-            var src = $(this).attr('src');
-            var pos = src.indexOf('base64,');
-            if(pos != -1) 
-                pos += 7;
-            else 
-                pos = 0;
-            self.reporting.photos.push(src.substr(pos));
-        });
-        $.mobile.loading('show');
-        services.sendReporting(self.reporting, function() {
-            // Successfully sent
-            self.emptyReportingPages();
-            $.mobile.loading('hide');
-            helper.alert('La tua segnalazione è stata inoltrata con successo', function() {
-                $.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
-            }, 'Invia segnalazione');
-        }, function(e) {
-            // An error occurred
-            $.mobile.loading('hide');
-            helper.alert('Si è verificato un errore durante l\'invio', null, 'Invia segnalazione');
-        });
+        helper.confirm("Vuoi inviare la segnalazione?", function(ix) {
+            if(ix == 1) {
+                self.reporting.photos = [];
+                $('#photoSet a img:not(.reporting-photo-missing)', $.mobile.activePage).each(function() {
+                    var src = $(this).attr('src');
+                    var pos = src.indexOf('base64,');
+                    if(pos != -1) 
+                        pos += 7;
+                    else 
+                        pos = 0;
+                    self.reporting.photos.push(src.substr(pos));
+                });
+                $.mobile.loading('show');
+                services.sendReporting(self.reporting, function(result) {
+                    // Successfully sent
+                    self.emptyReportingPages();
+                    $.mobile.loading('hide');
+                    helper.alert('La tua segnalazione è stata inoltrata con successo', function() {  
+                var content='<div style="text-align: center; font-size:1em;">Vuoi condividere la tua segnalazione?</div>'+
+                '<div style="text-align: center;padding: 2em;">'+
+                '<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + result + '\')" style=" width: 3.5em; padding:0.1em;"/>'+
+                '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + result + '\')" style="width: 3.5em; padding:0.1em;"/>'+
+                '<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + result + '\')" style="width: 3.5em; padding:0.1em;"/>'+
+                '</div>'+
+                '<a href="#reportingListPage" class="ui-btn ui-btn-primary2">CHIUDI</a>';
+                //'<a href="javascript:$(\'#reportingSharePopup\').popup(\'close\')" class="ui-btn ui-btn-primary2">CHIUDI</a>';
+                var popup = $('#reportingSharePopup', $.mobile.activePage);
+                $('div.ui-content', popup).html(content);
+                popup.popup('open');
+                        //$.mobile.changePage('#reportingListPage', {transition: 'slide', reverse: true});
+                        
+                    }, 'Invia segnalazione');
+                    
+                }, function(e) {
+                    // An error occurred
+                    $.mobile.loading('hide');
+                    helper.alert('Si è verificato un errore durante l\'invio', null, 'Invia segnalazione');
+                });
+            }
+        }, 'Invia Segnalazione', ['Procedi', 'Annulla']);
     },
     
     
@@ -1295,12 +1375,14 @@ console.log('onResume: registration to push server required');
             self.toggleReportingListView();
         });
     },
+    
     beforeShowReportingListPage: function(e, ui) {
         if(ui.prevPage.attr('id') != 'reportingListDetailPage') {
             self.reportingListCurrentView = self.reportingListViewTypeList;
             self.toggleReportingListView();
         }
     },
+    
     showReportingListPage: function(e, ui) {
         if(ui.prevPage.attr('id') != 'reportingListDetailPage') {
             $.mobile.loading('show');
@@ -1325,6 +1407,7 @@ console.log('onResume: registration to push server required');
             self.updateBalloonsInReporting();
         }
     },
+    
     reportingListRenderMap: function() {
         self.maximizeMap('#mapView');
         if(typeof(google) == 'undefined') return;
@@ -1401,7 +1484,6 @@ console.log('onResume: registration to push server required');
                 $('div.ui-content', popup).html(content);
                 popup.popup('open');
             });
-
             bounds.extend(marker.getPosition());
         }
         if(!bounds.isEmpty()) {
@@ -1411,6 +1493,7 @@ console.log('onResume: registration to push server required');
             //self.reportingListMap.setZoom(5);
         }
     },
+    
     reportingListRenderList: function() {
         var list = $('#reportingListPage #reportingList');
         var html = '';
@@ -1524,6 +1607,7 @@ console.log('onResume: registration to push server required');
             }
         }, 'Elimina segnalazione', ['Procedi', 'Annulla']);
     },
+   
     reportListShowDetail: function(id) {
         $.mobile.loading('show');
         var row = null;
@@ -1533,7 +1617,7 @@ console.log('onResume: registration to push server required');
                 break;
             }
         }
-        console.log(row);
+console.log(row);
         if(row) {
             pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_REPORTING, row.id);
             var page = $('#reportingListDetailPage');
@@ -1566,15 +1650,12 @@ console.log('onResume: registration to push server required');
                         '<div>'+ row.comune+' ('+row.sigla+')</div>'+
                         //'<div style="background-color:'+color+'; height:2em; width:2em; border-radius:5em; float:right;"></div>'+
                     '</div>';
-            
             $('#main', page).css('background', 'linear-gradient(135deg, '+color+' 5%,'+color+' 10%,'+color+' 10%,#FFF 20%)');
-            
 //var photoUrl = (row.foto != '' ? row.foto : 'img/camera.png');
 //$('#photot1', page).css('background-image', 'url(\'' + photoUrl + '\')');
 //$('#photot2', page).css('background-image', 'url(\'' + photoUrl + '\')');
 //$('#photot3', page).css('background-image', 'url(\'' + photoUrl + '\')');
 //console.log(row);
-            
             var photos = $('.photo-preview', page);
             for(var i = 0; i < photos.length; i++) {
                 var photoUrl = ((row.immagini[i] || '') != '' ? row.immagini[i] : 'img/camera.png');
@@ -1584,12 +1665,11 @@ console.log('onResume: registration to push server required');
             var html = '';
             for(var i in row.log) {
                 html += '<li style="color: #00269C; white-space:normal;">' + row.log[i] + '</li>';
-            }
-            
+            }            
             //segnalazione singola
             var Bshare= '<a style="vvertical-align: super; position: relative; bottom: 1em;">Condividi con:</a>'+
-                    '<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2.5em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
-                    '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2.5em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';           
+                        '<img src="img/LogoFb.png" onclick="javascript:app.SharingFb(\'' + row.id + '\')" style="width:2.5em !important; max-width: 10em; right: -1em !important; position: relative;"/>'+
+                        '<img src="img/LogoTwitter.png" onclick="javascript:app.SharingTwitter(\'' + row.id + '\')" style=" width:2.5em !important; max-width: 10em; right: -1.5em !important; position: relative;"/>';           
             if (row.log.length>1){
                 Bshare += '<img src="img/LogoGiornali.png" onclick="javascript:app.shareNewsPhoto(\'' + row.id + '\')" style=" width: 2.5em !important; max-width: 10em; right: -2em !important; position: relative;"/>';
             }else {
@@ -1612,8 +1692,7 @@ console.log('onResume: registration to push server required');
         
         
     },
-    
-    
+       
     ////////////////////////////////////////
     // reportingListDetailPage
     initReportingListDetailPage: function() {
@@ -1750,6 +1829,7 @@ console.log('onResume: registration to push server required');
             //helper.alert('Impossibile recuperare il contenuto', null, 'Notizie');
         });
     },
+    
     initNewsPage: function() {
         var page = $('#newsPage');
         $('#channelsButton', page).on('click', function() {
@@ -1774,6 +1854,7 @@ console.log('onResume: registration to push server required');
             self.loadNewsChannel();
         }, 200);        
     },
+    
     formatChannelContentItem: function(item) {
         //var rowId = parseInt(item.id);
         //var dateAddedTmp = Date.parseFromYMDHMS(item.data_inserimento);
@@ -1799,6 +1880,7 @@ console.log('onResume: registration to push server required');
 
         return html;
     },
+    
     loadNewsChannel: function(channelId, onlyNew) {
         $('#newsPage #newsChannelsPanel').panel('close');
         
@@ -1923,10 +2005,8 @@ console.log('onResume: registration to push server required');
         });
     },
     
-     //////// //////// ////////
+    //////// //////// ////////
     //////// commentsPage
-        
-   
     loadComments: function(newsId){
         $.mobile.loading('show');
         $.mobile.changePage('#commentPage');
@@ -1986,10 +2066,8 @@ console.log('onResume: registration to push server required');
         });
     },
     
-    
     ////////////////////////////////////////
     // followingListPage
-    
     initFollowingListPage: function() {
         $('#followingListPage #readQrCodeButton').on('click', self.readQrCode);
         $('#followingListPage #searchFollowginButton').on('click', function() {
@@ -2120,7 +2198,6 @@ console.log('onResume: registration to push server required');
         });
     },
     
-    
     showQrCodeInfoGalleryPage: function() {
         var result = self.currentQrCodeInfo;
 /*result = {
@@ -2152,7 +2229,6 @@ console.log('onResume: registration to push server required');
         }
         $('#gallery', $.mobile.activePage).html(html);
     },
-    
     
     beforeShowQrCodeInfoNewsPage: function() {
         var result = self.currentQrCodeInfo;
@@ -2333,10 +2409,8 @@ console.log('onResume: registration to push server required');
         $('#qrCodeLinksList', page).html(html).listview('refresh');
     },  
     
-    
     ////////////////////////////////////////
     // nearbyPage
-    
     nearbyCategoryId: null,
     nearbyCategoryName: null,
     nearbyCurrentPos: null,
@@ -2353,6 +2427,7 @@ console.log('onResume: registration to push server required');
             $('#nearbyPage #placeTypeList').html(html).listview('refresh');
         });        
     },
+    
     beforeShowNearbyPage: function() {
         //$.mobile.loading('show');
         //self.setSidePanelPage('nearbyPage');
@@ -2388,6 +2463,7 @@ console.log('onResume: registration to push server required');
             $.mobile.changePage('#nearbyResultsPage', {transition: 'slide'});
         }
     },
+    
     beforeShowNearbyResultsPage: function(e, ui) {
         $('#nearbyResultsPage #nearbySearchSlider').parents('div.ui-slider').css({'padding-right': 10});
         if(self.nearbyCategoryId == null) {
@@ -2398,6 +2474,7 @@ console.log('onResume: registration to push server required');
             self.searchNearbyPlaces(self.nearbyCategoryId);
         }
     },
+    
     searchNearbyPlaces: function() {
         var page = $('#nearbyResultsPage');
         self.nearbyDistance = $('#nearbySearchSlider', page).val();
@@ -2444,7 +2521,6 @@ console.log('onResume: registration to push server required');
         self.nearbyPlaceSource = source;
         $.mobile.changePage('#nearbyPlaceInfoPage');
     },
-    
     
     initNearbyPlaceInfo: function() {        
     },
@@ -2558,7 +2634,6 @@ console.log('onResume: registration to push server required');
 
     ////////////////////////////////////////
     // profilePage
-    
     userProfile: null,
     initProfilePage: function() {
         $('#profilePage #city').on('input', function() {
@@ -2817,7 +2892,6 @@ console.log('onResume: registration to push server required');
     
     ////////////////////////////////////////
     // supportPage
-    
     initSupportPage: function() {
         $('#supportPage #sendRequestButton').on('click', self.sendSupportRequest);
     },
@@ -2847,9 +2921,9 @@ console.log('onResume: registration to push server required');
             helper.alert(e, null, 'Supporto');
         });
     },
+    
     ////////////////////////////////////////
     // setupFollowingPage
-    
     showSetupFollowingPage: function() {
         $.mobile.loading('show');
         services.getFollowings({}, function(result) {
@@ -2879,7 +2953,6 @@ console.log('onResume: registration to push server required');
         });
     },
     
-
     ////////////////////////////////////////
     // setupChannelsPage
     showSetupChannelsPage: function() {
@@ -2941,6 +3014,7 @@ console.log('onResume: registration to push server required');
             }
         });
     },
+    
     beforeshowSetupChannelSubscriptionPage: function() {
         self.showManualCitySearch(false);
         $('#city', $.mobile.activePage).html('').selectmenu('refresh');
@@ -2950,6 +3024,7 @@ console.log('onResume: registration to push server required');
         $('#availableChannelList', $.mobile.activePage).html('');
         $('#info', $.mobile.activePage).html('Stiamo acquisendo la tua posizione...');
     },
+    
     showSetupChannelSubscriptionPage: function() {
         $.mobile.loading('show');
         geoLocation.acquireGeoCoordinates(function(pos) {
@@ -3081,7 +3156,6 @@ console.log('onResume: registration to push server required');
             $.mobile.loading('hide');
         });
     },
-
     
     _followQrCode: function() {
         var follow = $('#qrCodeInfoPage #infoResult #following').is(':checked');
@@ -3113,10 +3187,7 @@ console.log('onResume: registration to push server required');
         });
     },
     
-    
-    
-    
-    _currentPhotoScale: 1,
+    currentPhotoScale: 1,
     _scaleStep: .2,
     _minScale: 1,
     _maxScale: 3,
@@ -3125,15 +3196,12 @@ console.log('onResume: registration to push server required');
         if(self._currentPhotoScale > self._maxScale) self._currentPhotoScale = self._maxScale;
         $('#photoPage #photo').css('transform', 'scale(' + self._currentPhotoScale + ')');
     },
+    
     reportingListPageZoomOutPhoto: function(el) {
         self._currentPhotoScale -= self._scaleStep;
         if(self._currentPhotoScale < self._minScale) self._currentPhotoScale = self._minScale;
         $('#photoPage #photo').css('transform', 'scale(' + self._currentPhotoScale + ')');
     },
-    
-    
-
-
     
     mapsScriptLoaded: function() {
     },
