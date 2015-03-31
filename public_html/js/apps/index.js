@@ -115,6 +115,7 @@ var app = {
         $('#qrCodeInfoGalleryPage').on('pageshow', self.showQrCodeInfoGalleryPage);
         $('#qrCodeInfoPositionPage').on('pageshow', self.showQrCodeInfoPositionPage);
         $('#qrCodeInfoNewsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoNewsPage);
+        $('#qrCodeOffertePage').on('pagebeforeshow', self.beforeShowQrCodeOffertePage);
         $('#qrCodeInfoCommentsPage').on('pagebeforeshow', self.beforeShowQrCodeInfoCommentsPage);
         $('#qrCodeInfoMultimediaPage').on('pagebeforeshow', self.beforeShowQrCodeInfoMultimediaPage);
         $('#qrCodeInfoLinksPage').on('pagebeforeshow', self.beforeShowQrCodeInfoLinksPage);
@@ -2107,7 +2108,7 @@ console.log(row);
     currentQrCode: null,
     currentQrCodeInfo: null,
     getFollowingInfo: function(code) {
-        
+       
         $('#followingListPage #followingList li a span.ui-li-count').hide();
         
         if($.mobile.activePage.attr('id') != 'followingListDetailPage') {
@@ -2143,7 +2144,7 @@ console.log(row);
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
             }*/
-            console.log(result.foto);
+           
             if(result.foto && (result.foto.length > 0)) {
                 html += '<a href="#qrCodeInfoGalleryPage"><div style="position:relative;">' +
                             '<img src="img/PhotoGallery.png" style="position:absolute;right:0;top:0;z-index:100;" />' +
@@ -2162,25 +2163,43 @@ console.log(row);
             } else {
                 html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Notizie</a>';
             }
+            
+            
             html += '</div>' +
                     '<div class="ui-block-b">';
+            if(result.offerte && (result.offerte.length > 0)) {
+                html += '<a href="#qrCodeOffertePage" class="ui-btn ui-btn-qrcodeinfo ui-btn-news">Offerte</a>';
+            } else {
+                html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
+            }
+            
+            html += '</div>' +
+                    '</div>' +
+                    '<div class="ui-grid-a">' +
+                    '<div class="ui-block-a">';
             if(result.censimento && (result.censimento.latitudine > 0) && (result.censimento.longitudine > 0)) {
                 html += '<a href="#qrCodeInfoPositionPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-position">Posizione</a>';
             } else {
                 html += '<a href="#" class="ui-btn ui-btn-qrcodeinfo ui-btn-position ui-disabled">Localizzazione</a>';
             }
-            html += '</div>' +
-                    '</div>' +
-                    '<div class="ui-grid-a">' +
-                    '<div class="ui-block-a">';
-            var totComments = 0;
-            html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a></div>';
+            html +='</div>'
             html += '<div class="ui-block-b">';
             if(result.youtube && (result.youtube.length > 0)) {
                 html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia">Video</a>';
             } else {
                 html += '<a href="#" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia ui-disabled">Video</a>';
             }
+            html += '</div></div>';
+            
+            html +=  '<div class="ui-grid-a">' +
+                    '<div class="ui-block-a">';
+            
+            var totComments = 0;
+            if(result.commenti)
+            {
+                totComments=result.commenti.length;
+            }     
+            html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a>';
             html += '</div></div>';
                         
             $('#followingListDetailPage #infoResult').html(html);
@@ -2245,8 +2264,28 @@ console.log(row);
                         '</li>';
             }
         }
-        console.log(html);
         $('#qrCodeNewsList', page).html(html).listview('refresh');
+    },
+    
+     beforeShowQrCodeOffertePage: function() {
+         
+        console.log("---------------"); 
+        var result = self.currentQrCodeInfo;
+        var page = $('#qrCodeOffertePage');
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        if(result.offerte && (result.offerte.length > 0)) {
+            for(var i in result.offerte) {
+                var news = result.offerte[i];
+                html += '<li class="qrcode-info-news">' + 
+                        '<div style="white-space: normal !important; color: #00269C !important;">' + news.titolo + '</div>' +
+                        '<p style="white-space:normal;">' + news.annotazione + '</p>' +
+                        '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
+                        '</li>';
+            }
+        }
+       
+        $('#qrCodeOfferteList', page).html(html).listview('refresh');
     },
     
     showQrCodeInfoPositionPage: function() {
