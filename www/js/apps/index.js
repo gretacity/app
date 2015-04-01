@@ -2149,7 +2149,8 @@ console.log(row);
                 html += '<a href="#qrCodeInfoGalleryPage"><div style="position:relative;">' +
                             '<img src="img/PhotoGallery.png" style="position:absolute;right:0;top:0;z-index:100;" />' +
                             '<img src="img/Shadow.png" style="position:absolute;right:0;top:0;z-index:99;opacity:.7;" />' +
-                            '<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
+                            '<img id="imgtest" src="" style=background:url(\'' + result.foto[0] + '\') center center no repeat;" />' +
+                            //'<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
                         '</div></a>';
             }
             
