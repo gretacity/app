@@ -2077,8 +2077,7 @@ console.log(row);
     },
     
     showFollowingListPage: function() {
-        $.mobile.loading('show');
-                
+        $.mobile.loading('show');                
         services.getFollowings({}, function(result) {
             $.mobile.loading('hide');
             var html = '';
@@ -2149,7 +2148,8 @@ console.log(row);
                 html += '<a href="#qrCodeInfoGalleryPage"><div style="position:relative;">' +
                             '<img src="img/PhotoGallery.png" style="position:absolute;right:0;top:0;z-index:100;" />' +
                             '<img src="img/Shadow.png" style="position:absolute;right:0;top:0;z-index:99;opacity:.7;" />' +
-                            '<img id="imgtest" src="" style=background:url(\'' + result.foto[0] + '\') center center no repeat;" />' +
+                            '<img id="imgtest" src="'+result.foto[0]+'" style=width:100%;max-height:15em;" />' +
+                            //'<img id="imgtest" src="" style=width:100%;height:15em;background:url(\'' + result.foto[0] + '\') background-size: contain;" />' +
                             //'<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
                         '</div></a>';
             }
@@ -2260,7 +2260,7 @@ console.log(row);
                 var news = result.notizie[i];
                 html += '<li class="qrcode-info-news">' + 
                         '<div style="white-space: normal !important; color: #00269C !important;">' + news.titolo + '</div>' +
-                        '<p style="white-space:normal;">' + news.annotazione + '</p>' +
+                        '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
                         '</li>';
             }
@@ -2270,7 +2270,7 @@ console.log(row);
     
      beforeShowQrCodeOffertePage: function() {
          
-        console.log("---------------"); 
+     
         var result = self.currentQrCodeInfo;
         var page = $('#qrCodeOffertePage');
         $('h3', page).html(result.info.nome);
@@ -2280,7 +2280,7 @@ console.log(row);
                 var news = result.offerte[i];
                 html += '<li class="qrcode-info-news">' + 
                         '<div style="white-space: normal !important; color: #00269C !important;">' + news.titolo + '</div>' +
-                        '<p style="white-space:normal;">' + news.annotazione + '</p>' +
+                        '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
                         '</li>';
             }

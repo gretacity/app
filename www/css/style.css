@@ -8,7 +8,7 @@
             }
             
             * {
-                font-family: "MyriadSb" !important;
+                font-family: Arial !important;
                 font-size: 1em !important;
                 text-shadow: none !important;
             }
@@ -537,9 +537,12 @@
             .qrcode-info-news div {
                 font-weight: bold;
             }
-            .qrcode-info-news p {
-                /**/
+            p.description {
+                font-family: "Arial" !important;
+                font-size: .7em !important;
+                color: #111111 !important;
             }
+            
             .qrcode-info-news span {
                 font-weight: lighter;
                 font-style: italic;
@@ -600,7 +603,7 @@
                 margin-left: 36px;
                 background-position: 0 0;
             }
-            .slider-nav {
+            .slider-nav?{
                 /*bottom: 100px;*/
             }
             .slider-nav__item {
