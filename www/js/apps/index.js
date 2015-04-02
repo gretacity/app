@@ -2171,7 +2171,15 @@ console.log(row);
             if(result.offerte && (result.offerte.length > 0)) {
                 html += '<a href="#qrCodeOffertePage" class="ui-btn ui-btn-qrcodeinfo ui-btn-news">Offerte</a>';
             } else {
-                html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
+                
+                var totComments = 0;
+                if(result.commenti)
+                {
+                    totComments=result.commenti.length;
+                }   
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a>';
+
+                //html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
             }
             
             html += '</div>' +
@@ -2192,16 +2200,19 @@ console.log(row);
             }
             html += '</div></div>';
             
-            html +=  '<div class="ui-grid-a">' +
-                    '<div class="ui-block-a">';
+            if(result.offerte && (result.offerte.length > 0))
+            {    
             
-            var totComments = 0;
-            if(result.commenti)
-            {
-                totComments=result.commenti.length;
-            }     
-            html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a>';
-            html += '</div></div>';
+                html +=  '<div class="ui-grid-a">' +
+                        '<div class="ui-block-a">';
+                var totComments = 0;
+                if(result.commenti)
+                {
+                    totComments=result.commenti.length;
+                }     
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a>';
+                html += '</div></div>';
+            }    
                         
             $('#followingListDetailPage #infoResult').html(html);
             $.mobile.loading('hide');
@@ -2259,7 +2270,9 @@ console.log(row);
             for(var i in result.notizie) {
                 var news = result.notizie[i];
                 html += '<li class="qrcode-info-news">' + 
-                        '<div style="white-space: normal !important; color: #00269C !important;">' + news.titolo + '</div>' +
+                        '<div style="white-space: normal !important; color: #00269C !important;">' 
+                        +'<a style="text-decoration:none;" href="#qrCodeInfoPositionPage" onclick="self.showQrCodeInfoPositionPage(\''+ news.latitudine+'\',\''+ news.longitudine+'\')">' +news.titolo+'</a>' 
+                        + '</div>' +
                         '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
                         '</li>';
@@ -2289,12 +2302,22 @@ console.log(row);
         $('#qrCodeOfferteList', page).html(html).listview('refresh');
     },
     
-    showQrCodeInfoPositionPage: function() {
+    showQrCodeInfoPositionPage: function(lt, ln) {
+       
         setTimeout(function() {
             self.maximizeMap($('#qrCodeInfoPositionPage #qrCodeInfoPlaceMap'));
             var result = self.currentQrCodeInfo;
             var placeName = result.info.nome;
-            var lat = result.censimento.latitudine, lng = result.censimento.longitudine;
+            
+            var lat = result.censimento.latitudine;
+            var lng = result.censimento.longitudine;
+           
+            if(arguments.length==2)
+            {
+                lat = lt; 
+                lng = ln;
+            }    
+            
             var options = {
                 zoom: config.GOOGLE_MAPS_ZOOM,
                 center: new google.maps.LatLng(lat, lng),
@@ -2303,7 +2326,7 @@ console.log(row);
             };
             var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap'), options);
             var point = new google.maps.LatLng(lat, lng);
-            
+             
             geoLocation.acquireGeoCoordinates(function(pos) {
                 
                 //var startingMarkerPoint is equal to marker
@@ -2365,6 +2388,7 @@ console.log(row);
                 map.panTo(point);
                 var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
                 infowindow.open(map, marker);
+               
             });
             
         }, 300);
