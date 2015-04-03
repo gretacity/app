@@ -2311,7 +2311,7 @@ console.log(row);
         
             setTimeout( function()
             {
-                self.maximizeMap($('#qrCodeInfoPositionPage_1 #qrCodeInfoPlaceMap_1'));
+                self.maximizeMap($('#qrCodeInfoPositionPage #qrCodeInfoPlaceMap'));
                 var result = self.currentQrCodeInfo;
                 var placeName = result.info.nome;
                 var lat = result.censimento.latitudine;
