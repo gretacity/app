@@ -2308,10 +2308,12 @@ console.log(row);
         if(ln && lt  && name)
         {
             args=arguments;
-        
-            setTimeout( function()
+            $('#qrCodeInfoPositionPage_1').on('pageshow', 
+                function()
+                {
+                     setTimeout( function()
             {
-                self.maximizeMap($('#qrCodeInfoPositionPage #qrCodeInfoPlaceMap'));
+                self.maximizeMap($('#qrCodeInfoPositionPage_1 #qrCodeInfoPlaceMap_1'));
                 var result = self.currentQrCodeInfo;
                 var placeName = result.info.nome;
                 var lat = result.censimento.latitudine;
@@ -2399,6 +2401,12 @@ console.log(row);
                 });
 
             }, 300);
+                }        
+            );
+            
+           
+            return true;
+            
         }
         else
         {
