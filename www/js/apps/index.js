@@ -2333,8 +2333,7 @@ console.log(row);
                         };
                         var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap_1'), options);
                         var point = new google.maps.LatLng(lat, lng);
-                        try
-                        {
+                        
                             geoLocation.acquireGeoCoordinates(
                             function(pos) {
 
@@ -2400,21 +2399,6 @@ console.log(row);
                                 infowindow.open(map, marker);
 
                             });
-                        }
-                        catch(e)
-                        {
-                             var marker = new google.maps.Marker({
-                                    position: point,
-                                    map: map,
-                                    draggable: false,
-                                    animation: google.maps.Animation.DROP,
-                                    title: placeName
-                                });
-                                map.panTo(point);
-                                var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
-                                infowindow.open(map, marker);
-                        }
-
                     }
                     ,
                     300);
