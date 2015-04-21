@@ -2271,7 +2271,7 @@ console.log(row);
                 var news = result.notizie[i];
                 html += '<li class="qrcode-info-news">' + 
                         '<div style="white-space: normal !important; color: #00269C !important;">' 
-                        +'<a style="text-decoration:none;" href="#qrCodeInfoPositionPage_1" onclick="self.showQrCodeInfoPositionPage(\''+ news.latitudine+'\',\''+ news.longitudine+'\',\''+news.titolo+'\')">' +news.titolo+'</a>' 
+                        +news.titolo 
                         + '</div>' +
                         '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
@@ -2292,7 +2292,9 @@ console.log(row);
             for(var i in result.offerte) {
                 var news = result.offerte[i];
                 html += '<li class="qrcode-info-news">' + 
-                        '<div style="white-space: normal !important; color: #00269C !important;">' + news.titolo + '</div>' +
+                        '<div style="white-space: normal !important; color: #00269C !important;">' 
+                        +news.titolo+'<a style="float:right;text-decoration:none;" href="#qrCodeInfoPositionPage_1" onclick="self.showQrCodeInfoPositionPage(\''+ news.latitudine+'\',\''+ news.longitudine+'\',\''+news.titolo+'\')">Mappa</a>' 
+                        + '</div>' +                        
                         '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
                         '</li>';
@@ -2418,7 +2420,6 @@ console.log(row);
                 var placeName = result.info.nome;
                 var lat = result.censimento.latitudine;
                 var lng = result.censimento.longitudine;
-                console.log(args);
                 if(args.length==3 )
                 {
                     lat = args[0]; 
@@ -2495,6 +2496,20 @@ console.log(row);
                         animation: google.maps.Animation.DROP,
                         title: placeName
                     });
+                    map.panTo(point);
+                    
+                    console.log(result.childs);
+                    for(var i=0;i<=result.childs.length;i++)
+                    {
+                        var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
+                        var marker = new google.maps.Marker({
+                        position: p,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: result.childs[i]['denominazione']
+                    });
+                    }
                     map.panTo(point);
                     var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
                     infowindow.open(map, marker);
