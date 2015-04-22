@@ -2260,7 +2260,7 @@ console.log(row);
             // Format result
             if(result.censimento.segui==0)
             {    
-                 $('#text_header').html('<a  style="text-decoration:none" href="javascript:app.getFollowingInfo(\''+code+'\')"><span class="blink" >Clicca per seguire</span></a>');
+                 $('#text_header').html('<a  style="text-decoration:none" href="javascript:app.getFollowingInfo(\''+code+'\')"><span class="blink" >Clicca qui per seguire</span></a>');
             } 
             var html = '<div>' +
                             '<h3 class="qrcode-info-title">' + 
