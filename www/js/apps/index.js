@@ -2498,7 +2498,7 @@ console.log(row);
                     });
                     map.panTo(point);
                     
-                    console.log(result.childs);
+                    
                     for(var i=0;i<=result.childs.length;i++)
                     {
                         var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
