@@ -2092,6 +2092,9 @@ console.log(row);
                         '<span id="count_' + qrCodeId + '" class="ui-li-count-cust" style="display:none;"></span>' +
                         '<label style="overflow: hidden;text-overflow: ellipsis;">' + description +'</label></a></li>';
             }
+               
+           
+             
             $('#followingListPage #followingList').html(html).listview('refresh');
             self.updateBalloonsInFollowing();
         }, function(e, loginRequired) {
@@ -2109,7 +2112,7 @@ console.log(row);
     getFollowingInfo: function(code) {
        
         $('#followingListPage #followingList li a span.ui-li-count').hide();
-        
+         $('#text_header').html('<span >Segui</span>');
         if($.mobile.activePage.attr('id') != 'followingListDetailPage') {
             $.mobile.changePage('#followingListDetailPage', {transition: 'slide'});
         }
@@ -2177,7 +2180,7 @@ console.log(row);
                 {
                     totComments=result.commenti.length;
                 }   
-                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;&nbsp;<span style=color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>&nbsp;' : '') + 'Commenti </a>';
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;&nbsp;<span style="color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>&nbsp;' : '') + 'Commenti </a>';
 
                 //html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
             }
@@ -2255,16 +2258,14 @@ console.log(row);
             }
             $('#followingListDetailPage #qrCodeId').val(code);
             // Format result
-            
-            var html = '<div>' +
-                        '<h3 class="qrcode-info-title">' + result.info.nome;
             if(result.censimento.segui==0)
             {    
-                html+='<div style="position:absolute;margin:0;padding: 10px 20px;border-radius: 5px;background: #FFFFFF;right: 20px;top: 6px;">'+
-                    '<a style="color: #FF1111;text-decoration: none;" href="javascript:app.getFollowingInfo(\''+code+'\')">Segui</a>'+
-                '</div>';
-            }    
-            html+=          '</h3>' + 
+                 $('#text_header').html('<a  style="text-decoration:none" href="javascript:app.getFollowingInfo(\''+code+'\')"><span class="blink" >Clicca per seguire</span></a>');
+            } 
+            var html = '<div>' +
+                            '<h3 class="qrcode-info-title">' + 
+                                result.info.nome+
+                            '</h3>' + 
                        '</div>';
             /*if(canFollow) {
                 html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
@@ -2303,7 +2304,7 @@ console.log(row);
                 {
                     totComments=result.commenti.length;
                 }   
-                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;&nbsp;<span style=color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>&nbsp;' : '') + 'Commenti </a>';
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;&nbsp;<span style="color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>&nbsp;' : '') + 'Commenti </a>';
 
                 //html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
             }

@@ -1,3 +1,13 @@
+            @-webkit-keyframes blinker 
+            {
+                0% { opacity: 0.3; }
+                50% { opacity: 1.0; }
+                100% { opacity: 0.3; }
+            }
+             
+           
+           
+
             @font-face {
                 font-family: 'MyriadSb';
                 src: url('../fonts/MYRIADPRO-SEMIBOLD.OTF');
@@ -7,11 +17,24 @@
                 font-style: normal;
             }
             
+            
+            
+            
             * {
                 font-family: Arial !important;
                 font-size: 1em !important;
                 text-shadow: none !important;
             }
+            
+             .blink
+            {
+              -webkit-animation-name: blinker;  
+              -webkit-animation-iteration-count: infinite;  
+              -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+              -webkit-animation-duration: 1.7s;
+              color: #FF1111;
+            }
+            
             .beforeBackgroud{
                 background: url('../img/backgroundlog.jpg') center center no-repeat;
                 background-size: cover;
