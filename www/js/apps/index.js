@@ -2682,6 +2682,7 @@ console.log(row);
     },
     
     searchNearbyPlaces: function() {
+     
         var page = $('#nearbyResultsPage');
         self.nearbyDistance = $('#nearbySearchSlider', page).val();
         var options = {
@@ -2694,18 +2695,49 @@ console.log(row);
         $.mobile.loading('show');
         services.getNearbyPlaces(options, function(result) {
             var html = '';
-            if(result.length > 0) {
-                for(var i in result) {
-                    var row = result[i];
-                    html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.id + '\', \'' + row.source + '\')">' 
-                                + row.name + '<label style="overflow: hidden !important; text-overflow: ellipsis;"><small>' 
-                                + ((row.phoneNumber || '') != '' ? 'Tel. ' + row.phoneNumber  + '<br />' : '')
-                                + row.address
-                                + '</small><br /><b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b></label></a></li>';
+            if(self.nearbyCategoryName.toUpperCase()!='FOLLOW')
+            {    
+                if(result.length > 0) {
+                    for(var i in result) {
+                        var row = result[i];
+                        html += '<li><a href="javascript:self.showNearbyPlace(\'' + row.id + '\', \'' + row.source + '\')">' 
+                                    + row.name + '<label style="overflow: hidden !important; text-overflow: ellipsis;"><small>' 
+                                    + ((row.phoneNumber || '') != '' ? 'Tel. ' + row.phoneNumber  + '<br />' : '')
+                                    + row.address
+                                    + '</small><br /><b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b></label></a></li>';
+                    }
+                } else {
+                    html = '<li>Nessun risultato</li>';
                 }
-            } else {
-                html = '<li>Nessun risultato</li>';
             }
+            else
+            {
+                if(result.length > 0)
+                {
+                    for(var i in result)
+                    {
+                        var row = result[i];
+                      
+                        html += '<li>'
+                                    +'<a href="javascript:javascript:app.getFollowingInfo(\'' + row.id + '\')">' 
+                                        + row.name 
+                                        + '<label style="overflow: hidden !important; text-overflow: ellipsis;">'
+                                        +'<small>' 
+                                        + ((row.phoneNumber || '') != '' ? 'Tel. ' + row.phoneNumber  + '<br />' : '')
+                                        + row.address
+                                        + '</small><br />\n\
+                                        <b style="color:#FFB800">a ' + helper.distanceText(row.distance) + '</b>'
+                                        +'</label>'
+                                    +'</a>'
+                                +'</li>';
+                    }
+                }
+                else
+                {
+                    html = '<li>Nessun risultato</li>';
+                }  
+            }
+            
             $('#placesList', page).html(html).listview('refresh');
             $.mobile.silentScroll();
             $.mobile.loading('hide');
