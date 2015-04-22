@@ -2478,7 +2478,23 @@ console.log(row);
                         });
                         var infowindow2 = new google.maps.InfoWindow({content: '<div>Tu</div>'});
                         infowindow2.open(map, endingMarker);
-
+                        
+                        for(var i=0;i<=result.childs.length;i++)
+                        {
+                            var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
+                            var marker = new google.maps.Marker({
+                            position: p,
+                            map: map,
+                            draggable: false,
+                            animation: google.maps.Animation.DROP,
+                            title: result.childs[i]['denominazione']
+                            });
+                            
+                            var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
+                            infowindow_child.open(map, marker);
+                        }
+                        
+                        
                         if(status != google.maps.DirectionsStatus.OK) {
                             var bounds = new google.maps.LatLngBounds();
                             bounds.extend(startingMarker.position);
