@@ -2177,7 +2177,7 @@ console.log(row);
                 {
                     totComments=result.commenti.length;
                 }   
-                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '<span style="color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>' : '') + '&nbsp;Commenti </a>';
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '<span style="margin-right:2px; color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>' : '') + '&nbsp;Commenti </a>';
 
                 //html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
             }
@@ -2210,7 +2210,7 @@ console.log(row);
                 {
                     totComments=result.commenti.length;
                 }     
-                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;<span style="color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>' : '') + '&nbsp;Commenti</a>';
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;<span style="margin-right:2px;color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>' : '') + '&nbsp;Commenti</a>';
                 html += '</div></div>';
             }    
                         
