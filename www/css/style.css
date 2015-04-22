@@ -404,10 +404,11 @@
                 /*background-color: #FFB800;*/
                 background-color: rgb(89, 196, 248);
                 color:#FFF;
-                padding:.5em;
+                padding:1em;
                 margin-top: 0;
                 border-radius:.5em;
                 text-align: center;
+                position:relative;
             }
             
             .qrcode-info-title2 {

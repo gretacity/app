@@ -247,6 +247,29 @@ console.log('services.deleteProfilePhoto', data);
         });
     },
     
+    getInfoFromQrCodeSearch: function(code, success, fail) {
+       
+        var url = config.URL_BASE + config.URL_QRCODE_GET_INFO_SEARCH;
+        
+        
+        url += '&'+services.getRequestCommonParameters();
+        console.log(url+'&qrcode='+encodeURIComponent(code));
+//console.log(url);
+//console.log('qrcode=' + encodeURIComponent(code));
+        $.ajax(url, {
+            type: 'GET',
+            data: 'qrcode=' + encodeURIComponent(code),
+            timeout: config.REQUEST_DEFAULT_TIMEOUT,
+            dataType: 'json'
+        }).done(function(result) {
+console.log('services.getInfoFromQrCode SUCCESS', result);//return;
+            success(result);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+console.log('services.getInfoFromQrCode FAIL', jqXHR);
+            var loginRequired = services.isLoginRequired(jqXHR.status);
+            fail(textStatus, false);
+        });
+    },
     
     getInfoFromQrCode: function(code, success, fail) {
         var url = config.URL_BASE + config.URL_QRCODE_GET_INFO;

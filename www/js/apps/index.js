@@ -2229,6 +2229,132 @@ console.log(row);
         });
     },
     
+    getFollowingInfoSearch: function(code) {
+       
+        $('#followingListPage #followingList li a span.ui-li-count').hide();
+        
+        if($.mobile.activePage.attr('id') != 'followingListDetailPage') {
+            $.mobile.changePage('#followingListDetailPage', {transition: 'slide'});
+        }
+        
+        $.mobile.loading('show');
+        
+        //$('#followingListDetailPage #getInfoButton').addClass('ui-disabled');
+        $('#followingListDetailPage #infoText').html('Recupero informazioni...');
+       
+            services.getInfoFromQrCodeSearch(code, function(result) {
+            self.currentQrCodeInfo = result;
+            $('#followingListDetailPage #infoText').html('');
+            pushNotificationHelper.setAsRead(PushNotificationMessage.PUSH_NOTIFICATION_TYPE_FOLLOWING, code);
+            //var canFollow = (result.categoria.follows == 1);
+            $('#followingListDetailPage #getInfoButton').removeClass('ui-disabled');
+            if(result == null) {
+                $('#followingListDetailPage #qrCodeId').val('');
+                helper.alert('Non ci sono informazioni disponibili', null, 'Leggi QR Code');
+                return;
+            }
+            $('#followingListDetailPage #qrCodeId').val(code);
+            // Format result
+            
+            var html = '<div>' +
+                        '<h3 class="qrcode-info-title">' + result.info.nome;
+            if(result.censimento.segui==0)
+            {    
+                html+='<div style="position:absolute;margin:0;padding: 10px 20px;border-radius: 5px;background: #FFFFFF;right: 20px;top: 6px;">'+
+                    '<a style="color: #FF1111;text-decoration: none;" href="javascript:app.getFollowingInfo(\''+code+'\')">Segui</a>'+
+                '</div>';
+            }    
+            html+=          '</h3>' + 
+                       '</div>';
+            /*if(canFollow) {
+                html += '<input type="checkbox" onchange="self.followQrCode()" id="following" ' + (result.info.follow == '1' ? ' checked' : '') + '/> <label for="following">segui</label>';
+            }*/
+           
+            if(result.foto && (result.foto.length > 0)) {
+                html += '<a href="#qrCodeInfoGalleryPage"><div style="position:relative;">' +
+                            '<img src="img/PhotoGallery.png" style="position:absolute;right:0;top:0;z-index:100;" />' +
+                            '<img src="img/Shadow.png" style="position:absolute;right:0;top:0;z-index:99;opacity:.7;" />' +
+                            '<img id="imgtest" src="'+result.foto[0]+'" style=width:100%;max-height:15em;" />' +
+                            //'<img id="imgtest" src="" style=width:100%;height:15em;background:url(\'' + result.foto[0] + '\') background-size: contain;" />' +
+                            //'<img id="imgtest" src="" style="width:100%;height:15em;background:url(\'' + result.foto[0] + '\');background-size: cover;" />' +
+                        '</div></a>';
+            }
+            
+            html += '<p class="qrcode-info-description">' + result.info.descrizione+ '</p>';
+            html = html.replace(/\r\n\r\n/g, "</p><p>").replace(/\n\n/g, "</p><p>");
+            html = html.replace(/\r\n/g, "<br />").replace(/\n/g, "<br />");
+            html += '<div style="margin-top:3em;" class="ui-grid-a">' +
+                    '<div class="ui-block-a">';
+            if(result.notizie && (result.notizie.length > 0)) {
+                html += '<a href="#qrCodeInfoNewsPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-news">Notizie</a>';
+            } else {
+                html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Notizie</a>';
+            }
+            
+            
+            html += '</div>' +
+                    '<div class="ui-block-b">';
+            if(result.offerte && (result.offerte.length > 0)) {
+                html += '<a href="#qrCodeOffertePage" class="ui-btn ui-btn-qrcodeinfo ui-btn-news">Offerte</a>';
+            } else {
+                
+                var totComments = 0;
+                if(result.commenti)
+                {
+                    totComments=result.commenti.length;
+                }   
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;&nbsp;<span style=color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>&nbsp;' : '') + 'Commenti </a>';
+
+                //html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
+            }
+            
+            html += '</div>' +
+                    '</div>' +
+                    '<div class="ui-grid-a">' +
+                    '<div class="ui-block-a">';
+            if(result.censimento && (result.censimento.latitudine > 0) && (result.censimento.longitudine > 0)) {
+                html += '<a href="#qrCodeInfoPositionPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-position">Posizione</a>';
+            } else {
+                html += '<a href="#" class="ui-btn ui-btn-qrcodeinfo ui-btn-position ui-disabled">Localizzazione</a>';
+            }
+            html +='</div>'
+            html += '<div class="ui-block-b">';
+            if(result.youtube && (result.youtube.length > 0)) {
+                html += '<a href="#qrCodeInfoMultimediaPage" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia">Video</a>';
+            } else {
+                html += '<a href="#" class="ui-btn ui-btn-qrcodeinfo ui-btn-multimedia ui-disabled">Video</a>';
+            }
+            html += '</div></div>';
+            
+            if(result.offerte && (result.offerte.length > 0))
+            {    
+            
+                html +=  '<div class="ui-grid-a">' +
+                        '<div class="ui-block-a">';
+                var totComments = 0;
+                if(result.commenti)
+                {
+                    totComments=result.commenti.length;
+                }     
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">' + (totComments > 0 ? '&nbsp;&nbsp;<span style="color:#FF1111; background:#FFFFFF;  padding: 3px;  border-radius: 3px;  font-size:.8em !important;">' + totComments + '</span>&nbsp;' : '') + 'Commenti</a>';
+                html += '</div></div>';
+            }    
+                        
+            $('#followingListDetailPage #infoResult').html(html);
+            $.mobile.loading('hide');
+        }, function(e, loginRequired) {
+            $.mobile.loading('hide');
+            $('#followingListDetailPage #infoText').html('Nessuna informazione associata al QR Code');
+            $('#followingListDetailPage #getInfoButton').removeClass('ui-disabled');
+            $('#followingListDetailPage #qrCodeId').val('');
+            if(loginRequired) {
+                $.mobile.changePage('#loginPage');
+            } else {
+                //helper.alert('Nessuna informazione associata al QR code', null, 'Leggi QR Code');
+            }
+        });
+    },
+    
     showQrCodeInfoGalleryPage: function() {
         var result = self.currentQrCodeInfo;
 /*result = {
@@ -2719,7 +2845,7 @@ console.log(row);
                         var row = result[i];
                       
                         html += '<li>'
-                                    +'<a href="javascript:javascript:app.getFollowingInfo(\'' + row.id + '\')">' 
+                                    +'<a href="javascript:javascript:app.getFollowingInfoSearch(\'' + row.id + '\')">' 
                                         + row.name 
                                         + '<label style="overflow: hidden !important; text-overflow: ellipsis;">'
                                         +'<small>' 

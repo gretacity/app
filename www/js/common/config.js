@@ -83,6 +83,8 @@ var config = {
     //URL_NEWS_GET_COMMENT:'/web/index.php?mode=module&p=&s=&s_t=',
     
     URL_QRCODE_GET_INFO: '/web/index.php?p=app_services&a=get&mode=module',
+    URL_QRCODE_GET_INFO_SEARCH: '/web/index.php?p=app_services&a=get_search&mode=module',
+
     URL_QRCODE_SEND_COMMENT: '/web/index.php?mode=module&p=commenti&s=commenti&s_t=add_app',
     
     //params: qrcode
