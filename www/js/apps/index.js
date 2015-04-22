@@ -2177,7 +2177,7 @@ console.log(row);
                 {
                     totComments=result.commenti.length;
                 }   
-                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a>';
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '&nbsp;(' + totComments + ')' : '') + '</a>';
 
                 //html += '<a href="#" class="ui-btn ui-btn-news ui-btn-qrcodeinfo ui-disabled">Offerte</a>';
             }
@@ -2210,7 +2210,7 @@ console.log(row);
                 {
                     totComments=result.commenti.length;
                 }     
-                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '<span class="ui-li-count">' + totComments + '</span>' : '') + '</a>';
+                html += '<a href="#qrCodeInfoCommentsPage" class="ui-btn  ui-btn-qrcodeinfo ui-btn-comments">Commenti' + (totComments > 0 ? '&nbsp;(' + totComments + ')' : '') + '</a>';
                 html += '</div></div>';
             }    
                         
