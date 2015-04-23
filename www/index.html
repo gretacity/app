@@ -933,6 +933,26 @@
                     <h3 class="qrcode-info-title"></h3>
                     <!--<div class="qrcode-info-subtitle">Notizie</div>-->
                 </div>
+                <div id="prenotazioniPopup">
+                    <div id="prenotazioniPopupContainer">
+                    <div>
+                    Per inviare la prenotazione occorre inserire un numero di telefono al quale poter essere contattato.
+                    Riceverai una notifica push quando la tua prenotazione sarà stata accettata.
+                    </div>
+                    <div>
+                        <input type="text" name="telefono_offerte" placeholder="inserisci i tuo numero di telefono">
+                    </div>
+                    <div>
+                        <div class="btn" style="float:right"> <a href="javascript:self.annullaPrenotazione()"> Annulla</a></div>
+                        <div class="btn" style="float:right" id="btnSendPrenotazione"> <a href="#"> Invia</a></div>
+                    </div>
+                    </div>    
+                    <div id="succesPrenotazione">
+                        <div>
+                            Prenotazione effettuata con successo
+                        </div>
+                    </div>
+                </div>
                 <ul data-role="listview" id="qrCodeOfferteList" style="margin-top:1em;">
                 </ul>
             </div>

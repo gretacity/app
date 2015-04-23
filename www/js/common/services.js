@@ -606,7 +606,7 @@ console.log('services.getInfoFromQrCode FAIL', jqXHR);
         url += '&' + services.getRequestCommonParameters();
         //var url = config.URL_NEARBY_PLACES;
         var data = 'types='+placeCatId+'&lat='+lat+'&lng='+lng+'&distance='+distance;
-console.log(url+'&'+data);
+
         $.ajax(url, {
             type:'GET', 
             data:data,
@@ -666,7 +666,6 @@ console.log(result);
     
     // SERVIZIO NUOVO PER OTTENERE SEGNALAZIONI DA SOLLECITARE
     getReportingSollecita: function(params, success, fail) {
-console.log('Ingresso services.getReportingSollecita');
         var url = config.URL_BASE + config.URL_REPORTING_GET_SOLLECITA;
         var obj = {
             segnalazione: {
@@ -800,6 +799,40 @@ console.log('services.sendRequestSupport SUCCESS', result);
 console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
             if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
+    },
+    
+    
+    sendPrenotazione: function(params, success, fail) {
+        var url = config.URL_BASE + config.URL_PRENOTAZIONE;
+        var data = '&id_prenotazione='+encodeURIComponent(params)+ '&' + services.getRequestCommonParameters(false);
+
+        $.ajax(url, {
+            type: 'POST',
+            data: data,
+            timeout: config.REQUEST_DEFAULT_TIMEOUT
+        }).done(function(result) {
+           
+           console.log(result);
+         
+           $("#succesPrenotazione").fadeIn(500, 
+           function()
+            {
+                setTimeout(
+                        function()
+                        {  
+                            $("#prenotazioniPopup").animate({height: "0px"},500, function() {$("#prenotazioniPopup").css({"display":none})});
+                        }
+                        , 2000)
+                        ;
+                    });
+           
+           
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+           
+            //alert("Status: " + textStatus); alert("Error: " + errorThrown);
+        });
     }
+    
+    
     
 }

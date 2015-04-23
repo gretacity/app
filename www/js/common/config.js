@@ -102,6 +102,7 @@ var config = {
     
     //URL_NEARBY_PLACES: 'http://bitroad.it/google/places.php',
     URL_NEARBY_PLACES: '/web/index.php?mode=module&p=app_services&a=aroundme',
+    URL_PRENOTAZIONE: '/web/index.php?mode=module&p=app_services&a=prenotazione',
     //URL_NEARBY_PLACE_INFO: 'http://bitroad.it/google/info.php',
     URL_NEARBY_PLACE_INFO: '/web/index.php?mode=module&p=app_services&a=info',
     

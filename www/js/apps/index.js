@@ -2369,7 +2369,6 @@ console.log(row);
     ]
 };*/
         $('div h3.qrcode-info-title', $.mobile.activePage).html(result.info.nome);
-            
         var html = '';
         for(var i = 0; i < result.foto.length; i += 2) {
             var photo1 = result.foto[i];
@@ -2408,7 +2407,7 @@ console.log(row);
         $('#qrCodeNewsList', page).html(html).listview('refresh');
     },
     
-     beforeShowQrCodeOffertePage: function() {
+    beforeShowQrCodeOffertePage: function() {
          
      
         var result = self.currentQrCodeInfo;
@@ -2742,6 +2741,17 @@ console.log(row);
         }
         $('#qrCodeLinksList', page).html(html).listview('refresh');
     },  
+    
+    beforeShowPrenotazioniPanel: function(id)
+    {
+        $("#btnSendPrenotazione").click( function(){services.sendPrenotazione(id);})
+        $("#prenotazioniPopup").animate({height: $("#prenotazioniPopup").prop("scrollHeight")+"px"},500);
+    },  
+    annullaPrenotazione : function() {
+        $("#prenotazioniPopup").animate({height: "0px"},500);
+    },
+    
+    
     
     ////////////////////////////////////////
     // nearbyPage
