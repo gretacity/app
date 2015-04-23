@@ -2419,11 +2419,12 @@ console.log(row);
             for(var i in result.offerte) {
                 var news = result.offerte[i];
                 html += '<li class="qrcode-info-news">' + 
-                        '<div style="white-space: normal !important; color: #00269C !important;">' 
-                        +news.titolo+'<a style="float:right;text-decoration:none;" href="#qrCodeInfoPositionPage_1" onclick="self.showQrCodeInfoPositionPage(\''+ news.latitudine+'\',\''+ news.longitudine+'\',\''+news.titolo+'\')">Mappa</a>' 
-                        + '</div>' +                        
+                        '<table class="offerte_header"><tr><td>' 
+                        +news.titolo+
+                        '</td>'+
+                        '<td><a style="float:right;" href="#qrCodeInfoPositionPage_1" onclick="self.showQrCodeInfoPositionPage(\''+ news.latitudine+'\',\''+ news.longitudine+'\',\''+news.titolo+'\')">Mappa</a>' 
+                        + '</td></tr></table>' +                        
                         '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
-                      
                         '</li>';
             }
         }

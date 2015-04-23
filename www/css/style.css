@@ -1023,3 +1023,38 @@
                 max-height: 10em;  
                 width:100%;
             }
+            
+            
+            div.offerta_desc
+            {
+                padding:10px;
+                border-radius:10px;
+                border:1px solid;
+                margin:0 10px;
+                overflow:hidden;
+            }
+            
+            
+            
+            table.offerte_footer, table.offerte_header
+            {
+                width:100%;
+                background:#0088cc;
+                color:#FFFFFF;
+                padding: 10px;
+                border-radius: 10px;
+            }
+            
+            table.offerte_footer a, table.offerte_header a
+            {
+                color:#FFFFFF !important;
+                float:right;
+            }  
+            
+            
+            li.qrcode-info-news 
+            {
+                border:0 !important;
+                background:#fafafa !important;
+                margin-bottom:10px !important;
+            }
