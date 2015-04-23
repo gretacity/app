@@ -1071,7 +1071,7 @@
             {
                 background: rgba(153,255,153,0.3);
                 color: #009900;
-                font-size: 1.2em !important;
+                font-size: .8em !important;
                 padding: 10px;
                 
                 overflow: hidden;
@@ -1118,7 +1118,7 @@
             {
                 background: rgba(153,255,153,0.3);
                 color: #009900;
-                font-size: 1.2em !important;
+                font-size: .8em !important;
                 padding: 10px;
                 height: 100%;
                 width: 100%;
