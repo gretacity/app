@@ -2423,7 +2423,7 @@ console.log(row);
                         +news.titolo+'<a style="float:right;text-decoration:none;" href="#qrCodeInfoPositionPage_1" onclick="self.showQrCodeInfoPositionPage(\''+ news.latitudine+'\',\''+ news.longitudine+'\',\''+news.titolo+'\')">Mappa</a>' 
                         + '</div>' +                        
                         '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
-                        '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
+                      
                         '</li>';
             }
         }
