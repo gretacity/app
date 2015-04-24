@@ -808,7 +808,8 @@ console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
         if(reg.test(tel))
         {
             var url = config.URL_BASE + config.URL_PRENOTAZIONE;
-            var data = '&id_prenotazione='+encodeURIComponent(params)+ '&' + services.getRequestCommonParameters(false);
+            var data = '&telefono='+tel+'&id_offerta='+encodeURIComponent(params)+ '&' + services.getRequestCommonParameters(false);
+            console.log(url+data);
             $.ajax(url, {
                 type: 'POST',
                 data: data,
@@ -828,10 +829,26 @@ console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
                         });
 
 
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                //alert("Status: " + textStatus); alert("Error: " + errorThrown);
-            });
+            }).fail(
+                function(jqXHR, textStatus, errorThrown)
+                {
+                    $("#errorPrenotazione").html("<div>"+jqXHR.responseText+"</div>");
+                    $("#errorPrenotazione").fadeIn(
+                        200,
+                        function()
+                        { 
+                            setInterval(
+                                    function()
+                                    {
+                                        $("#errorPrenotazione").fadeOut(200);
+                                    },2000
+                            )
+                        }
+                    );
+                    
+                    //alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                }
+            );
         }
         else
         {

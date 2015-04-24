@@ -1099,7 +1099,7 @@
                 text-decoration:none;
             }
             
-            #succesPrenotazione, #failPrenotazione
+            #succesPrenotazione, #failPrenotazione, #errorPrenotazione 
             {
                 position:absolute;
                 top:0;
@@ -1133,7 +1133,7 @@
                 
             }
             
-            #failPrenotazione div
+            #failPrenotazione div, #errorPrenotazione div 
             {
                 background: rgba(255,50,50,0.3);
                 color: #FF1111;
