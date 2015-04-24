@@ -2418,6 +2418,7 @@ console.log(row);
             for(var i in result.offerte) {
                 var news = result.offerte[i];
                 html += '<li class="qrcode-info-news">' + 
+                        '<div class="dPopup" id="off'+news.id+'"></div>'+
                         '<table class="offerte_header"><tr><td>' 
                         +news.titolo+
                         '</td>'+
@@ -2744,6 +2745,7 @@ console.log(row);
     
     beforeShowPrenotazioniPanel: function(id)
     {
+        $("#prenotazioniPopup").appendTo('#off'+id); 
         $("#btnSendPrenotazione").click( function(){services.sendPrenotazione(id);})
         $("#prenotazioniPopup").animate({height: $("#prenotazioniPopup").prop("scrollHeight")+"px"},500);
     },  

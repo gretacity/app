@@ -803,36 +803,55 @@ console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
     
     
     sendPrenotazione: function(params, success, fail) {
-        var url = config.URL_BASE + config.URL_PRENOTAZIONE;
-        var data = '&id_prenotazione='+encodeURIComponent(params)+ '&' + services.getRequestCommonParameters(false);
+        var tel=$('#telefono_offerte').val();
+        var reg = new RegExp('^[0-9]*$');
+        if(reg.test(tel))
+        {
+            var url = config.URL_BASE + config.URL_PRENOTAZIONE;
+            var data = '&id_prenotazione='+encodeURIComponent(params)+ '&' + services.getRequestCommonParameters(false);
+            $.ajax(url, {
+                type: 'POST',
+                data: data,
+                timeout: config.REQUEST_DEFAULT_TIMEOUT
+            }).done(function(result) {
+               $("#succesPrenotazione").fadeIn(500, 
+               function()
+                {
+                    $('#telefono_offerte').val('');
+                    setTimeout(
+                            function()
+                            {  
+                                $("#prenotazioniPopup").animate({height: "0px"},500, function() {$("#succesPrenotazione").css("display","none")});
+                            }
+                            , 2000)
+                            ;
+                        });
 
-        $.ajax(url, {
-            type: 'POST',
-            data: data,
-            timeout: config.REQUEST_DEFAULT_TIMEOUT
-        }).done(function(result) {
-           
-           console.log(result);
-         
-           $("#succesPrenotazione").fadeIn(500, 
-           function()
-            {
-                setTimeout(
+
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+
+                //alert("Status: " + textStatus); alert("Error: " + errorThrown);
+            });
+        }
+        else
+        {
+             $("#failPrenotazione").fadeIn(500, 
+               function()
+                {
+                    $("#failPrenotazione").fadeIn(
+                        200,
                         function()
-                        {  
-                            $("#prenotazioniPopup").animate({height: "0px"},500, function() {$("#prenotazioniPopup").css({"display":none})});
+                        { 
+                            setInterval(
+                                    function()
+                                    {
+                                        $("#failPrenotazione").fadeOut(200);
+                                    },2000
+                            )
                         }
-                        , 2000)
-                        ;
-                    });
-           
-           
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-           
-            //alert("Status: " + textStatus); alert("Error: " + errorThrown);
-        });
+                    );
+                }
+            );
+        }    
     }
-    
-    
-    
 }

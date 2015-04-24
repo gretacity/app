@@ -1065,7 +1065,9 @@
                 height:0;
                 overflow:hidden;
                 position:relative;
-            }
+            
+                margin-bottom: 10px;
+}
             
             #prenotazioniPopupContainer
             {
@@ -1097,7 +1099,7 @@
                 text-decoration:none;
             }
             
-            #succesPrenotazione
+            #succesPrenotazione, #failPrenotazione
             {
                 position:absolute;
                 top:0;
@@ -1110,7 +1112,7 @@
                 background:#FFFFFF;
                 text-align:center;
                 line-height:100%;
-                 display:none;
+                display:none;
                 
             }
             
@@ -1128,4 +1130,27 @@
                 line-height: 152px;
                 border-radius:10px;
                 
+            }
+            
+            #failPrenotazione div
+            {
+                background: rgba(255,50,50,0.3);
+                color: #FF1111;
+                font-size: .8em !important;
+                padding: 10px;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                margin: auto;
+                vertical-align: middle;
+                line-height: 152px;
+                border-radius:10px;
+                
+            }
+            
+            .dPopup
+            {
+                margin:0;
+                padding:0;
+                position:relative;
             }
