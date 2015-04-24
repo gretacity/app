@@ -804,7 +804,7 @@ console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
     
     sendPrenotazione: function(params, success, fail) {
         var tel=$('#telefono_offerte').val();
-        var reg = new RegExp('^[0-9]*$');
+        var reg = new RegExp('^[0-9]+$');
         if(reg.test(tel))
         {
             var url = config.URL_BASE + config.URL_PRENOTAZIONE;

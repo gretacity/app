@@ -1113,6 +1113,7 @@
                 text-align:center;
                 line-height:100%;
                 display:none;
+                border-radius:10px;
                 
             }
             
@@ -1121,7 +1122,7 @@
                 background: rgba(153,255,153,0.3);
                 color: #009900;
                 font-size: .8em !important;
-                padding: 10px;
+                padding: 0;
                 height: 100%;
                 width: 100%;
                 overflow: hidden;
@@ -1137,7 +1138,7 @@
                 background: rgba(255,50,50,0.3);
                 color: #FF1111;
                 font-size: .8em !important;
-                padding: 10px;
+                padding: 0;
                 height: 100%;
                 width: 100%;
                 overflow: hidden;
@@ -1145,7 +1146,7 @@
                 vertical-align: middle;
                 line-height: 152px;
                 border-radius:10px;
-                
+                border-radius:10px;
             }
             
             .dPopup
