@@ -837,7 +837,7 @@ console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
                         200,
                         function()
                         { 
-                            setInterval(
+                            setTimeout(
                                     function()
                                     {
                                         $("#errorPrenotazione").fadeOut(200);
@@ -859,7 +859,7 @@ console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
                         200,
                         function()
                         { 
-                            setInterval(
+                            setTimeout(
                                     function()
                                     {
                                         $("#failPrenotazione").fadeOut(200);
