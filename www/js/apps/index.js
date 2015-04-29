@@ -2746,6 +2746,8 @@ console.log(row);
     beforeShowPrenotazioniPanel: function(id)
     {
         $("#prenotazioniPopup").appendTo('#off'+id); 
+        
+        $("#btnSendPrenotazione").unbind( "click" );
         $("#btnSendPrenotazione").click( function(){services.sendPrenotazione(id);})
         $("#prenotazioniPopup").animate({height: $("#prenotazioniPopup").prop("scrollHeight")+"px"},500);
     },  
