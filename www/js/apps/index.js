@@ -2447,7 +2447,7 @@ console.log(row);
                         '</td>'+
                         '<td><a style="float:right;" href="#qrCodeInfoPositionPage_1" onclick="self.showQrCodeInfoPositionPage(\''+ news.latitudine+'\',\''+ news.longitudine+'\',\''+news.titolo+'\')">Mappa</a>' 
                         + '</td></tr></table>' +                        
-                        '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
+                        '<div class="description" style="white-space:normal;">' + news.annotazione + '</div>' +
                         '</li>';
             }
         }
