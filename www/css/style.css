@@ -1155,3 +1155,11 @@
                 padding:0;
                 position:relative;
             }
+            
+            
+            #select_search_cat
+            {
+                border-radius: 10px;
+                padding: 5px;
+                font-size: 1.2em !important;
+            }

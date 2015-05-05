@@ -2412,12 +2412,35 @@ console.log(row);
      
         var result = self.currentQrCodeInfo;
         var page = $('#qrCodeOffertePage');
-        $('h3', page).html(result.info.nome);
+      
+        
+        var search='';
+        if(result.categorie_m.length>0)
+        {    
+            
+            search='<select id="select_search_cat" onchange="self.showCatM()">';
+            search+='<option value="cat_0">Tutte le categorie</option>';
+            for(var i in result.categorie_m)
+            {
+                var cat=result.categorie_m[i];
+                search+='<option value="cat_'+cat.id+'">'+cat.nome_categoria+'</option>';
+            }
+            search+='</select>';
+            $('h3', page).html(search);
+        }
+        else
+        {
+              $('h3', page).html(result.info.nome);
+        }    
+        
+        
+        
+        
         var html = '';
         if(result.offerte && (result.offerte.length > 0)) {
             for(var i in result.offerte) {
                 var news = result.offerte[i];
-                html += '<li class="qrcode-info-news">' + 
+                html += '<li class="qrcode-info-news cat_'+news.note_7+'">' + 
                         '<div class="dPopup" id="off'+news.id+'"></div>'+
                         '<table class="offerte_header"><tr><td>' 
                         +news.titolo+
@@ -2430,6 +2453,19 @@ console.log(row);
         }
        
         $('#qrCodeOfferteList', page).html(html).listview('refresh');
+    },
+    showCatM: function()
+    {
+        var value = $("#select_search_cat").val();
+        if(value!='cat_0')
+        {
+            $(".qrcode-info-news").fadeOut(500, function(){$("."+value).fadeIn(500)})
+        }
+        else
+        {
+            $(".qrcode-info-news").fadeIn(500);
+        }    
+        
     },
     
     showQrCodeInfoPositionPage: function(lt , ln , name ) {
