@@ -1159,7 +1159,15 @@
             
             #select_search_cat
             {
-                border-radius: 10px;
-                padding: 5px;
-                font-size: 1.2em !important;
+                line-height: 1em;
+                color: #ffffff;
+                font-weight: bold !important;
+                font-size: 1.3em !important;
+                text-shadow: 0px 0px 0 rgb(217,217,217),1px 1px 0 rgb(180,180,180),2px 2px 0 rgb(142,142,142), 3px 3px 0 rgb(104,104,104),4px 4px 3px rgba(0,0,0,0.6),4px 4px 1px rgba(0,0,0,0.5),0px 0px 3px rgba(0,0,0,.2) !important;
+                white-space: nowrap !important;
+                border-radius:10px;
+                padding:5px;
+                background:rgb(89, 196, 248);
+                border-color    #FFFFFF;
+                
             }
