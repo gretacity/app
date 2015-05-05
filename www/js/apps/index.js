@@ -2399,7 +2399,7 @@ console.log(row);
                         '<div style="white-space: normal !important; color: #00269C !important;">' 
                         +news.titolo 
                         + '</div>' +
-                        '<p class="description" style="white-space:normal;">' + news.annotazione + '</p>' +
+                        '<div class="description" style="white-space:normal;">' + news.annotazione + '</div>' +
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
                         '</li>';
             }

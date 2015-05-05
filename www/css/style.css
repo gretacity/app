@@ -561,7 +561,7 @@
             .qrcode-info-news div {
                 font-weight: bold;
             }
-            p.description {
+            div.description, p.description {
                 font-family: "Arial" !important;
                 font-size: .7em !important;
                 color: #111111 !important;
