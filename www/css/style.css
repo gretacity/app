@@ -1168,6 +1168,6 @@
                 border-radius:10px;
                 padding:5px;
                 background: url('../img/Header.png') no-repeat center center;
-                border-color    #FFFFFF;
+                border:0;
                 
             }
