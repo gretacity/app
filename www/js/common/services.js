@@ -761,10 +761,8 @@ console.log('services.sendReportingSollecita fail,', jqXHR);
             timeout: config.REQUEST_DEFAULT_TIMEOUT,
             dataType: 'json'
         }).done(function(result) {
-console.log('services.getReportingList SUCCESS', result);
             successCallback(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('services.getReportingList FAIL', jqXHR, textStatus);
             if(failCallback) failCallback(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
@@ -772,7 +770,6 @@ console.log('services.getReportingList FAIL', jqXHR, textStatus);
     sendHidden: function(params, successCallback, failCallback) {
         var url = config.URL_BASE + config.URL_REPORTING_HIDDEN+'&' + services.getRequestCommonParameters();
         var data = 'recid='+encodeURIComponent(params);
-console.log('services.sendHidden', data);
         $.ajax(url, {
             type: 'POST',
             data: data,
@@ -793,10 +790,9 @@ console.log('services.sendHidden', data);
             timeout: config.REQUEST_DEFAULT_TIMEOUT
             //dataType: 'json'
         }).done(function(result) {
-console.log('services.sendRequestSupport SUCCESS', result);
+
             success(result);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-console.log('services.sendRequestSupport FAIL', jqXHR, textStatus);
             if(fail) fail(textStatus, services.isLoginRequired(jqXHR.status));
         });
     },
