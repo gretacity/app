@@ -1060,6 +1060,10 @@
                 background:#f4f4f4 !important;
                 margin-bottom:10px !important;
             }
+            li.qrcode-comment:first-child
+            {
+                margin-top: 25px !important;
+            }
             
             #prenotazioniPopup
             {
