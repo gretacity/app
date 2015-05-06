@@ -558,9 +558,7 @@
                 font-weight: bold !important;
             }
             
-            .qrcode-info-news div {
-                /* font-weight: bold; */
-            }
+            
             div.description {
                 font-family: "Arial" !important;
             }
@@ -1056,7 +1054,7 @@
             }  
             
             
-            li.qrcode-info-news 
+            li.qrcode-info-news, li.qrcode-comment  
             {
                 border:0 !important;
                 background:#f4f4f4 !important;

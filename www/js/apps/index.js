@@ -2711,7 +2711,7 @@ console.log(row);
             for(var i in result.commenti) {
                 var c = result.commenti[i];
                 var d = Date.parseFromYMDHMS(c.data_inserimento);
-                html += '<li>';
+                html += '<li class="qrcode-comment">';
                 if((c.nome || '') != '') {
                     html += '<small  class="news-note" display:block;>Commento di ' + c.nome + '</small>';
                 }
