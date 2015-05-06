@@ -2396,7 +2396,7 @@ console.log(row);
             for(var i in result.notizie) {
                 var news = result.notizie[i];
                 html += '<li class="qrcode-info-news">' + 
-                        '<div style="white-space: normal !important; color: #00269C !important;">' 
+                        '<div style="white-space: normal !important; color: #00269C !important;bont-weight:bold;margin-bottom:10px">' 
                         +news.titolo 
                         + '</div>' +
                         '<div class="description" style="white-space:normal;">' + news.annotazione + '</div>' +
