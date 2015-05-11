@@ -2592,19 +2592,26 @@ console.log(row);
             var point = new google.maps.LatLng(lat, lng);
             for(var i=0;i<result.childs.length;i++)
             {
-                var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
-                var marker = new google.maps.Marker({
-                position: p,
-                map: map,
-                draggable: false,
-                animation: google.maps.Animation.DROP,
-                title: result.childs[i]['denominazione']
-                });
+               if( result.childs[i]['latitudine']*1>0 && result.childs[i]['longitudine']*1>0)
+               {    
+                    try
+                    {
+                    var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
+                    var marker = new google.maps.Marker({
+                    position: p,
+                    map: map,
+                    draggable: false,
+                    animation: google.maps.Animation.DROP,
+                    title: result.childs[i]['denominazione']
+                    });
 
-                var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
-                infowindow_child.open(map, marker);
+                    var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
+                    infowindow_child.open(map, marker);
+                    }
+                    catch(e){console.log("ERROR")}
+                }    
             }
-            /*
+            
             setTimeout( function()
             {
                 
@@ -2693,7 +2700,7 @@ console.log(row);
                 });
 
             }, 3000);
-            */
+           
         }    
     },
     
