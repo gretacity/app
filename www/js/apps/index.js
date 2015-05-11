@@ -2567,7 +2567,7 @@ console.log(row);
                             });
                     }
                     ,
-                    300);
+                    3000);
                 }        
             );
             
@@ -2577,43 +2577,40 @@ console.log(row);
         }
         else
         {
-           
-            
-                self.maximizeMap($('#qrCodeInfoPositionPage #qrCodeInfoPlaceMap'));
-                var result = self.currentQrCodeInfo;
-                var placeName = result.info.nome;
-                var lat = result.censimento.latitudine;
-                var lng = result.censimento.longitudine;
-                var options = {
-                    zoom: config.GOOGLE_MAPS_ZOOM,
-                    center: new google.maps.LatLng(lat, lng),
-                    mapTypeId: google.maps.MapTypeId.ROADMAP,
-                    streetViewControl: false
-                };
-                var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap'), options);
-                for(var i=0;i<=result.childs.length;i++)
-                {
-                    var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
-                    var marker = new google.maps.Marker({
-                    position: p,
-                    map: map,
-                    draggable: false,
-                    animation: google.maps.Animation.DROP,
-                    title: result.childs[i]['denominazione']
-                    });
+            self.maximizeMap($('#qrCodeInfoPositionPage #qrCodeInfoPlaceMap'));
+            var result = self.currentQrCodeInfo;
+            var placeName = result.info.nome;
+            var lat = result.censimento.latitudine;
+            var lng = result.censimento.longitudine;
+            var options = {
+                zoom: config.GOOGLE_MAPS_ZOOM,
+                center: new google.maps.LatLng(lat, lng),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                streetViewControl: false
+            };
+            var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap'), options);
+            var point = new google.maps.LatLng(lat, lng);
+            for(var i=0;i<result.childs.length;i++)
+            {
+                var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
+                var marker = new google.maps.Marker({
+                position: p,
+                map: map,
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                title: result.childs[i]['denominazione']
+                });
 
-                    var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
-                    infowindow_child.open(map, marker);
-                }
-                        
+                var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
+                infowindow_child.open(map, marker);
+            }
             
-            
+            setTimeout( function()
+            {
                 
-                
-
                 geoLocation.acquireGeoCoordinates(
                 function(pos) {
-                    var point = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
                     //var startingMarkerPoint is equal to marker
 
                     var endPoint = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
@@ -2656,19 +2653,18 @@ console.log(row);
                         infowindow2.open(map, endingMarker);
                         
                         
-                        /*
+                        
+                        
                         if(status != google.maps.DirectionsStatus.OK) {
                             var bounds = new google.maps.LatLngBounds();
                             bounds.extend(startingMarker.position);
                             bounds.extend(endingMarker.position);
                             map.fitBounds(bounds);
                         }
-                        */
                     });
                 }, 
                 function() {
                    
-                    /*
                     var marker = new google.maps.Marker({
                         position: point,
                         map: map,
@@ -2693,10 +2689,10 @@ console.log(row);
                     map.panTo(point);
                     var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
                     infowindow.open(map, marker);
-                    */
+
                 });
 
-            
+            }, 3000);
         }    
     },
     
