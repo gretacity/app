@@ -2477,8 +2477,6 @@ console.log(row);
             $('#qrCodeInfoPositionPage_1').on('pageshow', 
                 function()
                 {
-                    setTimeout( function()
-                    {
                         self.maximizeMap($('#qrCodeInfoPositionPage_1 #qrCodeInfoPlaceMap_1'));
                         var result = self.currentQrCodeInfo;
                         var placeName = result.info.nome;
@@ -2566,9 +2564,8 @@ console.log(row);
 
                             });
                     }
-                    ,
-                    3000);
-                }        
+                   
+                        
             );
             
            
