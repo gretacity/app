@@ -123,7 +123,7 @@ var config = {
     GOOGLE_MAPS_ZOOM: 18,
     GOOGLE_MAPS_TYPE_ID: 'google.maps.MapTypeId.SATELLITE',
     
-    GEO_OPTS_MAXIMUM_AGE: 113000,
+    GEO_OPTS_MAXIMUM_AGE: 3000,
     GEO_OPTS_TIMEOUT: 5000,
     GEO_OPTS_HIGH_ACCURACY: true,
     // Minimum accuracy level required of the latitude

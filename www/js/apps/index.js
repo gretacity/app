@@ -2717,6 +2717,29 @@ console.log(row);
                 };
                 var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap'), options);
                 var point = new google.maps.LatLng(lat, lng);
+                
+                for(var i=0;i<=result.childs.length;i++)
+                        {
+                            var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
+                            var marker = new google.maps.Marker({
+                            position: p,
+                            map: map,
+                            draggable: false,
+                            animation: google.maps.Animation.DROP,
+                            title: result.childs[i]['denominazione']
+                            });
+                            
+                            var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
+                            infowindow_child.open(map, marker);
+                        }
+                        
+                        
+                        if(status != google.maps.DirectionsStatus.OK) {
+                            var bounds = new google.maps.LatLngBounds();
+                            bounds.extend(startingMarker.position);
+                            bounds.extend(endingMarker.position);
+                            map.fitBounds(bounds);
+                        }
 
                 geoLocation.acquireGeoCoordinates(
                 function(pos) {
@@ -2724,7 +2747,6 @@ console.log(row);
                     //var startingMarkerPoint is equal to marker
 
                     var endPoint = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-
                     var directionsDisplay = new google.maps.DirectionsRenderer({
                         suppressInfoWindows: true,
                         suppressMarkers: true,
@@ -2762,28 +2784,7 @@ console.log(row);
                         var infowindow2 = new google.maps.InfoWindow({content: '<div>Tu</div>'});
                         infowindow2.open(map, endingMarker);
                         
-                        for(var i=0;i<=result.childs.length;i++)
-                        {
-                            var p=new google.maps.LatLng(result.childs[i]['latitudine'],result.childs[i]['longitudine']);
-                            var marker = new google.maps.Marker({
-                            position: p,
-                            map: map,
-                            draggable: false,
-                            animation: google.maps.Animation.DROP,
-                            title: result.childs[i]['denominazione']
-                            });
-                            
-                            var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
-                            infowindow_child.open(map, marker);
-                        }
                         
-                        
-                        if(status != google.maps.DirectionsStatus.OK) {
-                            var bounds = new google.maps.LatLngBounds();
-                            bounds.extend(startingMarker.position);
-                            bounds.extend(endingMarker.position);
-                            map.fitBounds(bounds);
-                        }
                     });
                 }, 
                 function() {
