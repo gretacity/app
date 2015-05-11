@@ -2604,7 +2604,7 @@ console.log(row);
                 var infowindow_child = new google.maps.InfoWindow({content: '<div>'+result.childs[i]['denominazione']+'</div>'});
                 infowindow_child.open(map, marker);
             }
-            
+            /*
             setTimeout( function()
             {
                 
@@ -2693,6 +2693,7 @@ console.log(row);
                 });
 
             }, 3000);
+            */
         }    
     },
     
