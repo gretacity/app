@@ -2471,7 +2471,7 @@ console.log(row);
     showQrCodeInfoPositionPage: function(lt , ln , name ) {
       
         var args=Array();
-        if(ln && lt  && name)
+        if(ln && lt  && name && ln*1>0 && lt*1>0)
         {
             args=arguments;
             $('#qrCodeInfoPositionPage_1').on('pageshow', 
@@ -2567,7 +2567,7 @@ console.log(row);
                             });
                     }
                     ,
-                    3000);
+                    300);
                 }        
             );
             
@@ -2699,7 +2699,8 @@ console.log(row);
 
                 });
 
-            }, 3000);
+            }, 300);
+           
            
         }    
     },
