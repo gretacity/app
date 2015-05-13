@@ -2484,7 +2484,7 @@ console.log(row);
                         var placeName = result.info.nome;
                         var lat = result.censimento.latitudine;
                         var lng = result.censimento.longitudine;
-                        console.log(args);
+                       
                         if(args.length==3 )
                         {
                             lat = args[0]; 
@@ -2786,7 +2786,43 @@ console.log(row);
     
     beforeShowPrenotazioniPanel: function(id)
     {
+        if( $("#prenotazioniPopup").length==0)
+        {    
+        var pp=$('<div id="prenotazioniPopup">'+
+                    '<div id="prenotazioniPopupContainer">'+
+                    '<div>'+
+                        '<p>'+    
+                            'Per prenotare occorre inserire un numero di telefono</br> al quale poter essere contattato.</br>'+
+                            'Riceverai una notifica push quando la prenotazione</br> sarà stata accettata.'+
+                        '</p>'+
+                    '</div>'+
+                    '<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">'+
+                        '<input type="text" id="telefono_offerte" name="telefono_offerte" placeholder="inserisci i tuo numero di telefono">'+
+                    '</div>'+
+                    '<div>'+
+                        '<div class="btn" style="float:right"> <a href="javascript:self.annullaPrenotazione()"> Annulla</a></div>'+
+                        '<div class="btn" style="float:right" id="btnSendPrenotazione"> <a href="#"> Invia</a></div>'+
+                    '</div>'+
+                    '</div>'+    
+                    '<div id="succesPrenotazione">'+
+                        '<div>'+
+                            'Prenotazione effettuata con successo'+
+                        '</div>'+
+                    '</div>'+
+                    '<div id="failPrenotazione">'+
+                        '<div>'+
+                            'Inserisci il numero di telefono valido'+
+                        '</div>'+
+                    '</div>'+
+                    '<div id="errorPrenotazione">'+
+                        
+                    '</div>'+
+                '</div>');
+            pp.appendTo($("#qrCodeOffertePage"));
+        }
+        
         $("#prenotazioniPopup").appendTo('#off'+id); 
+        $("#prenotazioniPopup").css("display","block");
         
         $("#btnSendPrenotazione").unbind( "click" );
         $("#btnSendPrenotazione").click( function(){services.sendPrenotazione(id);})
