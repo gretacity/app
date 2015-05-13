@@ -2467,7 +2467,6 @@ console.log(row);
         }    
         
     },
-    
     showQrCodeInfoPositionPage: function(lt , ln , name ) {
       
         var args=Array();
@@ -2484,7 +2483,6 @@ console.log(row);
                         var placeName = result.info.nome;
                         var lat = result.censimento.latitudine;
                         var lng = result.censimento.longitudine;
-                       
                         if(args.length==3 )
                         {
                             lat = args[0]; 
@@ -2499,7 +2497,6 @@ console.log(row);
                         };
                         var map = new google.maps.Map(document.getElementById('qrCodeInfoPlaceMap_1'), options);
                         var point = new google.maps.LatLng(lat, lng);
-                        
                             geoLocation.acquireGeoCoordinates(
                             function(pos) {
 
@@ -2560,20 +2557,17 @@ console.log(row);
                                     animation: google.maps.Animation.DROP,
                                     title: placeName
                                 });
-                                map.panTo(point);
+                               
                                 var infowindow = new google.maps.InfoWindow({content: '<div>' + placeName + '</div>'});
                                 infowindow.open(map, marker);
-
+                                 map.panTo(point);
                             });
                     }
                     ,
                     300);
                 }        
             );
-            
-           
             return true;
-            
         }
         else
         {
