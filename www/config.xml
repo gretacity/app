@@ -4,7 +4,7 @@
         xmlns:gap = "http://phonegap.com/ns/1.0"
         xmlns:android = "http://schemas.android.com/apk/res/android"
         id        = "com.gretacity.gretacity"
-        versionCode = "11"
+        versionCode = "12"
         version   = "2.3.2">
 
     <name>Gretacity</name>
