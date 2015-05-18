@@ -284,6 +284,10 @@ console.log('onResume: registration to push server required');
         mapEl.height(
             pageHeight - height
         );
+        if(typeof(map) != 'string')
+        {
+            google.maps.event.trigger(app._map, 'resize')
+        }   
     },
     
     readQrCode: function() {
@@ -740,7 +744,7 @@ console.log('onResume: registration to push server required');
         }, function(e, textStatus) {
             if (textStatus == 'timeout'){
                 helper.alert('Operazione completata con successo.\n' +
-                         'A breve riceverai una email per confermare la registrazione', function() {
+                         'A breve riceverai una email per confermare la registrazione. Controlla anche nella cartella SPAM se il messaggio non dovesse essere arrivato dopo qualche minuto ', function() {
                              $.mobile.changePage('#loginPage', {transition: 'slide', reverse: true});            
                          }, 'Registrazione');
                      }
@@ -2138,6 +2142,10 @@ console.log(row);
                 helper.alert('Non ci sono informazioni disponibili', null, 'Leggi QR Code');
                 return;
             }
+              
+            
+            
+            
             $('#followingListDetailPage #qrCodeId').val(code);
             // Format result
             var html = '<div>' +
@@ -2392,7 +2400,12 @@ console.log(row);
         var page = $('#qrCodeInfoNewsPage');
         $('h3', page).html(result.info.nome);
         var html = '';
-        if(result.notizie && (result.notizie.length > 0)) {
+        if(result.style!=null)
+        {
+           html+='<style>'+result.style+'</style>'; 
+        }
+        if(result.notizie && (result.notizie.length > 0)) 
+        {
             for(var i in result.notizie) {
                 var news = result.notizie[i];
                 html += '<li class="qrcode-info-news">' + 
@@ -2403,6 +2416,7 @@ console.log(row);
                         '<span>' + Date.parseFromYMDHMS(news.data).toDMY() + '</span>' +
                         '</li>';
             }
+              
         }
         $('#qrCodeNewsList', page).html(html).listview('refresh');
     },
@@ -2437,6 +2451,10 @@ console.log(row);
         
         
         var html = '';
+        if(result.style!=null)
+        {
+           html+='<style>'+result.style+'</style>'; 
+        }
         if(result.offerte && (result.offerte.length > 0)) {
             for(var i in result.offerte) {
                 var news = result.offerte[i];
@@ -2706,6 +2724,10 @@ console.log(row);
         var page = $('#qrCodeInfoCommentsPage');
         $('h3', page).html(result.info.nome);
         var html = '';
+        if(result.style!=null)
+        {
+           html+='<style>'+result.style+'</style>'; 
+        }
         if(result.commenti && (result.commenti.length > 0)) {
             for(var i in result.commenti) {
                 var c = result.commenti[i];

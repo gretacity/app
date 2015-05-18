@@ -1019,6 +1019,11 @@
                 background-size: cover !important;
 
             */
+            
+            
+            
+          
+            
             #description
             {
                 height: 10em;
@@ -1073,7 +1078,7 @@
                 position:relative;
             
                 margin-bottom: 10px;
-}
+            }
             
             #prenotazioniPopupContainer
             {
@@ -1213,3 +1218,4 @@
                 border-radius:3px;
                 padding:10px
             }
+     
