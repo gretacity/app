@@ -2398,12 +2398,12 @@ console.log(row);
     beforeShowQrCodeInfoNewsPage: function() {
         var result = self.currentQrCodeInfo;
         var page = $('#qrCodeInfoNewsPage');
-        $('h3', page).html(result.info.nome);
-        var html = '';
         if(result.style!=null)
         {
-           html+='<style>'+result.style+'</style>'; 
+           $('<style>'+result.style+'</style>').appendTo(page); 
         }
+        $('h3', page).html(result.info.nome);
+        var html = '';
         if(result.notizie && (result.notizie.length > 0)) 
         {
             for(var i in result.notizie) {
@@ -2421,18 +2421,19 @@ console.log(row);
         $('#qrCodeNewsList', page).html(html).listview('refresh');
     },
     
-    beforeShowQrCodeOffertePage: function() {
-         
-     
+    beforeShowQrCodeOffertePage: function()
+    {
         var result = self.currentQrCodeInfo;
         var page = $('#qrCodeOffertePage');
-      
-        
+        if(result.style!=null)
+        {
+           $('<style>'+result.style+'</style>').appendTo(page); 
+        }
         var search='';
         if(result.categorie_m.length>0)
         {    
             
-            search='<select id="select_search_cat" onchange="self.showCatM()">';
+            search+='<select id="select_search_cat" onchange="self.showCatM()">';
             search+='<option value="cat_0">Tutte le categorie</option>';
             for(var i in result.categorie_m)
             {
@@ -2446,15 +2447,8 @@ console.log(row);
         {
               $('h3', page).html(result.info.nome);
         }    
-        
-        
-        
-        
         var html = '';
-        if(result.style!=null)
-        {
-           html+='<style>'+result.style+'</style>'; 
-        }
+       
         if(result.offerte && (result.offerte.length > 0)) {
             for(var i in result.offerte) {
                 var news = result.offerte[i];
@@ -2722,12 +2716,13 @@ console.log(row);
         var canLeaveComment = (result.categoria.commenti == 1);
         
         var page = $('#qrCodeInfoCommentsPage');
-        $('h3', page).html(result.info.nome);
-        var html = '';
         if(result.style!=null)
         {
-           html+='<style>'+result.style+'</style>'; 
+           $('<style>'+result.style+'</style>').appendTo(page); 
         }
+        $('h3', page).html(result.info.nome);
+        var html = '';
+        
         if(result.commenti && (result.commenti.length > 0)) {
             for(var i in result.commenti) {
                 var c = result.commenti[i];
