@@ -286,7 +286,7 @@ console.log('onResume: registration to push server required');
         );
         if(typeof(map) != 'string')
         {
-            google.maps.event.trigger(app._map, 'resize')
+            google.maps.event.trigger(map, 'resize')
         }   
     },
     
