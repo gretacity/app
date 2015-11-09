@@ -1113,7 +1113,8 @@ console.log('onResume: registration to push server required');
                         '<span style="padding:1em 1em 0 4.5em;display:block;">' + row.nome + '</span>' +
                         '</a></li>';
             }
-            //$('#reporting4Page #categories').html(html).listview('refresh');
+            $('#reporting4Page #categories').html(html);
+            $('#reporting4Page #categories').listview('refresh');
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
