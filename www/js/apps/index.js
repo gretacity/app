@@ -1113,7 +1113,7 @@ console.log('onResume: registration to push server required');
                         '<span style="padding:1em 1em 0 4.5em;display:block;">' + row.nome + '</span>' +
                         '</a></li>';
             }
-            $('#reporting4Page #categories').html(html).listview('refresh');
+            //$('#reporting4Page #categories').html(html).listview('refresh');
         }, function(e, loginRequired) {
             if(loginRequired) {
                 $.mobile.changePage('#loginPage');
@@ -1141,7 +1141,7 @@ console.log('getreportingsollecita, risultato è:', res);
                 //ci sono segnalazioni simili nella zona   
                 for(var i in res) {
                     var row = res[i];
-console.log('showreportingSollecita_row,',row);
+
                     //var iconUrl = row.icon || '';
                     var dateAdded = Date.parseFromYMDHMS(row.data_inserimento).toDMYHM();
                     html += '<li data-icon="false">'+
