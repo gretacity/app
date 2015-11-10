@@ -1261,12 +1261,12 @@ console.log('index.sendSollecita.sendSollecita fail, id=', id); console.log('ind
         var source = $(e.currentTarget).attr('id') == 'shotPhoto' ? 
                 Camera.PictureSourceType.CAMERA :
                 Camera.PictureSourceType.PHOTOLIBRARY;
-        console.log(source);
+       
         camera.getPicture(function(res) {
             // Success callback
             var photo = $($('#photoSet div[data-photopos="' + self.reportingCurrPhotoPos + '"] a img.reporting-photo-missing', $.mobile.activePage)[0]);
             
-            console.log(photo);
+           
             photo.attr('src', 'data:image/jpeg;base64,' + res).removeClass('reporting-photo-missing');
             photo.parent().prev().show();
             $('#sourceTypePopup', $.mobile.activePage).popup('close');
